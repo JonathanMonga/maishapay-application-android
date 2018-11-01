@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.notification.MaishapayNotification;
+import com.maishapay.model.MaishapayNotification;
 
 import org.alfonz.media.SoundManager;
 

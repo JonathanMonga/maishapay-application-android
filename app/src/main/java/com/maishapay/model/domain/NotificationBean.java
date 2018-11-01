@@ -1,4 +1,4 @@
-package com.maishapay.notification.model;
+package com.maishapay.model.domain;
 
 public class NotificationBean {
 

@@ -1,4 +1,4 @@
-package com.maishapay.paypal;
+package com.maishapay.ui.activities;
 
 
 import android.content.Context;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.notification.MaishapayNotification;
 import com.maishapay.ui.activities.DrawerActivity;
 
 import org.alfonz.media.SoundManager;

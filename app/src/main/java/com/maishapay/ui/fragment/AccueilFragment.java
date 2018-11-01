@@ -20,7 +20,7 @@ import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.notification.service.MaishapayService;
+import com.maishapay.service.MaishapayService;
 import com.maishapay.presenter.AccueilPresenter;
 import com.maishapay.ui.activities.ConversionActivity;
 import com.maishapay.ui.activities.EpargneActivity;

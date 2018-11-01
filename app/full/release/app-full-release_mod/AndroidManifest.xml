@@ -30,12 +30,12 @@
         <activity android:name="com.maishapay.ui.activities.SuccessPaiementActivity" android:noHistory="true" android:screenOrientation="portrait"/>
         <activity android:name="com.maishapay.ui.activities.RegisterNormalActivity" android:screenOrientation="portrait"/>
         <activity android:name="com.maishapay.ui.activities.TransfertCompteCashActivity" android:screenOrientation="portrait"/>
-        <service android:name="com.maishapay.notification.service.MaishapayFirebaseInstanceIDService">
+        <service android:name="com.maishapay.service.MaishapayFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name="com.maishapay.notification.service.MaishapayFirebaseMessaging">
+        <service android:name="com.maishapay.service.MaishapayFirebaseMessaging">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

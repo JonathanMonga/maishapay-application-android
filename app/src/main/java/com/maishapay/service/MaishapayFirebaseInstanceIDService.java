@@ -1,4 +1,4 @@
-package com.maishapay.notification.service;
+package com.maishapay.service;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.maishapay.notification.MaishapayNotification;
-import com.maishapay.notification.model.Common;
+import com.maishapay.model.MaishapayNotification;
+import com.maishapay.model.domain.Common;
 import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.util.Constants;
 import com.pixplicity.easyprefs.library.Prefs;

@@ -14,6 +14,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -58,19 +59,19 @@
         <activity android:name=".ui.activities.SuccessPaiementActivity" android:noHistory="true" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.RegisterNormalActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.TransfertCompteCashActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".paypal.MaishapayPayPal" android:screenOrientation="portrait"/>
-        <activity android:name=".paypal.SuccessDepositActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.MaishapayPayPal" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.SuccessDepositActivity" android:screenOrientation="portrait"/>
 
-        <service android:name=".notification.service.MaishapayFirebaseInstanceIDService">
+        <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notification.service.MaishapayFirebaseMessaging">
+        <service android:name=".service.MaishapayFirebaseMessaging">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notification.service.MaishapayService" />
+        <service android:name=".service.MaishapayService" />
     </application>
 </manifest>

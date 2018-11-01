@@ -1,4 +1,4 @@
-package com.maishapay.paypal.config;
+package com.maishapay.model;
 
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 

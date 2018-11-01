@@ -1,4 +1,4 @@
-package com.maishapay.notification.helper;
+package com.maishapay.model;
 
 import android.annotation.TargetApi;
 import android.app.Notification;

@@ -1,4 +1,4 @@
-package com.maishapay.notification.service;
+package com.maishapay.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.maishapay.R;
-import com.maishapay.notification.helper.MaishapayNotificationHelper;
+import com.maishapay.model.MaishapayNotificationHelper;
 
 
 import java.util.Map;

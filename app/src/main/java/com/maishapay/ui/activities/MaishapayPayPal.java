@@ -1,11 +1,14 @@
-package com.maishapay.paypal;
+package com.maishapay.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,14 +26,20 @@ import org.json.JSONException;
 
 import java.math.BigDecimal;
 
-import static com.maishapay.paypal.config.Configuration.PAYPAL_CONFIGURATION;
-import static com.maishapay.paypal.config.Configuration.PAYPAL_REQUEST_CODE;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.maishapay.model.Configuration.PAYPAL_CONFIGURATION;
+import static com.maishapay.model.Configuration.PAYPAL_REQUEST_CODE;
 import static com.maishapay.ui.activities.SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY;
 
 public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiveButtonListener {
 
-    private TextView edtAmount;
-    private Button btnPayNow;
+    @BindView(R.id.edtAmount) TextView edtAmount;
+    @BindView(R.id.btnPayNow) Button btnPayNow;
+    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
+
     private String amount;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
 
@@ -38,12 +47,17 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maishapay_paypal);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Effectuer un depot");
+        ButterKnife.bind(this);
 
-        edtAmount = findViewById(R.id.edtAmount);
-        btnPayNow = findViewById(R.id.btnPayNow);
+        toolbar.setTitle("Effectuer un depot");
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
 
         initPaypalService();
 
@@ -140,5 +154,20 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
         edtAmount.setText(String.format("USD %s", number));
         amount = number;
         attemptPayment();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

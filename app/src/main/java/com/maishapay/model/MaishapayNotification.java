@@ -1,4 +1,4 @@
-package com.maishapay.notification;
+package com.maishapay.model;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,8 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.maishapay.R;
-import com.maishapay.notification.helper.MaishapayNotificationHelper;
-import com.maishapay.notification.model.NotificationBean;
+import com.maishapay.model.domain.NotificationBean;
 import com.maishapay.util.LogCat;
 
 import java.util.Random;

@@ -1,11 +1,11 @@
-package com.maishapay.notification.service;
+package com.maishapay.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.maishapay.notification.MaishapayNotification;
+import com.maishapay.model.MaishapayNotification;
 import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.util.Constants;
 import com.pixplicity.easyprefs.library.Prefs;

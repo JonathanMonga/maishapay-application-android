@@ -1,4 +1,4 @@
-package com.maishapay.notification.model;
+package com.maishapay.model.domain;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.maishapay.util.Constants;
