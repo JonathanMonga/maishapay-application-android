@@ -20,6 +20,10 @@ public class UserDataPreference {
     private double taux;
     @SerializedName("hasEpargneCompte")
     private boolean hasEpargneCompte = false;
+    @SerializedName("epargnefrancs")
+    private String epargneFrancs;
+    @SerializedName("epargneDollars")
+    private String epargneDollars;
 
     public int getSoldeFrancs() {
         return soldeFrancs;
@@ -83,5 +87,21 @@ public class UserDataPreference {
 
     public void setTaux(double taux) {
         this.taux = taux;
+    }
+
+    public String getEpargneFrancs() {
+        return epargneFrancs;
+    }
+
+    public void setEpargneFrancs(String epargneFrancs) {
+        this.epargneFrancs = epargneFrancs;
+    }
+
+    public String getEpargneDollars() {
+        return epargneDollars;
+    }
+
+    public void setEpargneDollars(String epargneDollars) {
+        this.epargneDollars = epargneDollars;
     }
 }

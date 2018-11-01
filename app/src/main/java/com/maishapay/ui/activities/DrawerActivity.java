@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.paypal.MaishapayPayPal;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
@@ -98,11 +99,12 @@ public class DrawerActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Point Fastpay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(5),
                         new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(6),
-                        new PrimaryDrawerItem().withName("Scan card").withSelectable(false).withIcon(R.drawable.scann).withIdentifier(7),
+                        new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(7),
+                        new PrimaryDrawerItem().withName("Scan card").withSelectable(false).withIcon(R.drawable.scann).withIdentifier(8),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(9),
-                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(10),
-                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(11)
+                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(10),
+                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(11),
+                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(12)
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
@@ -214,7 +216,17 @@ public class DrawerActivity extends AppCompatActivity {
                                 .warning()
                                 .show();
                         return false;
+
                     case 7:
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(DrawerActivity.this, MaishapayPayPal.class));
+                            }
+                        }, 400);
+                        return false;
+
+                    case 8:
                         Snacky.builder()
                                 .setView(findViewById(R.id.root))
                                 .setText("Cette fonctionnalité sera bientôt disponible!")
@@ -223,19 +235,19 @@ public class DrawerActivity extends AppCompatActivity {
                                 .show();
                         return false;
 
-                    case 9:
+                    case 10:
                         setTitle("Paramètres");
                         mFragment = new SettingsFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 10:
+                    case 11:
                         setTitle("Nous contacter");
                         mFragment = new ContactFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 11:
+                    case 12:
                         setTitle("A propros");
                         mFragment = new AboutFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();

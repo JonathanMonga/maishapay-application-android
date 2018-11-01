@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -31,16 +32,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
+import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePresenter;
+import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
+import com.maishapay.ui.fragment.BalanceDollarsFragment;
+import com.maishapay.ui.fragment.BalanceFrancsFragment;
 import com.maishapay.view.EpargneView;
 import com.txusballesteros.widgets.FitChart;
 import com.txusballesteros.widgets.FitChartValue;
 
+import org.alfonz.utility.NetworkUtility;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,20 +125,47 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     @Override
     public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-                    }
-                })
-                .error()
-                .show();
+        if (! NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
+            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+                LL_fitDollards.setVisibility(View.VISIBLE);
+                LL_fitFrancs.setVisibility(View.VISIBLE);
+                progressBarSolde.setVisibility(View.INVISIBLE);
+
+                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+
+                String francs = String.valueOf(userDataPreference.getEpargneFrancs()).replace(" ", "");
+                int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
+
+                int dollarsInt = Integer.valueOf(String.valueOf(userDataPreference.getEpargneDollars()).substring(0, String.valueOf(userDataPreference.getEpargneDollars()).length() - 3));
+
+                Resources resources = getResources();
+                Collection<FitChartValue> valuesFrancs = new ArrayList<>();
+                valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                Collection<FitChartValue> valuesDollars = new ArrayList<>();
+                valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                TV_Dollars.setText(String.format("%s $", userDataPreference.getEpargneDollars()));
+                TV_Francs.setText(String.format("%s Fc", userDataPreference.getEpargneFrancs()));
+                francsChart.setValues(valuesFrancs);
+                dollarsChart.setValues(valuesDollars);
+            }
+        } else {
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
+                    .setDuration(Snacky.LENGTH_INDEFINITE)
+                    .setActionText("Réesseyer")
+                    .setActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            enabledControls(false);
+                            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+                        }
+                    })
+                    .error()
+                    .show();
+        }
     }
 
     @Override
@@ -141,6 +177,11 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         String francs = response.getFrancCongolais().replace(" ", "");
         int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
         int dollarsInt = Integer.valueOf(response.getDollard().substring(0, response.getDollard().length() - 3));
+
+        UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+        userDataPreference.setEpargneFrancs(response.getFrancCongolais());
+        userDataPreference.setEpargneDollars(response.getDollard());
+        UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
 
         Resources resources = getResources();
         Collection<FitChartValue> valuesFrancs = new ArrayList<>();

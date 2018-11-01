@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.maishapay">
 
-    <uses-sdk tools:overrideLibrary="
+    <uses-sdk tools:overrideLibrary="com.paypal.android.sdk.payments,
                                      androidmads.library.qrgenearator,
                                      com.santalu.widget,
                                      com.fxn769,
@@ -58,6 +58,8 @@
         <activity android:name=".ui.activities.SuccessPaiementActivity" android:noHistory="true" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.RegisterNormalActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.TransfertCompteCashActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".paypal.MaishapayPayPal" android:screenOrientation="portrait"/>
+        <activity android:name=".paypal.SuccessDepositActivity" android:screenOrientation="portrait"/>
 
         <service android:name=".notification.service.MaishapayFirebaseInstanceIDService">
             <intent-filter>
