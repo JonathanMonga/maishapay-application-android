@@ -21,6 +21,8 @@ import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.AccueilView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -102,6 +104,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                     public void accept(UserDataPreference response) {
                         if(isViewAttached()) {
                             getView().enabledControls(true);
+                            UserPrefencesManager.setLastSoldeAndRapport(response);
                             getView().finishToLoadSoldeAndRappot(response);
                         }
                     }
@@ -116,46 +119,30 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                 }));
     }
 
-    public void taux() {
-        disposableHandler.manageDisposable(maishapayClient.taux_du_jour()
-                .observeOn(AndroidSchedulers.mainThread())
+    public void tauxAndEpargne(String telephone) {
+        disposableHandler.manageDisposable(maishapayClient.taux_du_jour().zipWith(maishapayClient.transfert_epargne("p", telephone, "", ""), new BiFunction<Double, EpargneResponse, UserDataPreference>() {
+            @Override
+            public UserDataPreference apply(Double aDouble, EpargneResponse epargneResponse) {
+                UserDataPreference userDataPreference = new UserDataPreference();
+                userDataPreference.setTaux(aDouble);
+                userDataPreference.setHasEpargneCompte(epargneResponse.getResultat() != 0);
+                return userDataPreference;
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Double>() {
+                .subscribe(new Consumer<UserDataPreference>() {
                     @Override
-                    public void accept(Double response) {
+                    public void accept(UserDataPreference response) {
                         if(isViewAttached()) {
                             getView().enabledControls(true);
-                            getView().finishToLoadTaux(response);
+                            UserPrefencesManager.setLastSoldeAndRapport(response);
+                            getView().finishToLoadTauxAndEpargne(response);
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
-                        }
-                    }
-                }));
-    }
-
-    public void hasEpargneAccount(String type_transfert, String telephone) {
-        disposableHandler.manageDisposable(maishapayClient.transfert_epargne(type_transfert, telephone, "", "")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<EpargneResponse>() {
-                    @Override
-                    public void accept(EpargneResponse response) {
-                        if(response.getResultat() != 0) {
-                            if(isViewAttached()) {
-                                getView().enabledControls(true);
-                                getView().finishToLoadEpargneStatus();
-                            }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+                        LogCat.e(throwable.toString());
                         if(isViewAttached()) {
                             getView().enabledControls(true);
                             getView().showNetworkError();

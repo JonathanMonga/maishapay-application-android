@@ -132,7 +132,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if(! UserPrefencesManager.getHasCompteEpargne())
+                                if (!UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
                                     startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
                                 else
                                     startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
@@ -195,44 +195,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             }
         });
 
-        if (! NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
-            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
-                taux.setVisibility(View.VISIBLE);
-                progressBarSolde.setVisibility(View.INVISIBLE);
-                progressBarTaux.setVisibility(View.INVISIBLE);
-                TV_Taux.setAmount(Float.valueOf(UserPrefencesManager.getCurrentTaux()));
-
-                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
-
-                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
-
-                List<Fragment> pageList = new ArrayList<>();
-                pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
-                pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
-
-                adapter.setData(pageList);
-
-                pager.setInterval(5000);
-                pager.startAutoScroll();
-                pager.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            } else {
-                taux.setVisibility(View.INVISIBLE);
-                progressBarSolde.setVisibility(View.VISIBLE);
-                progressBarTaux.setVisibility(View.VISIBLE);
-                getPresenter().hasEpargneAccount("p", UserPrefencesManager.getCurrentUser().getTelephone());
-                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-                getPresenter().taux();
-            }
-        } else {
-            taux.setVisibility(View.INVISIBLE);
-            progressBarSolde.setVisibility(View.VISIBLE);
-            progressBarTaux.setVisibility(View.VISIBLE);
-            getPresenter().hasEpargneAccount("p", UserPrefencesManager.getCurrentUser().getTelephone());
-            getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-            getPresenter().taux();
-            UserPrefencesManager.setUserRefresh(false);
-        }
+        taux.setVisibility(View.INVISIBLE);
+        progressBarSolde.setVisibility(View.VISIBLE);
+        progressBarTaux.setVisibility(View.VISIBLE);
+        getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
     }
 
     @OnClick({R.id.paiementCardId})
@@ -282,30 +249,50 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void showNetworkError() {
-        progressBarSolde.setVisibility(View.VISIBLE);
-        progressBarTaux.setVisibility(View.VISIBLE);
+        if (! NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
+            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+                taux.setVisibility(View.VISIBLE);
+                progressBarSolde.setVisibility(View.INVISIBLE);
+                progressBarTaux.setVisibility(View.INVISIBLE);
 
-        Snacky.builder()
-                .setView(getView())
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().hasEpargneAccount("p", UserPrefencesManager.getCurrentUser().getTelephone());
-                        getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-                        getPresenter().taux();
-                    }
-                })
-                .error()
-                .show();
+                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+
+                TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+
+                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+                List<Fragment> pageList = new ArrayList<>();
+                pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
+                pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
+
+                adapter.setData(pageList);
+
+                pager.setInterval(5000);
+                pager.startAutoScroll();
+                pager.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            Snacky.builder()
+                    .setView(getView())
+                    .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
+                    .setDuration(Snacky.LENGTH_INDEFINITE)
+                    .setActionText("Réesseyer")
+                    .setActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            enabledControls(false);
+                            getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+                            getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+                        }
+                    })
+                    .error()
+                    .show();
+        }
     }
 
     @Override
     public void finishToLoadSoldeAndRappot(UserDataPreference response) {
-        UserPrefencesManager.setLastSoldeAndRapport(response);
 
         progressBarSolde.setVisibility(View.INVISIBLE);
         HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
@@ -324,21 +311,10 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
 
     @Override
-    public void finishToLoadTaux(Double response) {
+    public void finishToLoadTauxAndEpargne(UserDataPreference response) {
         progressBarTaux.setVisibility(View.INVISIBLE);
         taux.setVisibility(View.VISIBLE);
-        TV_Taux.setAmount(response.floatValue());
-
-        UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
-        userDataPreference.setTaux(response);
-        UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
-    }
-
-    @Override
-    public void finishToLoadEpargneStatus() {
-        UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
-        userDataPreference.setHasEpargneCompte(true);
-        UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
+        TV_Taux.setAmount(Float.valueOf(String.valueOf(response.getTaux())));
     }
 
     @Override

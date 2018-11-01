@@ -16,10 +16,7 @@ public interface AccueilView extends TiView {
     void finishToLoadSoldeAndRappot(UserDataPreference response);
 
     @CallOnMainThread
-    void finishToLoadTaux(Double response);
-
-    @CallOnMainThread
-    void finishToLoadEpargneStatus();
+    void finishToLoadTauxAndEpargne(UserDataPreference response);
 
     @CallOnMainThread
     void enabledControls(boolean flag);
