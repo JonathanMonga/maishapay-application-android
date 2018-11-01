@@ -132,7 +132,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (!UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+                                if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
                                     startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
                                 else
                                     startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));

@@ -120,7 +120,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
     }
 
     public void tauxAndEpargne(String telephone) {
-        disposableHandler.manageDisposable(maishapayClient.taux_du_jour().zipWith(maishapayClient.transfert_epargne("p", telephone, "", ""), new BiFunction<Double, EpargneResponse, UserDataPreference>() {
+        disposableHandler.manageDisposable(maishapayClient.taux_du_jour().zipWith(maishapayClient.transfert_epargne("p", telephone, "USD", "100"), new BiFunction<Double, EpargneResponse, UserDataPreference>() {
             @Override
             public UserDataPreference apply(Double aDouble, EpargneResponse epargneResponse) {
                 UserDataPreference userDataPreference = new UserDataPreference();
@@ -137,15 +137,6 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                             getView().enabledControls(true);
                             UserPrefencesManager.setLastSoldeAndRapport(response);
                             getView().finishToLoadTauxAndEpargne(response);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        LogCat.e(throwable.toString());
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));
