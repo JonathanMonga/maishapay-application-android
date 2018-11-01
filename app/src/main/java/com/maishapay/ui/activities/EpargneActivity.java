@@ -68,7 +68,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     LinearLayout LL_fitDollards;
     @BindView(R.id.LL_fitFrancs) LinearLayout LL_fitFrancs;
 
-    private ProgressDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
 
     @Override
@@ -90,8 +89,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
-
-        intProgressBar();
 
         francsChart.setMinValue(0f);
         francsChart.setMaxValue(1000000f);
@@ -115,13 +112,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void intProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
     }
 
     @Override
@@ -168,9 +158,13 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
-            progressDialog.dismiss();
+            LL_fitDollards.setVisibility(View.VISIBLE);
+            LL_fitFrancs.setVisibility(View.VISIBLE);
+            progressBarSolde.setVisibility(View.INVISIBLE);
         } else {
-            progressDialog.show();
+            LL_fitDollards.setVisibility(View.INVISIBLE);
+            LL_fitFrancs.setVisibility(View.INVISIBLE);
+            progressBarSolde.setVisibility(View.VISIBLE);
         }
     }
 
