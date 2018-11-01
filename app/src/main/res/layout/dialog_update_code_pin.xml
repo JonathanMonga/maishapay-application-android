@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout style="@style/dialog">
+
+        <TextView
+            android:id="@+id/tv_titulo"
+            style="@style/dialog_titulo"
+            android:text="Modification" />
+
+        <LinearLayout style="@style/dialog_group_text_img_header">
+
+            <TextView
+                android:id="@+id/TV_Msg"
+                style="@style/dialog_text"
+                android:layout_marginTop="10.0dip"
+                android:text="Entrez votre code PIN pour confirmer la modification." />
+
+            <LinearLayout
+                android:id="@+id/LinhaFormEmail"
+                style="@style/form_linha"
+                android:layout_marginTop="10.0dip">
+
+                <LinearLayout
+                    style="@style/form_linha_divisor"
+                    android:layout_marginRight="0.0dip">
+
+                    <EditText
+                        android:id="@+id/ET_CodePin"
+                        style="@style/form_edit_text"
+                        android:background="@color/transparente"
+                        android:hint="@string/email"
+                        android:inputType="textPassword"
+                        android:theme="@style/form_edit_text_theme" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_group_button">
+
+            <Button
+                android:id="@+id/BTN_Nao"
+                style="@style/dialog_button"
+                android:text="@string/btn_cancelar" />
+
+            <Button
+                android:id="@+id/BTN_Sim"
+                style="@style/dialog_button"
+                android:text="@string/btn_enviar" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

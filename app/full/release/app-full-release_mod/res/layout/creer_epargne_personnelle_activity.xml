@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/root" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/appbar" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginLeft="@dimen/activity_horizontal_margin" android:layout_marginRight="@dimen/activity_horizontal_margin" android:layout_weight="1.0">
+        <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="15.0sp" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="20.0dip" android:text="Ouverture d'un compte d'epargne personelle" />
+                <View android:background="@color/ab_despesa" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_margin="5.0dip" />
+                <LinearLayout android:id="@id/LinhaFormMarca" style="@style/form_linha">
+                    <ImageView android:id="@id/IV_LogoMarca" app:srcCompat="@drawable/ic_form_data_hora" style="@style/form_icon_left" />
+                    <LinearLayout android:orientation="vertical" android:id="@id/LinhaFormDivisorMarca" style="@style/form_linha_divisor">
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                            <TextView android:id="@id/ET_Date" android:nextFocusDown="@id/ET_Montant" android:hint="Date de cloture" android:layout_weight="1.0" style="@style/form_edit_text" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:id="@id/LinhaFormCombustivel" android:layout_marginTop="@dimen/form_margem_top" style="@style/form_linha">
+                    <ImageView android:id="@id/IV_TipoVeiculo" app:srcCompat="@drawable/ic_form_despesa" style="@style/form_icon_left" />
+                    <LinearLayout style="@style/form_linha_divisor">
+                        <Spinner android:entries="@array/option_epargne_devise" android:id="@id/SP_TypeEnvoi" android:layout_marginLeft="-8.0dip" android:spinnerMode="dropdown" style="@style/form_spinner" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:id="@id/LinhaFormModelo" style="@style/form_linha">
+                    <ImageView app:srcCompat="@drawable/ic_form_valor" style="@style/form_icon_left" />
+                    <LinearLayout style="@style/form_linha_divisor">
+                        <EditText android:id="@id/ET_CodeSecret" android:hint="Crée un code secret" android:inputType="textPassword" style="@style/form_edit_text" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout style="@style/form_linha">
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <android.support.v7.widget.SwitchCompat android:id="@id/SwitchCompat" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:text="J'accepte les conditions" />
+                    </LinearLayout>
+                </LinearLayout>
+                <Button android:enabled="false" android:id="@id/BTN_Valider" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="Valider" android:textAllCaps="false" style="@style/botao_azul_canto_redondo" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

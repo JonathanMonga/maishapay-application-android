@@ -1,0 +1,161 @@
+{
+  "project_info": {
+    "project_number": "689005299267",
+    "firebase_url": "https://maishapaynotification.firebaseio.com",
+    "project_id": "maishapaynotification",
+    "storage_bucket": "maishapaynotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689005299267:android:a823c447659c3cce",
+        "android_client_info": {
+          "package_name": "com.davidkz.maishapay.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689005299267-tnegikuf2m65b278h67mrc2g7v9uf8sn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.davidkz.maishapay.notification",
+            "certificate_hash": "13d68af1f6e78392f64dc016d26cca7a215dfdd2"
+          }
+        },
+        {
+          "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3sc_gnJ15CjgD4hXK6WSUm8o-rTpANbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689005299267:android:c43d4d4132007a2d",
+        "android_client_info": {
+          "package_name": "com.fastpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3sc_gnJ15CjgD4hXK6WSUm8o-rTpANbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689005299267:android:cc9f985541b6a268",
+        "android_client_info": {
+          "package_name": "com.maishapay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689005299267-f96hp5e47t16i2v22cep9cp1no0hmjtt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maishapay",
+            "certificate_hash": "13d68af1f6e78392f64dc016d26cca7a215dfdd2"
+          }
+        },
+        {
+          "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3sc_gnJ15CjgD4hXK6WSUm8o-rTpANbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689005299267:android:bf9afa3d384081e7",
+        "android_client_info": {
+          "package_name": "com.maishapay.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689005299267-eck6og082atu3u9e7fhkj3eur6u825j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3sc_gnJ15CjgD4hXK6WSUm8o-rTpANbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

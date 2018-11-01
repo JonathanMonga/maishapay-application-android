@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.maishapay">
+
+    <uses-sdk tools:overrideLibrary="
+                                     androidmads.library.qrgenearator,
+                                     com.santalu.widget,
+                                     com.fxn769,
+                                     org.alfonz.utility,
+                                     org.alfonz.media,
+                                     org.alfonz.graphics,
+                                     com.afollestad.materialdialogs"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:name=".app.MaishapayApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/mpay"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+
+        <activity
+            android:name=".ui.intro.IntroActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activities.DrawerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.LoginActivity" android:theme="@style/AppThemeLogin" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.activities.ProfilActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.RegisterMarchantActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.UpdateProfilActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.TransfertCompteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.qrcode.DecoderActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.EpargnePersonnelleActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.EpargneActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.ConversionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.RetraitActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.OuvrirEpargnePersonnelleActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.PaiementActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.TransactionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.SuccessPaiementActivity" android:noHistory="true" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.RegisterNormalActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.TransfertCompteCashActivity" android:screenOrientation="portrait"/>
+
+        <service android:name=".notification.service.MaishapayFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notification.service.MaishapayFirebaseMessaging">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notification.service.MaishapayService" />
+    </application>
+</manifest>

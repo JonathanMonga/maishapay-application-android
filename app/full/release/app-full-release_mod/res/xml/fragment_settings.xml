@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Notifications">
+        <CheckBoxPreference android:title="Notification" android:key="notification" android:summary="Afficher les notifications" android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Mon compte">
+        <Preference android:title="Modifier mon profil" android:key="profil" />
+        <Preference android:title="Changer de code PIN" android:key="code_pin" />
+    </PreferenceCategory>
+</PreferenceScreen>

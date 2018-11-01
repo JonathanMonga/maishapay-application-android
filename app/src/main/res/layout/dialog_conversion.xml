@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout style="@style/dialog">
+
+        <TextView
+            android:id="@+id/tv_titulo"
+            style="@style/dialog_titulo"
+            android:text="Resultat de la conversion" />
+
+        <LinearLayout style="@style/dialog_group_text_img_header">
+
+            <LinearLayout
+                android:id="@+id/LinhaFormEmail"
+                style="@style/form_linha"
+                android:layout_marginTop="10.0dip">
+
+                <LinearLayout
+                    style="@style/form_linha_divisor"
+                    android:layout_marginRight="0.0dip">
+
+                    <org.fabiomsr.moneytextview.MoneyTextView
+                        android:id="@+id/TV_Conversion"
+                        fontPath="fonts/Roboto-Light.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:amount="1630.0"
+                        app:symbol="Fc"
+                        app:baseTextColor="@color/md_deep_orange_500"
+                        app:baseTextSize="30sp"
+                        app:symbolTextSize="20sp"
+                        app:decimalSeparator=","
+                        app:symbolGravity="bottom"
+                        android:textColor="@color/green_dark"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_group_button">
+
+            <Button
+                android:id="@+id/BTN_Nao"
+                style="@style/dialog_button"
+                android:text="@string/btn_cancelar"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/BTN_Sim"
+                style="@style/dialog_button"
+                android:text="Retour" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

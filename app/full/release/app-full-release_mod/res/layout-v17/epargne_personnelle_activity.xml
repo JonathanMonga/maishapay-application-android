@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/root" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/appbar" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginLeft="@dimen/activity_horizontal_margin" android:layout_marginRight="@dimen/activity_horizontal_margin" android:layout_weight="1.0">
+        <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="15.0sp" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="20.0dip" android:text="Transfert votre argent de votre compte courant sur votre epargne sans frais supplaimentaire" android:textAlignment="center" />
+                <View android:background="@color/ab_despesa" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_margin="5.0dip" />
+                <LinearLayout android:id="@id/LinhaFormMarca" android:visibility="gone" style="@style/form_linha">
+                    <ImageView android:id="@id/IV_LogoMarca" app:srcCompat="@drawable/ic_form_nome" style="@style/form_icon_left" />
+                    <LinearLayout android:orientation="vertical" android:id="@id/LinhaFormDivisorMarca" style="@style/form_linha_divisor">
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                            <EditText android:id="@id/ET_Destinataire" android:nextFocusDown="@id/ET_Montant" android:hint="Téléphone du destinataire" android:layout_weight="1.0" android:inputType="phone" style="@style/form_edit_text" />
+                            <ImageButton android:id="@id/qrcode" android:visibility="invisible" android:src="@drawable/qrcode" android:scaleType="centerInside" style="@style/form_botao_novo" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:id="@id/LinhaFormCombustivel" android:layout_marginTop="@dimen/form_margem_top" style="@style/form_linha">
+                    <ImageView android:id="@id/IV_TipoVeiculo" app:srcCompat="@drawable/ic_form_despesa" style="@style/form_icon_left" />
+                    <LinearLayout style="@style/form_linha_divisor">
+                        <Spinner android:entries="@array/option_devise" android:id="@id/SP_TypeEnvoi" android:layout_marginLeft="-8.0dip" android:spinnerMode="dropdown" style="@style/form_spinner" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:id="@id/LinhaFormModelo" style="@style/form_linha">
+                    <ImageView app:srcCompat="@drawable/ic_form_valor" style="@style/form_icon_left" />
+                    <LinearLayout style="@style/form_linha_divisor">
+                        <org.fabiomsr.moneytextview.MoneyTextView android:textColor="@color/green_dark" android:id="@id/ET_Montant" android:clickable="true" android:layout_marginTop="10.0dip" app:amount="0.0" app:baseTextColor="@color/texto" app:baseTextSize="14.0sp" app:decimalSeparator="," app:gravity="left" app:symbol="Fc" app:symbolGravity="bottom" app:symbolTextSize="14.0sp" style="@style/form_edit_text" />
+                    </LinearLayout>
+                </LinearLayout>
+                <Button android:id="@id/BTN_Tranfert" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="Transferer" android:textAllCaps="false" style="@style/botao_azul_canto_redondo" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

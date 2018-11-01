@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout style="@style/dialog">
+
+        <TextView
+            android:id="@+id/tv_titulo"
+            style="@style/dialog_titulo"
+            android:text="Confirmation" />
+
+        <LinearLayout style="@style/dialog_group_text_img_header">
+
+            <TextView
+                android:id="@+id/TV_Msg"
+                style="@style/dialog_text"
+                android:textSize="16sp"
+                android:layout_marginTop="10.0dip"
+                android:text="Vous allez transferer %s vers compte epargne, confirmez-vous ce transfert?" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_group_button">
+
+            <Button
+                android:id="@+id/BTN_Nao"
+                style="@style/dialog_button"
+                android:text="@string/btn_cancelar" />
+
+            <Button
+                android:id="@+id/BTN_Sim"
+                style="@style/dialog_button"
+                android:text="Transférer" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

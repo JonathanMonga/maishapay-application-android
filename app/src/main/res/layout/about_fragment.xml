@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10.0dip"
+                android:paddingTop="10.0dip">
+
+                <ImageView
+                    android:layout_width="120.0dip"
+                    android:layout_height="120.0dip"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/mpay" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Maishapay"
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:id="@+id/LL_Avaliar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.0dip"
+                    android:background="@drawable/botao_branco"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10.0dip"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/avalie_estrelas"
+                        android:textColor="@color/botao_social"
+                        android:textSize="18.0sp"
+                        fontpath="Roboto-Regular.ttf" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5.0dip"
+                        android:gravity="center">
+
+                        <ImageView style="@style/estrela_avaliacao" />
+
+                        <ImageView style="@style/estrela_avaliacao" />
+
+                        <ImageView style="@style/estrela_avaliacao" />
+
+                        <ImageView style="@style/estrela_avaliacao" />
+
+                        <ImageView style="@style/estrela_avaliacao" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20.0dip"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/siganos"
+                    android:textColor="@color/botao_social"
+                    android:textSize="18.0sp"
+                    fontpath="Roboto-Regular.ttf" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15.0dip"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/IB_Facebook"
+                        style="@style/botao_social"
+                        android:layout_marginRight="10.0dip"
+                        app:srcCompat="@drawable/ic_facebook" />
+
+                    <ImageButton
+                        android:id="@+id/IB_Twitter"
+                        style="@style/botao_social"
+                        android:layout_marginLeft="10.0dip"
+                        app:srcCompat="@drawable/ic_twitter" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TV_Versao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25.0dip"
+                    android:textAlignment="center"
+                    android:text="@string/about_text"
+                    android:textColor="@color/botao_social"
+                    android:textSize="16sp"
+                    android:padding="5dp"
+                    fontpath="Roboto-Regular.ttf"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL_Site"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botao_site"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="45.0dip"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="www.maishapay.online"
+                    android:textColor="#ffffffff"
+                    android:textSize="16.0sp"
+                    fontpath="Roboto-Medium.ttf" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

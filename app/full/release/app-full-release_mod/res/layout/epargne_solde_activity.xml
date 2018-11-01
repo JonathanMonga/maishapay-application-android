@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/root" android:background="#fffcfcfc" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/appbar" />
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <android.support.v7.widget.CardView android:id="@id/card" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/cardMarginHorizontal" android:layout_marginTop="@dimen/cardMarginVertical" android:layout_marginRight="@dimen/cardMarginHorizontal" android:layout_marginBottom="@dimen/cardMarginVertical" app:cardBackgroundColor="@color/branco" app:cardCornerRadius="3.0dip" app:cardElevation="5.0dip">
+                <RelativeLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <ProgressBar android:id="@id/progressBarSolde" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:indeterminate="true" android:layout_centerInParent="true" />
+                    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/LL_fitFrancs" android:layout_width="160.0dip" android:layout_height="190.0dip" android:columnCount="2" android:alignmentMode="alignMargins">
+                        <FrameLayout android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <com.txusballesteros.widgets.FitChart android:layout_gravity="center" android:id="@id/fitFrancs" android:layout_width="120.0dip" android:layout_height="120.0dip" app:animationMode="overdraw" app:strokeSize="10.0dip" />
+                            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff212121" android:layout_gravity="center" android:id="@id/TV_Francs" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="200.0dip" android:text="60 000 FC" />
+                        </FrameLayout>
+                        <TextView android:textSize="16.0sp" android:textColor="#ff757575" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:maxWidth="200.0dip" android:text="Epargne francs" />
+                    </LinearLayout>
+                    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/LL_fitDollards" android:layout_width="160.0dip" android:layout_height="190.0dip" android:layout_alignParentRight="true">
+                        <FrameLayout android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <com.txusballesteros.widgets.FitChart android:layout_gravity="center" android:id="@id/fitDollards" android:layout_width="120.0dip" android:layout_height="120.0dip" app:animationMode="overdraw" app:strokeSize="10.0dip" />
+                            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff212121" android:layout_gravity="center" android:id="@id/TV_Dollars" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="200.0dip" android:text="100 $" />
+                        </FrameLayout>
+                        <TextView android:textSize="16.0sp" android:textColor="#ff757575" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:maxWidth="200.0dip" android:text="Epargne dollars" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <include layout="@layout/card_epargne_personelle" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

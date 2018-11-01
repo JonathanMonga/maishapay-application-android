@@ -1,0 +1,382 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="FullscreenTheme" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus"/>
+
+    <style name="OnBoarding2" />
+
+    <style name="OnBoarding2.Image" parent="@style/OnBoarding2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0.0dip</item>
+        <item name="android:layout_marginTop">@dimen/spacing_huge</item>
+        <item name="android:layout_marginBottom">32.0dip</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:maxWidth">260.0dip</item>
+        <item name="android:maxHeight">260.0dip</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <style name="OnBoarding2.Text" parent="@style/OnBoarding2">
+        <item name="android:textColor">@color/black_87</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@string/font_sans_serif_normal</item>
+    </style>
+    <style name="OnBoarding2.TitleText" parent="@style/OnBoarding2.Text">
+        <item name="android:textSize">24.0sp</item>
+        <item name="android:fontFamily">@string/font_sans_serif_medium</item>
+    </style>
+
+    <style name="OnBoarding2.ContentText" parent="@style/OnBoarding2.Text">
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textColor">@color/black_54</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+    </style>
+
+    <style name="OnBoarding2.Layout" parent="@style/OnBoarding2">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/spacing_large</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_large</item>
+        <item name="android:paddingBottom">@dimen/spacing_small</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
+    <style name="AnimationTansition">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/branco</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
+        <item name="actionModeBackground">@color/md_orange_500</item>
+        <item name="actionModeSplitBackground">@color/md_orange_500</item>
+        <item name="colorAccent">@color/texto_action_bar</item>
+        <item name="colorControlHighlight">@color/item_selected</item>
+        <item name="colorPrimary">@color/md_orange_500</item>
+        <item name="colorPrimaryDark">@color/md_orange_600</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="AppThemeLogin" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorAccent">@color/branco</item>
+        <item name="colorPrimary">@color/ab_despesa</item>
+        <item name="colorPrimaryDark">@color/ab_despesa_status_bar</item>
+        <item name="windowActionBar">false</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="AppThemeIntro" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorAccent">@color/branco</item>
+        <item name="colorPrimary">@color/ab_despesa</item>
+        <item name="colorPrimaryDark">@color/ab_despesa_status_bar</item>
+        <item name="windowActionBar">false</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <declare-styleable name="MaterialSection">
+        <attr name="sectionColorIcon" format="color" />
+        <attr name="sectionColorText" format="color" />
+        <attr name="sectionColorNotification" format="color" />
+        <attr name="sectionBackgroundColorPressed" format="color" />
+        <attr name="sectionBackgroundColorSelected" format="color" />
+        <attr name="sectionBackgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialNavigationDrawer">
+        <attr name="rippleBackport" format="boolean" /><!-- supporto del ripple nelle versioni precedenti di android -->
+        <attr name="drawerType" format="integer" /><!-- Tipologia del drawer -->
+        <attr name="uniqueToolbarColor" format="boolean" /><!-- La toolbar non cambia mai di colore -->
+        <attr name="singleAccount" format="boolean" /><!-- utente singolo (senza pulsante di cambio) -->
+        <attr name="multipaneSupport" format="boolean" />
+        <attr name="drawerColor" format="color" /><!-- Colore del drawer -->
+        <attr name="sectionStyle" format="reference" />
+        <attr name="subheaderStyle" format="reference"/>
+        <attr name="accountStyle" format="reference" />
+        <attr name="learningPattern" format="boolean" /><!-- true -> attivo, false -> disattivato -->
+        <attr name="defaultSectionLoaded" format="integer" /><!-- la prima section ad essere caricata -->
+        <attr name="toolbarElevation" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialSubheader">
+        <attr name="subheaderTitleColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="MaterialAccount">
+        <attr name="titleColor" format="color" />
+        <attr name="subtitleColor" format="color" />
+    </declare-styleable>
+
+    <style name="CustomToolBarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/branco</item>
+        <item name="android:textColorSecondary">@color/branco</item>
+    </style>
+
+    <style name="botao_azul">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/botao_verde</item>
+        <item name="android:background">@drawable/botao_azul</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="flat_button" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/black_38</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:layout_marginLeft">4.0dip</item>
+        <item name="android:layout_marginRight">4.0dip</item>
+        <item name="android:minWidth">64.0dip</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="botao_branco_canto_redondo" parent="@style/botao_azul">
+        <item name="android:background">@drawable/botao_branco_canto_redondo</item>
+    </style>
+
+    <style name="form_linha">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:minHeight">@dimen/form_linha_height</item>
+    </style>
+
+    <style name="form_icon_left">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingLeft">16.0dip</item>
+        <item name="android:paddingRight">32.0dip</item>
+        <item name="android:layout_width">@dimen/form_icon_width</item>
+        <item name="android:layout_height">@dimen/form_linha_height</item>
+    </style>
+
+    <style name="form_linha_divisor">
+        <item name="android:gravity">bottom</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/form_linha</item>
+        <item name="android:paddingBottom">1.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginRight">10.0dip</item>
+        <item name="android:layout_marginBottom">4.0dip</item>
+    </style>
+
+    <style name="form_edit_text">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:textColorHint">@color/texto_hint</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:background">@color/branco</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginBottom">8.0dip</item>
+        <item name="android:minHeight">@dimen/form_field_height</item>
+    </style>
+
+    <style name="form_linha_obs" parent="@style/form_linha">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="form_icon_left_top" parent="@style/form_icon_left">
+        <item name="android:layout_gravity">top</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">15.0dip</item>
+    </style>
+
+    <style name="form_icon_left_obs" parent="@style/form_icon_left_top">
+        <item name="srcCompat">@drawable/ic_form_observacao</item>
+    </style>
+
+
+    <style name="form_linha_divisor_obs" parent="@style/form_linha_divisor">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">15.0dip</item>
+        <item name="android:paddingBottom">15.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/padding</item>
+    </style>
+
+    <style name="form_edit_text_multiline" parent="@style/form_edit_text">
+        <item name="android:gravity">top</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:lines">5</item>
+        <item name="android:inputType">textCapSentences|textMultiLine</item>
+    </style>
+
+    <style name="form_spinner">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/form_field_height</item>
+        <item name="android:layout_marginBottom">2.0dip</item>
+    </style>
+
+    <style name="botao_azul_canto_redondo" parent="@style/botao_azul">
+        <item name="android:background">@drawable/botao_azul_canto_redondo</item>
+    </style>
+
+    <style name="dialog">
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/branco</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_titulo">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textColor">@color/ab_default</item>
+        <item name="android:paddingLeft">24.0dip</item>
+        <item name="android:paddingTop">24.0dip</item>
+        <item name="android:paddingRight">24.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_group_text">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">24.0dip</item>
+        <item name="android:paddingTop">24.0dip</item>
+        <item name="android:paddingRight">24.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_group_text_img_header" parent="@style/dialog_group_text">
+        <item name="android:paddingTop">14.0dip</item>
+    </style>
+
+    <style name="text">
+        <item name="android:textColor">@color/texto</item>
+    </style>
+
+    <style name="dialog_text" parent="@style/text">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="dialog_text_center" parent="@style/dialog_text">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="form_edit_text_theme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/texto_action_bar</item>
+        <item name="colorControlNormal">@color/texto_action_bar</item>
+    </style>
+
+    <style name="dialog_group_button" parent="@style/Theme.AppCompat.Light">
+        <item name="android:gravity">end|center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">8.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5.0dip</item>
+    </style>
+
+    <style name="dialog_button" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/dialog_button</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36.0dip</item>
+        <item name="android:layout_marginLeft">8.0dip</item>
+        <item name="android:minWidth">64.0dip</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <style name="estrela_avaliacao">
+        <item name="android:layout_width">25.0dip</item>
+        <item name="android:layout_height">25.0dip</item>
+        <item name="android:layout_marginLeft">2.0dip</item>
+        <item name="android:layout_marginRight">2.0dip</item>
+        <item name="srcCompat">@drawable/ic_estrela</item>
+    </style>
+
+    <style name="botao_social">
+        <item name="android:background">@drawable/botao_social</item>
+        <item name="android:padding">10.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="form_linha_divisor_sem_icon" parent="@style/form_linha_divisor">
+        <item name="android:layout_marginLeft">@dimen/form_icon_width</item>
+    </style>
+
+    <style name="form_botao_novo">
+        <item name="android:background">@drawable/botao_branco_redondo</item>
+        <item name="android:padding">5.0dip</item>
+        <item name="android:layout_width">@dimen/form_field_height</item>
+        <item name="android:layout_height">@dimen/form_field_height</item>
+        <item name="android:layout_marginLeft">5.0dip</item>
+        <item name="android:layout_marginBottom">5.0dip</item>
+        <item name="srcCompat">@drawable/ic_novo_circulo</item>
+    </style>
+
+    <style name="text_label">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">@color/texto_cinza</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="fontPath">Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="form_label" parent="@style/text_label">
+        <item name="android:layout_weight">0.0</item>
+    </style>
+
+    <style name="form_label_valor" parent="@style/form_label">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:layout_marginTop">5.0dip</item>
+        <item name="android:layout_marginBottom">5.0dip</item>
+    </style>
+
+    <style name="form_edit_text_valor" parent="@style/form_edit_text">
+        <item name="android:maxLength">20</item>
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
+    <style name="AppTheme.FormAzul" parent="@style/AppTheme">
+        <item name="colorAccent">@color/ab_default</item>
+    </style>
+
+    <style name="form_switch">
+        <item name="android:theme">@style/AppTheme.FormAzul</item>
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">8.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+</resources>

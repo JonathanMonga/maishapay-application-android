@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout style="@style/dialog">
+        <TextView android:id="@id/tv_titulo" android:text="Resultat de la conversion" style="@style/dialog_titulo" />
+        <LinearLayout style="@style/dialog_group_text_img_header">
+            <LinearLayout android:id="@id/LinhaFormEmail" android:layout_marginTop="10.0dip" style="@style/form_linha">
+                <LinearLayout android:layout_marginRight="0.0dip" style="@style/form_linha_divisor">
+                    <org.fabiomsr.moneytextview.MoneyTextView android:textColor="@color/green_dark" android:id="@id/TV_Conversion" android:layout_width="fill_parent" android:layout_height="wrap_content" app:amount="1630.0" app:baseTextColor="@color/md_deep_orange_500" app:baseTextSize="30.0sp" app:decimalSeparator="," app:symbol="Fc" app:symbolGravity="bottom" app:symbolTextSize="20.0sp" fontPath="fonts/Roboto-Light.ttf" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout style="@style/dialog_group_button">
+            <Button android:id="@id/BTN_Nao" android:visibility="gone" android:text="@string/btn_cancelar" style="@style/dialog_button" />
+            <Button android:id="@id/BTN_Sim" android:text="Retour" style="@style/dialog_button" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

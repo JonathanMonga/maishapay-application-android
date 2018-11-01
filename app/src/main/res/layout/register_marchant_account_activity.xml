@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LL_Register"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_weight="1.0">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormNome"
+                    style="@style/form_linha"
+                    android:layout_marginTop="@dimen/form_margem_top">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_nome" />
+
+                    <LinearLayout
+                        style="@style/form_linha_divisor"
+                        android:layout_weight="1.0">
+
+                        <EditText
+                            android:id="@+id/ET_Nome"
+                            style="@style/form_edit_text"
+                            android:hint="@string/primeiro_nome"
+                            android:inputType="textCapWords"
+                            android:nextFocusDown="@+id/ET_Sobrenome" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/form_linha_divisor"
+                        android:layout_weight="1.0">
+
+                        <EditText
+                            android:id="@+id/ET_Sobrenome"
+                            style="@style/form_edit_text"
+                            android:hint="@string/segundo_nome"
+                            android:inputType="textCapWords"
+                            android:nextFocusDown="@+id/ET_Phone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormSexo"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"/>
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <Spinner
+                            android:id="@+id/SP_Sexo"
+                            android:entries="@array/option_compte"
+                            android:spinnerMode="dropdown"
+                            android:layout_marginLeft="-8dp"
+                            style="@style/form_spinner" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormPhone"
+                    style="@style/form_linha">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ET_CodePicker"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        app:ccp_defaultNameCode="cd"
+                        app:ccp_autoDetectLanguage="true"
+                        app:ccp_showFlag="false"
+                        app:ccp_showArrow="false"
+                        app:ccp_countryAutoDetectionPref="LOCALE_SIM"
+                        app:ccp_rememberLastSelection="true"
+                        app:ccp_showNameCode="false"
+                        app:ccp_areaCodeDetectedCountry="true"
+                        app:ccpDialog_textColor="@color/black_38"
+                        app:ccp_contentColor="@color/black_38"/>
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.santalu.widget.MaskEditText
+                                android:id="@+id/ET_Phone"
+                                style="@style/form_edit_text"
+                                android:hint="@string/telephone"
+                                android:textColor="@color/texto"
+                                android:inputType="phone"
+                                android:textSize="14sp"
+                                android:nextFocusDown="@+id/ET_Email"
+                                app:met_mask="## #### ###"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormEmail"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_email" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <EditText
+                            android:id="@+id/ET_Email"
+                            style="@style/form_edit_text"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusDown="@+id/ET_Adressse" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormAdressse"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_place" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <EditText
+                            android:id="@+id/ET_Adressse"
+                            style="@style/form_edit_text"
+                            android:hint="@string/adresse"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusDown="@+id/ET_Ville" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormAVille"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_form_email" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <EditText
+                            android:id="@+id/ET_Ville"
+                            style="@style/form_edit_text"
+                            android:hint="@string/ville"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusDown="@+id/ET_Senha" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormSenha"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_cadeado" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <EditText
+                            android:id="@+id/ET_Senha"
+                            style="@style/form_edit_text"
+                            android:hint="@string/senha"
+                            android:maxLength="5"
+                            android:inputType="numberPassword"
+                            android:nextFocusDown="@+id/ET_RepetirSenha" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinhaFormRepetirSenha"
+                    style="@style/form_linha">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_cadeado" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <EditText
+                            android:maxLength="5"
+                            android:inputType="numberPassword"
+                            android:id="@+id/ET_RepetirSenha"
+                            style="@style/form_edit_text"
+                            android:hint="@string/senha_repetir" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/BTN_CriarConta"
+                    style="@style/botao_azul_canto_redondo"
+                    android:layout_marginBottom="20.0dip"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_marginRight="10.0dip"
+                    android:layout_marginTop="20.0dip"
+                    android:text="@string/criar_conta" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

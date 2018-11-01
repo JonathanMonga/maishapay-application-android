@@ -1,0 +1,51 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="fullscreen_status_bar_height">0dp</dimen>
+
+    <dimen name="font_normal">15.0sp</dimen>
+    <dimen name="spacing_biggest">50.0dip</dimen>
+    <dimen name="spacing_huge">48.0dip</dimen>
+    <dimen name="spacing_large">24.0dip</dimen>
+    <dimen name="spacing_larger">32.0dip</dimen>
+    <dimen name="spacing_largest">40.0dip</dimen>
+    <dimen name="spacing_normal">16.0dip</dimen>
+    <dimen name="spacing_normal_minus">14.0dip</dimen>
+    <dimen name="spacing_small">8.0dip</dimen>
+    <dimen name="spacing_small_plus">12.0dip</dimen>
+    <dimen name="spacing_tiny">4.0dip</dimen>
+
+    <dimen name="statusMargin">0dp</dimen>
+    <dimen name="userSpace">164dp</dimen>
+    <dimen name="photoMarginTop">16dp</dimen>
+    <dimen name="toolbar_espaco_titulo">72.0dip</dimen>
+    <dimen name="drawerWidth">-1dp</dimen>
+    <dimen name="canto_redondo">2.0dip</dimen>
+    <dimen name="form_linha_height">55.0dip</dimen>
+    <dimen name="form_margem_top">10.0dip</dimen>
+    <dimen name="form_icon_width">72.0dip</dimen>
+    <dimen name="form_field_height">35.0dip</dimen>
+    <dimen name="padding">10.0dip</dimen>
+
+    <dimen name="chart_size">250dp</dimen>
+    <dimen name="stroke_size">18dp</dimen>
+
+    <dimen name="cardMarginHorizontal">10dp</dimen>
+    <dimen name="cardMarginVertical">8dp</dimen>
+
+    <dimen name="toolbar_elevation">5dp</dimen>
+    <dimen name="fab_elevation">10dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+
+    <dimen name="item_view_min_height">72.0dip</dimen>
+    <dimen name="record_list_category_icon_size">40.0dip</dimen>
+    <dimen name="font_normal_plus">16.0sp</dimen>
+    <dimen name="font_normal_minus">14.0sp</dimen>
+    <dimen name="font_smaller">10.0sp</dimen>
+    <dimen name="font_small">12.0sp</dimen>
+</resources>

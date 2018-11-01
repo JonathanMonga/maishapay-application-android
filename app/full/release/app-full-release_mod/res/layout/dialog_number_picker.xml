@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:numpad="http://schemas.android.com/apk/res-auto">
+    <LinearLayout style="@style/dialog">
+        <TextView android:id="@id/tv_titulo" android:text="Saisisez le montant" style="@style/dialog_titulo" />
+        <LinearLayout style="@style/dialog_group_text_img_header">
+            <LinearLayout android:id="@id/LinhaFormEmail" android:layout_marginTop="10.0dip" style="@style/form_linha">
+                <LinearLayout android:layout_marginRight="0.0dip" style="@style/form_linha_divisor">
+                    <LinearLayout android:orientation="vertical" android:layout_width="300.0dip" android:layout_height="fill_parent">
+                        <LinearLayout android:orientation="horizontal" android:layout_width="240.0dip" android:layout_height="wrap_content">
+                            <TextView android:textSize="20.0sp" android:textColor="@color/md_deep_orange_500" android:id="@id/ET_Device" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="Fc" />
+                            <TextView android:textSize="30.0sp" android:textColor="@color/texto" android:gravity="right" android:id="@id/ET_Montant" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="0" />
+                        </LinearLayout>
+                        <com.fxn769.Numpad android:id="@id/num" android:layout_width="240.0dip" android:layout_height="250.0dip" numpad:numpad_background_resource="@drawable/background_num_pad" numpad:numpad_grid_background_color="@color/md_deep_orange_500" numpad:numpad_grid_line_thickness="1.0dip" numpad:numpad_grid_visible="false" numpad:numpad_image_resource="@drawable/ic_backspace" numpad:numpad_text_color="@color/texto" numpad:numpad_text_limit="10" numpad:numpad_text_size="18.0dip" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout style="@style/dialog_group_button">
+            <Button android:id="@id/BTN_Nao" android:visibility="gone" android:text="@string/btn_cancelar" style="@style/dialog_button" />
+            <Button android:id="@id/BTN_Sim" android:text="Valider" style="@style/dialog_button" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

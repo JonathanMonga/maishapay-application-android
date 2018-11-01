@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:id="@+id/root">
+
+    <include layout="@layout/appbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/cardMarginVertical"
+                android:layout_marginLeft="@dimen/cardMarginHorizontal"
+                android:layout_marginRight="@dimen/cardMarginHorizontal"
+                android:layout_marginTop="@dimen/cardMarginVertical"
+                app:cardBackgroundColor="@color/branco"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarSolde"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible" />
+
+                    <LinearLayout
+                        android:id="@+id/LL_fitFrancs"
+                        android:layout_width="160dp"
+                        android:layout_height="190dp"
+                        android:alignmentMode="alignMargins"
+                        android:columnCount="2"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp">
+
+                            <com.txusballesteros.widgets.FitChart
+                                android:id="@+id/fitFrancs"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="center"
+                                app:animationMode="overdraw"
+                                app:strokeSize="10dp" />
+
+                            <TextView
+                                android:id="@+id/TV_Francs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:maxWidth="200dp"
+                                android:text="60 000 FC"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:maxWidth="200dp"
+                            android:text="Epargne francs"
+                            android:textColor="#757575"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LL_fitDollards"
+                        android:layout_width="160dp"
+                        android:layout_height="190dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp">
+
+                            <com.txusballesteros.widgets.FitChart
+                                android:id="@+id/fitDollards"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="center"
+                                app:animationMode="overdraw"
+                                app:strokeSize="10dp" />
+
+                            <TextView
+                                android:id="@+id/TV_Dollars"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:maxWidth="200dp"
+                                android:text="100 $"
+                                android:textColor="#212121"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:maxWidth="200dp"
+                            android:text="Epargne dollars"
+                            android:textColor="#757575"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <include layout="@layout/card_epargne_personelle" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

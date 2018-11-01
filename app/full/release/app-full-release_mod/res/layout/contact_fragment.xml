@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:id="@id/LinhaFormMensagem" style="@style/form_linha">
+                <ImageView app:srcCompat="@drawable/ic_form_contato" style="@style/form_icon_left" />
+                <LinearLayout style="@style/form_linha_divisor">
+                    <EditText android:id="@id/ET_Assunto" android:nextFocusDown="@id/ET_Mensagem" android:hint="@string/assunto" android:inputType="textCapSentences" style="@style/form_edit_text" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@id/LinhaFormObservacao" style="@style/form_linha_obs">
+                <ImageView style="@style/form_icon_left_obs" />
+                <LinearLayout style="@style/form_linha_divisor_obs">
+                    <EditText android:id="@id/ET_Mensagem" android:hint="@string/mensagem" style="@style/form_edit_text_multiline" />
+                </LinearLayout>
+            </LinearLayout>
+            <Button android:id="@id/BTN_Envoyer" android:layout_marginLeft="10.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="20.0dip" android:text="Envoyer" style="@style/botao_azul_canto_redondo" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

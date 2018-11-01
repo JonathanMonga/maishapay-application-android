@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="5dp"
+        android:layout_marginBottom="@dimen/cardMarginVertical"
+        android:layout_marginLeft="@dimen/cardMarginHorizontal"
+        android:layout_marginRight="@dimen/cardMarginHorizontal"
+        android:layout_marginTop="@dimen/cardMarginVertical"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:id="@+id/LinhaFormEmail"
+            style="@style/form_linha">
+
+            <ImageView
+                style="@style/form_icon_left"
+                app:srcCompat="@drawable/ic_form_phone" />
+
+                <TextView
+                    android:id="@+id/ET_Email"
+                    android:text="Solde Mpesa : 10000 Fc"
+                    android:textSize="16sp"
+                    style="@style/form_edit_text" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

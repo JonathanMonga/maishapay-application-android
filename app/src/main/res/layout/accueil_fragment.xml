@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:id="@+id/root">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="380dp">
+
+                <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarSolde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+            <com.rd.PageIndicatorView
+                android:id="@+id/pageIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:piv_padding="10dp"
+                app:piv_radius="5dp"
+                app:piv_selectedColor="@color/ab_default"
+                app:piv_unselectedColor="@color/texto"
+                app:piv_viewPager="@id/viewPager" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBarTaux"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:id="@+id/taux"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        fontPath="fonts/Roboto-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Taux d'echange"
+                        android:textColor="@color/green_dark"
+                        android:textSize="16sp" />
+
+                    <org.fabiomsr.moneytextview.MoneyTextView
+                        android:id="@+id/TV_Taux"
+                        fontPath="fonts/Roboto-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30sp"
+                        app:amount="1630.0"
+                        app:symbol="Fc"
+                        app:baseTextColor="@color/md_deep_orange_500"
+                        app:baseTextSize="30sp"
+                        app:symbolTextSize="20sp"
+                        app:decimalSeparator=","
+                        app:symbolGravity="bottom"
+                        android:textColor="@color/green_dark" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <include
+                android:visibility="gone"
+                layout="@layout/card_solde_mpesa" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/card_solde_visa" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bankcardId"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginBottom="@dimen/cardMarginVertical"
+                    android:layout_marginLeft="@dimen/cardMarginHorizontal"
+                    android:layout_marginRight="@dimen/cardMarginHorizontal"
+                    android:layout_marginTop="@dimen/cardMarginVertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/historico_lembrete_item"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/cerclebackgroundpurple"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/transfer" />
+
+                        <TextView
+                            fontPath="fonts/Roboto-Medium.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Transfert d'argent"
+                            android:textColor="@color/ab_despesa"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/ab_despesa" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Transferer de l'agent ou que vous soyez."
+                            android:textColor="@android:color/darker_gray" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/epargneCardId"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginBottom="@dimen/cardMarginVertical"
+                    android:layout_marginLeft="@dimen/cardMarginHorizontal"
+                    android:layout_marginRight="@dimen/cardMarginHorizontal"
+                    android:layout_marginTop="@dimen/cardMarginVertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardBackgroundColor="@color/branco"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/historico_lembrete_item"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/cerclebackgroundpurple"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/epargne" />
+
+                        <TextView
+                            fontPath="fonts/Roboto-Medium.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Epargne"
+                            android:textColor="@color/ab_despesa"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/ab_despesa" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Epargner pour vous ou pour un proche."
+                            android:textColor="@android:color/darker_gray" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/transactionCardId"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginBottom="@dimen/cardMarginVertical"
+                    android:layout_marginLeft="@dimen/cardMarginHorizontal"
+                    android:layout_marginRight="@dimen/cardMarginHorizontal"
+                    android:layout_marginTop="@dimen/cardMarginVertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/historico_lembrete_item"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/cerclebackgroundpurple"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/transaction"/>
+
+                        <TextView
+                            fontPath="fonts/Roboto-Medium.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Transactions"
+                            android:textColor="@color/ab_despesa"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/ab_despesa" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Transferer de l'agent ou que vous soyez."
+                            android:textColor="@android:color/darker_gray" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/paiementCardId"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginBottom="@dimen/cardMarginVertical"
+                    android:layout_marginLeft="@dimen/cardMarginHorizontal"
+                    android:layout_marginRight="@dimen/cardMarginHorizontal"
+                    android:layout_marginTop="@dimen/cardMarginVertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardBackgroundColor="@color/branco"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/historico_lembrete_item"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/cerclebackgroundpurple"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/pay" />
+
+                        <TextView
+                            fontPath="fonts/Roboto-Medium.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Paiement"
+                            android:textColor="@color/ab_despesa"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/ab_despesa" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Payer toutes vos factures avec Maishapay."
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/bmb"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bmb_buttonEnum="ham"
+        app:bmb_piecePlaceEnum="piecePlace_ham_4"
+        app:bmb_buttonPlaceEnum="buttonPlace_ham_4" />
+</RelativeLayout>
