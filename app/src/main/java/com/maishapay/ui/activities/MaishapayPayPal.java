@@ -151,7 +151,7 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
 
     @Override
     public void numPadPositiveClicked(String number) {
-        edtAmount.setText(String.format("USD %s", number));
+        edtAmount.setText(String.format("%s USD", number));
         amount = number;
         attemptPayment();
     }

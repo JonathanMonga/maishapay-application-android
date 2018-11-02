@@ -107,9 +107,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         maskText = code + phone;
 
         enabledControls(false);
-        //getPresenter().login(maskText, codePinEditText.getText().toString().trim());
+        getPresenter().login(maskText, codePinEditText.getText().toString().trim());
 
-        getPresenter().login("0996980422", "jmonga98");
+        //getPresenter().login("0996980422", "jmonga98");
 
         textInputTelephone.setError(null);
         textInputTelephone.setErrorEnabled(false);
@@ -249,8 +249,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                     @Override
                     public void onClick(View view) {
                         enabledControls(false);
-                        //getPresenter().login(maskText, codePinEditText.getText().toString());
-                        getPresenter().login("0996980422", "jmonga98");
+                        getPresenter().login(maskText, codePinEditText.getText().toString());
+                        //getPresenter().login("0996980422", "jmonga98");
 
                     }
                 })

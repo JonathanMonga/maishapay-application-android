@@ -133,9 +133,9 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                             @Override
                             public void run() {
                                 if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
-                                    startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
-                                else
                                     startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+                                else
+                                    startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
                             }
                         }, 430);
                         break;
@@ -195,11 +195,15 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             }
         });
 
-        taux.setVisibility(View.INVISIBLE);
-        progressBarSolde.setVisibility(View.VISIBLE);
-        progressBarTaux.setVisibility(View.VISIBLE);
-        getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-        getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+        if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
+            taux.setVisibility(View.INVISIBLE);
+            progressBarSolde.setVisibility(View.VISIBLE);
+            progressBarTaux.setVisibility(View.VISIBLE);
+            getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+            getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else {
+            showNetworkError();
+        }
     }
 
     @OnClick({R.id.paiementCardId})
@@ -210,7 +214,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.epargneCardId})
     public void epargneClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+        else
+            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
+
     }
 
     @OnClick({R.id.transactionCardId})
@@ -249,29 +257,27 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void showNetworkError() {
-        if (! NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
-            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
-                taux.setVisibility(View.VISIBLE);
-                progressBarSolde.setVisibility(View.INVISIBLE);
-                progressBarTaux.setVisibility(View.INVISIBLE);
+        if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+            taux.setVisibility(View.VISIBLE);
+            progressBarSolde.setVisibility(View.INVISIBLE);
+            progressBarTaux.setVisibility(View.INVISIBLE);
 
-                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+            UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
 
-                TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+            TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
-                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+            HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
 
-                List<Fragment> pageList = new ArrayList<>();
-                pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
-                pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
+            List<Fragment> pageList = new ArrayList<>();
+            pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
+            pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
 
-                adapter.setData(pageList);
+            adapter.setData(pageList);
 
-                pager.setInterval(5000);
-                pager.startAutoScroll();
-                pager.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+            pager.setInterval(5000);
+            pager.startAutoScroll();
+            pager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         } else {
             Snacky.builder()
                     .setView(getView())
