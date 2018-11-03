@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout style="@style/dialog">
+
+        <TextView
+            android:id="@+id/tv_titulo"
+            style="@style/dialog_titulo"
+            android:text="Choisisez votre pays" />
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/kenya"
+                layout="@layout/country_kenya_content"/>
+
+            <include
+                android:id="@+id/rdc"
+                layout="@layout/country_rdc_content"/>
+
+            <include
+                android:id="@+id/rwanda"
+                layout="@layout/country_rwanda_content"/>
+
+            <include
+                android:id="@+id/togo"
+                layout="@layout/country_togo_content"/>
+
+            <include
+                android:id="@+id/senegal"
+                layout="@layout/country_senegal_content"/>
+
+            <include
+                android:id="@+id/cotedivoire"
+                layout="@layout/country_cotedivoire_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
