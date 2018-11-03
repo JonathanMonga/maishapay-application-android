@@ -17,6 +17,7 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.RegisterMerchantView;
@@ -46,9 +47,9 @@ public class RegisterNormalPresenter extends TiPresenter<RegisterNormalView> {
         disposableHandler.manageDisposable(maishapayClient.inscription(userNom, userPrenom, userPhone, userEmail, userAdresse, userVille, userPin)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<UserResponse>() {
+                .subscribeWith(new CallbackWrapper<UserResponse>(getView()) {
                     @Override
-                    public void accept(UserResponse response) {
+                    protected void onSuccess(UserResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 if (isViewAttached()) {
@@ -73,15 +74,6 @@ public class RegisterNormalPresenter extends TiPresenter<RegisterNormalView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (isViewAttached()) {
-                            LogCat.e(throwable.toString());
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

@@ -36,6 +36,7 @@ import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.RegisterMarchantPresenter;
+import com.maishapay.util.Constants;
 import com.maishapay.view.RegisterMerchantView;
 import com.santalu.widget.MaskEditText;
 
@@ -181,31 +182,6 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
     }
 
     @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.LL_Register))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().inscription(
-                                nomEditText.getText().toString(),
-                                prenomEditText.getText().toString(),
-                                maskText,
-                                emailditText.getText().toString(),
-                                villeEditText.getText().toString(),
-                                adresseEditText.getText().toString(),
-                                codePin1EditText.getText().toString());
-                    }
-                })
-                .error()
-                .show();
-    }
-
-    @Override
     public void showResponseError(int response) {
         switch (response){
 
@@ -258,16 +234,64 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().inscription(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        maskText,
+                        emailditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        codePin1EditText.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().inscription(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        maskText,
+                        emailditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        codePin1EditText.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().inscription(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        maskText,
+                        emailditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        codePin1EditText.getText().toString());
+            }
+        });
     }
 }

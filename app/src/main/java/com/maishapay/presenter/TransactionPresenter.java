@@ -53,9 +53,6 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                     @Override
                     protected void onSuccess(List<TransactionResponse> responses) {
                         if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().finishToLoadTransactions(responses);
-
                             int envoiFrancs = 0;
                             int recuFrancs = 0;
                             int envoiDollars = 0;
@@ -92,6 +89,8 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             userDataPreference.setRecuDollars(recuDollars);
 
                             getView().finishToLoadStatisics(userDataPreference);
+                            getView().enabledControls(true);
+                            getView().finishToLoadTransactions(responses);
                         }
                     }
                 }));

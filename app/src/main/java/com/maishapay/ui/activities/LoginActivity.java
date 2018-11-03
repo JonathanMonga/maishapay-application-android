@@ -41,6 +41,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.LoginPresenter;
 import com.maishapay.ui.dialog.DialogForgotFragment;
 import com.maishapay.ui.dialog.PossitiveButtonListener;
+import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.LoginView;
 import com.santalu.widget.MaskEditText;
@@ -54,6 +55,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> implements LoginView, PossitiveButtonListener {
 
     private static String maskText;
+    private static String email;
 
     private ProgressDialog progressDialog;
     @BindView(R.id.ti_telephone) TextInputLayout textInputTelephone;
@@ -63,6 +65,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     @BindView(R.id.ET_Code_Pin) EditText codePinEditText;
     private DialogForgotFragment dialogForgotFragment;
     private FirebaseAuth mAuth;
+    private boolean flaglogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +112,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         enabledControls(false);
         getPresenter().login(maskText, codePinEditText.getText().toString().trim());
 
-        //getPresenter().login("0996980422", "jmonga98");
-
         textInputTelephone.setError(null);
         textInputTelephone.setErrorEnabled(false);
 
@@ -144,6 +145,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @OnClick(R.id.BTN_ForgotCodePin)
     public void clickForgot(){
+        flaglogin = true;
+
         if (TextUtils.isEmpty(phoneEditText.getText().toString())) {
             textInputTelephone.setErrorEnabled(true);
             textInputTelephone.setError(String.format(getString(R.string.erro_campo), getString(R.string.telephone)));
@@ -238,35 +241,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 .show();
         }
 
-    @Override
-    public void showNetworkLoginError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().login(maskText, codePinEditText.getText().toString());
-                        //getPresenter().login("0996980422", "jmonga98");
-
-                    }
-                })
-                .error()
-                .show();
-    }
-
-    @Override
-    public void showNetworkForgotError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Il y a un probleme lors de l'envoi de votre code PIN.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-    }
 
     @Override
     public void showLoginError(int type) {
@@ -290,6 +264,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     @Override
     public void finishToForgot() {
         dialogForgotFragment.dismiss();
+
+        flaglogin = false;
+
         Snacky.builder()
                 .setView(findViewById(R.id.root))
                 .setText("Vous avez recu un mail avec votre code PIN.")
@@ -307,6 +284,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @Override
     public void positiveClicked(String telephone, String email) {
+        LoginActivity.email = email;
+
         enabledControls(false);
         getPresenter().forgot(telephone, email);
     }
@@ -348,16 +327,52 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flaglogin)
+                    getPresenter().forgot(maskText, email);
+                else
+                    getPresenter().login(maskText, codePinEditText.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flaglogin)
+                    getPresenter().forgot(maskText, email);
+                else
+                    getPresenter().login(maskText, codePinEditText.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flaglogin)
+                    getPresenter().forgot(maskText, email);
+                else
+                    getPresenter().login(maskText, codePinEditText.getText().toString());
+            }
+        });
     }
 }

@@ -41,6 +41,7 @@ import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
+import com.maishapay.util.Constants;
 import com.maishapay.view.EpargnePersonelleView;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -71,6 +72,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     private ProgressDialog progressDialog;
     private DialogConfirmEpargneFragment dialogConfirmEpargneFragment;
     private static String userCurrency;
+    private boolean flagTransfert = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,24 +157,6 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     }
 
     @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-                    }
-                })
-                .error()
-                .show();
-    }
-
-    @Override
     public void showTranfertError(int type) {
         if (type == 0)
             Snacky.builder()
@@ -203,6 +187,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
 
     @Override
     public void finishToConfirm() {
+        flagTransfert = false;
         dialogConfirmEpargneFragment.dismiss();
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
         intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Epargne");
@@ -215,6 +200,8 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
 
     @Override
     public void finishToTranfert(EpargneResponse epargneResponse) {
+        flagTransfert = true;
+
         FragmentManager fm = getSupportFragmentManager();
         dialogConfirmEpargneFragment = DialogConfirmEpargneFragment.newInstance(String.valueOf(ET_Montant.getAmount()), userCurrency);
         dialogConfirmEpargneFragment.show(fm, "DialogConfirmEpargneFragment");
@@ -265,16 +252,50 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flagTransfert)
+                    getPresenter().confirmTransfertEpargne("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                if(flagTransfert)
+                    getPresenter().confirmTransfertEpargne("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                if(flagTransfert)
+                    getPresenter().confirmTransfertEpargne("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 }

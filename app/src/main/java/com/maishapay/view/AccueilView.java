@@ -13,9 +13,6 @@ public interface AccueilView extends BaseView {
     void finishToLoadSoldeAndRappot(UserDataPreference response);
 
     @CallOnMainThread
-    void enabledControls(boolean flag);
-
-    @CallOnMainThread
     void finishToLoadTaux();
 
     @CallOnMainThread

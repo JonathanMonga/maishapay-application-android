@@ -11,12 +11,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface LoginView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkLoginError();
-
-    @CallOnMainThread
-    void showNetworkForgotError();
-
-    @CallOnMainThread
     void showLoginError(int type);
 
     @CallOnMainThread
@@ -27,7 +21,4 @@ public interface LoginView extends BaseView {
 
     @CallOnMainThread
     void finishToForgot();
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

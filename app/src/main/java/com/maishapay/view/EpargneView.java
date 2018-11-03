@@ -10,9 +10,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface EpargneView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void finishToLoadSolde(SoldeEpargneResponse response);
 
     @CallOnMainThread

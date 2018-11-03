@@ -12,14 +12,9 @@ import java.util.List;
 
 public interface TransactionView extends BaseView {
 
-    @CallOnMainThread
-    void showNetworkError();
 
     @CallOnMainThread
     void finishToLoadTransactions(List<TransactionResponse> responses);
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 
     void finishToLoadStatisics(UserDataPreference userDataPreference);
 }

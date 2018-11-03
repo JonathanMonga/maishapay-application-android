@@ -9,9 +9,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface EpargnePersonelleView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void showTranfertError(int i);
 
     @CallOnMainThread
@@ -22,7 +19,4 @@ public interface EpargnePersonelleView extends BaseView {
 
     @CallOnMainThread
     void finishToTranfert(EpargneResponse transfertResponse);
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

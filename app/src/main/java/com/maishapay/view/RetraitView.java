@@ -9,9 +9,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface RetraitView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void showRetraitError(int i);
 
     @CallOnMainThread
@@ -22,7 +19,4 @@ public interface RetraitView extends BaseView {
 
     @CallOnMainThread
     void finishToRetrait(RetraitResponse retraitResponse);
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

@@ -40,7 +40,7 @@ public class Constants {
                 .setView(view)
                 .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
+                .setActionText("Réessayez")
                 .setActionClickListener(onClickListener)
                 .error()
                 .show();
@@ -51,7 +51,7 @@ public class Constants {
                 .setView(view)
                 .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
+                .setActionText("Réessayez")
                 .setActionClickListener(onClickListener)
                 .error()
                 .show();
@@ -60,9 +60,9 @@ public class Constants {
     public static void showOnNetworkError(View view, View.OnClickListener onClickListener){
         Snacky.builder()
                 .setView(view)
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
+                .setActionText("Réessayez")
                 .setActionClickListener(onClickListener)
                 .error()
                 .show();

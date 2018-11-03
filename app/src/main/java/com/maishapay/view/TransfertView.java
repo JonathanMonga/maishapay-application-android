@@ -8,9 +8,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface TransfertView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void showTranfertError(int i);
 
     @CallOnMainThread
@@ -21,7 +18,4 @@ public interface TransfertView extends BaseView {
 
     @CallOnMainThread
     void finishToTranfert(TransfertResponse transfertResponse);
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

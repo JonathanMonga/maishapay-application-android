@@ -18,7 +18,4 @@ public interface ContactView extends BaseView {
 
     @CallOnMainThread
     void finishToSend();
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

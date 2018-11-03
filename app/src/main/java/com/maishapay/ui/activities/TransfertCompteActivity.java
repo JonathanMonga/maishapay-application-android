@@ -43,6 +43,7 @@ import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
+import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -63,6 +64,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
+    private static String pin;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -76,6 +78,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private ProgressDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
+    private boolean flagtransfert = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,23 +168,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-                    }
-                })
-                .error()
-                .show();    }
-
-    @Override
     public void showTranfertError(int type) {
         if (type == 0)
             Snacky.builder()
@@ -234,6 +220,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void finishToConfirm() {
+        flagtransfert = false;
         dialogForgotFragment.dismiss();
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
@@ -249,6 +236,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void finishToTranfert(TransfertResponse transfertResponse) {
+        flagtransfert = true;
+
         FragmentManager fm = getSupportFragmentManager();
         dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(transfertResponse.getPrenom(), transfertResponse.getNom());
         dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
@@ -276,8 +265,10 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void positiveClicked(String pin) {
+        TransfertCompteActivity.pin = pin;
+
         enabledControls(false);
-        getPresenter().confirmTransfert(this, pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override
@@ -299,16 +290,52 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flagtransfert)
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flagtransfert)
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if(flagtransfert)
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+            }
+        });
     }
 }

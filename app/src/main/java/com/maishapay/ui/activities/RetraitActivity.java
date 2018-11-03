@@ -43,6 +43,7 @@ import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
+import com.maishapay.util.Constants;
 import com.maishapay.view.RetraitView;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -63,14 +64,20 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
+    private static String pin;
 
-    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
-    @BindView(R.id.SP_TypeEnvoi) Spinner SP_TypeEnvoi;
-    @BindView(R.id.ET_Montant) MoneyTextView ET_Montant;
-    @BindView(R.id.ET_Destinataire) EditText ET_Destinataire;
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
+    @BindView(R.id.SP_TypeEnvoi)
+    Spinner SP_TypeEnvoi;
+    @BindView(R.id.ET_Montant)
+    MoneyTextView ET_Montant;
+    @BindView(R.id.ET_Destinataire)
+    EditText ET_Destinataire;
 
     private ProgressDialog progressDialog;
     private DialogConfirmRetraitFragment confirmRetaritFragment;
+    private boolean flagRetrait = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +136,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
                 ET_Destinataire.setText(text);
             }
@@ -160,24 +167,6 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(),  String.valueOf(ET_Montant.getAmount()), userCurrency);
-                    }
-                })
-                .error()
-                .show();
-    }
-
-    @Override
     public void showRetraitError(int type) {
         if (type == 0) {
             Snacky.builder()
@@ -199,15 +188,17 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     public void showConfimationError(int type) {
         Snacky.builder()
-                    .setView(confirmRetaritFragment.getView())
-                    .setText("Le numero de l'Agent n'est pas correct.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+                .setView(confirmRetaritFragment.getView())
+                .setText("Le numero de l'Agent n'est pas correct.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .warning()
+                .show();
     }
 
     @Override
     public void finishToConfirm() {
+        flagRetrait = false;
+
         confirmRetaritFragment.dismiss();
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
         intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Retrait");
@@ -222,6 +213,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void finishToRetrait(RetraitResponse retraitResponse) {
+        flagRetrait = true;
+
         FragmentManager fm = getSupportFragmentManager();
         confirmRetaritFragment = DialogConfirmRetraitFragment.newInstance(retraitResponse.getRetour());
         confirmRetaritFragment.show(fm, "DialogConfirmRetraitFragment");
@@ -249,15 +242,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void positiveClicked(String pin) {
-        String[] currencies = getResources().getStringArray(R.array.option_devise);
-        int position = SP_TypeEnvoi.getSelectedItemPosition();
-        String userCurrency;
-
-        if (currencies[position].equals(CDF))
-            userCurrency = CDF_CURRENCY;
-        else
-            userCurrency = USD_CURRENCY;
-
+        RetraitActivity.pin = pin;
         enabledControls(false);
         getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
@@ -268,7 +253,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @OnClick(R.id.ET_Montant)
-    public void ET_MontantClicked(){
+    public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
         DialogNumberPickerFragment dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
@@ -281,16 +266,54 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if (flagRetrait)
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if (flagRetrait)
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                if (flagRetrait)
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+
+            }
+        });
     }
 }

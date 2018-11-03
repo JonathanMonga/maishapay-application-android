@@ -11,14 +11,8 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface RegisterNormalView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void showResponseError(int response);
 
     @CallOnMainThread
     void finishToRegister(UserResponse response);
-
-    @CallOnMainThread
-    void enabledControls(boolean flag);
 }

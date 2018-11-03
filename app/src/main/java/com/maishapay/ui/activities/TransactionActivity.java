@@ -20,6 +20,7 @@ import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TransactionPresenter;
 import com.maishapay.ui.adapter.TransactionAdapter;
+import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
 
 import java.util.List;
@@ -28,9 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TransactionActivity extends BaseActivity<TransactionPresenter, TransactionView> implements TransactionView{
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -62,26 +60,6 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
         progressBar.setVisibility(View.VISIBLE);
         getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
-    }
-
-    @Override
-    public void showNetworkError() {
-        progressBar.setVisibility(View.INVISIBLE);
-
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
-                    }
-                })
-                .error()
-                .show();
     }
 
     @Override
@@ -125,16 +103,40 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
     }
 }

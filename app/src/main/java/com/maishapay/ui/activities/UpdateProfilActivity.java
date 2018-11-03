@@ -37,6 +37,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.UpdateProfilePresenter;
 import com.maishapay.ui.dialog.DialogUpdateFragment;
 import com.maishapay.ui.dialog.PossitiveButtonListener;
+import com.maishapay.util.Constants;
 import com.maishapay.view.UpdateProfileView;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -153,31 +154,6 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     }
 
     @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(findViewById(R.id.LL_Register))
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().updateProfile(
-                                nomEditText.getText().toString(),
-                                prenomEditText.getText().toString(),
-                                phoneEditText.getText().toString(),
-                                emailEditText.getText().toString(),
-                                adresseEditText.getText().toString(),
-                                villeEditText.getText().toString(),
-                                PIN);
-                    }
-                })
-                .error()
-                .show();
-    }
-
-    @Override
     public void showResponseError() {
         Snacky.builder()
                 .setView(findViewById(R.id.LL_Register))
@@ -239,16 +215,64 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().updateProfile(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        emailEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        PIN);
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().updateProfile(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        emailEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        PIN);
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(findViewById(R.id.LL_Register), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+
+                getPresenter().updateProfile(
+                        nomEditText.getText().toString(),
+                        prenomEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        emailEditText.getText().toString(),
+                        adresseEditText.getText().toString(),
+                        villeEditText.getText().toString(),
+                        PIN);
+            }
+        });
     }
 }
