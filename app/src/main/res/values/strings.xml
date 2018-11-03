@@ -188,6 +188,15 @@
         <item>Epargne</item>
     </array>
 
+    <array name="option_country_mobile">
+        <item>La RDC</item>
+        <item>Le Rwanda</item>
+        <item>Le Kenya</item>
+        <item>Le Togo</item>
+        <item>Le Sénégal</item>
+        <item>La Côte d'\'ivoire</item>
+    </array>
+
     <array name="option_transfert_paiment">
         <item>Compte à compte</item>
         <item>Compte à cash</item>

@@ -132,7 +132,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/code_pin"
-                            android:inputType="textPassword"
+                            android:maxLength="5"
+                            android:inputType="numberPassword"
                             android:textColor="@color/branco"
                             android:imeOptions="actionDone"
                             android:textSize="16.0sp" />

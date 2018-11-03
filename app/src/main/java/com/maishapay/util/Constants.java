@@ -16,7 +16,11 @@
 
 package com.maishapay.util;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.view.View;
+
+import com.maishapay.app.MaishapayApplication;
 
 import de.mateware.snacky.Snacky;
 
@@ -34,6 +38,8 @@ public class Constants {
     public static final String USER_COUNTRY_CODE = "country_code";
     public static final String USER_PHONE_FIREBASE = "user_phone_firebase";
     public static final String USER_FIRST_RUN = "firt_run";
+    public static final String USER_MOBILE_MONEY_FIRST_RUN = "mobile_money_first_run";
+    public static final String USER_MOBILE_MONEY_COUNTRY = "mobile_money_country";
 
     public static void showOnUnknownError(View view, View.OnClickListener onClickListener){
         Snacky.builder()
@@ -66,5 +72,10 @@ public class Constants {
                 .setActionClickListener(onClickListener)
                 .error()
                 .show();
+    }
+
+    public static String getOperatorNamePhone() {
+        TelephonyManager telephonyManager = (TelephonyManager) MaishapayApplication.getMaishapayContext().getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getSimOperatorName();
     }
 }

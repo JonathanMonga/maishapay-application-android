@@ -24,6 +24,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
+import com.maishapay.ui.fragment.MobileMoneyFragment;
 import com.maishapay.ui.fragment.SettingsFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -208,12 +209,9 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        setTitle("Mobile money");
+                        mFragment = new MobileMoneyFragment();
+                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
                     case 7:

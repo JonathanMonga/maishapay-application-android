@@ -48,7 +48,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onResume() {
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
     }
 
     @Override
@@ -60,8 +59,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference.getKey().equals("profil")) {
-            MaishapayApplication.getMaishapayContext().startActivity(new Intent(MaishapayApplication.getMaishapayContext(), UpdateProfilActivity.class));
+            MaishapayApplication.getMaishapayContext().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
         }
+
         return false;
     }
 }
