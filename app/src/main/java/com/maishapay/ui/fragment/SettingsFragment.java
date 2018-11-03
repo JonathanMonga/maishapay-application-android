@@ -59,7 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference.getKey().equals("profil")) {
-            MaishapayApplication.getMaishapayContext().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
+            getActivity().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
         }
 
         return false;

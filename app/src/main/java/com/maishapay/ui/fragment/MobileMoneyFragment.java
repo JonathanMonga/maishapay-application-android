@@ -1,39 +1,27 @@
 package com.maishapay.ui.fragment;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.hbb20.CountryCodePicker;
 import com.maishapay.R;
-import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.presenter.ContactPresenter;
-import com.maishapay.ui.activities.EpargnePersonnelleActivity;
-import com.maishapay.ui.activities.TransfertCompteActivity;
-import com.maishapay.ui.activities.TransfertCompteCashActivity;
 import com.maishapay.util.Constants;
-import com.maishapay.view.ContactView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+
+import static com.maishapay.util.Constants.ussdToCallableUri;
 
 
 /**
@@ -120,7 +108,7 @@ public class MobileMoneyFragment extends Fragment {
 
     @OnClick(R.id.cardMoneyId1)
     public void cardMoneyId1clicked() {
-        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+        if(Constants.getOperatorNamePhone().equals(VODACOM_OPERATOR)) {
             Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
             startActivity(callIntent);
         } else
@@ -134,7 +122,7 @@ public class MobileMoneyFragment extends Fragment {
 
     @OnClick(R.id.cardMoneyId2)
     public void cardMoneyId2clicked() {
-        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+        if(Constants.getOperatorNamePhone().equals(AFRICELL_OPERATOR)) {
             Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
             startActivity(callIntent);
         } else
@@ -162,7 +150,7 @@ public class MobileMoneyFragment extends Fragment {
 
     @OnClick(R.id.cardMoneyId4)
     public void cardMoneyId4clicked() {
-        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+        if(Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
             Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
             startActivity(callIntent);
         } else
@@ -174,19 +162,4 @@ public class MobileMoneyFragment extends Fragment {
                     .show();
     }
 
-    private Uri ussdToCallableUri(String ussd) {
-        String uriString = "";
-
-        if(!ussd.startsWith("tel:"))
-            uriString += "tel:";
-
-        for(char c : ussd.toCharArray()) {
-            if(c == '#')
-                uriString += Uri.encode("#");
-            else
-                uriString += c;
-        }
-
-        return Uri.parse(uriString);
-    }
 }

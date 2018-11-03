@@ -17,6 +17,7 @@
 package com.maishapay.util;
 
 import android.content.Context;
+import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.view.View;
 
@@ -77,5 +78,21 @@ public class Constants {
     public static String getOperatorNamePhone() {
         TelephonyManager telephonyManager = (TelephonyManager) MaishapayApplication.getMaishapayContext().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();
+    }
+
+    public static Uri ussdToCallableUri(String ussd) {
+        String uriString = "";
+
+        if(!ussd.startsWith("tel:"))
+            uriString += "tel:";
+
+        for(char c : ussd.toCharArray()) {
+            if(c == '#')
+                uriString += Uri.encode("#");
+            else
+                uriString += c;
+        }
+
+        return Uri.parse(uriString);
     }
 }

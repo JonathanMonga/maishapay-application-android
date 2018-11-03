@@ -145,14 +145,6 @@ public class UserPrefencesManager {
         return userDataPreference;
     }
 
-    public static void setHasCompteEpargne(boolean b) {
-        Prefs.putBoolean(USER_CREATION_EPARGNE, b);
-    }
-
-    public static boolean getHasCompteEpargne(){
-        return Prefs.getBoolean(USER_CREATION_EPARGNE, false);
-    }
-
     public static void setUserCountryCodePhone(int b){
         Prefs.putInt(USER_COUNTRY_CODE, b);
     }
@@ -181,7 +173,7 @@ public class UserPrefencesManager {
         Prefs.putString(USER_MOBILE_MONEY_COUNTRY, b);
     }
 
-    public static String getMobileMoneyCountry(){
+    public static String getMobileMoneyCountry() {
         return Prefs.getString(USER_MOBILE_MONEY_COUNTRY, "");
     }
 }
