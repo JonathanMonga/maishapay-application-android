@@ -11,9 +11,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 public interface ContactView extends BaseView {
 
     @CallOnMainThread
-    void showNetworkError();
-
-    @CallOnMainThread
     void showContactSendError(int i);
 
     @CallOnMainThread

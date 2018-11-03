@@ -17,6 +17,7 @@ import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.ContactPresenter;
+import com.maishapay.util.Constants;
 import com.maishapay.view.ContactView;
 
 import butterknife.BindView;
@@ -43,24 +44,6 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
         ButterKnife.bind(this, view);
         intProgressBar();
         return view;
-    }
-
-    @Override
-    public void showNetworkError() {
-        Snacky.builder()
-                .setView(getView())
-                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                .setDuration(Snacky.LENGTH_INDEFINITE)
-                .setActionText("Réesseyer")
-                .setActionClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        enabledControls(false);
-                        getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
-                    }
-                })
-                .error()
-                .show();
     }
 
     @OnClick(R.id.BTN_Envoyer)
@@ -128,16 +111,40 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
 
     @Override
     public void onUnknownError(String errorMessage) {
+        enabledControls(true);
 
+        Constants.showOnUnknownError(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onTimeout() {
+        enabledControls(true);
 
+        Constants.showOnTimeout(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onNetworkError() {
+        enabledControls(true);
 
+        Constants.showOnNetworkError(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+            }
+        });
     }
 }
