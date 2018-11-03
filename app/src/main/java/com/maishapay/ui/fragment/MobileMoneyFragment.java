@@ -116,43 +116,34 @@ public class MobileMoneyFragment extends Fragment {
                     })
                     .show();
         }
-
-        cardMoneyId1.setEnabled(false);
-        cardMoneyId2.setEnabled(false);
-        cardMoneyId3.setEnabled(false);
-        cardMoneyId4.setEnabled(false);
-
-        switch (Constants.getOperatorNamePhone()){
-            case "Orange RDC" : {
-                cardMoneyId4.setEnabled(true);
-                break;
-            }
-
-            case "Africell RDC" : {
-                cardMoneyId2.setEnabled(true);
-                break;
-            }
-
-            case "VODACOM CD" : {
-                cardMoneyId1.setEnabled(true);
-                break;
-            }
-
-            default : {
-                cardMoneyId3.setEnabled(true);
-                break;
-            }
-        }
     }
 
     @OnClick(R.id.cardMoneyId1)
     public void cardMoneyId1clicked() {
-
+        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
+            startActivity(callIntent);
+        } else
+            Snacky.builder()
+                    .setView(getView())
+                    .setText("Vous utilisez un autre operateur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
     }
 
     @OnClick(R.id.cardMoneyId2)
     public void cardMoneyId2clicked() {
-
+        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
+            startActivity(callIntent);
+        } else
+            Snacky.builder()
+                    .setView(getView())
+                    .setText("Vous utilisez un autre operateur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
     }
 
     @OnClick(R.id.cardMoneyId3)
@@ -171,7 +162,16 @@ public class MobileMoneyFragment extends Fragment {
 
     @OnClick(R.id.cardMoneyId4)
     public void cardMoneyId4clicked() {
-
+        if(Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
+            startActivity(callIntent);
+        } else
+            Snacky.builder()
+                    .setView(getView())
+                    .setText("Vous utilisez un autre operateur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
     }
 
     private Uri ussdToCallableUri(String ussd) {
