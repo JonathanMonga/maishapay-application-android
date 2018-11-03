@@ -23,12 +23,12 @@ public class IntroActivity extends AppIntro {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(UserPrefencesManager.getUserFirtRun())
+        if(! UserPrefencesManager.getUserFirtRun())
             startActivity(new Intent(this, LoginActivity.class));
         else if(UserPrefencesManager.getCurentUserLoginSuccess())
             startActivity(new Intent(this, DrawerActivity.class));
         else
-            UserPrefencesManager.setUserFirtRun();
+            UserPrefencesManager.setUserFirtRun(false);
 
         SliderPage sliderPage1 = new SliderPage();
         sliderPage1.setTitle("Bienvenue chez Maishapay");

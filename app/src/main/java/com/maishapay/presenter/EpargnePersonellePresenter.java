@@ -17,7 +17,10 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.EpargneResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.EpargnePersonelleView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -44,9 +47,9 @@ public class EpargnePersonellePresenter extends TiPresenter<EpargnePersonelleVie
         disposableHandler.manageDisposable(maishapayClient.transfert_epargne("p", destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<EpargneResponse>() {
+                .subscribeWith(new CallbackWrapper<EpargneResponse>(getView()) {
                     @Override
-                    public void accept(EpargneResponse response) {
+                    protected void onSuccess(EpargneResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -73,14 +76,6 @@ public class EpargnePersonellePresenter extends TiPresenter<EpargnePersonelleVie
                             }
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
-                        }
-                    }
                 }));
     }
 
@@ -88,9 +83,9 @@ public class EpargnePersonellePresenter extends TiPresenter<EpargnePersonelleVie
         disposableHandler.manageDisposable(maishapayClient.confirmation_transfert_epargne("p", destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         switch (response) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -107,14 +102,6 @@ public class EpargnePersonellePresenter extends TiPresenter<EpargnePersonelleVie
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

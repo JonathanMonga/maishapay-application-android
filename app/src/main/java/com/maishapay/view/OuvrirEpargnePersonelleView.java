@@ -7,7 +7,7 @@ import com.maishapay.model.client.response.SoldeEpargneResponse;
 import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
-public interface OuvrirEpargnePersonelleView extends TiView {
+public interface OuvrirEpargnePersonelleView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

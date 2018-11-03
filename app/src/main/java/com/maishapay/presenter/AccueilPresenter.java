@@ -17,6 +17,7 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.SoldeResponse;
@@ -58,20 +59,20 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                 int envoiDollars = 0;
                 int recuDollars = 0;
 
-                for(TransactionResponse transactionResponse : transactionRespons){
-                    if(transactionResponse.getType_jrn().equals("e")){
-                        if(transactionResponse.getMonnaie_jrn().equals("FC")) {
+                for (TransactionResponse transactionResponse : transactionRespons) {
+                    if (transactionResponse.getType_jrn().equals("e")) {
+                        if (transactionResponse.getMonnaie_jrn().equals("FC")) {
                             String temp = transactionResponse.getMontant_jrn().replace(" ", "");
                             envoiFrancs += Integer.valueOf(temp);
-                        } else if(transactionResponse.getMonnaie_jrn().equals("USD")){
+                        } else if (transactionResponse.getMonnaie_jrn().equals("USD")) {
                             String temp = transactionResponse.getMontant_jrn().replace(" ", "");
                             envoiDollars += Integer.valueOf(temp);
                         }
                     } else {
-                        if(transactionResponse.getMonnaie_jrn().equals("FC")) {
+                        if (transactionResponse.getMonnaie_jrn().equals("FC")) {
                             String temp = transactionResponse.getMontant_jrn().replace(" ", "");
                             recuFrancs += Integer.valueOf(temp);
-                        } else if(transactionResponse.getMonnaie_jrn().equals("USD")){
+                        } else if (transactionResponse.getMonnaie_jrn().equals("USD")) {
                             String temp = transactionResponse.getMontant_jrn().replace(" ", "");
                             recuDollars += Integer.valueOf(temp);
                         }
@@ -99,44 +100,29 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<UserDataPreference>() {
+                .subscribeWith(new CallbackWrapper<UserDataPreference>(getView()) {
                     @Override
-                    public void accept(UserDataPreference response) {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
+                    protected void onSuccess(UserDataPreference response) {
+                        if (isViewAttached()) {
                             UserPrefencesManager.setLastSoldeAndRapport(response);
                             getView().finishToLoadSoldeAndRappot(response);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));
     }
 
-    public void tauxAndEpargne(String telephone) {
-        disposableHandler.manageDisposable(maishapayClient.taux_du_jour().zipWith(maishapayClient.transfert_epargne("p", telephone, "USD", "100"), new BiFunction<Double, EpargneResponse, UserDataPreference>() {
-            @Override
-            public UserDataPreference apply(Double aDouble, EpargneResponse epargneResponse) {
-                UserDataPreference userDataPreference = new UserDataPreference();
-                userDataPreference.setTaux(aDouble);
-                userDataPreference.setHasEpargneCompte(epargneResponse.getResultat() != 0);
-                return userDataPreference;
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
+    public void taux() {
+        disposableHandler.manageDisposable(maishapayClient.taux_du_jour()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<UserDataPreference>() {
+                .subscribeWith(new CallbackWrapper<Double>(getView()) {
                     @Override
-                    public void accept(UserDataPreference response) {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            UserPrefencesManager.setLastSoldeAndRapport(response);
-                            getView().finishToLoadTauxAndEpargne(response);
+                    protected void onSuccess(Double aDouble) {
+                        if (isViewAttached()) {
+                            UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+                            userDataPreference.setTaux(aDouble);
+                            UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
+                            getView().finishToLoadTaux();
                         }
                     }
                 }));

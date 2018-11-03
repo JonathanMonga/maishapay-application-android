@@ -6,7 +6,7 @@ import com.maishapay.model.client.response.TransfertResponse;
 import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
-public interface RetraitView extends TiView {
+public interface RetraitView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

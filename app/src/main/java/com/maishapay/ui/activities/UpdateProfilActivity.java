@@ -236,4 +236,19 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 villeEditText.getText().toString(),
                 pin);
     }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
+    }
 }

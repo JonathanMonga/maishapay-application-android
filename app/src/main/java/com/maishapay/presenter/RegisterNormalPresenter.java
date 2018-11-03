@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.RegisterMerchantView;
 import com.maishapay.view.RegisterNormalView;
 
@@ -78,6 +79,7 @@ public class RegisterNormalPresenter extends TiPresenter<RegisterNormalView> {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         if (isViewAttached()) {
+                            LogCat.e(throwable.toString());
                             getView().enabledControls(true);
                             getView().showNetworkError();
                         }

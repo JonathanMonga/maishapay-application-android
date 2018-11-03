@@ -17,6 +17,9 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.ContactView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -43,14 +46,14 @@ public class ContactPresenter extends TiPresenter<ContactView> {
         disposableHandler.manageDisposable(maishapayClient.nous_contacter(userPhone, userSujet, msg)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
-                        switch (response) {
+                    protected void onSuccess(Integer integer) {
+                        switch (integer) {
                             case 0: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showContactSendError(response);
+                                    getView().showContactSendError(integer);
                                     break;
                                 }
                             }
@@ -62,14 +65,6 @@ public class ContactPresenter extends TiPresenter<ContactView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

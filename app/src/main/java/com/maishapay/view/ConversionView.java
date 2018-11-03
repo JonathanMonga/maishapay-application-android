@@ -6,7 +6,7 @@ import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 
-public interface ConversionView extends TiView {
+public interface ConversionView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

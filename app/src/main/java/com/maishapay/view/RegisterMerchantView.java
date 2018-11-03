@@ -8,7 +8,7 @@ import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 
-public interface RegisterMerchantView extends TiView {
+public interface RegisterMerchantView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

@@ -74,12 +74,12 @@ public class UserPrefencesManager {
         Prefs.putBoolean(USER_LOGIN_SUCCESS, b);
     }
 
-    public static void setUserFirtRun(){
-        Prefs.putBoolean(USER_FIRST_RUN, true);
+    public static void setUserFirtRun(boolean b){
+        Prefs.putBoolean(USER_FIRST_RUN, b);
     }
 
-    public static boolean getUserFirtRun(){
-        return Prefs.getBoolean(USER_FIRST_RUN, false);
+    public static boolean getUserFirtRun() {
+        return Prefs.getBoolean(USER_FIRST_RUN, true);
     }
 
     public static void setUserRefresh(boolean b){

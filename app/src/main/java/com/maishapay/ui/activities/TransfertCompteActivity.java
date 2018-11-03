@@ -296,4 +296,19 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     public void numPadPositiveClicked(String number) {
         ET_Montant.setAmount(Float.valueOf(number));
     }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
+    }
 }

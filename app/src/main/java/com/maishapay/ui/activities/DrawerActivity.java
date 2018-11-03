@@ -131,7 +131,7 @@ public class DrawerActivity extends AppCompatActivity {
 
                                 UserPrefencesManager.clearAll();
 
-                                UserPrefencesManager.setUserFirtRun();
+                                UserPrefencesManager.setUserFirtRun(false);
                                 UserPrefencesManager.setUserPhone(userPhone);
                                 UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
 

@@ -345,4 +345,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                     }
                 });
     }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
+    }
 }

@@ -256,4 +256,19 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
+    }
 }

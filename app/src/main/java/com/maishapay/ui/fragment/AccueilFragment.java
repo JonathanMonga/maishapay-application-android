@@ -1,6 +1,7 @@
 package com.maishapay.ui.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,8 +21,8 @@ import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.service.MaishapayService;
 import com.maishapay.presenter.AccueilPresenter;
+import com.maishapay.service.MaishapayService;
 import com.maishapay.ui.activities.ConversionActivity;
 import com.maishapay.ui.activities.EpargneActivity;
 import com.maishapay.ui.activities.EpargnePersonnelleActivity;
@@ -33,6 +34,7 @@ import com.maishapay.ui.activities.TransfertCompteActivity;
 import com.maishapay.ui.activities.TransfertCompteCashActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
+import com.maishapay.util.Constants;
 import com.maishapay.view.AccueilView;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -53,7 +55,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
-import de.mateware.snacky.Snacky;
 
 
 public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView> implements AccueilView {
@@ -73,6 +74,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     @BindView(R.id.bmb)
     BoomMenuButton bmb;
     private FirebaseAuth mAuth;
+    private ProgressDialog progressDialog;
+    public PaieMoiDialogFragment paieMoiDialogFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,11 +83,14 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         View view = inflater.inflate(R.layout.accueil_fragment, container, false);
         ButterKnife.bind(this, view);
 
+
         getContext().startService(new Intent(getContext(), MaishapayService.class));
 
         mAuth = FirebaseAuth.getInstance();
 
         updateIndicator();
+        intProgressBar();
+
         return view;
     }
 
@@ -121,88 +127,38 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 .subNormalTextRes(R.string.sub_paie_moi);
         bmb.addBuilder(builder4);
 
-
-        bmb.setOnBoomListener(new OnBoomListener() {
-            public PaieMoiDialogFragment paieMoiDialogFragment;
-
-            @Override
-            public void onClicked(int index, BoomButton boomButton) {
-                switch (index) {
-                    case 0: {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
-                                    startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-                                else
-                                    startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
-                            }
-                        }, 430);
-                        break;
-                    }
-
-                    case 1: {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), RetraitActivity.class));
-                            }
-                        }, 430);
-                        break;
-                    }
-
-                    case 2: {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), ConversionActivity.class));
-                            }
-                        }, 430);
-                        break;
-                    }
-
-                    default: {
-                        FragmentManager fm = getChildFragmentManager();
-                        paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(UserPrefencesManager.getCurrentUser().getTelephone());
-                        paieMoiDialogFragment.show(fm, "PaieMoiDialogFragment");
-                    }
-                }
-            }
-
-            @Override
-            public void onBackgroundClick() {
-
-            }
-
-            @Override
-            public void onBoomWillHide() {
-
-            }
-
-            @Override
-            public void onBoomDidHide() {
-
-            }
-
-            @Override
-            public void onBoomWillShow() {
-
-            }
-
-            @Override
-            public void onBoomDidShow() {
-
-            }
-        });
+        bmb.setOnBoomListener(new OnBoomClickListener());
 
         if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
             taux.setVisibility(View.INVISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
             progressBarTaux.setVisibility(View.VISIBLE);
-            getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
-            showNetworkError();
+            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+                taux.setVisibility(View.VISIBLE);
+                progressBarSolde.setVisibility(View.INVISIBLE);
+                progressBarTaux.setVisibility(View.INVISIBLE);
+
+                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+
+                TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+
+                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+                List<Fragment> pageList = new ArrayList<>();
+                pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
+                pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
+
+                adapter.setData(pageList);
+
+                pager.setInterval(5000);
+                pager.startAutoScroll();
+                pager.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            } else {
+                onNetworkError();
+            }
         }
     }
 
@@ -211,14 +167,9 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         startActivity(new Intent(MaishapayApplication.getMaishapayContext(), PaiementActivity.class));
     }
 
-
     @OnClick({R.id.epargneCardId})
     public void epargneClicked() {
-        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
-            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-        else
-            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
-
+        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
     }
 
     @OnClick({R.id.transactionCardId})
@@ -256,49 +207,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     }
 
     @Override
-    public void showNetworkError() {
-        if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
-            taux.setVisibility(View.VISIBLE);
-            progressBarSolde.setVisibility(View.INVISIBLE);
-            progressBarTaux.setVisibility(View.INVISIBLE);
-
-            UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
-
-            TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
-
-            HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
-
-            List<Fragment> pageList = new ArrayList<>();
-            pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
-            pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
-
-            adapter.setData(pageList);
-
-            pager.setInterval(5000);
-            pager.startAutoScroll();
-            pager.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        } else {
-            Snacky.builder()
-                    .setView(getView())
-                    .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
-                    .setDuration(Snacky.LENGTH_INDEFINITE)
-                    .setActionText("Réesseyer")
-                    .setActionClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            enabledControls(false);
-                            getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-                            getPresenter().tauxAndEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-                        }
-                    })
-                    .error()
-                    .show();
-        }
-    }
-
-    @Override
     public void finishToLoadSoldeAndRappot(UserDataPreference response) {
+        getPresenter().taux();
 
         progressBarSolde.setVisibility(View.INVISIBLE);
         HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
@@ -315,17 +225,25 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
-    public void finishToLoadTauxAndEpargne(UserDataPreference response) {
+    public void finishToLoadTaux() {
         progressBarTaux.setVisibility(View.INVISIBLE);
         taux.setVisibility(View.VISIBLE);
-        TV_Taux.setAmount(Float.valueOf(String.valueOf(response.getTaux())));
+        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux())));
     }
 
     @Override
-    public void enabledControls(boolean flag) {
+    public void finishToLoadEpargne() {
+        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+    }
 
+    @Override
+    public void enabledControls(boolean isEnabled) {
+        if (isEnabled) {
+            progressDialog.dismiss();
+        } else {
+            progressDialog.show();
+        }
     }
 
     @NonNull
@@ -333,7 +251,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public AccueilPresenter providePresenter() {
         return new AccueilPresenter();
     }
-
 
     private void updateIndicator() {
         pageIndicatorView.setAnimationType(AnimationType.SWAP);
@@ -350,5 +267,120 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void onPause() {
         super.onPause();
         pager.stopAutoScroll();
+    }
+
+    private void intProgressBar() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Veuillez patienter");
+    }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+        enabledControls(true);
+
+        Constants.showOnUnknownError(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
+    }
+
+    @Override
+    public void onTimeout() {
+        enabledControls(true);
+
+        Constants.showOnTimeout(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
+    }
+
+    @Override
+    public void onNetworkError() {
+        enabledControls(true);
+
+        Constants.showOnNetworkError(getView(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+        });
+    }
+
+    private class OnBoomClickListener implements OnBoomListener {
+
+        @Override
+        public void onClicked(int index, BoomButton boomButton) {
+            switch (index) {
+                case 0: {
+                    new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
+                            }
+                        }, 430);
+                    break;
+                }
+
+                case 1: {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), RetraitActivity.class));
+                        }
+                    }, 430);
+                    break;
+                }
+
+                case 2: {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), ConversionActivity.class));
+                        }
+                    }, 430);
+                    break;
+                }
+
+                default: {
+                    FragmentManager fm = getChildFragmentManager();
+                    paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(UserPrefencesManager.getCurrentUser().getTelephone());
+                    paieMoiDialogFragment.show(fm, "PaieMoiDialogFragment");
+                }
+            }
+        }
+
+        @Override
+        public void onBackgroundClick() {
+
+        }
+
+        @Override
+        public void onBoomWillHide() {
+
+        }
+
+        @Override
+        public void onBoomDidHide() {
+
+        }
+
+        @Override
+        public void onBoomWillShow() {
+
+        }
+
+        @Override
+        public void onBoomDidShow() {
+
+        }
     }
 }

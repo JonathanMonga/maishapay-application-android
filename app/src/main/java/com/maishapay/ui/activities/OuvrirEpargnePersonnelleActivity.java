@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.OuvrirEpargnePersonellePresenter;
@@ -90,6 +91,10 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+
         setContentView(R.layout.creer_epargne_personnelle_activity);
         ButterKnife.bind(this);
 
@@ -293,5 +298,20 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
         LocalDate localDate = LocalDate.fromCalendarFields(calendar);
         formatDate = localDate.toString(DateTimeFormat.forPattern("dd/MM/yyyy"));
         ET_Date.setText(formatDate);
+    }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
     }
 }

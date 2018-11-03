@@ -19,7 +19,10 @@ import android.app.Activity;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.TransfertResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -46,9 +49,9 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte(expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<TransfertResponse>() {
+                .subscribeWith(new CallbackWrapper<TransfertResponse>(getView()) {
                     @Override
-                    public void accept(TransfertResponse response) {
+                    protected void onSuccess(TransfertResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -91,24 +94,16 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
-                        }
-                    }
                 }));
     }
 
-    public void confirmTransfert(final Activity context, String pin, final String expeditaire, final String destinataire, final String monnaie, final String montant){
+    public void confirmTransfert(String pin, final String expeditaire, final String destinataire, final String monnaie, final String montant){
         disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         switch (response) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -133,14 +128,6 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

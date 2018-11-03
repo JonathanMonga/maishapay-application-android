@@ -10,7 +10,7 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 import java.util.List;
 
-public interface TransactionView extends TiView {
+public interface TransactionView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

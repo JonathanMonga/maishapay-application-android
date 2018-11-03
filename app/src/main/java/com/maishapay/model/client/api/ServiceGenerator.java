@@ -17,6 +17,7 @@
 package com.maishapay.model.client.api;
 
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.util.LogCat;
 
 import org.alfonz.utility.NetworkUtility;
 
@@ -52,9 +53,15 @@ public class ServiceGenerator {
                             request = request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
                         else
                             request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                        Response response = null;
 
+                        try {
+                            response = chain.proceed(request);
+                        } catch (Exception e){
+                            LogCat.e(e.getMessage());
+                        }
 
-                        return chain.proceed(request);
+                        return response;
                     }
                 }).build();
 

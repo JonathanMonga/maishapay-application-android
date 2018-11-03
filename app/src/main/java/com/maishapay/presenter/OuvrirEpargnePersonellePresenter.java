@@ -17,6 +17,9 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.OuvrirEpargnePersonelleView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -43,9 +46,9 @@ public class OuvrirEpargnePersonellePresenter extends TiPresenter<OuvrirEpargneP
         disposableHandler.manageDisposable(maishapayClient.creation_compte_epargne_perso(userPhone, date_cloture, device, code_secret)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         if (response == 0) {
                             if (isViewAttached()) {
                                 getView().showOuvrirEpargnePersonelleError(response);
@@ -55,14 +58,6 @@ public class OuvrirEpargnePersonellePresenter extends TiPresenter<OuvrirEpargneP
                                 getView().enabledControls(true);
                                 getView().finishToOuvrir(response);
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

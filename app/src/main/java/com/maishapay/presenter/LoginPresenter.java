@@ -17,7 +17,10 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.LoginView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -44,9 +47,9 @@ public class LoginPresenter extends TiPresenter<LoginView> {
         disposableHandler.manageDisposable(maishapayClient.login(userPhone, userCodePin)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<UserResponse>() {
+                .subscribeWith(new CallbackWrapper<UserResponse>(getView()) {
                     @Override
-                    public void accept(UserResponse response) {
+                    protected void onSuccess(UserResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -65,14 +68,6 @@ public class LoginPresenter extends TiPresenter<LoginView> {
                             }
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkLoginError();
-                        }
-                    }
                 }));
     }
 
@@ -80,9 +75,9 @@ public class LoginPresenter extends TiPresenter<LoginView> {
         disposableHandler.manageDisposable(maishapayClient.pin_perdu(telephone, email)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         switch (response) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -99,14 +94,6 @@ public class LoginPresenter extends TiPresenter<LoginView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkForgotError();
                         }
                     }
                 }));

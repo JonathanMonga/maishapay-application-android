@@ -17,8 +17,11 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.AccueilView;
 import com.maishapay.view.EpargneView;
 
@@ -46,20 +49,12 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
         disposableHandler.manageDisposable(maishapayClient.solde_epargne_perso(userPhone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<SoldeEpargneResponse>() {
+                .subscribeWith(new CallbackWrapper<SoldeEpargneResponse>(getView()) {
                     @Override
-                    public void accept(SoldeEpargneResponse response) {
+                    protected void onSuccess(SoldeEpargneResponse response) {
                         if(isViewAttached()) {
                             getView().enabledControls(true);
                             getView().finishToLoadSolde(response);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

@@ -21,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * A user response
  */
-public class SoldeResponse {
+public class SoldeResponse extends BaseResponse{
 
     @SerializedName("FC")
     private String francCongolais;

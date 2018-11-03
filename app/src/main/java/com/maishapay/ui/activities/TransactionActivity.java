@@ -122,4 +122,19 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
+    }
 }

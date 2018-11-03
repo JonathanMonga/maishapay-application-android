@@ -17,7 +17,10 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.RetraitResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.RetraitView;
 
@@ -45,9 +48,9 @@ public class RetraitConfirmationPresenter extends TiPresenter<RetraitView> {
         disposableHandler.manageDisposable(maishapayClient.retrait(expeditaire, destinataire, montant, monnaie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<RetraitResponse>() {
+                .subscribeWith(new CallbackWrapper<RetraitResponse>(getView()) {
                     @Override
-                    public void accept(RetraitResponse response) {
+                    protected void onSuccess(RetraitResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 getView().enabledControls(true);
@@ -68,12 +71,6 @@ public class RetraitConfirmationPresenter extends TiPresenter<RetraitView> {
                             }
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        getView().enabledControls(true);
-                        getView().showNetworkError();
-                    }
                 }));
     }
 
@@ -81,9 +78,9 @@ public class RetraitConfirmationPresenter extends TiPresenter<RetraitView> {
         disposableHandler.manageDisposable(maishapayClient.confirm_retrait(expeditaire, pin, destinataire, montant, monnaie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         switch (response) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -100,15 +97,6 @@ public class RetraitConfirmationPresenter extends TiPresenter<RetraitView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            LogCat.e(throwable.getMessage());
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

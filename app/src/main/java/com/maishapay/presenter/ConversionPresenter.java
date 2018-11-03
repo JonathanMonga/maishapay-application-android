@@ -17,6 +17,9 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.ContactView;
 import com.maishapay.view.ConversionView;
@@ -47,9 +50,9 @@ public class ConversionPresenter extends TiPresenter<ConversionView> {
         disposableHandler.manageDisposable(maishapayClient.taux_du_jour()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Double>() {
+                .subscribeWith(new CallbackWrapper<Double>(getView()) {
                     @Override
-                    public void accept(Double response) {
+                    protected void onSuccess(Double response) {
                         if(monnaie.equals("USD")) {
                             if(isViewAttached()) {
                                 getView().enabledControls(true);
@@ -60,38 +63,6 @@ public class ConversionPresenter extends TiPresenter<ConversionView> {
                                 getView().enabledControls(true);
                                 getView().finishToConversion(BigDecimal.valueOf(Double.valueOf(montant)).divide(BigDecimal.valueOf(response)).doubleValue() + " USD");
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
-                        }
-                    }
-                }));
-    }
-
-
-    public void taux() {
-        disposableHandler.manageDisposable(maishapayClient.taux_du_jour()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Double>() {
-                    @Override
-                    public void accept(Double response) {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().finishToLoadTaux(response);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

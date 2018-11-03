@@ -8,7 +8,7 @@ import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 
-public interface ContactView extends TiView {
+public interface ContactView extends BaseView {
 
     @CallOnMainThread
     void showNetworkError();

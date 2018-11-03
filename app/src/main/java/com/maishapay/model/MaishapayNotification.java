@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,15 +115,12 @@ public class MaishapayNotification {
                 LogCat.e("Firebase log====================");
             }
         });
-        readFrom(phone);
-
-
     }
 
     private void sendNotification(String title, String body) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(mContext)
+        Builder nBuilder = new Builder(mContext)
                 .setSmallIcon(R.drawable.noti)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -145,7 +143,7 @@ public class MaishapayNotification {
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(mContext)
+        Builder nBuilder = new Builder(mContext)
                 .setSmallIcon(R.drawable.noti)
                 .setContentTitle(title)
                 .setContentText(body)

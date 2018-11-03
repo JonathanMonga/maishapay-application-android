@@ -16,6 +16,10 @@
 
 package com.maishapay.util;
 
+import android.view.View;
+
+import de.mateware.snacky.Snacky;
+
 /**
  * Constants class
  */
@@ -29,5 +33,38 @@ public class Constants {
     public static final String USER_CREATION_EPARGNE = "creation_epargne";
     public static final String USER_COUNTRY_CODE = "country_code";
     public static final String USER_PHONE_FIREBASE = "user_phone_firebase";
-    public static String USER_FIRST_RUN = "firt_run";
+    public static final String USER_FIRST_RUN = "firt_run";
+
+    public static void showOnUnknownError(View view, View.OnClickListener onClickListener){
+        Snacky.builder()
+                .setView(view)
+                .setText("Impossible de se connecter au serveur.")
+                .setDuration(Snacky.LENGTH_INDEFINITE)
+                .setActionText("Réesseyer")
+                .setActionClickListener(onClickListener)
+                .error()
+                .show();
+    }
+
+    public static void showOnTimeout(View view, View.OnClickListener onClickListener){
+        Snacky.builder()
+                .setView(view)
+                .setText("Le délais s'est t'écouler.")
+                .setDuration(Snacky.LENGTH_INDEFINITE)
+                .setActionText("Réesseyer")
+                .setActionClickListener(onClickListener)
+                .error()
+                .show();
+    }
+
+    public static void showOnNetworkError(View view, View.OnClickListener onClickListener){
+        Snacky.builder()
+                .setView(view)
+                .setText("Vous avez besion d'une connexion internet pour effectuer cette action!")
+                .setDuration(Snacky.LENGTH_INDEFINITE)
+                .setActionText("Réesseyer")
+                .setActionClickListener(onClickListener)
+                .error()
+                .show();
+    }
 }

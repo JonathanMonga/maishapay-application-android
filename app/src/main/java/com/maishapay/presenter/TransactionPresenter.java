@@ -17,8 +17,10 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.TransactionView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -47,9 +49,9 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
         disposableHandler.manageDisposable(maishapayClient.rapport(telephone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<TransactionResponse>>() {
+                .subscribeWith(new CallbackWrapper<List<TransactionResponse>>(getView()) {
                     @Override
-                    public void accept(List<TransactionResponse> responses) {
+                    protected void onSuccess(List<TransactionResponse> responses) {
                         if(isViewAttached()) {
                             getView().enabledControls(true);
                             getView().finishToLoadTransactions(responses);
@@ -90,14 +92,6 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             userDataPreference.setRecuDollars(recuDollars);
 
                             getView().finishToLoadStatisics(userDataPreference);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

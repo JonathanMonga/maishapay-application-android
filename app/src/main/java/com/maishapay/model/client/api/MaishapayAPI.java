@@ -27,7 +27,7 @@ import com.maishapay.model.client.response.UserResponse;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -39,18 +39,18 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<UserResponse> login(@Field("ent") String ent,
+    Observable<UserResponse> login(@Field("ent") String ent,
                                @Field("telephone") String telephone,
                                @Field("pin") String pin);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<SoldeResponse> solde(@Field("ent") String ent,
+    Observable<SoldeResponse> solde(@Field("ent") String ent,
                                 @Field("telephone") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> creation_compte_epargne_perso(@Field("ent") String ent,
+    Observable<Integer> creation_compte_epargne_perso(@Field("ent") String ent,
                                                   @Field("telephone") String telephone,
                                                   @Field("date_cloture") String date_cloture,
                                                   @Field("devise") String devise,
@@ -58,7 +58,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> creation_compte_epargne_avenir(@Field("ent") String ent,
+    Observable<Integer> creation_compte_epargne_avenir(@Field("ent") String ent,
                                                    @Field("telephone") String telephone,
                                                    @Field("beneficiaire") String beneficiaire,
                                                    @Field("date_cloture") String date_cloture,
@@ -67,12 +67,12 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<SoldeEpargneResponse> solde_epargne_perso(@Field("ent") String ent,
+    Observable<SoldeEpargneResponse> solde_epargne_perso(@Field("ent") String ent,
                                                      @Field("telephone") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<UserResponse> inscription(@Field("ent") String ent,
+    Observable<UserResponse> inscription(@Field("ent") String ent,
                                      @Field("nom") String nom,
                                      @Field("prenom") String prenom,
                                      @Field("telephone") String telephone,
@@ -83,7 +83,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<TransfertResponse> transfert_compte(@Field("ent") String ent,
+    Observable<TransfertResponse> transfert_compte(@Field("ent") String ent,
                                                @Field("expeditaire") String expeditaire,
                                                @Field("destinataire") String destinataire,
                                                @Field("monnaie") String monnaie,
@@ -91,7 +91,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> transfert_compte_confirmation(@Field("ent") String ent,
+    Observable<Integer> transfert_compte_confirmation(@Field("ent") String ent,
                                                   @Field("pin") String pin,
                                                   @Field("expeditaire") String expeditaire,
                                                   @Field("destinataire") String destinataire,
@@ -100,7 +100,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<EpargneResponse> transfert_epargne(@Field("ent") String ent,
+    Observable<EpargneResponse> transfert_epargne(@Field("ent") String ent,
                                                 @Field("type_transfert") String type_transfert,
                                                 @Field("telephone") String telephone,
                                                 @Field("monnaie") String monnaie,
@@ -108,7 +108,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> confirmation_transfert_epargne(@Field("ent") String ent,
+    Observable<Integer> confirmation_transfert_epargne(@Field("ent") String ent,
                                                    @Field("type_transfert_ep") String type_transfert_ep,
                                                    @Field("telephone") String telephone,
                                                    @Field("monnaie") String monnaie,
@@ -116,7 +116,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<RetraitResponse> retrait(@Field("ent") String ent,
+    Observable<RetraitResponse> retrait(@Field("ent") String ent,
                                     @Field("expeditaire") String expeditaire,
                                     @Field("tel_agent") String tel_agent,
                                     @Field("mt") String mt,
@@ -124,7 +124,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> confirm_retrait(@Field("ent") String ent,
+    Observable<Integer> confirm_retrait(@Field("ent") String ent,
                                             @Field("expeditaire") String expeditaire,
                                             @Field("pin") String pin,
                                             @Field("tel_agent") String tel_agent,
@@ -133,17 +133,17 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<List<TransactionResponse>> rapport(@Field("ent") String ent,
+    Observable<List<TransactionResponse>> rapport(@Field("ent") String ent,
                                               @Field("telephone") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> emprunt_check(@Field("ent") String ent,
+    Observable<Integer> emprunt_check(@Field("ent") String ent,
                                   @Field("telephone") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<EpargneResponse> emprunt(@Field("ent") String ent,
+    Observable<EpargneResponse> emprunt(@Field("ent") String ent,
                                     @Field("telephone") String telephone,
                                     @Field("pin") String pin,
                                     @Field("mt") String mt,
@@ -151,20 +151,20 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<String> conversion_monnaie(@Field("ent") String ent,
+    Observable<String> conversion_monnaie(@Field("ent") String ent,
                                       @Field("mt") String mt,
                                       @Field("monnaie") String monnaie);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> nous_contacter(@Field("ent") String ent,
+    Observable<Integer> nous_contacter(@Field("ent") String ent,
                                    @Field("expeditaire") String expeditaire,
                                    @Field("sujet") String sujet,
                                    @Field("msg") String msg);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> update_profil(@Field("ent") String ent,
+    Observable<Integer> update_profil(@Field("ent") String ent,
                                   @Field("nom") String nom,
                                   @Field("prenom") String prenom,
                                   @Field("telephone") String telephone,
@@ -175,12 +175,12 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Integer> pin_perdu(@Field("ent") String ent,
+    Observable<Integer> pin_perdu(@Field("ent") String ent,
                               @Field("telephone") String telephone,
                               @Field("email") String email);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Single<Double> taux_du_jour(@Field("ent") String ent,
+    Observable<Double> taux_du_jour(@Field("ent") String ent,
                                  @Field("mn") String telephone);
 }

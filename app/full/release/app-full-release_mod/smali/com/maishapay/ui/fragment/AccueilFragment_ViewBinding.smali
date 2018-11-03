@@ -60,7 +60,7 @@
 
     iput-object v0, p1, Lcom/maishapay/ui/fragment/AccueilFragment;->progressBarTaux:Landroid/widget/ProgressBar;
 
-    const-string v0, "field \'taux\'"
+    const-string v0, "field \'tauxAndEpargne\'"
 
     .line 38
     const-class v1, Landroid/widget/LinearLayout;

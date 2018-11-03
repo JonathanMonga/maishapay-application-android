@@ -17,7 +17,9 @@ package com.maishapay.presenter;
 
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
+import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.UpdateProfileView;
 
@@ -53,9 +55,9 @@ public class UpdateProfilePresenter extends TiPresenter<UpdateProfileView> {
         disposableHandler.manageDisposable(maishapayClient.update_profil(userNom, userPrenom, userPhone, userEmail, userAdresse, userVille, userPin)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Integer>() {
+                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
                     @Override
-                    public void accept(Integer response) {
+                    protected void onSuccess(Integer response) {
                         switch (response) {
                             case 3: {
                                 if(isViewAttached()) {
@@ -73,14 +75,6 @@ public class UpdateProfilePresenter extends TiPresenter<UpdateProfileView> {
                                     break;
                                 }
                             }
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().showNetworkError();
                         }
                     }
                 }));

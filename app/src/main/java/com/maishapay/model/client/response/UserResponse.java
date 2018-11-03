@@ -21,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * A user response
  */
-public class UserResponse {
+public class UserResponse extends BaseResponse{
 
     @SerializedName("resultat")
     private int resultat;

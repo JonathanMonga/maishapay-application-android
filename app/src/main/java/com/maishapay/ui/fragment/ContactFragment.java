@@ -41,6 +41,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
         View view = inflater.inflate(R.layout.contact_fragment, container, false);
 
         ButterKnife.bind(this, view);
+        intProgressBar();
         return view;
     }
 
@@ -65,12 +66,12 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
     @OnClick(R.id.BTN_Envoyer)
     public void BTN_EnvoyerClicked(){
         if (TextUtils.isEmpty(ET_Assunto.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_Assunto.getHint()), R.id.ET_Montant);
+            toastMessage(String.format(getString(R.string.erro_campo), ET_Assunto.getHint()), R.id.ET_Assunto);
             return;
         }
 
         if (TextUtils.isEmpty(ET_Mensagem.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_Mensagem.getHint()), R.id.ET_Montant);
+            toastMessage(String.format(getString(R.string.erro_campo), ET_Mensagem.getHint()), R.id.ET_Mensagem);
             return;
         }
 
@@ -123,5 +124,20 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
     private void toastMessage(String message, int view) {
         getActivity().findViewById(view).startAnimation(AnimationUtils.loadAnimation(MaishapayApplication.getMaishapayContext(), R.anim.shake));
         Toast.makeText(MaishapayApplication.getMaishapayContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onUnknownError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onTimeout() {
+
+    }
+
+    @Override
+    public void onNetworkError() {
+
     }
 }
