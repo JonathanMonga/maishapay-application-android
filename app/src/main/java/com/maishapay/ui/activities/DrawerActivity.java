@@ -25,6 +25,7 @@ import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
 import com.maishapay.ui.fragment.SettingsFragment;
+import com.maishapay.util.LogCat;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -36,7 +37,9 @@ import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -210,9 +213,18 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        String[] countiesArray = new String[]{"243", "211", "250", "228", "225", "254"};
+                        List<String> strings = new ArrayList<>();
+                        strings.add("243");
+                        strings.add("211");
+                        strings.add("250");
+                        strings.add("228");
+                        strings.add("225");
+                        strings.add("254");
 
-                        if (Arrays.asList(countiesArray).contains(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 2)))
+                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
+                        LogCat.e(codePhone);
+
+                        if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -220,11 +232,10 @@ public class DrawerActivity extends AppCompatActivity {
                                 }
                             }, 400);
                         else
-                            Snacky.builder()
-                                    .setView(findViewById(R.id.root))
-                                    .setText("Désolé cette fonctionnalité n'est disponible pour votre pays")
-                                    .setDuration(Snacky.LENGTH_LONG)
-                                    .warning()
+                            new MaterialDialog.Builder(DrawerActivity.this)
+                                    .title("Remarque")
+                                    .iconRes(R.drawable.ic_informacao_azul)
+                                    .content("Désolé cette fonctionnalité n'est disponible dans votre pays")
                                     .show();
                         return false;
 

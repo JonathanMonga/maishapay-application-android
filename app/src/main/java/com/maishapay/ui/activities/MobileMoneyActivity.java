@@ -38,7 +38,7 @@ import static com.maishapay.util.Constants.ussdToCallableUri;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MobileMoneyActivity extends AppCompatActivity implements PossitiveCountryButtonListener {
+public class MobileMoneyActivity extends AppCompatActivity {
     private static final String AIRTEL_OPERATOR = "Airtel CD";
     private static final String AFRICELL_OPERATOR = "Africell RDC";
     private static final String VODACOM_OPERATOR = "VODACOM CD";
@@ -56,7 +56,6 @@ public class MobileMoneyActivity extends AppCompatActivity implements PossitiveC
     CardView cardMoneyId4;
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
-    private DialogCountryFragment dialogCountryFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -180,84 +179,5 @@ public class MobileMoneyActivity extends AppCompatActivity implements PossitiveC
                     .setDuration(Snacky.LENGTH_LONG)
                     .warning()
                     .show();
-    }
-
-    @Override
-    public void positiveClicked(int id) {
-        switch (id) {
-            case R.id.kenya: {
-                country = "Kenya";
-
-                UserPrefencesManager.setMobileMoneyCountry(country);
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-
-            case  R.id.rwanda: {
-                country = "Rwanda";
-                UserPrefencesManager.setMobileMoneyCountry(country);
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-
-            case  R.id.togo: {
-                country = "Togo";
-                UserPrefencesManager.setMobileMoneyCountry(country);
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-
-            case  R.id.senegal: {
-                country = "Senegal";
-                UserPrefencesManager.setMobileMoneyCountry(country);
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-
-            case  R.id.cotedivoire: {
-                country = "Cote d'ivoire";
-                UserPrefencesManager.setMobileMoneyCountry(country);
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-
-            default: {
-                country = "RDC";
-                UserPrefencesManager.setMobileMoneyCountry(country);
-
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre pays par défaut est " + country)
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
-                break;
-            }
-        }
     }
 }
