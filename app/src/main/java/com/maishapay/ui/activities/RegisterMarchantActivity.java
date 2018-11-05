@@ -81,7 +81,7 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
     }
 
     @OnClick(R.id.BTN_CriarConta)
@@ -215,7 +215,7 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
         finish();
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

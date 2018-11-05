@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -53,28 +54,30 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView> implements EpargneView {
 
-    private static String CDF = "Francs congolais (CDF)";
-    private static String USD = "Dollars (USD)";
-
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
     @BindView(R.id.fitFrancs)
     FitChart francsChart;
     @BindView(R.id.progressBarSolde)
     ProgressBar progressBarSolde;
-    @BindView(R.id.fitDollards) FitChart dollarsChart;
+    @BindView(R.id.fitDollards)
+    FitChart dollarsChart;
     @BindView(R.id.TV_Dollars)
     TextView TV_Dollars;
-    @BindView(R.id.TV_Francs) TextView TV_Francs;
+    @BindView(R.id.TV_Francs)
+    TextView TV_Francs;
     @BindView(R.id.LL_fitDollards)
     LinearLayout LL_fitDollards;
-    @BindView(R.id.LL_fitFrancs) LinearLayout LL_fitFrancs;
+    @BindView(R.id.LL_fitFrancs)
+    LinearLayout LL_fitFrancs;
 
     private DialogConfirmTransfertFragment dialogForgotFragment;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 
@@ -98,11 +101,14 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         dollarsChart.setMinValue(0f);
         dollarsChart.setMaxValue(1000000f);
 
-        getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        initProgressBar();
+
+        progressDialog.show();
+        getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
     }
 
     @OnClick(R.id.cardEpargnePersonelle)
-    public void cardEpargnePersonelleClicked(){
+    public void cardEpargnePersonelleClicked() {
         startActivity(new Intent(this, EpargnePersonnelleActivity.class));
     }
 
@@ -145,6 +151,16 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     }
 
     @Override
+    public void finishToLoadTestCompte() {
+        progressDialog.dismiss();
+
+        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        else
+            startActivity(new Intent(this, OuvrirEpargnePersonnelleActivity.class));
+    }
+
+    @Override
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
             LL_fitDollards.setVisibility(View.VISIBLE);
@@ -155,6 +171,13 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             LL_fitFrancs.setVisibility(View.INVISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initProgressBar() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Veuillez patienter");
     }
 
     @NonNull
@@ -176,6 +199,9 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             @Override
             public void onClick(View view) {
                 enabledControls(false);
+
+
+                getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
             }
         });
@@ -189,6 +215,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             @Override
             public void onClick(View view) {
                 enabledControls(false);
+                getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
             }
         });
@@ -196,7 +223,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     @Override
     public void onNetworkError() {
-        if (! NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
+        if (!NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
             if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
                 LL_fitDollards.setVisibility(View.VISIBLE);
                 LL_fitFrancs.setVisibility(View.VISIBLE);
@@ -228,9 +255,19 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 @Override
                 public void onClick(View view) {
                     enabledControls(false);
+                    getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
                     getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(! UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+            finish();
+
+        super.onBackPressed();
     }
 }

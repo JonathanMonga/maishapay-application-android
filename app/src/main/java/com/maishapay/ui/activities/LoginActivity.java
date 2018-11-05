@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             countryCodePicker.setCountryForPhoneCode(UserPrefencesManager.getUserCountryCodePhone());
         }
 
-        intProgressBar();
+        initProgressBar();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -275,7 +275,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 .show();
     }
 
-    private void intProgressBar(){
+    private void initProgressBar(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

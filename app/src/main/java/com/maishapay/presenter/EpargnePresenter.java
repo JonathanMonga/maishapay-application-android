@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.domain.UserDataPreference;
@@ -55,6 +56,28 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
                         if(isViewAttached()) {
                             getView().enabledControls(true);
                             getView().finishToLoadSolde(response);
+                        }
+                    }
+                }));
+    }
+
+    public void hasEpargneCompte(String userPhone) {
+        disposableHandler.manageDisposable(maishapayClient.transfert_epargne("p", userPhone, "USD", "1000000")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<EpargneResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(EpargneResponse response) {
+                        if (response.getResultat() == 0) {
+                            if(isViewAttached()) {
+                                getView().finishToLoadTestCompte();
+                                UserPrefencesManager.getLastSoldeAndRapport().setHasEpargneCompte(false);
+                            }
+                        } else {
+                            if(isViewAttached()) {
+                                getView().finishToLoadTestCompte();
+                                UserPrefencesManager.getLastSoldeAndRapport().setHasEpargneCompte(true);
+                            }
                         }
                     }
                 }));

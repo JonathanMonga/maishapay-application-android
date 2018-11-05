@@ -90,7 +90,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -149,7 +149,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
         getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

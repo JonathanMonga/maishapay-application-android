@@ -82,7 +82,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
     }
 
     @OnClick(R.id.BTN_CriarConta)
@@ -216,7 +216,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
         finish();
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

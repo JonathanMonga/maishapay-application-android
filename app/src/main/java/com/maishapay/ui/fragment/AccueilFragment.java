@@ -89,7 +89,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         mAuth = FirebaseAuth.getInstance();
 
         updateIndicator();
-        intProgressBar();
+        initProgressBar();
 
         return view;
     }
@@ -169,7 +169,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.epargneCardId})
     public void epargneClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
+        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
     }
 
     @OnClick({R.id.transactionCardId})
@@ -197,7 +197,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                             }
 
                             default: {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargnePersonnelleActivity.class));
+                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
                                 break;
                             }
                         }
@@ -269,7 +269,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         pager.stopAutoScroll();
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
@@ -324,7 +324,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                     new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), OuvrirEpargnePersonnelleActivity.class));
+                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
                             }
                         }, 430);
                     break;

@@ -92,9 +92,6 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
-            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-
         setContentView(R.layout.creer_epargne_personnelle_activity);
         ButterKnife.bind(this);
 
@@ -108,7 +105,7 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,7 +187,7 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
         getPresenter().ouvrirEpargne(UserPrefencesManager.getCurrentUser().getTelephone(), formatDate, userCurrency, ET_CodeSecret.getText().toString());
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

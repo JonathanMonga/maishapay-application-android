@@ -95,7 +95,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -159,7 +159,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

@@ -42,7 +42,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
         View view = inflater.inflate(R.layout.contact_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        intProgressBar();
+        initProgressBar();
         return view;
     }
 
@@ -91,7 +91,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
         }
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

@@ -96,7 +96,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             actionBar.setHomeButtonEnabled(true);
         }
 
-        intProgressBar();
+        initProgressBar();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -160,7 +160,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

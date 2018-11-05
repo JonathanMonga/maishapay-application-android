@@ -87,7 +87,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         villeEditText.setText(userResponse.getVille());
         adresseEditText.setText(userResponse.getAdresse());
 
-        intProgressBar();
+        initProgressBar();
     }
 
     @OnClick(R.id.BTN_CriarConta)
@@ -182,7 +182,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         }, 500);
     }
 
-    private void intProgressBar() {
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
