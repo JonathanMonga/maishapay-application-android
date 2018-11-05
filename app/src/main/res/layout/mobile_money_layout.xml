@@ -4,9 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="MissingPrefix" >
+    tools:ignore="MissingPrefix"
+    android:id="@+id/root">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/appbar" />
 
     <ScrollView
+        android:layout_below="@id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"

@@ -24,7 +24,6 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
-import com.maishapay.ui.fragment.MobileMoneyFragment;
 import com.maishapay.ui.fragment.SettingsFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -36,6 +35,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import java.util.Arrays;
 
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -125,23 +126,23 @@ public class DrawerActivity extends AppCompatActivity {
 
                             }
                         }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0,2));
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 2));
 
-                                UserPrefencesManager.clearAll();
+                        UserPrefencesManager.clearAll();
 
-                                UserPrefencesManager.setUserFirtRun(false);
-                                UserPrefencesManager.setUserPhone(userPhone);
-                                UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
+                        UserPrefencesManager.setUserFirtRun(false);
+                        UserPrefencesManager.setUserPhone(userPhone);
+                        UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
 
-                                UserPrefencesManager.setCurrentUserDisconnect(true);
+                        UserPrefencesManager.setCurrentUserDisconnect(true);
 
-                                startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                        })
+                        startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                })
                         .show();
                 return false;
             }
@@ -209,9 +210,22 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        setTitle("Mobile money");
-                        mFragment = new MobileMoneyFragment();
-                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
+                        String[] countiesArray = new String[]{"243", "211", "250", "228", "225", "254"};
+
+                        if (Arrays.asList(countiesArray).contains(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 2)))
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(DrawerActivity.this, MobileMoneyActivity.class));
+                                }
+                            }, 400);
+                        else
+                            Snacky.builder()
+                                    .setView(findViewById(R.id.root))
+                                    .setText("Désolé cette fonctionnalité n'est disponible pour votre pays")
+                                    .setDuration(Snacky.LENGTH_LONG)
+                                    .warning()
+                                    .show();
                         return false;
 
                     case 7:
@@ -260,8 +274,8 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
-            if(resultCode == Activity.RESULT_OK)
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK)
                 recreate();
         }
     }

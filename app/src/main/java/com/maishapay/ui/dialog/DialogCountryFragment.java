@@ -60,36 +60,36 @@ public class DialogCountryFragment extends AppCompatDialogFragment {
     }
 
     @OnClick(R.id.rdc)
-    public void kenyaButtonClicked(){
-        buttonListener.positiveClicked(R.id.kenya);
+    public void rdcButtonClicked(){
+        buttonListener.positiveClicked(R.id.rdc);
         dismiss();
     }
 
 
     @OnClick(R.id.rwanda)
-    public void kenyaButtonClicked(){
-        buttonListener.positiveClicked(R.id.kenya);
+    public void rwandaButtonClicked(){
+        buttonListener.positiveClicked(R.id.rwanda);
         dismiss();
     }
 
 
     @OnClick(R.id.togo)
-    public void kenyaButtonClicked(){
-        buttonListener.positiveClicked(R.id.kenya);
+    public void togoButtonClicked(){
+        buttonListener.positiveClicked(R.id.togo);
         dismiss();
     }
 
 
     @OnClick(R.id.senegal)
-    public void kenyaButtonClicked(){
-        buttonListener.positiveClicked(R.id.kenya);
+    public void senegalButtonClicked(){
+        buttonListener.positiveClicked(R.id.senegal);
         dismiss();
     }
 
 
     @OnClick(R.id.cotedivoire)
-    public void kenyaButtonClicked(){
-        buttonListener.positiveClicked(R.id.kenya);
+    public void cotedivoireButtonClicked(){
+        buttonListener.positiveClicked(R.id.cotedivoire);
         dismiss();
     }
 }

@@ -58,6 +58,20 @@ android {
         abortOnError false
     }
 
+    packagingOptions {
+        exclude 'lib/x86_64/*.so'
+        exclude 'lib/arm64-v8a/*.so'
+        exclude 'lib/x86/*.so'
+        exclude 'lib/armeabi-v7a/*.so'
+        exclude 'lib/armeabi/*.so'
+        exclude 'lib/mips/*.so'
+        exclude '/*.properties'
+        exclude '/*.txt'
+        exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/*.version'
+    }
+
     /*
     // Specifies one flavor dimension.
     flavorDimensions "version"

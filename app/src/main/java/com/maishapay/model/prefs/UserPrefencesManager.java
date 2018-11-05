@@ -160,20 +160,4 @@ public class UserPrefencesManager {
     public static String getUserPhone(){
         return Prefs.getString(USER_PHONE, "");
     }
-
-    public static void setMobileMoneyFirstRun(boolean b) {
-        Prefs.putBoolean(USER_MOBILE_MONEY_FIRST_RUN, b);
-    }
-
-    public static boolean getMobileMoneyFirstRun(){
-        return Prefs.getBoolean(USER_MOBILE_MONEY_FIRST_RUN, true);
-    }
-
-    public static void setMobileMoneyCountry(String b){
-        Prefs.putString(USER_MOBILE_MONEY_COUNTRY, b);
-    }
-
-    public static String getMobileMoneyCountry() {
-        return Prefs.getString(USER_MOBILE_MONEY_COUNTRY, "");
-    }
 }

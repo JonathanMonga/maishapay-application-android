@@ -61,6 +61,7 @@
         <activity android:name=".ui.activities.MaishapayPayPal" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.SuccessDepositActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.TransfertCompteCashActivity" />
+        <activity android:name=".ui.activities.MobileMoneyActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>
