@@ -54,9 +54,9 @@ import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.TransfertView;
 
-import org.alfonz.utility.Logcat;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -81,8 +81,6 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     Toolbar toolbar;
     @BindView(R.id.ET_Destinataire)
     RecipientEditTextView ET_Destinataire;
-    @BindView(R.id.show_all)
-    ImageButton show_all;
     @BindView(R.id.SP_TypeEnvoi)
     Spinner SP_TypeEnvoi;
     @BindView(R.id.ET_Montant)
@@ -130,11 +128,16 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             }
         });
 
-        ET_Destinataire.setMaxChips(20);
+        ET_Destinataire.setMaxChips(1);
         ET_Destinataire.setChipNotCreatedListener(new RecipientEditTextView.ChipNotCreatedListener() {
             @Override
             public void chipNotCreated(String chipText) {
-                Toast.makeText(TransfertCompteCashActivity.this, "You set the max number of chips to 20. Chip not created for: " + chipText, Toast.LENGTH_SHORT).show();
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Desolé, un seul numéro suffit.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
             }
         });
 
@@ -143,23 +146,6 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
         adapter.setShowMobileOnly(true);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                DrawableRecipientChip[] chips = ET_Destinataire.getSortedRecipients();
-                for (DrawableRecipientChip chip : chips) {
-                    Logcat.e("DrawableChip", chip.getEntry().getDisplayName() + " " + chip.getEntry().getDestination());
-                }
-            }
-        }, 5000);
-
-        show_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ET_Destinataire.showAllContacts();
-            }
-        });
     }
 
     @Override
@@ -195,7 +181,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
         if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
+            toastMessage(String.format(getString(R.string.erro_campo), "Destinataire"), R.id.ET_Destinataire);
             return;
         }
 
@@ -203,6 +189,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
             return;
         }
+
 
         enabledControls(false);
         getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
