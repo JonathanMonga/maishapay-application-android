@@ -20,10 +20,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -34,16 +31,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
-import com.android.ex.chips.recipientchip.DrawableRecipientChip;
 import com.maishapay.R;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -54,7 +47,6 @@ import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.TransfertView;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -190,9 +182,8 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             return;
         }
 
-
         enabledControls(false);
-        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -335,7 +326,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -352,7 +343,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -369,7 +360,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }

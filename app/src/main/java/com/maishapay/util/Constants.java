@@ -22,6 +22,7 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.model.prefs.UserPrefencesManager;
 
 import de.mateware.snacky.Snacky;
 
@@ -94,5 +95,24 @@ public class Constants {
         }
 
         return Uri.parse(uriString);
+    }
+
+    public static String generatePhoneNumber(String phone){
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
+        String destinqtqirePhone;
+        String recipient = phone;
+
+        int stringLength = recipient.length();
+
+        if(recipient.length() == 10)
+            destinqtqirePhone = codePhone + recipient.substring(1, stringLength);
+        else if (recipient.length() == 12)
+            destinqtqirePhone = codePhone + recipient.substring(3, stringLength);
+        else if (recipient.length() == 13)
+            destinqtqirePhone = codePhone + recipient.substring(4, stringLength);
+        else
+            destinqtqirePhone = recipient;
+
+        return destinqtqirePhone;
     }
 }

@@ -132,7 +132,7 @@ public class DrawerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 2));
+                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
 
                         UserPrefencesManager.clearAll();
 
@@ -222,7 +222,6 @@ public class DrawerActivity extends AppCompatActivity {
                         strings.add("254");
 
                         String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
-                        LogCat.e(codePhone);
 
                         if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
