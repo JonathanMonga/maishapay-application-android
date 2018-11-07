@@ -53,25 +53,24 @@
                         style="@style/form_linha_divisor"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="fill_parent"
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:orientation="horizontal"
+                            app:hintAnimationEnabled="false"
+                            app:hintEnabled="false">
 
-                            <EditText
+                            <com.android.ex.chips.RecipientEditTextView
                                 android:id="@+id/ET_Destinataire"
                                 style="@style/form_edit_text"
-                                android:layout_weight="1.0"
-                                android:hint="Téléphone de l'agent"
-                                android:inputType="phone"
-                                android:nextFocusDown="@+id/ET_Montant" />
-
-                            <ImageButton
-                                android:id="@+id/qrcode"
-                                android:scaleType="centerInside"
-                                style="@style/form_botao_novo"
-                                android:src="@drawable/qrcode" />
-                        </LinearLayout>
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Ex : 99 6980 422"
+                                android:textColorHint="@color/texto" />
+                        </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
 

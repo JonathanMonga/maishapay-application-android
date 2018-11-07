@@ -26,14 +26,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.ex.chips.BaseRecipientAdapter;
+import com.android.ex.chips.RecipientEditTextView;
 import com.maishapay.R;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -65,6 +69,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
     private static String pin;
+    private static String destinatairePhone;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -73,7 +78,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
     @BindView(R.id.ET_Destinataire)
-    EditText ET_Destinataire;
+    RecipientEditTextView ET_Destinataire;
 
     private ProgressDialog progressDialog;
     private DialogConfirmRetraitFragment confirmRetaritFragment;
@@ -115,6 +120,31 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
             }
         });
+
+        ET_Destinataire.setMaxChips(1);
+        ET_Destinataire.setChipNotCreatedListener(new RecipientEditTextView.ChipNotCreatedListener() {
+            @Override
+            public void chipNotCreated(String chipText) {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Desolé, un seul numéro suffit.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            }
+        });
+
+        ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
+        adapter.setShowMobileOnly(true);
+        ET_Destinataire.setAdapter(adapter);
+        ET_Destinataire.dismissDropDownOnItemSelected(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_transfert, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -123,14 +153,12 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_scan:
+                Intent intent = new Intent(this, DecoderActivity.class);
+                startActivityForResult(intent, REQUEST_QRCODE);
+                return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @OnClick(R.id.qrcode)
-    public void qrCodeClicked() {
-        Intent intent = new Intent(this, DecoderActivity.class);
-        startActivityForResult(intent, REQUEST_QRCODE);
     }
 
     @Override
@@ -145,7 +173,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @OnClick(R.id.BTN_Retrait)
     public void transfertClicked() {
-        if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
+        if (TextUtils.isEmpty(destinatairePhone)) {
             toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
             return;
         }
@@ -155,8 +183,14 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             return;
         }
 
+        if(ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone =  Constants.generatePhoneNumber(destinatairePhone);
+        else
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+
+
         enabledControls(false);
-        getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+        getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
     }
 
     private void initProgressBar() {
@@ -205,7 +239,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_Destinataire.getText().toString());
+        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
 
         startActivity(intent);
         finish();
@@ -244,7 +278,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     public void positiveClicked(String pin) {
         RetraitActivity.pin = pin;
         enabledControls(false);
-        getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override
@@ -274,9 +308,9 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 enabledControls(false);
 
                 if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
 
             }
         });
@@ -292,9 +326,9 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 enabledControls(false);
 
                 if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
             }
         });
     }
@@ -309,9 +343,9 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 enabledControls(false);
 
                 if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
 
             }
         });

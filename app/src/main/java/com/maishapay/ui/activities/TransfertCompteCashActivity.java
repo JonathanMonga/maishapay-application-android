@@ -68,6 +68,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
     private static String pin;
+    private static String destinatairePhone;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -181,9 +182,14 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
             return;
         }
+        
+        if(ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone =  Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
+        else 
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
         enabledControls(false);
-        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -294,7 +300,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
         TransfertCompteCashActivity.pin = pin;
 
         enabledControls(false);
-        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override
@@ -324,9 +330,9 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -341,9 +347,9 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -358,9 +364,9 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination()), userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }

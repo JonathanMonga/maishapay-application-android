@@ -2,6 +2,7 @@ package com.maishapay.ui.qrcode;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView.OnQRCodeReadListener;
 import com.maishapay.R;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class DecoderActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, OnQRCodeReadListener {
 
@@ -108,6 +111,11 @@ public class DecoderActivity extends AppCompatActivity implements ActivityCompat
                     Manifest.permission.CAMERA
             }, MY_PERMISSION_REQUEST_CAMERA);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void initQRCodeReaderView() {

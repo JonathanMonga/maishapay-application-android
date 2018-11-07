@@ -21,11 +21,12 @@
         android:id="@+id/result_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="#55000000"
         android:gravity="center"
         android:padding="16dp"
         android:textColor="#ffffff"
-        android:textSize="14sp" />
+        android:text="Maishapay"
+        android:textSize="16sp" />
 </RelativeLayout>

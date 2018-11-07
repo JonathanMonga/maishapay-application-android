@@ -1,6 +1,7 @@
 package com.maishapay.ui.activities;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TransactionActivity extends BaseActivity<TransactionPresenter, TransactionView> implements TransactionView{
 
@@ -70,6 +72,11 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
