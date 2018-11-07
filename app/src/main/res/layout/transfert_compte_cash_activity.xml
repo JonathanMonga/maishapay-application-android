@@ -54,23 +54,22 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_marginTop="56dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <EditText
+                            <com.android.ex.chips.RecipientEditTextView
                                 android:id="@+id/ET_Destinataire"
                                 style="@style/form_edit_text"
-                                android:layout_weight="1.0"
-                                android:hint="Téléphone du destinataire"
-                                android:inputType="phone"
-                                android:nextFocusDown="@+id/ET_Montant" />
+                                android:hint="EX : 99 6980 422"
+                                android:minHeight="58dp" />
 
                             <ImageButton
-                                android:id="@+id/qrcode"
-                                android:scaleType="centerInside"
+                                android:id="@+id/show_all"
                                 style="@style/form_botao_novo"
-                                android:src="@drawable/qrcode" />
+                                app:srcCompat="@drawable/ic_form_nome"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

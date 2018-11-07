@@ -62,7 +62,7 @@
                                 android:id="@+id/ET_Destinataire"
                                 style="@style/form_edit_text"
                                 android:layout_weight="1.0"
-                                android:hint="Téléphone du destinataire"
+                                android:hint="Ex: 99 6980 422"
                                 android:inputType="phone"
                                 android:nextFocusDown="@+id/ET_Montant" />
 
