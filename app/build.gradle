@@ -264,6 +264,11 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+    implementation('com.github.nicolasjafelle:refreshmenuitem:1.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
     implementation 'joda-time:joda-time:2.10.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.0'
     implementation 'com.google.firebase:firebase-database:16.0.4'

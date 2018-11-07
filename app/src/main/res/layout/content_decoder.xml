@@ -27,6 +27,6 @@
         android:gravity="center"
         android:padding="16dp"
         android:textColor="#ffffff"
-        android:text="Maishapay"
+        android:text="Scanner un Code QR"
         android:textSize="16sp" />
 </RelativeLayout>
