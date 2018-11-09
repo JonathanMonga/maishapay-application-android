@@ -51,6 +51,18 @@ android {
             it.buildConfigField 'String', 'USER_SESSION', USER_SESSION
             it.buildConfigField 'String', 'DEFAULT_SESSION_VALUE', DEFAULT_SESSION_VALUE
             it.buildConfigField 'String', 'USER_LOGIN_SUCCESS', USER_LOGIN_SUCCESS
+
+            it.buildConfigField 'String', 'USER_CURRENT_TAUX', USER_CURRENT_TAUX
+            it.buildConfigField 'String', 'USER_PHONE', USER_PHONE
+            it.buildConfigField 'String', 'USER_DISCONNECT', USER_DISCONNECT
+            it.buildConfigField 'String', 'USER_LAST_SOLDE_AND_REPPORT', USER_LAST_SOLDE_AND_REPPORT
+            it.buildConfigField 'String', 'USER_REFRESH', USER_REFRESH
+            it.buildConfigField 'String', 'USER_CREATION_EPARGNE', USER_CREATION_EPARGNE
+            it.buildConfigField 'String', 'USER_COUNTRY_CODE', USER_COUNTRY_CODE
+            it.buildConfigField 'String', 'USER_PHONE_FIREBASE', USER_PHONE_FIREBASE
+            it.buildConfigField 'String', 'USER_FIRST_RUN', USER_FIRST_RUN
+            it.buildConfigField 'String', 'USER_MOBILE_MONEY_FIRST_RUN', USER_MOBILE_MONEY_FIRST_RUN
+            it.buildConfigField 'String', 'USER_MOBILE_MONEY_COUNTRY', USER_MOBILE_MONEY_COUNTRY
         }
     }
 

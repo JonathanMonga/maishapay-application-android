@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         String code = countryCodePicker.getSelectedCountryCode();
         String phone = phoneEditText.getRawText();
 
-        maskText = code + phone;
+        maskText = String.format("+%s%s", code, phone);
 
         enabledControls(false);
         getPresenter().login(maskText, codePinEditText.getText().toString().trim());

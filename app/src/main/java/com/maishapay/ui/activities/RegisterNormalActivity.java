@@ -142,7 +142,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
         String code = countryCodePicker.getSelectedCountryCode();
         String phone = phoneEditText.getRawText();
 
-        maskText = code + phone;
+        maskText = String.format("+%s%s", code, phone);
 
         enabledControls(false);
         getPresenter().inscription(

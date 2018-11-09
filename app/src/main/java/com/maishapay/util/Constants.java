@@ -31,18 +31,6 @@ import de.mateware.snacky.Snacky;
  */
 
 public class Constants {
-    public static final String USER_CURRENT_TAUX = "current_taux";
-    public static final String USER_PHONE = "phone";
-    public static final String USER_DISCONNECT = "disconnect";
-    public static final String USER_LAST_SOLDE_AND_REPPORT = "last_solde_and_report";
-    public static final String USER_REFRESH = "refresh";
-    public static final String USER_CREATION_EPARGNE = "creation_epargne";
-    public static final String USER_COUNTRY_CODE = "country_code";
-    public static final String USER_PHONE_FIREBASE = "user_phone_firebase";
-    public static final String USER_FIRST_RUN = "firt_run";
-    public static final String USER_MOBILE_MONEY_FIRST_RUN = "mobile_money_first_run";
-    public static final String USER_MOBILE_MONEY_COUNTRY = "mobile_money_country";
-
     public static void showOnUnknownError(View view, View.OnClickListener onClickListener){
         Snacky.builder()
                 .setView(view)
@@ -99,20 +87,20 @@ public class Constants {
 
     public static String generatePhoneNumber(String phone){
         String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
-        String destinqtqirePhone;
+        String destinqtairePhone;
         String recipient = phone;
 
         int stringLength = recipient.length();
 
         if(recipient.length() == 10)
-            destinqtqirePhone = codePhone + recipient.substring(1, stringLength);
+            destinqtairePhone = codePhone + recipient.substring(1, stringLength);
         else if (recipient.length() == 12)
-            destinqtqirePhone = codePhone + recipient.substring(3, stringLength);
+            destinqtairePhone = codePhone + recipient.substring(3, stringLength);
         else if (recipient.length() == 13)
-            destinqtqirePhone = codePhone + recipient.substring(4, stringLength);
+            destinqtairePhone = codePhone + recipient.substring(4, stringLength);
         else
-            destinqtqirePhone = recipient;
+            destinqtairePhone = recipient;
 
-        return destinqtqirePhone;
+        return destinqtairePhone;
     }
 }

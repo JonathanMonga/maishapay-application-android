@@ -141,7 +141,7 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
         String code = countryCodePicker.getSelectedCountryCode();
         String phone = phoneEditText.getRawText();
 
-        maskText = code + phone;
+        maskText = String.format("+%s%s", code, phone);
 
         enabledControls(false);
         getPresenter().inscription(

@@ -27,16 +27,6 @@ import com.pixplicity.easyprefs.library.Prefs;
 import static com.maishapay.BuildConfig.DEFAULT_SESSION_VALUE;
 import static com.maishapay.BuildConfig.USER_LOGIN_SUCCESS;
 import static com.maishapay.BuildConfig.USER_SESSION;
-import static com.maishapay.util.Constants.USER_COUNTRY_CODE;
-import static com.maishapay.util.Constants.USER_CREATION_EPARGNE;
-import static com.maishapay.util.Constants.USER_CURRENT_TAUX;
-import static com.maishapay.util.Constants.USER_DISCONNECT;
-import static com.maishapay.util.Constants.USER_FIRST_RUN;
-import static com.maishapay.util.Constants.USER_LAST_SOLDE_AND_REPPORT;
-import static com.maishapay.util.Constants.USER_MOBILE_MONEY_COUNTRY;
-import static com.maishapay.util.Constants.USER_MOBILE_MONEY_FIRST_RUN;
-import static com.maishapay.util.Constants.USER_PHONE;
-import static com.maishapay.util.Constants.USER_REFRESH;
 
 /**
  * UserPrefencesManager class
