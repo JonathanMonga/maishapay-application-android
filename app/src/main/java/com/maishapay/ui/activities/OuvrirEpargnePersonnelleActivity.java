@@ -174,15 +174,6 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
             return;
         }
 
-        String[] currencies = getResources().getStringArray(R.array.option_devise);
-        int position = SP_TypeEnvoi.getSelectedItemPosition();
-        String userCurrency;
-
-        if (currencies[position].equals(CDF))
-            userCurrency = CDF_CURRENCY;
-        else
-            userCurrency = USD_CURRENCY;
-
         enabledControls(false);
         getPresenter().ouvrirEpargne(UserPrefencesManager.getCurrentUser().getTelephone(), formatDate, userCurrency, ET_CodeSecret.getText().toString());
     }
@@ -224,16 +215,6 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     }
 
     @Override
-    public void showConfirmEpargnePersonelleError(int type) {
-        Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Impossible de se connecter au serveur.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-    }
-
-    @Override
     public void finishToOuvrir(Integer response) {
         FragmentManager fm = getSupportFragmentManager();
         dialogConfirmCreationEpargneFragment = DialogConfirmCreationEpargneFragment.newInstance();
@@ -267,9 +248,6 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
 
     @Override
     public void positiveClicked(String pin) {
-        UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
-        userDataPreference.setHasEpargneCompte(true);
-        UserPrefencesManager.setUserDataPreference(userDataPreference);
         setResult(Activity.RESULT_OK);
         finish();
     }
@@ -299,16 +277,36 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
 
     @Override
     public void onUnknownError(String errorMessage) {
-
+        enabledControls(true);
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onTimeout() {
 
+        enabledControls(true);
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onNetworkError() {
 
+        enabledControls(true);
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 }

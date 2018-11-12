@@ -18,10 +18,8 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
-import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
-import com.maishapay.model.domain.UserDataPreference;
-import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.EpargneView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -50,34 +48,16 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
                 .subscribeWith(new CallbackWrapper<SoldeEpargneResponse>(getView()) {
                     @Override
                     protected void onSuccess(SoldeEpargneResponse response) {
-                        if(isViewAttached()) {
-                            getView().enabledControls(true);
-                            getView().finishToLoadSolde(response);
-                        }
-                    }
-                }));
-    }
-
-    public void hasEpargneCompte(String userPhone) {
-        disposableHandler.manageDisposable(maishapayClient.transfert_epargne("p", userPhone, "USD", "1000000")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<EpargneResponse>(getView()) {
-                    @Override
-                    protected void onSuccess(EpargneResponse response) {
-                        if (response.getResultat() == 0) {
-                            if(isViewAttached()) {
-                                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
-                                userDataPreference.setHasEpargneCompte(false);
-                                UserPrefencesManager.setUserDataPreference(userDataPreference);
-                                getView().finishToLoadTestCompte();
+                        LogCat.e(response.getResultat() +"");
+                        if(response.getResultat() == 0) {
+                            if (isViewAttached()) {
+                                getView().enabledControls(true);
+                                getView().showErrorEpargne();
                             }
                         } else {
-                            if(isViewAttached()) {
-                                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
-                                userDataPreference.setHasEpargneCompte(true);
-                                UserPrefencesManager.setUserDataPreference(userDataPreference);
-                                getView().finishToLoadTestCompte();
+                            if (isViewAttached()) {
+                                getView().enabledControls(true);
+                                getView().finishToLoadSolde(response);
                             }
                         }
                     }

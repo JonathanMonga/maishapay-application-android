@@ -73,14 +73,6 @@ public class UserDataPreference {
         this.recuDollars = recuDollars;
     }
 
-    public boolean isHasEpargneCompte() {
-        return hasEpargneCompte;
-    }
-
-    public void setHasEpargneCompte(boolean hasEpargneCompte) {
-        this.hasEpargneCompte = hasEpargneCompte;
-    }
-
     public double getTaux() {
         return taux;
     }

@@ -20,6 +20,7 @@ import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.OuvrirEpargnePersonelleView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;

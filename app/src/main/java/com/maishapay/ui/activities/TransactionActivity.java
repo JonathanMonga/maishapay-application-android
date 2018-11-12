@@ -85,7 +85,11 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void enabledControls(boolean flag) {
-
+        if (flag) {
+            menuHelper.stopLoading();
+        } else {
+            menuHelper.startLoading();
+        }
     }
 
     @Override
@@ -126,43 +130,37 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void onUnknownError(String errorMessage) {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onTimeout() {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onNetworkError() {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 }

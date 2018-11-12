@@ -53,6 +53,7 @@ import java.util.Collection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView> implements EpargneView {
@@ -75,13 +76,11 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     LinearLayout LL_fitFrancs;
 
     private DialogConfirmTransfertFragment dialogForgotFragment;
-    private ProgressDialog progressDialog;
     private MenuHelper menuHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 
@@ -106,15 +105,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         dollarsChart.setMinValue(0f);
         dollarsChart.setMaxValue(1000000f);
 
-        initProgressBar();
-
-        if(! UserPrefencesManager.getUserDataPreference().isHasEpargneCompte()) {
-            enabledControls(false);
-            getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
-        } else {
-            enabledControls(false);
-            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-        }
+        enabledControls(false);
+        getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
     }
 
     @OnClick(R.id.cardEpargnePersonelle)
@@ -133,7 +125,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_rafrechir : {
+            case R.id.action_rafrechir: {
                 menuHelper.setMenuItem(item);
                 menuHelper.startLoading();
 
@@ -174,47 +166,39 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     }
 
     @Override
-    public void finishToLoadTestCompte() {
-        progressDialog.dismiss();
-
-        if (UserPrefencesManager.getUserDataPreference().isHasEpargneCompte())
-            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-        else
-            startActivityForResult(new Intent(this, OuvrirEpargnePersonnelleActivity.class), 1);
+    public void showErrorEpargne() {
+        startActivityForResult(new Intent(this, OuvrirEpargnePersonnelleActivity.class), 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1)
-            if(resultCode == Activity.RESULT_OK)
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                enabledControls(false);
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-        else if(requestCode == 2)
-                if(resultCode == Activity.RESULT_OK)
-                    recreate();
+            }
+        } else if (requestCode == 2)
+            if (resultCode == Activity.RESULT_OK) {
+                enabledControls(false);
+                getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
     }
 
     @Override
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
-            progressDialog.dismiss();
+            menuHelper.stopLoading();
             LL_fitDollards.setVisibility(View.VISIBLE);
             LL_fitFrancs.setVisibility(View.VISIBLE);
             progressBarSolde.setVisibility(View.INVISIBLE);
         } else {
-            progressDialog.show();
+            menuHelper.startLoading();
             LL_fitDollards.setVisibility(View.INVISIBLE);
             LL_fitFrancs.setVisibility(View.INVISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
     }
 
     @NonNull
@@ -230,33 +214,26 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     @Override
     public void onUnknownError(String errorMessage) {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
-                getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onTimeout() {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
-                getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
@@ -290,14 +267,12 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             menuHelper.stopLoading();
             enabledControls(true);
 
-            Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    enabledControls(false);
-                    getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
-                    getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
-                }
-            });
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Aucune connexion réseau. Réessayez plus tard.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .error()
+                    .show();
         }
     }
 }

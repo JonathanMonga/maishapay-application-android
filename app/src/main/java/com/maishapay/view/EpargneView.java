@@ -13,7 +13,7 @@ public interface EpargneView extends BaseView {
     void finishToLoadSolde(SoldeEpargneResponse response);
 
     @CallOnMainThread
-    void finishToLoadTestCompte();
+    void showErrorEpargne();
 
     @CallOnMainThread
     void enabledControls(boolean flag);

@@ -16,9 +16,6 @@ public interface OuvrirEpargnePersonelleView extends BaseView {
     void showOuvrirEpargnePersonelleError(int  type);
 
     @CallOnMainThread
-    void showConfirmEpargnePersonelleError(int  type);
-
-    @CallOnMainThread
     void finishToOuvrir(Integer response);
 
     @CallOnMainThread

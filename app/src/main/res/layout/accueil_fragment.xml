@@ -275,7 +275,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Transferer de l'agent ou que vous soyez."
+                            android:text="Consulter votre historique des transactions."
                             android:textColor="@android:color/darker_gray" />
 
                     </LinearLayout>
