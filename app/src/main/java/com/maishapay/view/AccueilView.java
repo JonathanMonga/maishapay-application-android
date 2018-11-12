@@ -14,7 +14,4 @@ public interface AccueilView extends BaseView {
 
     @CallOnMainThread
     void finishToLoadTaux();
-
-    @CallOnMainThread
-    void finishToLoadEpargne();
 }

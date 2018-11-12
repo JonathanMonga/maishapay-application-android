@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,6 +22,7 @@ import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TransactionPresenter;
 import com.maishapay.ui.adapter.TransactionAdapter;
+import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
 
@@ -42,6 +44,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
 
     private TransactionAdapter mAdapter;
+    private MenuHelper menuHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,9 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         setContentView(R.layout.transaction_activity);
         ButterKnife.bind(this);
 
-
         toolbar.setTitle("Transactions");
         setSupportActionBar(toolbar);
+        menuHelper = new MenuHelper();
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -66,6 +69,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void finishToLoadTransactions(List<TransactionResponse> responses) {
+        menuHelper.stopLoading();
         progressBar.setVisibility(View.INVISIBLE);
         mAdapter = new TransactionAdapter(responses);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -99,17 +103,30 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return menuHelper.onCreateOptionsMenu(getMenuInflater(), menu, true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_rafrechir : {
+                menuHelper.setMenuItem(item);
+                menuHelper.startLoading();
+
+                progressBar.setVisibility(View.VISIBLE);
+                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onUnknownError(String errorMessage) {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
@@ -123,6 +140,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void onTimeout() {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
@@ -136,6 +154,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void onNetworkError() {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {

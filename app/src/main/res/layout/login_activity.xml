@@ -60,7 +60,6 @@
                             android:layout_weight="0.0"
                             android:paddingLeft="10.0dip"
                             android:paddingRight="10.0dip"
-                            android:text="@string/ou"
                             android:textAllCaps="true"
                             android:textColor="@color/branco"
                             android:textSize="14.0sp"
@@ -169,7 +168,7 @@
                             android:layout_marginLeft="10.0dip"
                             android:layout_marginRight="20.0dip"
                             android:layout_marginTop="10.0dip"
-                            android:text="@string/criar_conta"
+                            android:text="Créer un compte"
                             android:textColor="@color/md_orange_A700" />
 
                         <Button

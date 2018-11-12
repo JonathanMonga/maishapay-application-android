@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="option_compte">
+        <item>Taximen</item>
+        <item>Cabine/Télécom</item>
+        <item>Shop/Magazin</item>
+        <item>Restaurant</item>
+        <item>Hotel</item>
+        <item>Hopital/Pharmacies</item>
+        <item>Autres</item>
+    </array>
+
+    <array name="option_devise">
+        <item>Francs congolais (CDF)</item>
+        <item>Dollars (USD)</item>
+    </array>
+
+    <array name="option_epargne_devise">
+        <item>USD et CDF</item>
+        <item>Francs congolais (CDF)</item>
+        <item>Dollars (USD)</item>
+    </array>
+
+    <array name="option_transfert">
+        <item>Compte à compte</item>
+        <item>Compte à cash</item>
+        <item>Epargne</item>
+    </array>
+
+    <array name="option_country_mobile">
+        <item>@string/rdc</item>
+        <item>@string/rwanda</item>
+        <item>@string/togo</item>
+        <item>@string/cotedivoire</item>
+        <item>@string/kenya</item>
+        <item>@string/senegal</item>
+    </array>
+
+    <array name="option_transfert_paiment">
+        <item>Compte à compte</item>
+        <item>Compte à cash</item>
+    </array>
+
+    <array name="option_epargne">
+        <item>Epargne personnelle</item>
+        <item>Epargne avenir</item>
+    </array>
+
+    <array name="option_type_compte">
+        <item>Ouvrir un compte Maishapay</item>
+        <item>Ouvrir un compte marchant</item>
+    </array>
+</resources>

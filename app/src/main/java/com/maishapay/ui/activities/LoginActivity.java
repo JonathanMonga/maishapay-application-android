@@ -167,8 +167,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK) {
-                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0,2));
+                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
@@ -182,8 +182,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             }
         } else {
             if(resultCode == Activity.RESULT_OK){
-                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0,2));
+                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);

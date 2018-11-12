@@ -29,11 +29,9 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@string/font_sans_serif_normal</item>
     </style>
     <style name="OnBoarding2.TitleText" parent="@style/OnBoarding2.Text">
         <item name="android:textSize">24.0sp</item>
-        <item name="android:fontFamily">@string/font_sans_serif_medium</item>
     </style>
 
     <style name="OnBoarding2.ContentText" parent="@style/OnBoarding2.Text">
@@ -64,7 +62,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
         <item name="actionModeBackground">@color/md_orange_500</item>
         <item name="actionModeSplitBackground">@color/md_orange_500</item>
-        <item name="colorAccent">@color/texto_action_bar</item>
+        <item name="colorAccent">@color/branco</item>
         <item name="colorControlHighlight">@color/item_selected</item>
         <item name="colorPrimary">@color/md_orange_500</item>
         <item name="colorPrimaryDark">@color/md_orange_600</item>
@@ -128,6 +126,8 @@
     <style name="CustomToolBarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">@color/branco</item>
         <item name="android:textColorSecondary">@color/branco</item>
+        <item name="actionMenuTextColor">@color/branco</item>
+        <item name="android:actionMenuTextColor">@color/branco</item>
     </style>
 
     <style name="botao_azul">

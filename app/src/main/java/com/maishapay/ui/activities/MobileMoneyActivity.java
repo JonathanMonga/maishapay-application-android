@@ -40,7 +40,7 @@ import static com.maishapay.util.Constants.ussdToCallableUri;
  */
 public class MobileMoneyActivity extends AppCompatActivity {
     private static final String AIRTEL_OPERATOR = "Airtel CD";
-    private static final String AFRICELL_OPERATOR = "Africell RDC";
+    private static final String AFRICELL_OPERATOR = "AFRICELL";
     private static final String VODACOM_OPERATOR = "VODACOM CD";
     private static final String ORANGE_OPERATOR = "Orange RDC";
 

@@ -41,7 +41,7 @@
                         <EditText
                             android:id="@+id/ET_Nome"
                             style="@style/form_edit_text"
-                            android:hint="@string/primeiro_nome"
+                            android:hint="Prénom"
                             android:inputType="textCapWords"
                             android:nextFocusDown="@+id/ET_Sobrenome" />
                     </LinearLayout>
@@ -53,7 +53,7 @@
                         <EditText
                             android:id="@+id/ET_Sobrenome"
                             style="@style/form_edit_text"
-                            android:hint="@string/segundo_nome"
+                            android:hint="Nom"
                             android:inputType="textCapWords"
                             android:nextFocusDown="@+id/ET_Phone" />
                     </LinearLayout>

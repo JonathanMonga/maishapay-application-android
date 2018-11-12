@@ -76,7 +76,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.0"
                                 android:ellipsize="end"
-                                android:fontFamily="@string/font_sans_serif_medium"
                                 android:maxLines="1"
                                 android:textColor="@color/texto"
                                 android:textSize="@dimen/font_normal_plus" />
@@ -86,7 +85,6 @@
                                 android:id="@+id/TV_Montant"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@string/font_sans_serif_medium"
                                 android:gravity="end"
                                 android:textColor="@color/red_dark"
                                 android:textSize="@dimen/font_normal_plus" />
@@ -150,7 +148,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:layout_marginLeft="2.0dip"
-                                    android:fontFamily="@string/font_sans_serif_normal"
                                     android:textColor="@color/black_54"
                                     android:textSize="@dimen/font_small"
                                     android:visibility="gone" />
@@ -161,7 +158,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:layout_marginLeft="2.0dip"
-                                    android:fontFamily="@string/font_sans_serif_normal"
                                     android:textColor="@color/black_54"
                                     android:textSize="@dimen/font_normal_minus"
                                     android:text="Hier"/>

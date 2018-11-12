@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -34,6 +37,7 @@ import com.maishapay.ui.activities.TransfertCompteActivity;
 import com.maishapay.ui.activities.TransfertCompteCashActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
+import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
 import com.maishapay.view.AccueilView;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
@@ -77,14 +81,19 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     private ProgressDialog progressDialog;
     public PaieMoiDialogFragment paieMoiDialogFragment;
 
+    private MenuHelper menuHelper;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.accueil_fragment, container, false);
         ButterKnife.bind(this, view);
 
+        setHasOptionsMenu(true);
 
         getContext().startService(new Intent(getContext(), MaishapayService.class));
+
+        menuHelper = new MenuHelper();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -227,14 +236,10 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void finishToLoadTaux() {
+        menuHelper.stopLoading();
         progressBarTaux.setVisibility(View.INVISIBLE);
         taux.setVisibility(View.VISIBLE);
         TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux())));
-    }
-
-    @Override
-    public void finishToLoadEpargne() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
     }
 
     @Override
@@ -264,6 +269,31 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menuHelper.onCreateOptionsMenu(inflater, menu, true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.action_rafrechir : {
+                menuHelper.setMenuItem(item);
+                menuHelper.startLoading();
+
+                taux.setVisibility(View.INVISIBLE);
+                progressBarSolde.setVisibility(View.VISIBLE);
+                progressBarTaux.setVisibility(View.VISIBLE);
+                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
+
+            default : return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         pager.stopAutoScroll();
@@ -278,6 +308,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onUnknownError(String errorMessage) {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnUnknownError(getView(), new View.OnClickListener() {
@@ -291,6 +322,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onTimeout() {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnTimeout(getView(), new View.OnClickListener() {
@@ -304,6 +336,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onNetworkError() {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnNetworkError(getView(), new View.OnClickListener() {

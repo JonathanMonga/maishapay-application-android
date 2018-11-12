@@ -10,6 +10,8 @@ import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.util.Constants;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import static com.maishapay.BuildConfig.USER_PHONE_FIREBASE;
+
 
 public class MaishapayService extends Service {
 
@@ -28,7 +30,7 @@ public class MaishapayService extends Service {
 
         MaishapayNotification.readNotification(this)
                 .startActivity(TransactionActivity.class)
-                .readFrom(Prefs.getString(Constants.USER_PHONE_FIREBASE,""));
+                .readFrom(Prefs.getString(USER_PHONE_FIREBASE,""));
 
         return Service.START_STICKY;
     }

@@ -21,11 +21,17 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.domain.UserDataPreference;
-import com.maishapay.util.Constants;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import static com.maishapay.BuildConfig.DEFAULT_SESSION_VALUE;
+import static com.maishapay.BuildConfig.USER_COUNTRY_CODE;
+import static com.maishapay.BuildConfig.USER_DISCONNECT;
+import static com.maishapay.BuildConfig.USER_FIRST_RUN;
+import static com.maishapay.BuildConfig.USER_LAST_SOLDE_AND_REPPORT;
 import static com.maishapay.BuildConfig.USER_LOGIN_SUCCESS;
+import static com.maishapay.BuildConfig.USER_PHONE;
+import static com.maishapay.BuildConfig.USER_PHONE_FIREBASE;
+import static com.maishapay.BuildConfig.USER_REFRESH;
 import static com.maishapay.BuildConfig.USER_SESSION;
 
 /**
@@ -39,8 +45,8 @@ public class UserPrefencesManager {
         Gson gson = new Gson();
         try {
             userResponseString = gson.toJson(userResponse, UserResponse.class);
-            Prefs.putString(Constants.USER_PHONE_FIREBASE, userResponse.getTelephone());
-        }catch (Exception e){
+            Prefs.putString(USER_PHONE_FIREBASE, userResponse.getTelephone());
+        }catch (Exception e) {
             userResponseString = DEFAULT_SESSION_VALUE;
         }
 
@@ -90,9 +96,6 @@ public class UserPrefencesManager {
         Prefs.clear().apply();
     }
 
-    public static void setCurrentTaux(String taux){
-        Prefs.putString(Constants.USER_CURRENT_TAUX, taux);
-    }
 
     public static void setCurrentUserDisconnect(boolean b){
         Prefs.putBoolean(USER_DISCONNECT, b);
@@ -100,10 +103,6 @@ public class UserPrefencesManager {
 
     public static boolean getCurrentUserDisconnect(){
         return Prefs.getBoolean(USER_DISCONNECT, false);
-    }
-
-    public static String getCurrentTaux(){
-        return Prefs.getString(USER_CURRENT_TAUX, "1600");
     }
 
     public static void setLastSoldeAndRapport(UserDataPreference userDataPreference){

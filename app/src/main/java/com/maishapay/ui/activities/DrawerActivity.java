@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,13 +50,15 @@ public class DrawerActivity extends AppCompatActivity {
 
     private Drawer result = null;
 
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+        ButterKnife.bind(this);
 
-        // Handle Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         UserResponse userResponse = UserPrefencesManager.getCurrentUser();
@@ -131,8 +135,8 @@ public class DrawerActivity extends AppCompatActivity {
                         }).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
+                        String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
 
                         UserPrefencesManager.clearAll();
 
@@ -204,12 +208,12 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 5:
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(DrawerActivity.this, MapsActivity.class));
+                            }
+                        }, 400);
                         return false;
 
                     case 6:

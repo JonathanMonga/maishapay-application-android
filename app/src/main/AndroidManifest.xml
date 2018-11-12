@@ -10,7 +10,9 @@
                                      org.alfonz.utility,
                                      org.alfonz.media,
                                      org.alfonz.graphics,
-                                     com.afollestad.materialdialogs"/>
+                                     com.afollestad.materialdialogs,
+                                     pl.hypeapp.materialtimelineview,
+                                     net.sharewire.googlemapsclustering"/>
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -63,6 +65,7 @@
         <activity android:name=".ui.activities.SuccessDepositActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.TransfertCompteCashActivity" />
         <activity android:name=".ui.activities.MobileMoneyActivity" />
+        <activity android:name=".ui.activities.MapsActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>
@@ -75,5 +78,18 @@
             </intent-filter>
         </service>
         <service android:name=".service.MaishapayService" />
+
+        <!--<service android:name=".model.contact.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>-->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 </manifest>

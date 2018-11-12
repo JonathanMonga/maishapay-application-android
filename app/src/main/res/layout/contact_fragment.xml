@@ -26,7 +26,7 @@
                     <EditText
                         android:id="@+id/ET_Assunto"
                         style="@style/form_edit_text"
-                        android:hint="@string/assunto"
+                        android:hint="Objet"
                         android:inputType="textCapSentences"
                         android:nextFocusDown="@+id/ET_Mensagem" />
                 </LinearLayout>
@@ -43,7 +43,7 @@
                     <EditText
                         android:id="@+id/ET_Mensagem"
                         style="@style/form_edit_text_multiline"
-                        android:hint="@string/mensagem" />
+                        android:hint="Méssage" />
                 </LinearLayout>
             </LinearLayout>
 

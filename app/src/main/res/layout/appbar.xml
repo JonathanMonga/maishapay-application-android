@@ -14,7 +14,5 @@
         android:layout_height="?actionBarSize"
         android:minHeight="?actionBarSize"
         app:contentInsetLeft="@dimen/toolbar_espaco_titulo"
-        app:contentInsetStart="@dimen/toolbar_espaco_titulo"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/CustomToolBarTheme" />
+        app:contentInsetStart="@dimen/toolbar_espaco_titulo" />
 </android.support.design.widget.AppBarLayout>

@@ -59,7 +59,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="@string/avalie_estrelas"
                         android:textColor="@color/botao_social"
                         android:textSize="18.0sp"
                         fontpath="Roboto-Regular.ttf" />

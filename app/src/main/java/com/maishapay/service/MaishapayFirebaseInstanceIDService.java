@@ -12,6 +12,8 @@ import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.util.Constants;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import static com.maishapay.BuildConfig.USER_PHONE_FIREBASE;
+
 
 public class MaishapayFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
@@ -24,7 +26,7 @@ public class MaishapayFirebaseInstanceIDService extends FirebaseInstanceIdServic
         Log.d(TAG, "onCreate: ");
         MaishapayNotification.readNotification(this)
                 .startActivity(TransactionActivity.class)
-                .readFrom(Prefs.getString(Constants.USER_PHONE_FIREBASE,""));
+                .readFrom(Prefs.getString(USER_PHONE_FIREBASE,""));
     }
 
     @Override
