@@ -18,12 +18,10 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
-import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.AccueilView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -33,7 +31,6 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -104,7 +101,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                     @Override
                     protected void onSuccess(UserDataPreference response) {
                         if (isViewAttached()) {
-                            UserPrefencesManager.setLastSoldeAndRapport(response);
+                            UserPrefencesManager.setUserDataPreference(response);
                             getView().finishToLoadSoldeAndRappot(response);
                         }
                     }
@@ -119,9 +116,9 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                     @Override
                     protected void onSuccess(Double aDouble) {
                         if (isViewAttached()) {
-                            UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+                            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
                             userDataPreference.setTaux(aDouble);
-                            UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
+                            UserPrefencesManager.setUserDataPreference(userDataPreference);
                             getView().finishToLoadTaux();
                         }
                     }

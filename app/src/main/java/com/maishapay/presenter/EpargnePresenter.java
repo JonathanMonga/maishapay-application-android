@@ -20,17 +20,14 @@ import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
-import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.view.AccueilView;
 import com.maishapay.view.EpargneView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -70,13 +67,17 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
                     protected void onSuccess(EpargneResponse response) {
                         if (response.getResultat() == 0) {
                             if(isViewAttached()) {
+                                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+                                userDataPreference.setHasEpargneCompte(false);
+                                UserPrefencesManager.setUserDataPreference(userDataPreference);
                                 getView().finishToLoadTestCompte();
-                                UserPrefencesManager.getLastSoldeAndRapport().setHasEpargneCompte(false);
                             }
                         } else {
                             if(isViewAttached()) {
+                                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+                                userDataPreference.setHasEpargneCompte(true);
+                                UserPrefencesManager.setUserDataPreference(userDataPreference);
                                 getView().finishToLoadTestCompte();
-                                UserPrefencesManager.getLastSoldeAndRapport().setHasEpargneCompte(true);
                             }
                         }
                     }

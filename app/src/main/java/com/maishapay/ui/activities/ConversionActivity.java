@@ -78,7 +78,7 @@ public class ConversionActivity extends AppCompatActivity implements NumPadPossi
 
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
-        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux())));
+        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux())));
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -120,13 +120,13 @@ public class ConversionActivity extends AppCompatActivity implements NumPadPossi
         if(userCurrency.equals("USD")) {
             FragmentManager fm = getSupportFragmentManager();
             DialogConversionFragment dialogConversionFragment = DialogConversionFragment
-                    .newInstance(String.format("%s", ET_Montant.getAmount() * Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux()))), "FC");
+                    .newInstance(String.format("%s", ET_Montant.getAmount() * Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux()))), "FC");
             dialogConversionFragment.show(fm, "DialogConversionFragment");
 
         } else {
             FragmentManager fm = getSupportFragmentManager();
             DialogConversionFragment dialogConversionFragment = DialogConversionFragment
-                    .newInstance(String.format("%s", ET_Montant.getAmount() / Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux()))), "USD");
+                    .newInstance(String.format("%s", ET_Montant.getAmount() / Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux()))), "USD");
             dialogConversionFragment.show(fm, "DialogConversionFragment");
         }
 

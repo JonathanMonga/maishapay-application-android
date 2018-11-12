@@ -62,7 +62,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
         <item name="actionModeBackground">@color/md_orange_500</item>
         <item name="actionModeSplitBackground">@color/md_orange_500</item>
-        <item name="colorAccent">@color/branco</item>
+        <item name="colorAccent">@color/texto_action_bar</item>
         <item name="colorControlHighlight">@color/item_selected</item>
         <item name="colorPrimary">@color/md_orange_500</item>
         <item name="colorPrimaryDark">@color/md_orange_600</item>

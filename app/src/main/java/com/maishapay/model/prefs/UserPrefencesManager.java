@@ -105,7 +105,7 @@ public class UserPrefencesManager {
         return Prefs.getBoolean(USER_DISCONNECT, false);
     }
 
-    public static void setLastSoldeAndRapport(UserDataPreference userDataPreference){
+    public static void setUserDataPreference(UserDataPreference userDataPreference){
         String soldeAndRapportString;
 
         Gson gson = new Gson();
@@ -118,7 +118,7 @@ public class UserPrefencesManager {
         Prefs.putString(USER_LAST_SOLDE_AND_REPPORT, soldeAndRapportString);
     }
 
-    public static UserDataPreference getLastSoldeAndRapport(){
+    public static UserDataPreference getUserDataPreference(){
         UserDataPreference userDataPreference = null;
 
         Gson gson = new Gson();

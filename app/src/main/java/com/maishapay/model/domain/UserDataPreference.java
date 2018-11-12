@@ -19,7 +19,7 @@ public class UserDataPreference {
     @SerializedName("taux")
     private double taux;
     @SerializedName("hasEpargneCompte")
-    private boolean hasEpargneCompte;
+    private boolean hasEpargneCompte = false;
     @SerializedName("epargnefrancs")
     private String epargneFrancs;
     @SerializedName("epargneDollars")

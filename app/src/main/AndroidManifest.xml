@@ -53,7 +53,7 @@
         <activity android:name=".ui.activities.TransfertCompteActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.qrcode.DecoderActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.EpargnePersonnelleActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.EpargneActivity" android:screenOrientation="portrait" android:launchMode="singleInstance"/>
+        <activity android:name=".ui.activities.EpargneActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.ConversionActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.RetraitActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.OuvrirEpargnePersonnelleActivity" android:screenOrientation="portrait"/>

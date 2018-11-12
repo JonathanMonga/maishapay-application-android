@@ -28,8 +28,6 @@ import com.maishapay.presenter.AccueilPresenter;
 import com.maishapay.service.MaishapayService;
 import com.maishapay.ui.activities.ConversionActivity;
 import com.maishapay.ui.activities.EpargneActivity;
-import com.maishapay.ui.activities.EpargnePersonnelleActivity;
-import com.maishapay.ui.activities.OuvrirEpargnePersonnelleActivity;
 import com.maishapay.ui.activities.PaiementActivity;
 import com.maishapay.ui.activities.RetraitActivity;
 import com.maishapay.ui.activities.TransactionActivity;
@@ -144,12 +142,12 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             progressBarTaux.setVisibility(View.VISIBLE);
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
-            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+            if (UserPrefencesManager.getUserDataPreference() != null) {
                 taux.setVisibility(View.VISIBLE);
                 progressBarSolde.setVisibility(View.INVISIBLE);
                 progressBarTaux.setVisibility(View.INVISIBLE);
 
-                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
                 TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
@@ -239,7 +237,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         menuHelper.stopLoading();
         progressBarTaux.setVisibility(View.INVISIBLE);
         taux.setVisibility(View.VISIBLE);
-        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getLastSoldeAndRapport().getTaux())));
+        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux())));
     }
 
     @Override

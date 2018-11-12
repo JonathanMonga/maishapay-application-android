@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -37,6 +39,7 @@ import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePresenter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
+import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
 import com.maishapay.view.EpargneView;
 import com.txusballesteros.widgets.FitChart;
@@ -73,6 +76,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private ProgressDialog progressDialog;
+    private MenuHelper menuHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
         toolbar.setTitle("Solde epargne");
         setSupportActionBar(toolbar);
+        menuHelper = new MenuHelper();
 
         LL_fitDollards.setVisibility(View.INVISIBLE);
         LL_fitFrancs.setVisibility(View.INVISIBLE);
@@ -103,13 +108,23 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
         initProgressBar();
 
-        progressDialog.show();
-        getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
+        if(! UserPrefencesManager.getUserDataPreference().isHasEpargneCompte()) {
+            enabledControls(false);
+            getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else {
+            enabledControls(false);
+            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        }
     }
 
     @OnClick(R.id.cardEpargnePersonelle)
     public void cardEpargnePersonelleClicked() {
-        startActivity(new Intent(this, EpargnePersonnelleActivity.class));
+        startActivityForResult(new Intent(this, EpargnePersonnelleActivity.class), 2);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return menuHelper.onCreateOptionsMenu(getMenuInflater(), menu, true);
     }
 
     @Override
@@ -118,12 +133,20 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_rafrechir : {
+                menuHelper.setMenuItem(item);
+                menuHelper.startLoading();
+
+                enabledControls(false);
+                getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void finishToLoadSolde(SoldeEpargneResponse response) {
+        menuHelper.stopLoading();
         LL_fitDollards.setVisibility(View.VISIBLE);
         LL_fitFrancs.setVisibility(View.VISIBLE);
         progressBarSolde.setVisibility(View.INVISIBLE);
@@ -132,10 +155,10 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
         int dollarsInt = Integer.valueOf(response.getDollard().substring(0, response.getDollard().length() - 3));
 
-        UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+        UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
         userDataPreference.setEpargneFrancs(response.getFrancCongolais());
         userDataPreference.setEpargneDollars(response.getDollard());
-        UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
+        UserPrefencesManager.setUserDataPreference(userDataPreference);
 
         Resources resources = getResources();
         Collection<FitChartValue> valuesFrancs = new ArrayList<>();
@@ -154,19 +177,33 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     public void finishToLoadTestCompte() {
         progressDialog.dismiss();
 
-        if (UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
+        if (UserPrefencesManager.getUserDataPreference().isHasEpargneCompte())
             getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
         else
-            startActivity(new Intent(this, OuvrirEpargnePersonnelleActivity.class));
+            startActivityForResult(new Intent(this, OuvrirEpargnePersonnelleActivity.class), 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1)
+            if(resultCode == Activity.RESULT_OK)
+                getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        else if(requestCode == 2)
+                if(resultCode == Activity.RESULT_OK)
+                    recreate();
     }
 
     @Override
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
+            progressDialog.dismiss();
             LL_fitDollards.setVisibility(View.VISIBLE);
             LL_fitFrancs.setVisibility(View.VISIBLE);
             progressBarSolde.setVisibility(View.INVISIBLE);
         } else {
+            progressDialog.show();
             LL_fitDollards.setVisibility(View.INVISIBLE);
             LL_fitFrancs.setVisibility(View.INVISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
@@ -193,13 +230,13 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     @Override
     public void onUnknownError(String errorMessage) {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enabledControls(false);
-
 
                 getPresenter().hasEpargneCompte(UserPrefencesManager.getCurrentUser().getTelephone());
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
@@ -209,6 +246,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
     @Override
     public void onTimeout() {
+        menuHelper.stopLoading();
         enabledControls(true);
 
         Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
@@ -224,12 +262,12 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     public void onNetworkError() {
         if (!NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
-            if (UserPrefencesManager.getLastSoldeAndRapport() != null) {
+            if (UserPrefencesManager.getUserDataPreference() != null) {
                 LL_fitDollards.setVisibility(View.VISIBLE);
                 LL_fitFrancs.setVisibility(View.VISIBLE);
                 progressBarSolde.setVisibility(View.INVISIBLE);
 
-                UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
                 String francs = String.valueOf(userDataPreference.getEpargneFrancs()).replace(" ", "");
                 int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
@@ -249,6 +287,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 dollarsChart.setValues(valuesDollars);
             }
         } else {
+            menuHelper.stopLoading();
             enabledControls(true);
 
             Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
@@ -260,14 +299,5 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 }
             });
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if(! UserPrefencesManager.getLastSoldeAndRapport().isHasEpargneCompte())
-            finish();
-
-        super.onBackPressed();
     }
 }

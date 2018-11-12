@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -39,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maishapay.R;
-import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.OuvrirEpargnePersonellePresenter;
@@ -267,10 +267,10 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
 
     @Override
     public void positiveClicked(String pin) {
-        UserDataPreference userDataPreference = UserPrefencesManager.getLastSoldeAndRapport();
+        UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
         userDataPreference.setHasEpargneCompte(true);
-        UserPrefencesManager.setLastSoldeAndRapport(userDataPreference);
-        startActivity(new Intent(this, EpargneActivity.class));
+        UserPrefencesManager.setUserDataPreference(userDataPreference);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 
