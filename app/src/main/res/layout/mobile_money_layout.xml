@@ -60,6 +60,7 @@
                             app:srcCompat="@drawable/money1" />
 
                         <TextView
+                            android:id="@+id/nom1"
                             fontPath="fonts/Roboto-Medium.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                             android:background="@color/ab_despesa" />
 
                         <TextView
+                            android:id="@+id/description1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -114,6 +116,7 @@
                             app:srcCompat="@drawable/money2" />
 
                         <TextView
+                            android:id="@+id/nom2"
                             fontPath="fonts/Roboto-Medium.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -129,6 +132,7 @@
                             android:background="@color/ab_despesa" />
 
                         <TextView
+                            android:id="@+id/description2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -176,6 +180,7 @@
                             app:srcCompat="@drawable/money3"/>
 
                         <TextView
+                            android:id="@+id/nom3"
                             fontPath="fonts/Roboto-Medium.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -191,6 +196,7 @@
                             android:background="@color/ab_despesa" />
 
                         <TextView
+                            android:id="@+id/description3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -230,6 +236,7 @@
                             app:srcCompat="@drawable/money4" />
 
                         <TextView
+                            android:id="@+id/nom4"
                             fontPath="fonts/Roboto-Medium.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -245,6 +252,7 @@
                             android:background="@color/ab_despesa" />
 
                         <TextView
+                            android:id="@+id/description4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
