@@ -37,6 +37,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     private static final String ORANGE_OPERATOR = "Orange";
     private static final String TIGO_OPERATOR = "Tigo";
     private static final String EXPRESSO_OPERATOR = "Expresso";
+    private static final String MTN_OPERATOR = "mtn";
 
     private String country;
 
@@ -94,7 +95,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
 
-        codePhone = "+254";
+        codePhone = "+242";
                 //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
@@ -144,28 +145,22 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+225": {
+
                 money1.setImageResource(R.drawable.mtn);
-                nom1.setText("");
-                description1.setText("");
+                nom1.setText("Mtn money");
+                nom1.setTextColor(getResources().getColor(R.color.md_yellow_800));
+                description1.setText("Service mobile money pour Mtn money.");
 
-                money2.setImageResource(R.drawable.money2);
-                nom2.setText("");
-                description2.setText("");
+                cardMoneyId2.setVisibility(View.GONE);
+                cardMoneyId3.setVisibility(View.GONE);
 
-                money3.setImageResource(R.drawable.money3);
-                nom3.setText("");
-                description3.setText("");
-
-                money4.setImageResource(R.drawable.money4);
-                nom4.setText("");
-                description4.setText("");
                 break;
             }
 
             case "+254": {
                 money1.setImageResource(R.drawable.safaricom);
                 nom1.setText("M-pesa");
-                nom1.setTextColor(getResources().getColor(R.color.md_green_300));
+                nom1.setTextColor(getResources().getColor(R.color.md_green_500));
                 description1.setText("Service mobile money pour Safaricom.");
 
                 cardMoneyId2.setVisibility(View.GONE);
@@ -209,7 +204,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
         switch (codePhone) {
             case "+211": {
                 if (Constants.getOperatorNamePhone().equals(TIGO_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*1222#"));
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*150#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -232,7 +227,26 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+250": {
-
+                if (Constants.getOperatorNamePhone().equals(MTN_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*182#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
                 break;
             }
 
@@ -282,7 +296,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
         switch (codePhone) {
             case "+211": {
                 if (Constants.getOperatorNamePhone().equals(EXPRESSO_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*1222#"));
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -345,7 +359,26 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+250": {
-
+                if (Constants.getOperatorNamePhone().equals(TIGO_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
                 break;
             }
 
@@ -394,7 +427,26 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
         switch (codePhone) {
             case "+211": {
-
+                if (Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
                 break;
             }
 
