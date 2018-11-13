@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/branco</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
+        <item name="actionModeBackground">@color/md_light_green_600</item>
+        <item name="actionModeSplitBackground">@color/md_light_green_600</item>
+        <item name="colorAccent">@color/texto_action_bar</item>
+        <item name="colorControlHighlight">@color/item_selected</item>
+        <item name="colorPrimary">@color/md_light_green_700</item>
+        <item name="colorPrimaryDark">@color/md_light_green_600</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+        <item name="android:navigationBarColor">@color/md_light_green_700</item>
+    </style>
+</resources>
