@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.maishapay.R;
@@ -40,9 +41,9 @@ import static com.maishapay.util.Constants.ussdToCallableUri;
  */
 public class MobileMoneyActivity extends AppCompatActivity {
     private static final String AIRTEL_OPERATOR = "Airtel CD";
-    private static final String AFRICELL_OPERATOR = "AFRICELL";
+    private static final String AFRICELL_OPERATOR = "africell";
     private static final String VODACOM_OPERATOR = "VODACOM CD";
-    private static final String ORANGE_OPERATOR = "Orange RDC";
+    private static final String ORANGE_OPERATOR = "Orange";
 
     private String country;
 
@@ -54,6 +55,14 @@ public class MobileMoneyActivity extends AppCompatActivity {
     CardView cardMoneyId3;
     @BindView(R.id.cardMoneyId4)
     CardView cardMoneyId4;
+    @BindView(R.id.money1)
+    ImageView money1;
+    @BindView(R.id.money2)
+    ImageView money2;
+    @BindView(R.id.money3)
+    ImageView money3;
+    @BindView(R.id.money4)
+    ImageView money4;
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
 
@@ -73,6 +82,42 @@ public class MobileMoneyActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
+
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+
+        switch (codePhone) {
+            case "+211": {
+
+                break;
+            }
+
+            case "+250": {
+
+                break;
+            }
+
+            case "+228": {
+
+                break;
+            }
+
+            case "+225": {
+
+                break;
+            }
+
+            case "+254": {
+
+                break;
+            }
+
+            default: {
+                money1.setImageResource(R.drawable.money1);
+                money2.setImageResource(R.drawable.money2);
+                money3.setImageResource(R.drawable.money3);
+                money4.setImageResource(R.drawable.money4);
+            }
+        }
     }
 
     @Override
@@ -87,97 +132,207 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @OnClick(R.id.cardMoneyId1)
     public void cardMoneyId1clicked() {
-        if (Constants.getOperatorNamePhone().equals(VODACOM_OPERATOR)) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+
+        switch (codePhone) {
+            case "+211": {
+
+                break;
             }
-            startActivity(callIntent);
-        } else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Vous utilisez un autre operateur.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+
+            case "+250": {
+
+                break;
+            }
+
+            case "+228": {
+
+                break;
+            }
+
+            case "+225": {
+
+                break;
+            }
+
+            case "+254": {
+
+                break;
+            }
+
+            default: {
+                if (Constants.getOperatorNamePhone().equals(VODACOM_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*1222#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
+            }
+        }
     }
 
     @OnClick(R.id.cardMoneyId2)
     public void cardMoneyId2clicked() {
-        if (Constants.getOperatorNamePhone().equals(AFRICELL_OPERATOR)) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+
+        switch (codePhone) {
+            case "+211": {
+
+                break;
             }
-            startActivity(callIntent);
-        } else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Vous utilisez un autre operateur.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+
+            case "+250": {
+
+                break;
+            }
+
+            case "+228": {
+
+                break;
+            }
+
+            case "+225": {
+
+                break;
+            }
+
+            case "+254": {
+
+                break;
+            }
+
+            default: {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Pas de service pour cet operateur.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            }
+        }
     }
 
     @OnClick(R.id.cardMoneyId3)
     public void cardMoneyId3clicked() {
-        if (Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+
+        switch (codePhone) {
+            case "+211": {
+
+                break;
             }
-            startActivity(callIntent);
-        } else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Vous utilisez un autre operateur.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+
+            case "+250": {
+
+                break;
+            }
+
+            case "+228": {
+
+                break;
+            }
+
+            case "+225": {
+
+                break;
+            }
+
+            case "+254": {
+
+                break;
+            }
+
+            default: {
+                if (Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
+            }
+        }
     }
 
     @OnClick(R.id.cardMoneyId4)
     public void cardMoneyId4clicked() {
-        if (Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+
+        switch (codePhone) {
+            case "+211": {
+
+                break;
             }
-            startActivity(callIntent);
-        } else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Vous utilisez un autre operateur.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+
+            case "+250": {
+
+                break;
+            }
+
+            case "+228": {
+
+                break;
+            }
+
+            case "+225": {
+
+                break;
+            }
+
+            case "+254": {
+
+                break;
+            }
+
+            default: {
+                if (Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Vous utilisez un autre operateur.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
+            }
+        }
     }
 }

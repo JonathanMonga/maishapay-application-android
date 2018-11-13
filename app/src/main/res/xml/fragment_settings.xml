@@ -19,9 +19,5 @@
         <Preference
             android:key="profil"
             android:title="Modifier mon profil" />
-
-        <Preference
-            android:key="code_pin"
-            android:title="Changer de code PIN" />
     </PreferenceCategory>
 </PreferenceScreen>

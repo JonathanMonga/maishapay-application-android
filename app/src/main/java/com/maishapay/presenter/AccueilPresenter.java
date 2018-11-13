@@ -102,6 +102,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                     protected void onSuccess(UserDataPreference response) {
                         if (isViewAttached()) {
                             UserPrefencesManager.setUserDataPreference(response);
+                            getView().enabledControls(true);
                             getView().finishToLoadSoldeAndRappot(response);
                         }
                     }
@@ -119,6 +120,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
                             userDataPreference.setTaux(aDouble);
                             UserPrefencesManager.setUserDataPreference(userDataPreference);
+                            getView().enabledControls(true);
                             getView().finishToLoadTaux();
                         }
                     }

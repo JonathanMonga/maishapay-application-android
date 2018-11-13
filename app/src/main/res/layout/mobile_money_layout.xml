@@ -54,6 +54,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/money1"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/money1" />
@@ -107,6 +108,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/money2"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/money2" />
@@ -168,6 +170,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/money3"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/money3"/>
@@ -221,6 +224,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/money4"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/money4" />

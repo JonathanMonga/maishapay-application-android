@@ -57,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import de.mateware.snacky.Snacky;
 
 
 public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView> implements AccueilView {
@@ -243,9 +244,9 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     @Override
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
-            progressDialog.dismiss();
+            menuHelper.stopLoading();
         } else {
-            progressDialog.show();
+            menuHelper.startLoading();
         }
     }
 
@@ -306,44 +307,38 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onUnknownError(String errorMessage) {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnUnknownError(getView(), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(getView())
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onTimeout() {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnTimeout(getView(), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(getView())
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     @Override
     public void onNetworkError() {
-        menuHelper.stopLoading();
         enabledControls(true);
 
-        Constants.showOnNetworkError(getView(), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-            }
-        });
+        Snacky.builder()
+                .setView(getView())
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show();
     }
 
     private class OnBoomClickListener implements OnBoomListener {

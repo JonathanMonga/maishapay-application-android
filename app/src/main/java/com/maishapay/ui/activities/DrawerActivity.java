@@ -218,14 +218,14 @@ public class DrawerActivity extends AppCompatActivity {
 
                     case 6:
                         List<String> strings = new ArrayList<>();
-                        strings.add("243");
-                        strings.add("211");
-                        strings.add("250");
-                        strings.add("228");
-                        strings.add("225");
-                        strings.add("254");
+                        strings.add("+243");
+                        strings.add("+211");
+                        strings.add("+250");
+                        strings.add("+228");
+                        strings.add("+225");
+                        strings.add("+254");
 
-                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
+                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
                         if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
