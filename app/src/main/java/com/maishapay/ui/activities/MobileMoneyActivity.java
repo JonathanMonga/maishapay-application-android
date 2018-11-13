@@ -5,28 +5,19 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.maishapay.R;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
-import com.maishapay.ui.dialog.DialogCountryFragment;
-import com.maishapay.ui.dialog.PossitiveCountryButtonListener;
 import com.maishapay.util.Constants;
 
 import butterknife.BindView;
@@ -85,6 +76,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
+    private String codePhone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +95,8 @@ public class MobileMoneyActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
 
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+        codePhone = "+211";
+                //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -128,7 +121,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 nom1.setText("");
                 description1.setText("");
 
-                money2.setImageResource(R.drawable.expresso);
+                money2.setImageResource(R.drawable.mtn);
                 nom2.setText("");
                 description2.setText("");
 
@@ -152,7 +145,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+225": {
-                money1.setImageResource(R.drawable.money1);
+                money1.setImageResource(R.drawable.mtn);
                 nom1.setText("");
                 description1.setText("");
 
@@ -171,13 +164,13 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+254": {
-                money1.setImageResource(R.drawable.tigo);
+                money1.setImageResource(R.drawable.safaricom);
                 nom1.setText("");
                 description1.setText("");
 
-                money2.setImageResource(R.drawable.expresso);
-                nom2.setText("");
-                description2.setText("");
+                money2.setImageResource(R.drawable.money3);
+                nom2.setText("Airtel money");
+                description2.setText("Service mobile money pour Airtel.");
 
                 cardMoneyId3.setVisibility(View.GONE);
                 cardMoneyId4.setVisibility(View.GONE);
@@ -216,7 +209,6 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @OnClick(R.id.cardMoneyId1)
     public void cardMoneyId1clicked() {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -290,7 +282,6 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @OnClick(R.id.cardMoneyId2)
     public void cardMoneyId2clicked() {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -350,7 +341,6 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @OnClick(R.id.cardMoneyId3)
     public void cardMoneyId3clicked() {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -405,7 +395,6 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
     @OnClick(R.id.cardMoneyId4)
     public void cardMoneyId4clicked() {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
