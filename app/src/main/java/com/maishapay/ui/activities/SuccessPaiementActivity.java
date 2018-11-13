@@ -41,11 +41,16 @@ public class SuccessPaiementActivity extends AppCompatActivity{
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         toolbar.setTitle(String.format("%s éffectué.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
-        TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
+
+        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement"))
+            TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés. Veuillez patienter pendant 10 minutes", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
+        else
+            TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
+
         soundManager.playAsset("sounds/job-done.mp3");
         setSupportActionBar(toolbar);
 
-        if(! getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne")) {
+        if(! getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne") && ! getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement")) {
             MaishapayNotification.sendNotification(this)
                     .withTitle("Maishapay message")
                     .withBody("Vous venez de recevoir " + getIntent().getStringExtra(EXTRA_MONTANT) + " " + getIntent().getStringExtra(EXTRA_MONNAIE) + " de la part de " + getIntent().getStringExtra(EXTRA_PHONE))
