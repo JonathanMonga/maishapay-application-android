@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maishapay.R;
-import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.Constants;
 
 import butterknife.BindView;
@@ -95,22 +94,20 @@ public class MobileMoneyActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
 
-        codePhone = "+211";
+        codePhone = "+254";
                 //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
                 money1.setImageResource(R.drawable.tigo);
-                nom1.setText("");
-                description1.setText("");
+                nom1.setText("Tigo cash");
+                nom1.setTextColor(getResources().getColor(R.color.md_blue_800));
+                description1.setText("Service mobile money pour Tigo cash.");
 
                 money2.setImageResource(R.drawable.expresso);
-                nom2.setText("");
-                description2.setText("");
-
-                money4.setImageResource(R.drawable.money4);
-                nom4.setText("");
-                description4.setText("");
+                nom2.setText("Expresso money");
+                nom2.setTextColor(getResources().getColor(R.color.md_blue_grey_300));
+                description2.setText("Service mobile money pour Expresso.");
 
                 cardMoneyId3.setVisibility(View.GONE);
                 break;
@@ -118,14 +115,16 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
             case "+250": {
                 money1.setImageResource(R.drawable.tigo);
-                nom1.setText("");
-                description1.setText("");
+                nom1.setText("Tigo cash");
+                nom1.setTextColor(getResources().getColor(R.color.md_blue_800));
+                description1.setText("Service mobile money pour Tigo cash.");
 
-                money2.setImageResource(R.drawable.mtn);
-                nom2.setText("");
-                description2.setText("");
+                money3.setImageResource(R.drawable.mtn);
+                nom3.setText("Mtn money");
+                nom3.setTextColor(getResources().getColor(R.color.md_yellow_800));
+                description3.setText("Service mobile money pour Mtn money.");
 
-                cardMoneyId3.setVisibility(View.GONE);
+                cardMoneyId2.setVisibility(View.GONE);
                 cardMoneyId4.setVisibility(View.GONE);
                 break;
             }
@@ -165,14 +164,11 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
             case "+254": {
                 money1.setImageResource(R.drawable.safaricom);
-                nom1.setText("");
-                description1.setText("");
+                nom1.setText("M-pesa");
+                nom1.setTextColor(getResources().getColor(R.color.md_green_300));
+                description1.setText("Service mobile money pour Safaricom.");
 
-                money2.setImageResource(R.drawable.money3);
-                nom2.setText("Airtel money");
-                description2.setText("Service mobile money pour Airtel.");
-
-                cardMoneyId3.setVisibility(View.GONE);
+                cardMoneyId2.setVisibility(View.GONE);
                 cardMoneyId4.setVisibility(View.GONE);
                 break;
             }
