@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
+import com.santalu.widget.MaskEditText;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
 
@@ -68,16 +70,20 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
     private static String pin;
-    private static String destinatairePhone;
+
+    public static final String EXTRA_TYPE_ABONNEMENT = "type_abonnement";
+    public static final String EXTRA_NUMERO_SERVICE = "numero_service";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
-    @BindView(R.id.ET_Destinataire)
-    RecipientEditTextView ET_Destinataire;
+    @BindView(R.id.ET_NumeroService)
+    EditText ET_NumeroService;
     @BindView(R.id.SP_TypeEnvoi)
     Spinner SP_TypeEnvoi;
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
+    @BindView(R.id.ET_CodeCarte)
+    MaskEditText ET_CodeCarte;
 
     private ProgressDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
@@ -90,7 +96,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         setContentView(R.layout.transfert_compte_activity);
         ButterKnife.bind(this);
 
-        toolbar.setTitle("Transfert d'argent");
+        toolbar.setTitle("Abonnemt " + getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -121,24 +127,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             }
         });
 
-        ET_Destinataire.setMaxChips(1);
-        ET_Destinataire.setChipNotCreatedListener(new RecipientEditTextView.ChipNotCreatedListener() {
-            @Override
-            public void chipNotCreated(String chipText) {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Desolé, un seul numéro suffit.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
-                        .show();
-            }
-        });
-
-        ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
-        adapter.setShowMobileOnly(true);
-        ET_Destinataire.setAdapter(adapter);
-        ET_Destinataire.dismissDropDownOnItemSelected(true);
+        ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
     }
 
     @Override
@@ -166,15 +155,15 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         if (requestCode == REQUEST_QRCODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
-                ET_Destinataire.setText(text);
+                ET_NumeroService.setText(text);
             }
         }
     }
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
+        if (TextUtils.isEmpty(ET_NumeroService.getText().toString())) {
+            toastMessage(String.format(getString(R.string.erro_campo), "Numero service"), R.id.ET_Destinataire);
             return;
         }
 
@@ -183,13 +172,13 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             return;
         }
 
-        if(ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone =  Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
-        else
-            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+        if (TextUtils.isEmpty(ET_CodeCarte.getRawText())) {
+            toastMessage(String.format(getString(R.string.erro_campo), ET_CodeCarte.getHint().toString()), R.id.ET_Destinataire);
+            return;
+        }
 
         enabledControls(false);
-        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -260,7 +249,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_Destinataire.getText().toString());
+        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
 
         startActivity(intent);
         finish();
@@ -300,7 +289,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         TransfertPaiementActivity.pin = pin;
 
         enabledControls(false);
-        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override
@@ -330,9 +319,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -347,9 +336,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }
@@ -364,9 +353,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
     }

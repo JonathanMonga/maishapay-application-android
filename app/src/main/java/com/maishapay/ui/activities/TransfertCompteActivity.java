@@ -261,7 +261,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_Destinataire.getText().toString());
+        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
 
         startActivity(intent);
         finish();
