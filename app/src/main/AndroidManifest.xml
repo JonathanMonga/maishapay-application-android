@@ -67,6 +67,7 @@
         <activity android:name=".ui.activities.MobileMoneyActivity" />
         <activity android:name=".ui.activities.MapsActivity" />
         <activity android:name=".ui.activities.TransfertPaiementActivity" />
+        <activity android:name=".ui.activities.PaymentWebActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

@@ -24,112 +24,112 @@ import com.google.gson.annotations.SerializedName;
 public class DataAPIResponse extends BaseResponse{
 
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("name")
-    private int name;
+    private String name;
 
     @SerializedName("telephone")
-    private int telephone;
+    private String telephone;
 
     @SerializedName("api_key")
-    private int api_key;
+    private String api_key;
 
     @SerializedName("project_name")
-    private int project_name;
+    private String project_name;
 
     @SerializedName("project_type")
-    private int project_type;
+    private String project_type;
 
     @SerializedName("project_id")
-    private int project_id;
+    private String project_id;
 
     @SerializedName("project_logo")
-    private int project_logo;
+    private String project_logo;
 
     @SerializedName("project_redirect_url")
-    private int project_redirect_url;
+    private String project_redirect_url;
 
     @SerializedName("project_callback_url")
-    private int project_callback_url;
+    private String project_callback_url;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(int telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
-    public int getApi_key() {
+    public String getApi_key() {
         return api_key;
     }
 
-    public void setApi_key(int api_key) {
+    public void setApi_key(String api_key) {
         this.api_key = api_key;
     }
 
-    public int getProject_name() {
+    public String getProject_name() {
         return project_name;
     }
 
-    public void setProject_name(int project_name) {
+    public void setProject_name(String project_name) {
         this.project_name = project_name;
     }
 
-    public int getProject_type() {
+    public String getProject_type() {
         return project_type;
     }
 
-    public void setProject_type(int project_type) {
+    public void setProject_type(String project_type) {
         this.project_type = project_type;
     }
 
-    public int getProject_id() {
+    public String getProject_id() {
         return project_id;
     }
 
-    public void setProject_id(int project_id) {
+    public void setProject_id(String project_id) {
         this.project_id = project_id;
     }
 
-    public int getProject_logo() {
+    public String getProject_logo() {
         return project_logo;
     }
 
-    public void setProject_logo(int project_logo) {
+    public void setProject_logo(String project_logo) {
         this.project_logo = project_logo;
     }
 
-    public int getProject_redirect_url() {
+    public String getProject_redirect_url() {
         return project_redirect_url;
     }
 
-    public void setProject_redirect_url(int project_redirect_url) {
+    public void setProject_redirect_url(String project_redirect_url) {
         this.project_redirect_url = project_redirect_url;
     }
 
-    public int getProject_callback_url() {
+    public String getProject_callback_url() {
         return project_callback_url;
     }
 
-    public void setProject_callback_url(int project_callback_url) {
+    public void setProject_callback_url(String project_callback_url) {
         this.project_callback_url = project_callback_url;
     }
 }

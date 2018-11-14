@@ -15,26 +15,22 @@
 
 package com.maishapay.presenter;
 
-import android.app.Activity;
-
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.TransfertResponse;
-import com.maishapay.model.domain.UserDataPreference;
-import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.view.PaymentView;
 import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
+public class PaymentConfirmationPresenter extends TiPresenter<PaymentView> {
 
     private RxTiPresenterDisposableHandler disposableHandler = new RxTiPresenterDisposableHandler(this);
     private MaishapayClient maishapayClient;
@@ -46,13 +42,13 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         maishapayClient = MaishapayApplication.getMaishapayContext().getMaishapayClient();
     }
 
-    public void transfert(String expeditaire, String destinataire, String monnaie, String montant){
-        disposableHandler.manageDisposable(maishapayClient.transfert_compte(expeditaire, destinataire, monnaie, montant)
+    public void attempt_payment(final String api_key, final String token, final String monnaie, final String montant){
+        disposableHandler.manageDisposable(maishapayClient.attempt_payment(api_key, token, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<TransfertResponse>(getView()) {
+                .subscribeWith(new CallbackWrapper<PaymentResponse>(getView()) {
                     @Override
-                    protected void onSuccess(TransfertResponse response) {
+                    protected void onSuccess(PaymentResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
@@ -98,8 +94,8 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                 }));
     }
 
-    public void confirmTransfert(String pin, final String expeditaire, final String destinataire, final String monnaie, final String montant){
-        disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, expeditaire, destinataire, monnaie, montant)
+    public void confirm_payment(String pin, String token, String api_key, final String expeditaire, final String destinataire, final String monnaie, final String montant){
+        disposableHandler.manageDisposable(maishapayClient.confirm_payment(pin, api_key, token, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new CallbackWrapper<Integer>(getView()) {

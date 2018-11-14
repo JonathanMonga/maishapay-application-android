@@ -75,7 +75,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static String userCurrency;
     private static String pin;
     private static String destinatairePhone;
-    private static QRCodeResponse qrCodeResponse;
     private static UserResponse userResponse;
 
     @BindView(R.id.toolbar_actionbar)
@@ -91,7 +90,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
-    private boolean flagQRCode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,11 +174,9 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             if (resultCode == Activity.RESULT_OK) {
                 if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")){
                     String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
-                    qrCodeResponse = new Gson().fromJson(response, QRCodeResponse.class);
-
-                    flagQRCode = true;
-                    enabledControls(false);
-                    getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
+                    Intent intent = new Intent(this, PaymentWebActivity.class);
+                    intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
+                    startActivity(intent);
                 } else if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")){
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
@@ -224,27 +220,27 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @Override
-    public void showTranfertError(int type) {
-        if (type == 0)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Le numero de destinataire n'existe pas dans Maishapay.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
-        else if (type == 2)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
-        else if (type == 3)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Le compte de votre destinataire est indisponible pour le moment.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+        public void showTranfertError(int type) {
+            if (type == 0)
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Le numero de destinataire n'existe pas dans Maishapay.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            else if (type == 2)
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            else if (type == 3)
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Le compte de votre destinataire est indisponible pour le moment.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
                     .show();
         else
             Snacky.builder()
@@ -293,7 +289,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void finishToTranfert(BaseResponse baseResponse) {
         flagtransfert = true;
-        flagQRCode = false;
 
         if(baseResponse instanceof TransfertResponse) {
             FragmentManager fm = getSupportFragmentManager();
@@ -360,9 +355,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else if(flagQRCode)
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
+               else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
@@ -379,8 +372,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else if(flagQRCode)
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
@@ -398,8 +389,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else if(flagQRCode)
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
