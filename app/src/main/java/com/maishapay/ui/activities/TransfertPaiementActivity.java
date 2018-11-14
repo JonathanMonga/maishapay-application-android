@@ -93,7 +93,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transfert_compte_activity);
+        setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 
         toolbar.setTitle("Abonnemt " + getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT));
@@ -127,13 +127,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             }
         });
 
+        ET_NumeroService.setEnabled(false);
         ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_transfert, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -142,22 +137,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_scan:
-                Intent intent = new Intent(this, DecoderActivity.class);
-                startActivityForResult(intent, REQUEST_QRCODE);
-                return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_QRCODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
-                ET_NumeroService.setText(text);
-            }
-        }
     }
 
     @OnClick(R.id.BTN_Tranfert)
@@ -245,7 +226,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         dialogForgotFragment.dismiss();
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Transfert");
+        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Paiement");
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));

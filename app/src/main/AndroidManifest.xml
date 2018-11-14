@@ -34,7 +34,7 @@
         tools:replace="android:icon">
 
         <activity
-            android:name=".ui.activities.MobileMoneyActivity"
+            android:name=".ui.intro.IntroActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
@@ -64,8 +64,9 @@
         <activity android:name=".ui.activities.MaishapayPayPal" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.SuccessDepositActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.TransfertCompteCashActivity" />
-        <!--<activity android:name=".ui.activities.MobileMoneyActivity" />-->
+        <activity android:name=".ui.activities.MobileMoneyActivity" />
         <activity android:name=".ui.activities.MapsActivity" />
+        <activity android:name=".ui.activities.TransfertPaiementActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

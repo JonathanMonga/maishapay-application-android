@@ -27,6 +27,9 @@ import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_NUMERO_SERVICE;
+import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_TYPE_ABONNEMENT;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -52,32 +55,26 @@ public class PaiementActivity extends AppCompatActivity{
             public void clicked(int position) {
                 switch (position){
                     case 10: {
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Canal +");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        startActivity(intent);
                         break;
                     }
 
                     case 11: {
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Easy Tv");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        startActivity(intent);
                         break;
                     }
 
                     case 12: {
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Startimes");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        startActivity(intent);
                         break;
                     }
 
@@ -99,7 +96,6 @@ public class PaiementActivity extends AppCompatActivity{
                                                 startActivity(new Intent(PaiementActivity.this, TransfertCompteCashActivity.class));
                                                 break;
                                             }
-
                                         }
                                     }
                                 }).show();
