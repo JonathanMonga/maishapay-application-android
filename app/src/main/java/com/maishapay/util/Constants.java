@@ -17,13 +17,20 @@
 package com.maishapay.util;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
+import com.google.zxing.WriterException;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import de.mateware.snacky.Snacky;
 
 /**
@@ -100,5 +107,23 @@ public class Constants {
             destinqtairePhone = recipient;
 
         return destinqtairePhone;
+    }
+
+    public static void generateQRcode(String data, ImageView imageView, WindowManager manager){
+        Display display = manager.getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x;
+        int height = point.y;
+        int smallerDimension = width < height ? width : height;
+        smallerDimension = smallerDimension * 3 / 6;
+
+        // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
+        QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, smallerDimension);
+        try {
+            imageView.setImageBitmap(qrgEncoder.encodeAsBitmap());
+        } catch (WriterException e) {
+            LogCat.e(e.toString());
+        }
     }
 }

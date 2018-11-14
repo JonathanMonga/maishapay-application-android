@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.google.zxing.WriterException;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -27,16 +30,16 @@ import butterknife.OnClick;
 import static android.content.Context.WINDOW_SERVICE;
 
 public class PaieMoiDialogFragment extends AppCompatDialogFragment {
-    private static final String EXTRA_TELEPHONE = "telephone";
+    private static final String DATA = "data";
 
     @BindView(R.id.qrcode) ImageView qrcode;
     private PossitiveButtonConfirmListener buttonListener;
     private View view;
 
-    public static PaieMoiDialogFragment newInstance(String telephone){
+    public static PaieMoiDialogFragment newInstance(String data){
         PaieMoiDialogFragment dialogForgotFragment = new PaieMoiDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_TELEPHONE, telephone);
+        bundle.putString(DATA, data);
         dialogForgotFragment.setArguments(bundle);
         return dialogForgotFragment;
     }
@@ -63,23 +66,8 @@ public class PaieMoiDialogFragment extends AppCompatDialogFragment {
         setCancelable(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED);
 
+        Constants.generateQRcode(new Gson().toJson(getArguments().getString(DATA), UserResponse.class), qrcode, (WindowManager) MaishapayApplication.getMaishapayContext().getSystemService(WINDOW_SERVICE));
 
-        WindowManager manager = (WindowManager) MaishapayApplication.getMaishapayContext().getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 6;
-
-        // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
-        QRGEncoder qrgEncoder = new QRGEncoder(getArguments().getString(EXTRA_TELEPHONE), null, QRGContents.Type.TEXT, smallerDimension);
-        try {
-            qrcode.setImageBitmap(qrgEncoder.encodeAsBitmap());
-        } catch (WriterException e) {
-            LogCat.e(e.toString());
-        }
     }
 
     @OnClick(R.id.BTN_Sim)

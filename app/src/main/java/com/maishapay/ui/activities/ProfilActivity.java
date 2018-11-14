@@ -16,10 +16,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.zxing.WriterException;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -57,22 +59,7 @@ public class ProfilActivity extends AppCompatActivity {
 
         UserResponse userResponse = UserPrefencesManager.getCurrentUser();
 
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 6;
-
-        // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
-        QRGEncoder qrgEncoder = new QRGEncoder(userResponse.getTelephone(), null, QRGContents.Type.TEXT, smallerDimension);
-        try {
-            IV_QRCode.setImageBitmap(qrgEncoder.encodeAsBitmap());
-        } catch (WriterException e) {
-            LogCat.e(e.toString());
-        }
+        Constants.generateQRcode(new Gson().toJson(userResponse, UserResponse.class), IV_QRCode, (WindowManager) getSystemService(WINDOW_SERVICE));
 
         ET_Noms.setText(String.format("%s %s", userResponse.getPrenom(), userResponse.getNom()));
         ET_Phone.setText(userResponse.getTelephone());
