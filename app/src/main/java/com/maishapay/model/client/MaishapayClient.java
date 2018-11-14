@@ -19,6 +19,7 @@ package com.maishapay.model.client;
 import com.maishapay.model.client.api.MaishapayAPI;
 import com.maishapay.model.client.api.ServiceGenerator;
 import com.maishapay.model.client.response.EpargneResponse;
+import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
@@ -30,6 +31,8 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
+import static com.maishapay.BuildConfig.ATTEMPT_PAYMENT_PARAM;
+import static com.maishapay.BuildConfig.CONFIRM_PAYMENT_PARAM;
 import static com.maishapay.BuildConfig.CONTACT_PARAM;
 import static com.maishapay.BuildConfig.CONVERSION_MONNAIE_PARAM;
 import static com.maishapay.BuildConfig.CREATION_COMPTE_EPARGNE_AVENIR_PARAM;
@@ -103,9 +106,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> creation_compte_epargne_perso(String telephone,
-                                                         String date_cloture,
-                                                         String device,
-                                                         String code_secret) {
+                                                             String date_cloture,
+                                                             String device,
+                                                             String code_secret) {
         return this.maishapayAPI.creation_compte_epargne_perso(CREATION_COMPTE_EPARGNE_PERSONNEL_PARAM, telephone, date_cloture, device, code_secret);
     }
 
@@ -115,10 +118,10 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> creation_compte_epargne_avenir(String telephone,
-                                                          String beneficiaire,
-                                                          String date_cloture,
-                                                          String device,
-                                                          String code_secret) {
+                                                              String beneficiaire,
+                                                              String date_cloture,
+                                                              String device,
+                                                              String code_secret) {
         return this.maishapayAPI.creation_compte_epargne_avenir(CREATION_COMPTE_EPARGNE_AVENIR_PARAM, telephone, beneficiaire, date_cloture, device, code_secret);
     }
 
@@ -146,12 +149,12 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<UserResponse> inscription(String nom,
-                                            String prenom,
-                                            String telephone,
-                                            String email,
-                                            String adresse,
-                                            String ville,
-                                            String code_pin) {
+                                                String prenom,
+                                                String telephone,
+                                                String email,
+                                                String adresse,
+                                                String ville,
+                                                String code_pin) {
         return this.maishapayAPI.inscription(REGISTER_PARAM, nom, prenom, telephone, email, adresse, ville, code_pin);
     }
 
@@ -161,9 +164,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<TransfertResponse> transfert_compte(String expeditaire,
-                                                      String destinataire,
-                                                      String monnaie,
-                                                      String montant) {
+                                                          String destinataire,
+                                                          String monnaie,
+                                                          String montant) {
         return this.maishapayAPI.transfert_compte(TRANSFERT_COMPTE_PARAM, expeditaire, destinataire, monnaie, montant);
     }
 
@@ -173,10 +176,10 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> transfert_compte_confirmation(String pin,
-                                                         String expeditaire,
-                                                         String destinataire,
-                                                         String monnaie,
-                                                         String montant) {
+                                                             String expeditaire,
+                                                             String destinataire,
+                                                             String monnaie,
+                                                             String montant) {
         return this.maishapayAPI.transfert_compte_confirmation(TRANSFERT_COMPTE_CONFIRMATION_PARAM, pin, expeditaire, destinataire, monnaie, montant);
     }
 
@@ -186,9 +189,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<EpargneResponse> transfert_epargne(String type_transfert,
-                                                       String telephone,
-                                                       String monnaie,
-                                                       String montant) {
+                                                         String telephone,
+                                                         String monnaie,
+                                                         String montant) {
         return this.maishapayAPI.transfert_epargne(TRANSFERT_EPARGNE_PARAM, type_transfert, telephone, monnaie, montant);
     }
 
@@ -198,9 +201,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> confirmation_transfert_epargne(String type_transfert_ep,
-                                                          String telephone,
-                                                          String monnaie,
-                                                          String montant) {
+                                                              String telephone,
+                                                              String monnaie,
+                                                              String montant) {
         return this.maishapayAPI.confirmation_transfert_epargne(TRANSFERT_EPARGNE_CONFIRMATION_PARAM, type_transfert_ep, telephone, monnaie, montant);
     }
 
@@ -210,9 +213,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<RetraitResponse> retrait(String expeditaire,
-                                           String tel_agent,
-                                           String montant,
-                                           String monnaie) {
+                                               String tel_agent,
+                                               String montant,
+                                               String monnaie) {
         return this.maishapayAPI.retrait(RETRAIT_PARAM, expeditaire, tel_agent, montant, monnaie);
     }
 
@@ -222,10 +225,10 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> confirm_retrait(String expeditaire,
-                                           String pin,
-                                           String tel_agent,
-                                           String montant,
-                                           String monnaie) {
+                                               String pin,
+                                               String tel_agent,
+                                               String montant,
+                                               String monnaie) {
         return this.maishapayAPI.confirm_retrait(RETRAIT_CONFIMATION_PARAM, expeditaire, pin, tel_agent, montant, monnaie);
     }
 
@@ -244,9 +247,9 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<EpargneResponse> emprunt(String telephone,
-                                           String pin,
-                                           String montant,
-                                           String monnaie) {
+                                               String pin,
+                                               String montant,
+                                               String monnaie) {
         return this.maishapayAPI.emprunt(EMPRUNT_PARAM, telephone, pin, montant, monnaie);
     }
 
@@ -256,7 +259,7 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<String> conversion_monnaie(String montant,
-                                             String monnaie) {
+                                                 String monnaie) {
         return this.maishapayAPI.conversion_monnaie(CONVERSION_MONNAIE_PARAM, montant, monnaie);
     }
 
@@ -266,8 +269,8 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> nous_contacter(String expeditaire,
-                                          String sujet,
-                                          String message) {
+                                              String sujet,
+                                              String message) {
         return this.maishapayAPI.nous_contacter(CONTACT_PARAM, expeditaire, sujet, message);
     }
 
@@ -277,12 +280,12 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> update_profil(String nom,
-                                         String prenom,
-                                         String telephone,
-                                         String email,
-                                         String adresse,
-                                         String ville,
-                                         String code_pin) {
+                                             String prenom,
+                                             String telephone,
+                                             String email,
+                                             String adresse,
+                                             String ville,
+                                             String code_pin) {
         return this.maishapayAPI.update_profil(UPDATE_PROFIL_PARAM, nom, prenom, telephone, email, adresse, ville, code_pin);
     }
 
@@ -292,7 +295,7 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> pin_perdu(String telephone,
-                                     String email) {
+                                         String email) {
         return this.maishapayAPI.pin_perdu(PIN_PERDU_PARAM, telephone, email);
     }
 
@@ -303,5 +306,33 @@ public final class MaishapayClient {
      */
     public Observable<Double> taux_du_jour() {
         return this.maishapayAPI.taux_du_jour(TAUX_PARAM, "usd");
+    }
+
+    /**
+     * creation_compte_epargne_avenir method.
+     *
+     * @return The solde response.
+     */
+    public Observable<PaymentResponse> attempt_payment(String api_key,
+                                                       String token,
+                                                       String expeditaire,
+                                                       String monnaie,
+                                                       String montant) {
+        return this.maishapayAPI.attempt_payment(ATTEMPT_PAYMENT_PARAM, api_key, token, monnaie, montant);
+    }
+
+    /**
+     * creation_compte_epargne_avenir method.
+     *
+     * @return The solde response.
+     */
+    public Observable<Integer> confirm_payment(String pin,
+                                               String api_key,
+                                               String token,
+                                               String expeditaire,
+                                               String destinataire,
+                                               String monnaie,
+                                               String montant) {
+        return this.maishapayAPI.confirm_payment(CONFIRM_PAYMENT_PARAM, pin, api_key, token, expeditaire, destinataire, monnaie, montant);
     }
 }

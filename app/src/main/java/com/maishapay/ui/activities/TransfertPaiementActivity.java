@@ -194,12 +194,12 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .show();
         else
             Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-        }
+                    .setView(findViewById(R.id.root))
+                    .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+    }
 
     @Override
     public void showConfimationError(int type) {
@@ -213,12 +213,12 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .show();
         else
             Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Echec de transfert.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-        }
+                    .setView(findViewById(R.id.root))
+                    .setText("Echec de transfert.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+    }
 
     @Override
     public void finishToConfirm() {
@@ -279,7 +279,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     }
 
     @OnClick(R.id.ET_Montant)
-    public void ET_MontantClicked(){
+    public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
         dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");

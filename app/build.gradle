@@ -63,6 +63,8 @@ android {
             it.buildConfigField 'String', 'USER_FIRST_RUN', USER_FIRST_RUN
             it.buildConfigField 'String', 'USER_MOBILE_MONEY_FIRST_RUN', USER_MOBILE_MONEY_FIRST_RUN
             it.buildConfigField 'String', 'USER_MOBILE_MONEY_COUNTRY', USER_MOBILE_MONEY_COUNTRY
+            it.buildConfigField 'String', 'ATTEMPT_PAYMENT_PARAM', ATTEMPT_PAYMENT_PARAM
+            it.buildConfigField 'String', 'CONFIRM_PAYMENT_PARAM', CONFIRM_PAYMENT_PARAM
         }
     }
 

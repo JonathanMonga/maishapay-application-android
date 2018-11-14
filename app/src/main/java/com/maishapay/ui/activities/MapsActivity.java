@@ -37,8 +37,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @BindView(R.id.bmb)
     BoomMenuButton bmb;
 
-    private static final LatLngBounds NETHERLANDS = new LatLngBounds(
-            new LatLng(50.77083, 3.57361), new LatLng(53.35917, 7.10833));
+    private static final LatLngBounds RDC = new LatLngBounds(new LatLng(-5.712875, 12.075148), new LatLng(2.123881, 31.274105));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(NETHERLANDS, 0));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(RDC, 0));
             }
         });
 
@@ -116,7 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<MaishapayClusterItem> clusterItems = new ArrayList<>();
         /*
         for (int i = 0; i < 20000; i++) {
-            clusterItems.add(new MaishapayClusterItem(RandomLocationGenerator.generate(NETHERLANDS)));
+            clusterItems.add(new MaishapayClusterItem(RandomLocationGenerator.generate(RDC)));
         }
         */
 

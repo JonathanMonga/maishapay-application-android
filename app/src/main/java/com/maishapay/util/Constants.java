@@ -96,8 +96,6 @@ public class Constants {
             destinqtairePhone = codePhone + recipient.substring(1, stringLength);
         else if (recipient.length() == 12)
             destinqtairePhone = codePhone + recipient.substring(3, stringLength);
-        else if (recipient.length() == 13)
-            destinqtairePhone = codePhone + recipient.substring(4, stringLength);
         else
             destinqtairePhone = recipient;
 

@@ -132,7 +132,7 @@
                                 style="@style/form_edit_text"
                                 android:hint="Code de la carte"
                                 android:inputType="number"
-                                app:met_mask="###-###-####-####"/>
+                                app:met_mask="# ##.###.###.### ##"/>
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
