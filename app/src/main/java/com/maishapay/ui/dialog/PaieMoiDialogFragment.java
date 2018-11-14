@@ -66,8 +66,7 @@ public class PaieMoiDialogFragment extends AppCompatDialogFragment {
         setCancelable(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED);
 
-        Constants.generateQRcode(new Gson().toJson(getArguments().getString(DATA), UserResponse.class), qrcode, (WindowManager) MaishapayApplication.getMaishapayContext().getSystemService(WINDOW_SERVICE));
-
+        Constants.generateQRcode(getArguments().getString(DATA), qrcode, (WindowManager) MaishapayApplication.getMaishapayContext().getSystemService(WINDOW_SERVICE));
     }
 
     @OnClick(R.id.BTN_Sim)

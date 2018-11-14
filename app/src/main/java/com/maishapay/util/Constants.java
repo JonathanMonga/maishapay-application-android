@@ -29,6 +29,9 @@ import com.google.zxing.WriterException;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import de.mateware.snacky.Snacky;
@@ -125,5 +128,18 @@ public class Constants {
         } catch (WriterException e) {
             LogCat.e(e.toString());
         }
+    }
+
+    public static boolean containsIgnoreCase(String haystack, String needle){
+        if(needle.equals(""))
+            return true;
+
+        if(haystack == null || needle == null || haystack.equals(""))
+            return false;
+
+        Pattern pattern = Pattern.compile(needle, Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
+        Matcher matcher = pattern.matcher(haystack);
+
+        return matcher.find();
     }
 }

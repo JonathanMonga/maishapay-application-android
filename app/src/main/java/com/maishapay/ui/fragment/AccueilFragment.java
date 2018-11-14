@@ -20,8 +20,10 @@ import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.AccueilPresenter;
@@ -377,8 +379,10 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 }
 
                 default: {
+                    UserResponse userResponse = UserPrefencesManager.getCurrentUser();
+
                     FragmentManager fm = getChildFragmentManager();
-                    paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(UserPrefencesManager.getCurrentUser().getTelephone());
+                    paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(new Gson().toJson(userResponse, UserResponse.class));
                     paieMoiDialogFragment.show(fm, "PaieMoiDialogFragment");
                 }
             }

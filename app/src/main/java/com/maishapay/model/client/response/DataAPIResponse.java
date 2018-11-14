@@ -26,34 +26,31 @@ public class DataAPIResponse extends BaseResponse{
     @SerializedName("id")
     private int id;
 
-    @SerializedName("resultat")
-    private int resultat;
-
-    @SerializedName("resultat")
+    @SerializedName("name")
     private int name;
 
-    @SerializedName("resultat")
+    @SerializedName("telephone")
     private int telephone;
 
-    @SerializedName("resultat")
+    @SerializedName("api_key")
     private int api_key;
 
     @SerializedName("project_name")
     private int project_name;
 
-    @SerializedName("resultat")
+    @SerializedName("project_type")
     private int project_type;
 
-    @SerializedName("resultat")
+    @SerializedName("project_id")
     private int project_id;
 
-    @SerializedName("resultat")
+    @SerializedName("project_logo")
     private int project_logo;
 
-    @SerializedName("resultat")
+    @SerializedName("project_redirect_url")
     private int project_redirect_url;
 
-    @SerializedName("resultat")
+    @SerializedName("project_callback_url")
     private int project_callback_url;
 
     public int getId() {
@@ -62,14 +59,6 @@ public class DataAPIResponse extends BaseResponse{
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
     }
 
     public int getName() {

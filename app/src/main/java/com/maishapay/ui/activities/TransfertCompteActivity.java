@@ -38,8 +38,11 @@ import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
+import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.TransfertResponse;
+import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TranfertConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
@@ -70,6 +73,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static String userCurrency;
     private static String pin;
     private static String destinatairePhone;
+    private static PaymentResponse paymentResponse;
+    private static UserResponse userResponse;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -166,8 +171,20 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
-                ET_Destinataire.setText(text);
+                if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")){
+                    String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(20, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
+                    paymentResponse = new Gson().fromJson(response, PaymentResponse.class);
+                    Toast.makeText(this, data.getStringExtra(DecoderActivity.EXTRA_QRCODE), Toast.LENGTH_LONG).show();
+                } else if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")){
+                    userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
+                    ET_Destinataire.setText(userResponse.getTelephone());
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Désolé, vous avez scanné un mauvais Code QR.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
             }
         }
     }
