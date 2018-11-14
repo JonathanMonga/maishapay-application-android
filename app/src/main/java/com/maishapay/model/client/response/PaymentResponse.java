@@ -27,7 +27,7 @@ public class PaymentResponse extends BaseResponse{
     private int resultat;
 
     @SerializedName("message")
-    private int message;
+    private String message;
 
     @SerializedName("data_api")
     private DataAPIResponse data_api;
@@ -43,11 +43,11 @@ public class PaymentResponse extends BaseResponse{
         this.resultat = resultat;
     }
 
-    public int getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(int message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
