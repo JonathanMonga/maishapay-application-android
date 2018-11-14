@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.maishapay.R;
+import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TranfertConfirmationPresenter;
@@ -237,11 +238,11 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     }
 
     @Override
-    public void finishToTranfert(TransfertResponse transfertResponse) {
+    public void finishToTranfert(BaseResponse baseResponse) {
         flagtransfert = true;
 
         FragmentManager fm = getSupportFragmentManager();
-        dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(transfertResponse.getPrenom(), transfertResponse.getNom());
+        dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse)baseResponse).getPrenom(), ((TransfertResponse)baseResponse).getNom());
         dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
     }
 

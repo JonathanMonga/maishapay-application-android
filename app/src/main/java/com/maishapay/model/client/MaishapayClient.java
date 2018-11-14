@@ -315,7 +315,6 @@ public final class MaishapayClient {
      */
     public Observable<PaymentResponse> attempt_payment(String api_key,
                                                        String token,
-                                                       String expeditaire,
                                                        String monnaie,
                                                        String montant) {
         return this.maishapayAPI.attempt_payment(ATTEMPT_PAYMENT_PARAM, api_key, token, monnaie, montant);

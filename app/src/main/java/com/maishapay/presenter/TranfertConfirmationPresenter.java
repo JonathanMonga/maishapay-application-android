@@ -20,6 +20,7 @@ import android.app.Activity;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -125,6 +126,58 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().finishToConfirm();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }));
+    }
+
+    public void attempt_payment(final String api_key, final String token, final String monnaie, final String montant){
+        disposableHandler.manageDisposable(maishapayClient.attempt_payment(api_key, token, monnaie, montant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<PaymentResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(PaymentResponse response) {
+                        switch (response.getResultat()) {
+                            case 0: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showTranfertError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 2: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showTranfertError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 3: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showTranfertError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 4: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showTranfertError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            default: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().finishToTranfert(response);
                                     break;
                                 }
                             }

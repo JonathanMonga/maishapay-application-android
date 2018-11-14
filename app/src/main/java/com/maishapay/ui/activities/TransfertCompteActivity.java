@@ -40,7 +40,9 @@ import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.PaymentResponse;
+import com.maishapay.model.client.response.QRCodeResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -73,7 +75,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static String userCurrency;
     private static String pin;
     private static String destinatairePhone;
-    private static PaymentResponse paymentResponse;
+    private static QRCodeResponse qrCodeResponse;
     private static UserResponse userResponse;
 
     @BindView(R.id.toolbar_actionbar)
@@ -89,6 +91,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
+    private boolean flagQRCode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,9 +175,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         if (requestCode == REQUEST_QRCODE) {
             if (resultCode == Activity.RESULT_OK) {
                 if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")){
-                    String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(20, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
-                    paymentResponse = new Gson().fromJson(response, PaymentResponse.class);
-                    Toast.makeText(this, data.getStringExtra(DecoderActivity.EXTRA_QRCODE), Toast.LENGTH_LONG).show();
+                    String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
+                    qrCodeResponse = new Gson().fromJson(response, QRCodeResponse.class);
+
+                    flagQRCode = true;
+                    enabledControls(false);
+                    getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
                 } else if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")){
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
@@ -285,12 +291,17 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @Override
-    public void finishToTranfert(TransfertResponse transfertResponse) {
+    public void finishToTranfert(BaseResponse baseResponse) {
         flagtransfert = true;
+        flagQRCode = false;
 
-        FragmentManager fm = getSupportFragmentManager();
-        dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(transfertResponse.getPrenom(), transfertResponse.getNom());
-        dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
+        if(baseResponse instanceof TransfertResponse) {
+            FragmentManager fm = getSupportFragmentManager();
+            dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse)baseResponse).getPrenom(), ((TransfertResponse)baseResponse).getNom());
+            dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
+        } else {
+            Toast.makeText(this, ((PaymentResponse)baseResponse).getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -348,7 +359,9 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else if(flagQRCode)
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
@@ -366,6 +379,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
                 if (flagtransfert)
                     getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else if(flagQRCode)
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
@@ -382,7 +397,9 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                 enabledControls(false);
 
                 if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+                else if(flagQRCode)
+                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
                 else
                     getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
             }

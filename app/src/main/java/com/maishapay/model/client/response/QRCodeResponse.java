@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
 public class QRCodeResponse extends BaseResponse{
 
     @SerializedName("token")
-    private int token;
+    private String token;
 
     @SerializedName("montant")
     private String montant;
@@ -35,11 +35,11 @@ public class QRCodeResponse extends BaseResponse{
     @SerializedName("api_key")
     private String api_key;
 
-    public int getToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(int token) {
+    public void setToken(String token) {
         this.token = token;
     }
 

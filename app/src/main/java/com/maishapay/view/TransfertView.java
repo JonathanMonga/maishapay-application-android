@@ -1,5 +1,6 @@
 package com.maishapay.view;
 
+import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 
 import net.grandcentrix.thirtyinch.TiView;
@@ -17,5 +18,5 @@ public interface TransfertView extends BaseView {
     void finishToConfirm();
 
     @CallOnMainThread
-    void finishToTranfert(TransfertResponse transfertResponse);
+    void finishToTranfert(BaseResponse transfertResponse);
 }

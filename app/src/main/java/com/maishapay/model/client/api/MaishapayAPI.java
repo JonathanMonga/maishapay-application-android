@@ -187,12 +187,11 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<PaymentResponse> attempt_payment(
-            @Field("ent") String ent,
-            @Field("api_key") String api_key,
-            @Field("token") String token,
-            @Field("monnaie") String monnaie,
-            @Field("montant") String montant);
+    Observable<PaymentResponse> attempt_payment(@Field("ent") String ent,
+                                                @Field("api_key") String api_key,
+                                                @Field("token") String token,
+                                                @Field("monnaie") String monnaie,
+                                                @Field("montant") String montant);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
