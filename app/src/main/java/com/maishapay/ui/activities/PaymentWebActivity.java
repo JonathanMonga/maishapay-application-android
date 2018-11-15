@@ -22,10 +22,7 @@ import com.maishapay.presenter.PaymentConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmPaymentFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.util.Constants;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.PaymentView;
-
-import net.grandcentrix.thirtyinch.ViewAction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

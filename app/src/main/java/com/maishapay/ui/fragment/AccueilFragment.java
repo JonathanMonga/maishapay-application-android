@@ -138,6 +138,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         bmb.addBuilder(builder4);
 
         bmb.setOnBoomListener(new OnBoomClickListener());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
             taux.setVisibility(View.INVISIBLE);

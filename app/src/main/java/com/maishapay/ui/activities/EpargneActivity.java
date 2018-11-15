@@ -104,6 +104,11 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
         dollarsChart.setMinValue(0f);
         dollarsChart.setMaxValue(1000000f);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         enabledControls(false);
         getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
