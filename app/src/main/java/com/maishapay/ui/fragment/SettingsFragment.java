@@ -21,9 +21,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.fragment_settings);
         Preference profil = findPreference("profil");
-        Preference code_pin = findPreference("code_pin");
         profil.setOnPreferenceClickListener(this);
-        code_pin.setOnPreferenceClickListener(this);
     }
 
 
