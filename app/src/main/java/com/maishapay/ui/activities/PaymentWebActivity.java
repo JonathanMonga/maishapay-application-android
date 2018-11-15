@@ -20,10 +20,12 @@ import com.maishapay.model.client.response.QRCodeResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.PaymentConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmPaymentFragment;
-import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.util.Constants;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.PaymentView;
+
+import net.grandcentrix.thirtyinch.ViewAction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +35,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresenter, PaymentView> implements PaymentView, PossitiveButtonConfirmListener {
     public static final String EXTRA_DATA = "data";
+    public static final String EXTRA_ERROR_CODE = "error_code";
+    public static final int RESULT_TRANSFERT_ERROR = 1;
+    public static final int RESULT_NETWORK_ERROR = 2;
+
     private static String PIN ;
 
     @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
@@ -48,16 +54,21 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.success_activity);
+        setContentView(R.layout.payment_web_activity);
         ButterKnife.bind(this);
 
         qrCodeResponse = new Gson().fromJson(getIntent().getStringExtra(EXTRA_DATA), QRCodeResponse.class);
 
         initProgressBar();
-        flagtransfert = true;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flagtransfert = true;
         enabledControls(false);
         getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
+
     }
 
     @OnClick(R.id.LL_Site)
@@ -74,34 +85,10 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
     @Override
     public void showTranfertError(int type) {
-        if (type == 0)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Le numero de destinataire n'existe pas dans Maishapay.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
-        else if (type == 2)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
-        else if (type == 3)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Le compte de votre destinataire est indisponible pour le moment.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
-        else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
-                    .show();
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_ERROR_CODE, type);
+        setResult(RESULT_TRANSFERT_ERROR, intent);
+        finish();
     }
 
     @Override
@@ -131,6 +118,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
     @Override
     public void finishToTranfert(BaseResponse transfertResponse) {
+        flagtransfert = false;
         paymentResponse = (PaymentResponse)transfertResponse;
     }
 
@@ -138,51 +126,54 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
-                else
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(),  paymentResponse.getData_trans().getMontant());
-            }
-        });
+        if(flagtransfert){
+            setResult(RESULT_NETWORK_ERROR);
+            finish();
+        } else {
+            Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enabledControls(false);
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                }
+            });
+        }
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
-                else
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(),  paymentResponse.getData_trans().getMontant());
-            }
-        });
+        if(flagtransfert){
+            setResult(RESULT_NETWORK_ERROR);
+            finish();
+        } else {
+            Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enabledControls(false);
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                }
+            });
+        }
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
-                else
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(),  paymentResponse.getData_trans().getMontant());
-            }
-        });
+        if(flagtransfert){
+            setResult(RESULT_NETWORK_ERROR);
+            finish();
+        } else {
+            Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enabledControls(false);
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                }
+            });
+        }
     }
 
     @Override

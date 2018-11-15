@@ -11,6 +11,7 @@ import com.maishapay.app.MaishapayApplication;
 import com.maishapay.ui.activities.UpdateProfilActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference profil = findPreference("profil");
         profil.setOnPreferenceClickListener(this);
     }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -38,7 +38,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             MaishapayApplication.getMaishapayContext().stopService(service);
             MaishapayApplication.getMaishapayContext().startService(service);
         }
-
         */
     }
 

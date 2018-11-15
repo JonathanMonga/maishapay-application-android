@@ -63,10 +63,14 @@ import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.PaymentWebActivity.EXTRA_ERROR_CODE;
+import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
+
 
 public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements PossitiveButtonConfirmListener, NumPadPossitiveButtonListener, TransfertView {
 
     private static final int REQUEST_QRCODE = 1;
+    private static final int REQUEST_PAYMENT = 2;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
 
@@ -176,7 +180,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
                     Intent intent = new Intent(this, PaymentWebActivity.class);
                     intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_PAYMENT);
                 } else if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")){
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
@@ -187,6 +191,17 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
+            }
+        } else if(requestCode == REQUEST_PAYMENT){
+            if(resultCode == RESULT_TRANSFERT_ERROR) {
+                showTranfertError(data.getIntExtra(EXTRA_ERROR_CODE, -1));
+            } else {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Aucune connexion réseau. Réessayez plus tard.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .error()
+                        .show();
             }
         }
     }

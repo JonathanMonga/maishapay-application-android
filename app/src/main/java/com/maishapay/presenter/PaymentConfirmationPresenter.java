@@ -20,10 +20,12 @@ import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.TransfertResponse;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.PaymentView;
 import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
+import net.grandcentrix.thirtyinch.ViewAction;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,10 +45,11 @@ public class PaymentConfirmationPresenter extends TiPresenter<PaymentView> {
     }
 
     public void attempt_payment(final String api_key, final String token, final String monnaie, final String montant){
+
         disposableHandler.manageDisposable(maishapayClient.attempt_payment(api_key, token, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<PaymentResponse>(getView()) {
+                .subscribeWith(new CallbackWrapper<PaymentResponse>(getViewOrThrow()) {
                     @Override
                     protected void onSuccess(PaymentResponse response) {
                         switch (response.getResultat()) {

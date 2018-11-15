@@ -32,7 +32,7 @@
                     android:layout_width="120.0dip"
                     android:layout_height="120.0dip"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/mpay" />
+                    app:srcCompat="@drawable/icon_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -1,12 +1,10 @@
 package com.maishapay.model.client.api;
 
-import com.maishapay.util.LogCat;
 import com.maishapay.view.BaseView;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 
 import io.reactivex.observers.DisposableObserver;
@@ -15,10 +13,10 @@ import retrofit2.HttpException;
 
 public abstract class CallbackWrapper <T> extends DisposableObserver<T> {
     //BaseView is just a reference of a View in MVP
-    private WeakReference<BaseView> weakReference;
+    private BaseView view;
 
     public CallbackWrapper(BaseView view) {
-        this.weakReference = new WeakReference<>(view);
+        this.view = view;
     }
 
     protected abstract void onSuccess(T t);
@@ -30,10 +28,8 @@ public abstract class CallbackWrapper <T> extends DisposableObserver<T> {
 
     @Override
     public void onError(Throwable e) {
-        BaseView view = weakReference.get();
         if (e instanceof HttpException) {
             ResponseBody responseBody = ((HttpException)e).response().errorBody();
-
             if(view != null)
                 view.onUnknownError(getErrorMessage(responseBody));
         } else if (e instanceof SocketTimeoutException) {
@@ -42,7 +38,7 @@ public abstract class CallbackWrapper <T> extends DisposableObserver<T> {
         } else if (e instanceof IOException) {
             if(view != null)
                 view.onNetworkError();
-        } else if(e instanceof Exception ) {
+        } else if(e instanceof Exception) {
             if(view != null)
                 view.onUnknownError(e.getMessage());
         } else {
@@ -52,9 +48,7 @@ public abstract class CallbackWrapper <T> extends DisposableObserver<T> {
     }
 
     @Override
-    public void onComplete() {
-
-    }
+    public void onComplete() {}
 
     private String getErrorMessage(ResponseBody responseBody) {
         try {
