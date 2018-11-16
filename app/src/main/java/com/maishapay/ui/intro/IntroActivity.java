@@ -27,8 +27,6 @@ public class IntroActivity extends AppIntro {
             startActivity(new Intent(this, LoginActivity.class));
         else if(UserPrefencesManager.getCurentUserLoginSuccess())
             startActivity(new Intent(this, DrawerActivity.class));
-        else
-            UserPrefencesManager.setUserFirtRun(false);
 
         SliderPage sliderPage1 = new SliderPage();
         sliderPage1.setTitle("Bienvenue chez Maishapay");
@@ -61,6 +59,7 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
+        UserPrefencesManager.setUserFirtRun(false);
         startActivity(new Intent(IntroActivity.this, LoginActivity.class));
         finish();
     }
@@ -68,6 +67,7 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
+        UserPrefencesManager.setUserFirtRun(false);
         startActivity(new Intent(IntroActivity.this, LoginActivity.class));
         finish();
     }

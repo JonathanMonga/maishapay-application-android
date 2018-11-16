@@ -16,7 +16,6 @@
 
 package com.maishapay.ui.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,15 +30,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
+import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.model.client.response.RetraitResponse;
+import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.RetraitConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmRetraitFragment;
@@ -83,6 +83,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private ProgressDialog progressDialog;
     private DialogConfirmRetraitFragment confirmRetaritFragment;
     private boolean flagRetrait = false;
+    private QRCodeDataUser qrCodeDataUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,9 +165,17 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
-                ET_Destinataire.setText(text);
+            if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Ce Code QR n'est pas pris en charge.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
+
+                ET_Destinataire.setText(qrCodeDataUser.getTelephone());
             }
         }
     }

@@ -26,7 +26,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,7 +36,6 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.UpdateProfilePresenter;
 import com.maishapay.ui.dialog.DialogUpdateFragment;
 import com.maishapay.ui.dialog.PossitiveButtonListener;
-import com.maishapay.util.Constants;
 import com.maishapay.view.UpdateProfileView;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -217,62 +215,34 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.LL_Register), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                getPresenter().updateProfile(
-                        nomEditText.getText().toString(),
-                        prenomEditText.getText().toString(),
-                        phoneEditText.getText().toString(),
-                        emailEditText.getText().toString(),
-                        adresseEditText.getText().toString(),
-                        villeEditText.getText().toString(),
-                        PIN);
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Impossible de se connecter au serveur.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .warning()
+                .show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
-
-        Constants.showOnTimeout(findViewById(R.id.LL_Register), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                getPresenter().updateProfile(
-                        nomEditText.getText().toString(),
-                        prenomEditText.getText().toString(),
-                        phoneEditText.getText().toString(),
-                        emailEditText.getText().toString(),
-                        adresseEditText.getText().toString(),
-                        villeEditText.getText().toString(),
-                        PIN);
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Le délais s'est t'écouler.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .warning()
+                .show();
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.LL_Register), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                getPresenter().updateProfile(
-                        nomEditText.getText().toString(),
-                        prenomEditText.getText().toString(),
-                        phoneEditText.getText().toString(),
-                        emailEditText.getText().toString(),
-                        adresseEditText.getText().toString(),
-                        villeEditText.getText().toString(),
-                        PIN);
-            }
-        });
+        Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .warning()
+                .show();
     }
 }

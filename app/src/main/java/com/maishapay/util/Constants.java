@@ -95,21 +95,23 @@ public class Constants {
         return Uri.parse(uriString);
     }
 
-    public static String generatePhoneNumber(String phone){
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
-        String destinqtairePhone;
-        String recipient = phone;
+    public static String generatePhoneNumber(String phone) {
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4);
+        String destinatairePhone;
+        String recipient = phone.replace(" ", "");
 
         int stringLength = recipient.length();
 
-        if(recipient.length() == 10)
-            destinqtairePhone = codePhone + recipient.substring(1, stringLength);
-        else if (recipient.length() == 12)
-            destinqtairePhone = codePhone + recipient.substring(3, stringLength);
+        if(recipient.length() == 9)
+            destinatairePhone = codePhone + recipient;
+        else if (recipient.length() == 10)
+            destinatairePhone = codePhone + recipient.substring(1, stringLength);
         else
-            destinqtairePhone = recipient;
+            destinatairePhone = recipient;
 
-        return destinqtairePhone;
+        LogCat.e(destinatairePhone);
+
+        return destinatairePhone;
     }
 
     public static void generateQRcode(String data, ImageView imageView, WindowManager manager){
@@ -119,7 +121,7 @@ public class Constants {
         int width = point.x;
         int height = point.y;
         int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 6;
+        smallerDimension = smallerDimension * 3 / 5;
 
         // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
         QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, smallerDimension);

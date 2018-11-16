@@ -59,9 +59,9 @@ public class DialogConversionFragment extends AppCompatDialogFragment {
         setCancelable(false);
 
         if(String.valueOf(String.format("%s%s", Float.valueOf(getArguments().getString(EXTRA_MONTANT)), getArguments().getString(EXTRA_DEVISE))).length() > 6){
-            TV_Conversion.setBaseTextSize(14f);
-            TV_Conversion.setDecimalsTextSize(14f);
-            TV_Conversion.setSymbolTextSize(12f);
+            TV_Conversion.setBaseTextSize(18f);
+            TV_Conversion.setDecimalsTextSize(18f);
+            TV_Conversion.setSymbolTextSize(15f);
         }
 
         TV_Conversion.setAmount(Float.valueOf(getArguments().getString(EXTRA_MONTANT)), getArguments().getString(EXTRA_DEVISE));

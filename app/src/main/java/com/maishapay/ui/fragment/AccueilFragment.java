@@ -38,7 +38,6 @@ import com.maishapay.ui.activities.TransfertCompteCashActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
 import com.maishapay.ui.menu.MenuHelper;
-import com.maishapay.util.Constants;
 import com.maishapay.view.AccueilView;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -60,7 +59,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import de.mateware.snacky.Snacky;
-
 
 public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView> implements AccueilView {
 
@@ -150,7 +148,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             progressBarTaux.setVisibility(View.VISIBLE);
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
-            if (UserPrefencesManager.getUserDataPreference() != null) {
+                if (UserPrefencesManager.getUserDataPreference() != null) {
                 taux.setVisibility(View.VISIBLE);
                 progressBarSolde.setVisibility(View.INVISIBLE);
                 progressBarTaux.setVisibility(View.INVISIBLE);

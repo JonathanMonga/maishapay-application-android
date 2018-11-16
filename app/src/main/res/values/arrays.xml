@@ -36,6 +36,15 @@
         <item>@string/senegal</item>
     </array>
 
+    <array name="option_country_code">
+        <item>+243</item>
+        <item>+211</item>
+        <item>+250</item>
+        <item>+228</item>
+        <item>+225</item>
+        <item>+254</item>
+    </array>
+
     <array name="option_transfert_paiment">
         <item>Compte à compte</item>
         <item>Compte à cash</item>

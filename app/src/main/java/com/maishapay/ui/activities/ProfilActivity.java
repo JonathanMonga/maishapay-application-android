@@ -2,14 +2,12 @@ package com.maishapay.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -17,15 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.zxing.WriterException;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.Constants;
-import com.maishapay.util.LogCat;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -58,8 +53,12 @@ public class ProfilActivity extends AppCompatActivity {
         collapsingToolbar.setTitle("Profil");
 
         UserResponse userResponse = UserPrefencesManager.getCurrentUser();
+        QRCodeDataUser qrCodeDataUser = new QRCodeDataUser();
+        qrCodeDataUser.setTelephone(userResponse.getTelephone());
+        qrCodeDataUser.setNom(userResponse.getNom());
+        qrCodeDataUser.setPrenom(userResponse.getPrenom());
 
-        Constants.generateQRcode(new Gson().toJson(userResponse, UserResponse.class), IV_QRCode, (WindowManager) getSystemService(WINDOW_SERVICE));
+        Constants.generateQRcode(new Gson().toJson(qrCodeDataUser, QRCodeDataUser.class), IV_QRCode, (WindowManager) getSystemService(WINDOW_SERVICE));
 
         ET_Noms.setText(String.format("%s %s", userResponse.getPrenom(), userResponse.getNom()));
         ET_Phone.setText(userResponse.getTelephone());

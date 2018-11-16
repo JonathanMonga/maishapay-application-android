@@ -16,7 +16,6 @@
 
 package com.maishapay.ui.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,18 +25,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.ex.chips.BaseRecipientAdapter;
-import com.android.ex.chips.RecipientEditTextView;
 import com.maishapay.R;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
@@ -47,8 +42,6 @@ import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
-import com.maishapay.ui.qrcode.DecoderActivity;
-import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 import com.santalu.widget.MaskEditText;
 
@@ -295,50 +288,44 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Impossible de se connecter au serveur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le délais s'est t'écouler.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Aucune connexion réseau. Réessayez plus tard.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }
 }

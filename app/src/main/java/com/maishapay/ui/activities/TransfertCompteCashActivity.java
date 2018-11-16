@@ -16,7 +16,6 @@
 
 package com.maishapay.ui.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,9 +36,11 @@ import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
+import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
+import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TranfertConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
@@ -84,6 +85,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
+    private QRCodeDataUser qrCodeDataUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +167,17 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String text = data.getStringExtra(DecoderActivity.EXTRA_QRCODE);
-                ET_Destinataire.setText(text);
+            if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Ce Code QR n'est pas pris en charge.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .warning()
+                        .show();
+            } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
+
+                ET_Destinataire.setText(qrCodeDataUser.getTelephone());
             }
         }
     }
@@ -328,50 +338,44 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Impossible de se connecter au serveur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le délais s'est t'écouler.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Aucune connexion réseau. Réessayez plus tard.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }
 }

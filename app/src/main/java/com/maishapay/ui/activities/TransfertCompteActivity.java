@@ -31,7 +31,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -42,7 +41,6 @@ import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.PaymentResponse;
-import com.maishapay.model.client.response.QRCodeResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -176,12 +174,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
             if (resultCode == Activity.RESULT_OK) {
-                if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")){
+                if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
                     String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
                     Intent intent = new Intent(this, PaymentWebActivity.class);
                     intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
                     startActivityForResult(intent, REQUEST_PAYMENT);
-                } else if(Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")){
+                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")) {
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
                 } else
@@ -192,8 +190,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                             .warning()
                             .show();
             }
-        } else if(requestCode == REQUEST_PAYMENT){
-            if(resultCode == RESULT_TRANSFERT_ERROR) {
+        } else if (requestCode == REQUEST_PAYMENT) {
+            if (resultCode == RESULT_TRANSFERT_ERROR) {
                 showTranfertError(data.getIntExtra(EXTRA_ERROR_CODE, -1));
             } else {
                 Snacky.builder()
@@ -213,13 +211,18 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             return;
         }
 
+        if (ET_Destinataire.getText().toString().length() <= 8) {
+            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
+            return;
+        }
+
         if (ET_Montant.getAmount() == 0F) {
             toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
             return;
         }
 
-        if(ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone =  Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
+        if (ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
@@ -235,36 +238,36 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @Override
-        public void showTranfertError(int type) {
-            if (type == 0)
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Le numero de destinataire n'existe pas dans Maishapay.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
-                        .show();
-            else if (type == 2)
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
-                        .show();
-            else if (type == 3)
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Le compte de votre destinataire est indisponible pour le moment.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
+    public void showTranfertError(int type) {
+        if (type == 0)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le numero de destinataire n'existe pas dans Maishapay.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else if (type == 2)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else if (type == 3)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le compte de votre destinataire est indisponible pour le moment.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
                     .show();
         else
             Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-        }
+                    .setView(findViewById(R.id.root))
+                    .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+    }
 
     @Override
     public void showConfimationError(int type) {
@@ -278,12 +281,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     .show();
         else
             Snacky.builder()
-                .setView(findViewById(R.id.root))
-                .setText("Echec de transfert.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .warning()
-                .show();
-        }
+                    .setView(findViewById(R.id.root))
+                    .setText("Echec de transfert.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+    }
 
     @Override
     public void finishToConfirm() {
@@ -305,12 +308,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     public void finishToTranfert(BaseResponse baseResponse) {
         flagtransfert = true;
 
-        if(baseResponse instanceof TransfertResponse) {
+        if (baseResponse instanceof TransfertResponse) {
             FragmentManager fm = getSupportFragmentManager();
-            dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse)baseResponse).getPrenom(), ((TransfertResponse)baseResponse).getNom());
+            dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse) baseResponse).getPrenom(), ((TransfertResponse) baseResponse).getNom());
             dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
         } else {
-            Toast.makeText(this, ((PaymentResponse)baseResponse).getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, ((PaymentResponse) baseResponse).getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -348,7 +351,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @OnClick(R.id.ET_Montant)
-    public void ET_MontantClicked(){
+    public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
         dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
@@ -363,50 +366,44 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-               else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Impossible de se connecter au serveur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le délais s'est t'écouler.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagtransfert)
-                    getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(),destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-            }
-        });
+        if (flagtransfert)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Aucune connexion réseau. Réessayez plus tard.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }
 }

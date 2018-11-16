@@ -4,7 +4,6 @@ package com.maishapay.ui.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +22,6 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TransactionPresenter;
 import com.maishapay.ui.adapter.TransactionAdapter;
 import com.maishapay.ui.menu.MenuHelper;
-import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
 
 import java.util.List;
@@ -134,21 +132,20 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
         Snacky.builder()
                 .setView(findViewById(R.id.root))
-                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .error()
+                .warning()
                 .show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
-
         Snacky.builder()
                 .setView(findViewById(R.id.root))
-                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .error()
+                .warning()
                 .show();
     }
 
@@ -160,7 +157,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 .setView(findViewById(R.id.root))
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .error()
+                .warning()
                 .show();
     }
 }

@@ -25,7 +25,6 @@ import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
 import com.maishapay.ui.fragment.SettingsFragment;
-import com.maishapay.util.LogCat;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -33,11 +32,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,11 +43,13 @@ import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class DrawerActivity extends AppCompatActivity {
+    public static boolean is_running = false;
 
     private Drawer result = null;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
+    private ProfileDrawerItem userProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +59,24 @@ public class DrawerActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        UserResponse userResponse = UserPrefencesManager.getCurrentUser();
+        is_running = true;
+
+        userProfil = new ProfileDrawerItem();
+        userProfil
+                .withIcon(R.drawable.maishapay_photo_profil)
+                .withIdentifier(1)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), 1);
+                        return false;
+                    }
+                });
+
         // Create a few sample profile
         // NOTE you have to define the loader logic too. See the CustomApplication for more details
-        final IProfile userProfil = new ProfileDrawerItem().withName(userResponse.getPrenom() + " " + userResponse.getNom()).withEmail(userResponse.getTelephone()).withIcon(R.drawable.maishapay_photo_profil).withIdentifier(1);
+        UserResponse userResponse = UserPrefencesManager.getCurrentUser();
+        userProfil.withName(userResponse.getPrenom() + " " + userResponse.getNom()).withEmail(userResponse.getTelephone());
 
         // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
@@ -72,36 +84,22 @@ public class DrawerActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.fastpro)
                 .withTranslucentStatusBar(true)
-                .addProfiles(
-                        userProfil,
-                        new ProfileSettingDrawerItem().withName("Modifier votre profil").withIcon(R.drawable.profil).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                            @Override
-                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), 1);
-                                    }
-                                }, 400);
-                                return false;
-                            }
-                        })
-                )
+                .addProfiles(userProfil)
                 .withSavedInstance(savedInstanceState)
                 .build();
 
         result = new DrawerBuilder()
                 .withSelectedItemByPosition(1)
                 .withSavedInstance(savedInstanceState)
-                .withDisplayBelowStatusBar(false)
                 .withTranslucentStatusBar(false)
+                .withDisplayBelowStatusBar(true)
                 .withShowDrawerOnFirstLaunch(true)
                 .withActivity(this)
                 .withHasStableIds(true)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Accueil").withIcon(R.drawable.bank).withIconTintingEnabled(true).withIdentifier(1),
+                        new PrimaryDrawerItem().withName("Accueil").withIcon(R.drawable.bank).withIdentifier(1),
                         new PrimaryDrawerItem().withName("Transactions").withSelectable(false).withIcon(R.drawable.transaction).withIdentifier(2),
                         new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(3),
                         new DividerDrawerItem(),
@@ -217,15 +215,8 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        List<String> strings = new ArrayList<>();
-                        strings.add("+243");
-                        strings.add("+211");
-                        strings.add("+250");
-                        strings.add("+228");
-                        strings.add("+225");
-                        strings.add("+254");
-
-                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
+                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4);
 
                         if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
@@ -286,11 +277,19 @@ public class DrawerActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        is_running = false;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK)
-                recreate();
+            if (resultCode == Activity.RESULT_OK) {
+                UserResponse userResponse = UserPrefencesManager.getCurrentUser();
+                userProfil.withName(userResponse.getPrenom() + " " + userResponse.getNom()).withEmail(userResponse.getTelephone());
+            }
         }
     }
 
