@@ -43,10 +43,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:piv_padding="10dp"
+                android:layout_marginBottom="10dp"
                 app:piv_radius="5dp"
                 app:piv_selectedColor="@color/ab_default"
                 app:piv_unselectedColor="@color/texto"
                 app:piv_viewPager="@id/viewPager" />
+
+            <include layout="@layout/card_solde_accueil" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

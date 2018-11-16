@@ -4,8 +4,6 @@ package com.maishapay.ui.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -24,7 +22,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
-import com.maishapay.util.LogCat;
 
 import java.util.ArrayList;
 
@@ -42,35 +39,12 @@ public class BalanceDollarsFragment extends Fragment {
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
 
-    public static BalanceDollarsFragment newInstance(int solde, int envoi, int recu) {
-
-        Bundle args = new Bundle();
-        args.putInt(EXTRA_SOLDE_DOLLARS, solde);
-        args.putInt(EXTRA_SOLDE_ENVOI, envoi);
-        args.putInt(EXTRA_SOLDE_RECU, recu);
-
-        LogCat.e("Solde dollars : "+solde+" Envoi : "+envoi+" Recu :"+recu);
-
-
+    public static BalanceDollarsFragment newInstance() {
         BalanceDollarsFragment fragment = new BalanceDollarsFragment();
-        fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.balance_francs_fragment, container, false);
-
-        ButterKnife.bind(this, view);
-
-        mTfLight = Typeface.createFromAsset(MaishapayApplication.getMaishapayContext().getAssets(), "fonts/Roboto-Light.ttf");
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    public void setChartDat(int solde, int envoi, int recu){
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -78,7 +52,10 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
         mChart.setCenterTextTypeface(mTfLight);
-        mChart.setCenterText(generateCenterSpannableText());
+
+        SpannableString spannableString = new SpannableString(String.format("%d Fc", solde));
+        spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+        mChart.setCenterText(spannableString);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);
@@ -95,7 +72,7 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setRotationEnabled(true);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData();
+        setData(solde, envoi, recu);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInBack);
 
@@ -104,7 +81,7 @@ public class BalanceDollarsFragment extends Fragment {
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-        l.setXEntrySpace(4f);
+        l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
 
@@ -113,15 +90,26 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setEntryLabelTextSize(12f);
     }
 
-    private void setData() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.balance_francs_fragment, container, false);
+
+        ButterKnife.bind(this, view);
+
+        mTfLight = Typeface.createFromAsset(MaishapayApplication.getMaishapayContext().getAssets(), "fonts/Roboto-Light.ttf");
+        return view;
+    }
+
+    private void setData(int solde, int envoi, int recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(! (getArguments().getInt(EXTRA_SOLDE_DOLLARS) < 0)) {
-            entries.add(new PieEntry((float) getArguments().getInt(EXTRA_SOLDE_RECU) < 0 ? 0 : getArguments().getInt(EXTRA_SOLDE_RECU), "Reçu"));
-            entries.add(new PieEntry((float) getArguments().getInt(EXTRA_SOLDE_ENVOI) < 0 ? 0 : getArguments().getInt(EXTRA_SOLDE_ENVOI), "Envoyé"));
+        if(! (solde < 0)) {
+            entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Reçu"));
+            entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Envoyé"));
         } else {
             entries.add(new PieEntry((float) 100, "Dette"));
         }
+
         PieDataSet dataSet = new PieDataSet(entries, "Solde Dollars");
 
         dataSet.setDrawIcons(false);
@@ -146,11 +134,5 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setData(data);
 
         mChart.invalidate();
-    }
-
-    private SpannableString generateCenterSpannableText() {
-        SpannableString s = new SpannableString(getArguments().getInt(EXTRA_SOLDE_DOLLARS) + " $");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length(), 0);
-        return s;
     }
 }

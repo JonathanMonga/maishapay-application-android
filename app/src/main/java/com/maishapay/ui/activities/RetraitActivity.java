@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -165,17 +166,19 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
-            if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Ce Code QR n'est pas pris en charge.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
-                        .show();
-            } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
-                qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
+            if (resultCode == Activity.RESULT_OK) {
+                if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Ce Code QR n'est pas pris en charge.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
+                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
 
-                ET_Destinataire.setText(qrCodeDataUser.getTelephone());
+                    ET_Destinataire.setText(qrCodeDataUser.getTelephone());
+                }
             }
         }
     }
@@ -192,8 +195,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             return;
         }
 
-        if(ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone =  Constants.generatePhoneNumber(destinatairePhone);
+        if (ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone = Constants.generatePhoneNumber(destinatairePhone);
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 

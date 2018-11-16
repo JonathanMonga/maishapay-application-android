@@ -71,6 +71,10 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     LinearLayout taux;
     @BindView(R.id.TV_Taux)
     MoneyTextView TV_Taux;
+    @BindView(R.id.TV_Francs)
+    MoneyTextView TV_Francs;
+    @BindView(R.id.TV_Dollars)
+    MoneyTextView TV_Dollars;
     @BindView(R.id.pageIndicatorView)
     PageIndicatorView pageIndicatorView;
     @BindView(R.id.viewPager)
@@ -82,6 +86,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public PaieMoiDialogFragment paieMoiDialogFragment;
 
     private MenuHelper menuHelper;
+    private BalanceFrancsFragment balanceFrancsFragment;
+    private BalanceDollarsFragment balanceDollarsFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +112,22 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        balanceFrancsFragment = BalanceFrancsFragment.newInstance();
+        balanceDollarsFragment = BalanceDollarsFragment.newInstance();
+
+        HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+        List<Fragment> pageList = new ArrayList<>();
+        pageList.add(balanceFrancsFragment);
+        pageList.add(balanceDollarsFragment);
+
+        adapter.setData(pageList);
+
+        pager.setInterval(5000);
         pager.startAutoScroll();
+        pager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         HamButton.Builder builder1 = new HamButton.Builder()
                 .normalImageRes(R.drawable.epargne)
@@ -144,32 +165,24 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         super.onResume();
 
         if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
-            taux.setVisibility(View.INVISIBLE);
+            taux.setVisibility(View.VISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
             progressBarTaux.setVisibility(View.VISIBLE);
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
-                if (UserPrefencesManager.getUserDataPreference() != null) {
-                taux.setVisibility(View.VISIBLE);
+            if (UserPrefencesManager.getUserDataPreference() != null) {
+                taux.setVisibility(View.INVISIBLE);
                 progressBarSolde.setVisibility(View.INVISIBLE);
                 progressBarTaux.setVisibility(View.INVISIBLE);
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
+                TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
+                TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
                 TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
-                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
-
-                List<Fragment> pageList = new ArrayList<>();
-                pageList.add(BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs()));
-                pageList.add(BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars()));
-
-                adapter.setData(pageList);
-
-                pager.setInterval(5000);
-                pager.startAutoScroll();
-                pager.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                balanceFrancsFragment.setChartDat(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+                balanceDollarsFragment.setChartDat(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
             } else {
                 onNetworkError();
             }
@@ -221,29 +234,24 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     }
 
     @Override
-    public void finishToLoadSoldeAndRappot(UserDataPreference response) {
+    public void finishToLoadSoldeAndRappot(UserDataPreference userDataPreference) {
         getPresenter().taux();
 
         progressBarSolde.setVisibility(View.INVISIBLE);
-        HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+        progressBarTaux.setVisibility(View.INVISIBLE);
 
-        List<Fragment> pageList = new ArrayList<>();
-        pageList.add(BalanceFrancsFragment.newInstance(response.getSoldeFrancs(), response.getEnvoiFrancs(), response.getRecuFrancs()));
-        pageList.add(BalanceDollarsFragment.newInstance(response.getSoldeDollars(), response.getEnvoiDollars(), response.getRecuDollars()));
+        TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
+        TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
 
-        adapter.setData(pageList);
-
-        pager.setInterval(5000);
-        pager.startAutoScroll();
-        pager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        balanceFrancsFragment.setChartDat(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+        balanceDollarsFragment.setChartDat(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
     }
 
     @Override
     public void finishToLoadTaux() {
         menuHelper.stopLoading();
-        progressBarTaux.setVisibility(View.INVISIBLE);
         taux.setVisibility(View.VISIBLE);
+        progressBarTaux.setVisibility(View.INVISIBLE);
         TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux())));
     }
 
@@ -251,8 +259,12 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void enabledControls(boolean isEnabled) {
         if (isEnabled) {
             menuHelper.stopLoading();
+            progressBarSolde.setVisibility(View.INVISIBLE);
+            progressBarTaux.setVisibility(View.INVISIBLE);
         } else {
             menuHelper.startLoading();
+            progressBarSolde.setVisibility(View.VISIBLE);
+            progressBarTaux.setVisibility(View.VISIBLE);
         }
     }
 
@@ -282,9 +294,9 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
-            case R.id.action_rafrechir : {
+            case R.id.action_rafrechir: {
                 menuHelper.setMenuItem(item);
                 menuHelper.startLoading();
 
@@ -294,7 +306,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
             }
 
-            default : return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -354,11 +367,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             switch (index) {
                 case 0: {
                     new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-                            }
-                        }, 430);
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+                        }
+                    }, 430);
                     break;
                 }
 
