@@ -1,6 +1,5 @@
 package com.maishapay.ui.dialog;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,15 +35,6 @@ public class DialogConversionFragment extends AppCompatDialogFragment {
         return dialogForgotFragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        PossitiveButtonListener buttonListener;
-        if(context instanceof PossitiveButtonListener)
-            buttonListener = (PossitiveButtonListener) context;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,9 +49,9 @@ public class DialogConversionFragment extends AppCompatDialogFragment {
         setCancelable(false);
 
         if(String.valueOf(String.format("%s%s", Float.valueOf(getArguments().getString(EXTRA_MONTANT)), getArguments().getString(EXTRA_DEVISE))).length() > 6){
-            TV_Conversion.setBaseTextSize(18f);
-            TV_Conversion.setDecimalsTextSize(18f);
-            TV_Conversion.setSymbolTextSize(15f);
+            TV_Conversion.setBaseTextSize(35f);
+            TV_Conversion.setDecimalsTextSize(25f);
+            TV_Conversion.setSymbolTextSize(25f);
         }
 
         TV_Conversion.setAmount(Float.valueOf(getArguments().getString(EXTRA_MONTANT)), getArguments().getString(EXTRA_DEVISE));

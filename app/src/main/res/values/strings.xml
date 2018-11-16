@@ -52,5 +52,13 @@
     <string name="kenya">Kenya</string>
     <string name="senegal">Sénégal</string>
     <string name="points_maishapay">Points Maishapay</string>
+    <string name="code_rdc">+243</string>
+    <string name="code_senegal">+211</string>
+    <string name="code_rwanda">+250</string>
+    <string name="code_togo">+228</string>
+    <string name="code_cotedivoire">+225</string>
+    <string name="code_kenya">+254</string>
     <string name="atm_visa">ATM Visa</string>
+    <string name="fc_usd">Francs congolais vers Dollars</string>
+    <string name="usd_fc">Dollars vers Francs congolais</string>
 </resources>

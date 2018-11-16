@@ -47,8 +47,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ConversionActivity extends AppCompatActivity implements NumPadPossitiveButtonListener {
 
-    private static String CDF = "Francs congolais (CDF)";
-    private static String USD = "Dollars (USD)";
+    private static String CDF = "Francs congolais vers Dollars";
+    private static String USD = "Dollars vers Francs congolais";
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
@@ -83,7 +83,7 @@ public class ConversionActivity extends AppCompatActivity implements NumPadPossi
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String[] currencies = getResources().getStringArray(R.array.option_devise);
+                String[] currencies = getResources().getStringArray(R.array.option_devise_conversion);
 
                 if (currencies[i].equals(CDF))
                     userCurrency = CDF_CURRENCY;

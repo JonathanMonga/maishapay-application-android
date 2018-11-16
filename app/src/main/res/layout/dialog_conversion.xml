@@ -33,6 +33,7 @@
                         app:baseTextSize="30sp"
                         app:symbolTextSize="20sp"
                         app:decimalSeparator=","
+                        app:decimalGravity="bottom"
                         app:symbolGravity="bottom"
                         android:textColor="@color/green_dark"/>
                 </LinearLayout>

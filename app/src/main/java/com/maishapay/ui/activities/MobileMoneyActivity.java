@@ -202,7 +202,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
         switch (codePhone) {
             case "+211": {
-                if (Constants.getOperatorNamePhone().equals(TIGO_OPERATOR)) {
+                if (Constants.getOperatorName().equals(TIGO_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*150#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -218,7 +218,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -226,7 +226,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+250": {
-                if (Constants.getOperatorNamePhone().equals(MTN_OPERATOR)) {
+                if (Constants.getOperatorName().equals(MTN_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*182#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -242,7 +242,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -265,7 +265,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorNamePhone().equals(VODACOM_OPERATOR)) {
+                if (Constants.getOperatorName().equals(VODACOM_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*1222#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -281,7 +281,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -294,7 +294,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
         switch (codePhone) {
             case "+211": {
-                if (Constants.getOperatorNamePhone().equals(EXPRESSO_OPERATOR)) {
+                if (Constants.getOperatorName().equals(EXPRESSO_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -310,7 +310,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -358,7 +358,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             case "+250": {
-                if (Constants.getOperatorNamePhone().equals(TIGO_OPERATOR)) {
+                if (Constants.getOperatorName().equals(TIGO_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -374,7 +374,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -397,7 +397,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorNamePhone().equals(AIRTEL_OPERATOR)) {
+                if (Constants.getOperatorName().equals(AIRTEL_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -413,7 +413,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -426,7 +426,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
         switch (codePhone) {
             case "+211": {
-                if (Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
+                if (Constants.getOperatorName().equals(ORANGE_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -442,7 +442,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
@@ -470,7 +470,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorNamePhone().equals(ORANGE_OPERATOR)) {
+                if (Constants.getOperatorName().equals(ORANGE_OPERATOR)) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -486,7 +486,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Vous utilisez un autre operateur.")
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();

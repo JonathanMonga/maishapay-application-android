@@ -15,6 +15,11 @@
         <item>Dollars (USD)</item>
     </array>
 
+    <array name="option_devise_conversion">
+        <item>@string/fc_usd</item>
+        <item>@string/usd_fc</item>
+    </array>
+
     <array name="option_epargne_devise">
         <item>USD et CDF</item>
         <item>Francs congolais (CDF)</item>
@@ -37,12 +42,12 @@
     </array>
 
     <array name="option_country_code">
-        <item>+243</item>
-        <item>+211</item>
-        <item>+250</item>
-        <item>+228</item>
-        <item>+225</item>
-        <item>+254</item>
+        <item>@string/code_rdc</item>
+        <item>@string/code_cotedivoire</item>
+        <item>@string/code_togo</item>
+        <item>@string/code_senegal</item>
+        <item>@string/code_kenya</item>
+        <item>@string/code_rwanda</item>
     </array>
 
     <array name="option_transfert_paiment">

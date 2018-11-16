@@ -112,7 +112,7 @@
                     <LinearLayout style="@style/form_linha_divisor">
 
                         <Spinner
-                            android:entries="@array/option_devise"
+                            android:entries="@array/option_devise_conversion"
                             android:spinnerMode="dropdown"
                             android:layout_marginLeft="-8dp"
                             android:id="@+id/SP_TypeEnvoi"
@@ -142,6 +142,7 @@
                             app:baseTextSize="14sp"
                             app:symbolTextSize="14sp"
                             app:decimalSeparator=","
+                            app:decimalGravity="bottom"
                             app:symbolGravity="bottom"
                             app:gravity="left"
                             android:textColor="@color/green_dark" />

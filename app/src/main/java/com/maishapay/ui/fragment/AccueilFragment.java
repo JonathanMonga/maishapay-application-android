@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.AccueilPresenter;
@@ -385,7 +386,13 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                     UserResponse userResponse = UserPrefencesManager.getCurrentUser();
 
                     FragmentManager fm = getChildFragmentManager();
-                    paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(new Gson().toJson(userResponse, UserResponse.class));
+
+                    QRCodeDataUser qrCodeDataUser = new QRCodeDataUser();
+                    qrCodeDataUser.setTelephone(userResponse.getTelephone());
+                    qrCodeDataUser.setNom(userResponse.getNom());
+                    qrCodeDataUser.setPrenom(userResponse.getPrenom());
+
+                    paieMoiDialogFragment = PaieMoiDialogFragment.newInstance(new Gson().toJson(qrCodeDataUser, QRCodeDataUser.class));
                     paieMoiDialogFragment.show(fm, "PaieMoiDialogFragment");
                 }
             }

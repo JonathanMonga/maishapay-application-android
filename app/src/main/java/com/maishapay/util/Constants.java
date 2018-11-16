@@ -74,7 +74,7 @@ public class Constants {
                 .show();
     }
 
-    public static String getOperatorNamePhone() {
+    public static String getOperatorName() {
         TelephonyManager telephonyManager = (TelephonyManager) MaishapayApplication.getMaishapayContext().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();
     }
@@ -96,7 +96,7 @@ public class Constants {
     }
 
     public static String generatePhoneNumber(String phone) {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4);
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
         String destinatairePhone;
         String recipient = phone.replace(" ", "");
 

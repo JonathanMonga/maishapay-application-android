@@ -216,7 +216,7 @@ public class DrawerActivity extends AppCompatActivity {
 
                     case 6:
                         List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
-                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4);
+                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
                         if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
