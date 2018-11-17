@@ -188,7 +188,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
                         .setView(findViewById(R.id.LL_Register))
                         .setText(" Echec d'inscription, veuillez reessayer.")
                         .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
+                        .error()
                         .show();
                 break;
             }
@@ -198,7 +198,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
                         .setView(findViewById(R.id.LL_Register))
                         .setText("Desolé, ce numero est déja utilisé par une autre personne.")
                         .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
+                        .error()
                         .show();
                 break;
             }
@@ -238,7 +238,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
                 .setView(findViewById(R.id.LL_Register))
                 .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -250,7 +250,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
                 .setView(findViewById(R.id.LL_Register))
                 .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -262,7 +262,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
                 .setView(findViewById(R.id.LL_Register))
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 }

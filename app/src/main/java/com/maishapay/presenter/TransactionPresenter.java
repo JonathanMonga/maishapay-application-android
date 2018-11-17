@@ -29,7 +29,6 @@ import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -78,9 +77,7 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                                 }
                             }
 
-                            UserDataPreference userDataPreference = new UserDataPreference();
-                            userDataPreference.setSoldeFrancs(0);
-                            userDataPreference.setSoldeDollars(0);
+                            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
                             userDataPreference.setEnvoiFrancs(envoiFrancs);
                             userDataPreference.setRecuFrancs(recuFrancs);
@@ -88,7 +85,12 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             userDataPreference.setEnvoiDollars(envoiDollars);
                             userDataPreference.setRecuDollars(recuDollars);
 
+                            userDataPreference.setTransactionResponses(responses);
+
+                            UserPrefencesManager.setUserDataPreference(userDataPreference);
+
                             getView().finishToLoadStatisics(userDataPreference);
+
                             getView().enabledControls(true);
                             getView().finishToLoadTransactions(responses);
                         }

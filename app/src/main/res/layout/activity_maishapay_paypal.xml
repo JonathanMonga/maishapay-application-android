@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:numpad="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ededed"
     android:orientation="vertical">
 
    <include layout="@layout/appbar"/>
@@ -12,8 +11,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,54 +32,66 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <ImageView
+                        android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/paypal" />
 
                     <ImageView
+                        android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
                         android:src="@drawable/maishapay_logo" />
                 </LinearLayout>
 
                 <TextView
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:paddingBottom="30dp"
-                    android:text="Vous allait etre rediriger vers l'api de paypal" />
+                    android:text="Vous allez être rediriger vers l'api de paypal" />
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardElevation="2dp">
-                    <TextView
-                        android:id="@+id/edtAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Entrer la somme a deposer"
-                        android:imeOptions="actionDone"
-                        android:inputType="numberDecimal"
-                        android:padding="15dp"
-                        android:layout_marginBottom="20dp" />
-                </android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:id="@+id/LinhaFormModelo"
+                    style="@style/form_linha">
 
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_form_valor" />
 
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <org.fabiomsr.moneytextview.MoneyTextView
+                            android:id="@+id/ET_Montant"
+                            android:clickable="true"
+                            android:layout_marginTop="10dp"
+                            style="@style/form_edit_text"
+                            app:amount="0.0"
+                            app:symbol="Fc"
+                            app:baseTextColor="@color/texto"
+                            app:baseTextSize="14sp"
+                            app:symbolTextSize="14sp"
+                            app:decimalSeparator=","
+                            app:symbolGravity="bottom"
+                            app:gravity="left"
+                            android:textColor="@color/green_dark" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/btnPayNow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
         style="@style/botao_azul_canto_redondo"
-        android:text="Deposer Maintenant"
-        android:textColor="#fff" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10.0dip"
+        android:text="Transferer"
+        android:textAllCaps="false"/>
 </LinearLayout>

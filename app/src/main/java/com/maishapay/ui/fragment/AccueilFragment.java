@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -67,8 +66,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     ProgressBar progressBarSolde;
     @BindView(R.id.progressBarTaux)
     ProgressBar progressBarTaux;
-    @BindView(R.id.taux)
-    LinearLayout taux;
     @BindView(R.id.TV_Taux)
     MoneyTextView TV_Taux;
     @BindView(R.id.TV_Francs)
@@ -153,17 +150,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext()) && UserPrefencesManager.getUserRefresh()) {
             UserPrefencesManager.setUserRefresh(false);
-            taux.setVisibility(View.VISIBLE);
-            progressBarSolde.setVisibility(View.VISIBLE);
-            progressBarTaux.setVisibility(View.VISIBLE);
+            enabledControls(false);
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
             if (UserPrefencesManager.getUserDataPreference() != null) {
-                taux.setVisibility(View.VISIBLE);
-                progressBarSolde.setVisibility(View.INVISIBLE);
-                progressBarTaux.setVisibility(View.INVISIBLE);
-                TV_Francs.setVisibility(View.VISIBLE);
-                TV_Dollars.setVisibility(View.VISIBLE);
+                enabledControls(true);
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
@@ -240,11 +231,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void finishToLoadSoldeAndRappot(UserDataPreference userDataPreference) {
         getPresenter().taux();
 
-        progressBarSolde.setVisibility(View.INVISIBLE);
-        progressBarTaux.setVisibility(View.INVISIBLE);
-        TV_Francs.setVisibility(View.VISIBLE);
-        TV_Dollars.setVisibility(View.VISIBLE);
-
         TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
         TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
 
@@ -259,6 +245,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         adapter.setData(pageList);
 
+
         pager.setInterval(5000);
         pager.startAutoScroll();
         pager.setAdapter(adapter);
@@ -267,22 +254,34 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void finishToLoadTaux() {
-        menuHelper.stopLoading();
-        taux.setVisibility(View.VISIBLE);
-        progressBarTaux.setVisibility(View.INVISIBLE);
+        enabledControls(true);
         TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux())));
     }
 
     @Override
     public void enabledControls(boolean isEnabled) {
+        menuHelper.startLoading();
+
         if (isEnabled) {
             menuHelper.stopLoading();
+
             progressBarSolde.setVisibility(View.INVISIBLE);
             progressBarTaux.setVisibility(View.INVISIBLE);
+
+            pager.setVisibility(View.VISIBLE);
+            TV_Francs.setVisibility(View.VISIBLE);
+            TV_Dollars.setVisibility(View.VISIBLE);
+            TV_Taux.setVisibility(View.VISIBLE);
         } else {
             menuHelper.startLoading();
+
             progressBarSolde.setVisibility(View.VISIBLE);
             progressBarTaux.setVisibility(View.VISIBLE);
+
+            pager.setVisibility(View.INVISIBLE);
+            TV_Francs.setVisibility(View.INVISIBLE);
+            TV_Dollars.setVisibility(View.INVISIBLE);
+            TV_Taux.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -316,11 +315,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
             case R.id.action_rafrechir: {
                 menuHelper.setMenuItem(item);
-                menuHelper.startLoading();
-
-                taux.setVisibility(View.INVISIBLE);
-                progressBarSolde.setVisibility(View.VISIBLE);
-                progressBarTaux.setVisibility(View.VISIBLE);
+                enabledControls(false);
                 getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
             }
 
@@ -344,7 +339,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onUnknownError(String errorMessage) {
-        enabledControls(true);
+        enabledControls(false);
+        menuHelper.stopLoading();
 
         Snacky.builder()
                 .setView(getView())
@@ -356,7 +352,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onTimeout() {
-        enabledControls(true);
+        enabledControls(false);
+        menuHelper.stopLoading();
 
         Snacky.builder()
                 .setView(getView())
@@ -368,7 +365,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public void onNetworkError() {
-        enabledControls(true);
+        enabledControls(false);
+        menuHelper.stopLoading();
 
         Snacky.builder()
                 .setView(getView())

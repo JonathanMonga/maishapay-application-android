@@ -170,28 +170,28 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .setView(findViewById(R.id.root))
                     .setText("Le numero de destinataire n'existe pas dans Maishapay.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else if (type == 2)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else if (type == 3)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Le compte de votre destinataire est indisponible pour le moment.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
     }
 
@@ -203,14 +203,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .setView(findViewById(R.id.root))
                     .setText("Le code Pin saisi n'est pas correct.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Echec de transfert.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
     }
 
@@ -293,7 +293,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .setView(findViewById(R.id.root))
                     .setText("Impossible de se connecter au serveur.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
@@ -308,7 +308,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .setView(findViewById(R.id.root))
                     .setText("Le délais s'est t'écouler.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
@@ -323,7 +323,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .setView(findViewById(R.id.root))
                     .setText("Aucune connexion réseau. Réessayez plus tard.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fcfcfc"
+    android:background="#ededed"
     android:gravity="center"
     android:orientation="vertical"
     tools:ignore="MissingPrefix"
@@ -67,7 +67,6 @@
                     android:id="@+id/taux"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -81,6 +80,7 @@
 
                     <org.fabiomsr.moneytextview.MoneyTextView
                         android:id="@+id/TV_Taux"
+                        app:gravity="center"
                         fontPath="fonts/Roboto-Light.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                         app:amount="1630.0"
                         app:symbol="Fc"
                         app:baseTextColor="@color/md_deep_orange_500"
-                        app:baseTextSize="30sp"
+                        app:baseTextSize="25sp"
                         app:symbolTextSize="20sp"
                         app:decimalSeparator=","
                         app:symbolGravity="bottom"
@@ -119,7 +119,6 @@
                     android:layout_marginBottom="@dimen/cardMarginVertical"
                     android:layout_marginLeft="@dimen/cardMarginHorizontal"
                     android:layout_marginRight="@dimen/cardMarginHorizontal"
-                    android:layout_marginTop="@dimen/cardMarginVertical"
                     android:padding="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
@@ -173,7 +172,6 @@
                     android:layout_marginBottom="@dimen/cardMarginVertical"
                     android:layout_marginLeft="@dimen/cardMarginHorizontal"
                     android:layout_marginRight="@dimen/cardMarginHorizontal"
-                    android:layout_marginTop="@dimen/cardMarginVertical"
                     android:padding="5dp"
                     android:layout_weight="1"
                     android:clickable="true"

@@ -163,14 +163,14 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
                     .setView(findViewById(R.id.root))
                     .setText("Désolé, vous ne disposez pas de compte epargne, veuillez en créer pour faire ce tranfert.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else if (type == 2)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Désolé, votre solde est insuffisant pour ce transfert.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
     }
 
@@ -181,7 +181,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
                 .setView(findViewById(R.id.root))
                 .setText("Votre transfert à echoué, veuillez recommencer.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 

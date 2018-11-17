@@ -230,14 +230,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                     .setView(findViewById(R.id.root))
                     .setText("Les données que vous avez saisies ne sont pas correctes.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Snacky.builder()
                 .setView(findViewById(R.id.root))
                 .setText("Echec d'envoie E-mail, veuillez reessayer.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
         }
 
@@ -248,7 +248,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 .setView(findViewById(R.id.root))
                 .setText("Les informations entrées ne sont pas correctes, verifiez votre code PIN.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 

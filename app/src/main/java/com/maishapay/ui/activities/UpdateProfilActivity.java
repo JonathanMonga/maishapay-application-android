@@ -157,7 +157,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 .setView(findViewById(R.id.LL_Register))
                 .setText("Le code Pin entré n'est pas correct.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -219,7 +219,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 .setView(findViewById(R.id.root))
                 .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -230,7 +230,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 .setView(findViewById(R.id.root))
                 .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -242,7 +242,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 .setView(findViewById(R.id.root))
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 }

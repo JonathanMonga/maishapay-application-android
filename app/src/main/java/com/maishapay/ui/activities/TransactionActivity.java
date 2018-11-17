@@ -24,6 +24,8 @@ import com.maishapay.ui.adapter.TransactionAdapter;
 import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.view.TransactionView;
 
+import org.alfonz.utility.NetworkUtility;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,8 +63,29 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             actionBar.setHomeButtonEnabled(true);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-        getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+        if(NetworkUtility.isOnline(this)) {
+            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
+            if(userDataPreference.getTransactionResponses() != null) {
+                progressBar.setVisibility(View.INVISIBLE);
+
+                ET_FrancsEnvoye.setText(String.format("%d Fc", userDataPreference.getEnvoiFrancs()));
+                ET_FrancsRecu.setText(String.format("%d Fc", userDataPreference.getRecuFrancs()));
+                ET_DollarsEnvoye.setText(String.format("%d $", userDataPreference.getEnvoiDollars()));
+                ET_DollarsRecu.setText(String.format("%d $", userDataPreference.getRecuDollars()));
+
+                mAdapter = new TransactionAdapter(userDataPreference.getTransactionResponses());
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(mAdapter);
+            } else {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+        }
     }
 
     @Override
@@ -134,7 +157,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 .setView(findViewById(R.id.root))
                 .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -145,7 +168,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 .setView(findViewById(R.id.root))
                 .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -157,7 +180,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 .setView(findViewById(R.id.root))
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 }

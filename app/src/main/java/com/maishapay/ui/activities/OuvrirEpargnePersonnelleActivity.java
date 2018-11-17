@@ -210,7 +210,7 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
                 .setView(findViewById(R.id.root))
                 .setText("Echec de création veuillez recommencer plutard.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 

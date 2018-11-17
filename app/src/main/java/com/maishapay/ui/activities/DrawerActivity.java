@@ -247,7 +247,7 @@ public class DrawerActivity extends AppCompatActivity {
                                 .setView(findViewById(R.id.root))
                                 .setText("Cette fonctionnalité sera bientôt disponible!")
                                 .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
+                                .error()
                                 .show();
                         return false;
 

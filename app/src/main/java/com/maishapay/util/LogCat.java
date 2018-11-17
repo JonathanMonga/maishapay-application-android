@@ -52,10 +52,10 @@ public final class LogCat {
     }
 
     /**
-     * <p><b>WARNING:</b> This level of logging should used when something serious and unexpected happened, i.e.
+     * <p><b>error:</b> This level of logging should used when something serious and unexpected happened, i.e.
      * something that will have user-visible consequences but is likely to be recoverable without data loss by
      * performing some explicit action, ranging from waiting or restarting an app all the way to re-downloading a
-     * new version of an application or rebooting the device. Issues that justify some logging at the WARNING
+     * new version of an application or rebooting the device. Issues that justify some logging at the error
      * level might also be considered for reporting to a statistics-gathering server.</p>
      * <p/>
      * <p><b>This level is always logged.</b></p>

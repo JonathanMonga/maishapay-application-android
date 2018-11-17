@@ -220,7 +220,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 break;
             }
@@ -244,7 +244,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 break;
             }
@@ -283,7 +283,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
             }
         }
@@ -312,7 +312,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 break;
             }
@@ -342,7 +342,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                         .setView(findViewById(R.id.root))
                         .setText("Pas de service pour cet operateur.")
                         .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
+                        .error()
                         .show();
             }
         }
@@ -376,7 +376,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 break;
             }
@@ -415,7 +415,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
             }
         }
@@ -444,7 +444,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 break;
             }
@@ -488,7 +488,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                             .setView(findViewById(R.id.root))
                             .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
             }
         }

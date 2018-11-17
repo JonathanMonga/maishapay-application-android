@@ -131,7 +131,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                         .setView(findViewById(R.id.root))
                         .setText("Desolé, un seul numéro suffit.")
                         .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
+                        .error()
                         .show();
             }
         });
@@ -172,7 +172,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                             .setView(findViewById(R.id.root))
                             .setText("Ce Code QR ne marche pas avec le retrait.")
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
                     qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
@@ -182,7 +182,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                             .setView(findViewById(R.id.root))
                             .setText("Désolé, vous avez scanné un mauvais Code QR.")
                             .setDuration(Snacky.LENGTH_LONG)
-                            .warning()
+                            .error()
                             .show();
             }
         }
@@ -234,14 +234,14 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                     .setView(findViewById(R.id.root))
                     .setText("Le numero de l'Agent n'est pas correct.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         } else if (type == 2) {
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Desolé, votre solde est insuffisant.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         }
     }
@@ -252,7 +252,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 .setView(confirmRetaritFragment.getView())
                 .setText("Le numero de l'Agent n'est pas correct.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
@@ -332,7 +332,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                     .setView(findViewById(R.id.root))
                     .setText("Impossible de se connecter au serveur.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
@@ -347,7 +347,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                     .setView(findViewById(R.id.root))
                     .setText("Le délais s'est t'écouler.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
@@ -362,7 +362,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                     .setView(findViewById(R.id.root))
                     .setText("Aucune connexion réseau. Réessayez plus tard.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else if(NetworkUtility.isOnline(this))
             Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();

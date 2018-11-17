@@ -62,7 +62,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
         <item name="actionModeBackground">@color/md_light_green_600</item>
         <item name="actionModeSplitBackground">@color/md_light_green_600</item>
-        <item name="colorAccent">@color/texto_action_bar</item>
+        <item name="colorAccent">@color/branco_background</item>
         <item name="colorControlHighlight">@color/item_selected</item>
         <item name="colorPrimary">@color/md_light_green_700</item>
         <item name="colorPrimaryDark">@color/md_light_green_600</item>
@@ -74,7 +74,7 @@
 
     <style name="AppThemeLogin" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/branco</item>
+        <item name="colorAccent">@color/branco_background</item>
         <item name="colorPrimary">@color/md_light_green_700</item>
         <item name="colorPrimaryDark">@color/md_light_green_600</item>
         <item name="windowActionBar">false</item>
@@ -159,7 +159,7 @@
         <item name="android:textColor">@color/texto</item>
         <item name="android:textColorHint">@color/texto_hint</item>
         <item name="android:gravity">bottom</item>
-        <item name="android:background">@color/branco</item>
+        <item name="android:background">@color/branco_background</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_marginBottom">8.0dip</item>
@@ -346,4 +346,6 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
     </style>
+
+    <color name="branco_background">#ededed</color>
 </resources>

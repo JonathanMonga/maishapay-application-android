@@ -95,14 +95,14 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                     .setView(findViewById(R.id.root))
                     .setText("Le code Pin saisi n'est pas correct.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
         else
             Snacky.builder()
                     .setView(findViewById(R.id.root))
                     .setText("Echec de transfert.")
                     .setDuration(Snacky.LENGTH_LONG)
-                    .warning()
+                    .error()
                     .show();
     }
 

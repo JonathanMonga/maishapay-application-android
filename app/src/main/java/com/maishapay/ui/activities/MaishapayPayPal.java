@@ -9,9 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maishapay.R;
@@ -22,12 +21,14 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.fabiomsr.moneytextview.MoneyTextView;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.model.Configuration.PAYPAL_CONFIGURATION;
@@ -36,11 +37,13 @@ import static com.maishapay.ui.activities.SuccessPaiementActivity.EXTRA_TITLE_AC
 
 public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiveButtonListener {
 
-    @BindView(R.id.edtAmount) TextView edtAmount;
-    @BindView(R.id.btnPayNow) Button btnPayNow;
-    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
+    @BindView(R.id.ET_Montant)
+    MoneyTextView ET_Montant;
+    @BindView(R.id.btnPayNow)
+    Button btnPayNow;
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
 
-    private String amount;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
 
     @Override
@@ -60,35 +63,23 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
         }
 
         initPaypalService();
-
-        edtAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getSupportFragmentManager();
-
-                dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("USD");
-                dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
-            }
-        });
-
-
-        btnPayNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptPayment();
-            }
-        });
-
     }
 
-    private void attemptPayment() {
+    @OnClick(R.id.ET_Montant)
+    public void ET_MontantClicked() {
+        FragmentManager fm = getSupportFragmentManager();
+        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("USD");
+        dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
+    }
 
-        if (!edtAmount.getText().toString().equalsIgnoreCase("")) {
-            processPayment(amount);
-        } else {
-            Toast.makeText(getApplicationContext(), "Deposit amount is required", Toast.LENGTH_SHORT).show();
-            edtAmount.setError("Entrer le montant");
+    @OnClick(R.id.btnPayNow)
+    public void transfertClicked() {
+        if (ET_Montant.getAmount() == 0F) {
+            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+            return;
         }
+
+        processPayment(String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initPaypalService() {
@@ -126,7 +117,7 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
 
                         startActivity(new Intent(getApplicationContext(), SuccessDepositActivity.class)
                                 .putExtra("ResultActivity", paymentDetails)
-                                .putExtra("PaymentAmount", amount)
+                                .putExtra("PaymentAmount", String.valueOf(ET_Montant.getAmount()))
                                 .putExtra(EXTRA_TITLE_ACTIVITY, "Dépot")
                         );
 
@@ -151,9 +142,12 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
 
     @Override
     public void numPadPositiveClicked(String number) {
-        edtAmount.setText(String.format("%s USD", number));
-        amount = number;
-        attemptPayment();
+        ET_Montant.setAmount(Float.valueOf(number), "USD");
+    }
+
+    private void toastMessage(String message, int view) {
+        findViewById(view).startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override

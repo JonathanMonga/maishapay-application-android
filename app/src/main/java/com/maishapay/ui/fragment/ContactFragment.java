@@ -68,7 +68,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
                 .setView(getView())
                 .setText("Echec d'envoie E-mail, veuillez reessayer.")
                 .setDuration(Snacky.LENGTH_LONG)
-                .warning()
+                .error()
                 .show();
     }
 
