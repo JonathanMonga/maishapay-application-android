@@ -176,7 +176,6 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                             .show();
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
                     qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
-
                     ET_Destinataire.setText(qrCodeDataUser.getTelephone());
                 }
             }
@@ -185,7 +184,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @OnClick(R.id.BTN_Retrait)
     public void transfertClicked() {
-        if (TextUtils.isEmpty(destinatairePhone)) {
+        if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
             toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
             return;
         }
@@ -196,7 +195,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         }
 
         if (ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone = Constants.generatePhoneNumber(destinatairePhone);
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 

@@ -64,7 +64,7 @@
                             numpad:numpad_grid_visible="false"
                             numpad:numpad_image_resource="@drawable/ic_backspace"
                             numpad:numpad_text_color="@color/texto"
-                            numpad:numpad_text_limit="10"
+                            numpad:numpad_text_limit="7"
                             numpad:numpad_text_size="18dp" />
                     </LinearLayout>
                 </LinearLayout>

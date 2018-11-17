@@ -113,21 +113,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        balanceFrancsFragment = BalanceFrancsFragment.newInstance();
-        balanceDollarsFragment = BalanceDollarsFragment.newInstance();
-
-        HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
-
-        List<Fragment> pageList = new ArrayList<>();
-        pageList.add(balanceFrancsFragment);
-        pageList.add(balanceDollarsFragment);
-
-        adapter.setData(pageList);
-
-        pager.setInterval(5000);
-        pager.startAutoScroll();
-        pager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        TV_Francs.setVisibility(View.GONE);
+        TV_Dollars.setVisibility(View.GONE);
 
         HamButton.Builder builder1 = new HamButton.Builder()
                 .normalImageRes(R.drawable.epargne)
@@ -171,9 +158,11 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
             if (UserPrefencesManager.getUserDataPreference() != null) {
-                taux.setVisibility(View.INVISIBLE);
+                taux.setVisibility(View.VISIBLE);
                 progressBarSolde.setVisibility(View.INVISIBLE);
                 progressBarTaux.setVisibility(View.INVISIBLE);
+                TV_Francs.setVisibility(View.VISIBLE);
+                TV_Dollars.setVisibility(View.VISIBLE);
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
@@ -181,8 +170,21 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
                 TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
-                balanceFrancsFragment.setChartDat(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
-                balanceDollarsFragment.setChartDat(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+                balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+                balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+
+                HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+                List<Fragment> pageList = new ArrayList<>();
+                pageList.add(balanceFrancsFragment);
+                pageList.add(balanceDollarsFragment);
+
+                adapter.setData(pageList);
+
+                pager.setInterval(5000);
+                pager.startAutoScroll();
+                pager.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             } else {
                 onNetworkError();
             }
@@ -239,12 +241,27 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         progressBarSolde.setVisibility(View.INVISIBLE);
         progressBarTaux.setVisibility(View.INVISIBLE);
+        TV_Francs.setVisibility(View.VISIBLE);
+        TV_Dollars.setVisibility(View.VISIBLE);
 
         TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
         TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
 
-        balanceFrancsFragment.setChartDat(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
-        balanceDollarsFragment.setChartDat(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+        balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+        balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+
+        HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+        List<Fragment> pageList = new ArrayList<>();
+        pageList.add(balanceFrancsFragment);
+        pageList.add(balanceDollarsFragment);
+
+        adapter.setData(pageList);
+
+        pager.setInterval(5000);
+        pager.startAutoScroll();
+        pager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

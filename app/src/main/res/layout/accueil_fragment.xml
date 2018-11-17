@@ -20,11 +20,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/black_4">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="380dp">
+                android:layout_height="290dp">
 
                 <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
                     android:id="@+id/viewPager"
@@ -43,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:piv_padding="10dp"
-                android:layout_marginBottom="10dp"
                 app:piv_radius="5dp"
                 app:piv_selectedColor="@color/ab_default"
                 app:piv_unselectedColor="@color/texto"
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     android:clickable="true"
                     app:cardBackgroundColor="@color/branco"
                     app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -297,7 +297,7 @@
                     android:clickable="true"
                     app:cardBackgroundColor="@color/branco"
                     app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"

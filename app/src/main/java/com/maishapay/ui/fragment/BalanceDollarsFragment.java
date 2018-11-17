@@ -4,6 +4,8 @@ package com.maishapay.ui.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -39,12 +41,19 @@ public class BalanceDollarsFragment extends Fragment {
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
 
-    public static BalanceDollarsFragment newInstance() {
+    public static BalanceDollarsFragment newInstance(int solde, int envoi, int recu) {
         BalanceDollarsFragment fragment = new BalanceDollarsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_SOLDE_ENVOI, envoi);
+        bundle.putInt(EXTRA_SOLDE_RECU, recu);
+        bundle.putInt(EXTRA_SOLDE_DOLLARS, solde);
+
+        fragment.setArguments(bundle);
         return fragment;
     }
 
-    public void setChartDat(int solde, int envoi, int recu){
+    public void setChartData(int solde, int envoi, int recu){
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -53,7 +62,7 @@ public class BalanceDollarsFragment extends Fragment {
 
         mChart.setCenterTextTypeface(mTfLight);
 
-        SpannableString spannableString = new SpannableString(String.format("%d Fc", solde));
+        SpannableString spannableString = new SpannableString(String.format("%d $", solde));
         spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
         mChart.setCenterText(spannableString);
 
@@ -100,17 +109,26 @@ public class BalanceDollarsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setChartData(getArguments().getInt(EXTRA_SOLDE_DOLLARS), getArguments().getInt(EXTRA_SOLDE_ENVOI), getArguments().getInt(EXTRA_SOLDE_RECU));
+    }
+
     private void setData(int solde, int envoi, int recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(! (solde < 0)) {
+        if(solde > 0) {
             entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Reçu"));
             entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Envoyé"));
         } else {
-            entries.add(new PieEntry((float) 100, "Dette"));
+            SpannableString spannableString = new SpannableString("Vous avez une dette.");
+            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+            mChart.setCenterText(spannableString);
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Solde Dollars");
+        PieDataSet dataSet = new PieDataSet(entries, "");
 
         dataSet.setDrawIcons(false);
 

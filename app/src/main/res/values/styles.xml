@@ -70,7 +70,6 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="fontPath">fonts/Roboto-Regular.ttf</item>
-        <item name="android:navigationBarColor">@color/md_light_green_700</item>
     </style>
 
     <style name="AppThemeLogin" parent="@style/Theme.AppCompat.NoActionBar">

@@ -53,6 +53,7 @@ import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 
+import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -179,7 +180,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     Intent intent = new Intent(this, PaymentWebActivity.class);
                     intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
                     startActivityForResult(intent, REQUEST_PAYMENT);
-                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "ville")) {
+                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
                 } else
@@ -226,6 +227,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
+        flagtransfert = true;
         enabledControls(false);
         getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
@@ -290,7 +292,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void finishToConfirm() {
-        flagtransfert = false;
         dialogForgotFragment.dismiss();
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
@@ -306,7 +307,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void finishToTranfert(BaseResponse baseResponse) {
-        flagtransfert = true;
+        flagtransfert = false;
 
         if (baseResponse instanceof TransfertResponse) {
             FragmentManager fm = getSupportFragmentManager();
@@ -403,6 +404,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     .setDuration(Snacky.LENGTH_LONG)
                     .warning()
                     .show();
+        else if(NetworkUtility.isOnline(this))
+            Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }
