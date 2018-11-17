@@ -21,15 +21,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class SuccessPaiementActivity extends AppCompatActivity{
+public class SuccessPaiementActivity extends AppCompatActivity {
     public static final String EXTRA_TITLE_ACTIVITY = "title_activity";
     public static final String EXTRA_PHONE = "phone";
     public static final String EXTRA_MONTANT = "montant";
     public static final String EXTRA_MONNAIE = "monnaie";
     public static final String EXTRA_DESTINATAIRE = "destinataire";
 
-    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
-    @BindView(R.id.TV_Msg) TextView TV_Msg;
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
+    @BindView(R.id.TV_Msg)
+    TextView TV_Msg;
     private SoundManager soundManager;
 
     @Override
@@ -42,7 +44,7 @@ public class SuccessPaiementActivity extends AppCompatActivity{
 
         toolbar.setTitle(String.format("%s éffectué.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
 
-        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement"))
+        if (getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement"))
             TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés. Veuillez patienter pendant 10 minutes", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
         else
             TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
@@ -50,10 +52,10 @@ public class SuccessPaiementActivity extends AppCompatActivity{
         soundManager.playAsset("sounds/job-done.mp3");
         setSupportActionBar(toolbar);
 
-        if(! getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne") && ! getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement")) {
+        if (!getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne") && !getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement")) {
             MaishapayNotification.sendNotification(this)
                     .withTitle("Maishapay message")
-                    .withBody("Vous venez de recevoir " + getIntent().getStringExtra(EXTRA_MONTANT) + " " + getIntent().getStringExtra(EXTRA_MONNAIE) + " de la part de " + getIntent().getStringExtra(EXTRA_PHONE))
+                    .withBody(String.format("Vous venez de recevoir %s %s de la part de %s %s", getIntent().getStringExtra(EXTRA_MONTANT), getIntent().getStringExtra(EXTRA_MONNAIE), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()))
                     .sendTo(getIntent().getStringExtra(EXTRA_DESTINATAIRE));
         }
     }
@@ -65,7 +67,7 @@ public class SuccessPaiementActivity extends AppCompatActivity{
     }
 
     @OnClick(R.id.LL_Site)
-    public void LL_SiteClicked(){
+    public void LL_SiteClicked() {
         UserPrefencesManager.setUserRefresh(true);
         startActivity(new Intent(this, DrawerActivity.class));
         finish();

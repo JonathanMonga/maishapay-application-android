@@ -76,7 +76,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
-    private static String pin;
     private static String destinatairePhone;
     private static UserResponse userResponse;
 
@@ -217,15 +216,20 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
-            return;
-        }
-
         if (ET_Destinataire.getRecipients().length == 0)
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+
+        if (destinatairePhone.equals(UserPrefencesManager.getCurrentUser().getTelephone())) {
+            toastMessage("Le numero doit être différent du votre.", R.id.ET_Destinataire);
+            return;
+        }
+
+        if (ET_Montant.getAmount() == 0F) {
+            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+            return;
+        }
 
         flagtransfert = true;
         enabledControls(false);
@@ -340,8 +344,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void positiveClicked(String pin) {
-        TransfertCompteActivity.pin = pin;
-
         enabledControls(false);
         getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
     }

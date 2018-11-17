@@ -151,7 +151,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void onResume() {
         super.onResume();
 
-        if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext())) {
+        if (NetworkUtility.isOnline(MaishapayApplication.getMaishapayContext()) && UserPrefencesManager.getUserRefresh()) {
+            UserPrefencesManager.setUserRefresh(false);
             taux.setVisibility(View.VISIBLE);
             progressBarSolde.setVisibility(View.VISIBLE);
             progressBarTaux.setVisibility(View.VISIBLE);

@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 
+import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -69,7 +71,6 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
-    private static String pin;
     private static String destinatairePhone;
 
     @BindView(R.id.toolbar_actionbar)
@@ -167,17 +168,24 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_QRCODE) {
-            if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Ce Code QR n'est pas pris en charge.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .warning()
-                        .show();
-            } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
-                qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
-
-                ET_Destinataire.setText(qrCodeDataUser.getTelephone());
+            if (resultCode == Activity.RESULT_OK) {
+                if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Ce Code QR n'est pas bon.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
+                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
+                    ET_Destinataire.setText(qrCodeDataUser.getTelephone());
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Désolé, vous avez scanné un mauvais Code QR.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
             }
         }
     }
@@ -185,7 +193,22 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
         if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Destinataire"), R.id.ET_Destinataire);
+            toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
+            return;
+        }
+
+        if (ET_Destinataire.getText().toString().length() <= 8) {
+            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
+            return;
+        }
+
+        if (ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
+        else
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+
+        if (destinatairePhone.equals(UserPrefencesManager.getCurrentUser().getTelephone())) {
+            toastMessage("Le numero doit être différent du votre.", R.id.ET_Destinataire);
             return;
         }
 
@@ -193,12 +216,8 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
             return;
         }
-        
-        if(ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone =  Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
-        else 
-            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
+        flagtransfert = true;
         enabledControls(false);
         getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
@@ -263,7 +282,6 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
 
     @Override
     public void finishToConfirm() {
-        flagtransfert = false;
         dialogForgotFragment.dismiss();
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
@@ -279,7 +297,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
 
     @Override
     public void finishToTranfert(BaseResponse baseResponse) {
-        flagtransfert = true;
+        flagtransfert = false;
 
         if(baseResponse instanceof TransfertResponse) {
             FragmentManager fm = getSupportFragmentManager();
@@ -311,8 +329,6 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
 
     @Override
     public void positiveClicked(String pin) {
-        TransfertCompteCashActivity.pin = pin;
-
         enabledControls(false);
         getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
@@ -375,6 +391,8 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                     .setDuration(Snacky.LENGTH_LONG)
                     .warning()
                     .show();
+        else if(NetworkUtility.isOnline(this))
+            Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }

@@ -9,7 +9,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 
@@ -22,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.maishapay.R;
 import com.maishapay.model.domain.NotificationBean;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.LogCat;
 
 import java.util.Random;
@@ -77,21 +77,21 @@ public class MaishapayNotification {
 
     }
 
-    public void readFrom(final String phone){
+    public void readFrom(final String phone) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference notificationReference = database.getReference("notification");
 
         notificationReference.child(phone).orderByChild("status").equalTo(true).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Notification", "onDataChange: "+dataSnapshot);
+                Log.d("Notification", "onDataChange: " + dataSnapshot);
 
-                for (DataSnapshot data: dataSnapshot.getChildren()){
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
 
                     NotificationBean bean = data.getValue(NotificationBean.class);
 
                     assert bean != null;
-                    sendNotification(bean.getTitle(),bean.getBody(),startActivity);
+                    sendNotification(bean.getTitle(), bean.getBody(), startActivity);
 
                     notificationReference.child(phone).child(data.getKey()).child("status").setValue(false);
                 }
@@ -100,7 +100,7 @@ public class MaishapayNotification {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Notification", "onDataChange: "+databaseError);
+                Log.d("Notification", "onDataChange: " + databaseError);
 
             }
         });
@@ -133,10 +133,13 @@ public class MaishapayNotification {
 
     private void sendNotification(String title, String body, Class startActivity) {
 
-        if (startActivity==null){
-            sendNotification(title,body);
+        if (startActivity == null) {
+            sendNotification(title, body);
             return;
         }
+
+        UserPrefencesManager.setUserRefresh(true);
+
         Intent intent = new Intent(mContext, startActivity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0,

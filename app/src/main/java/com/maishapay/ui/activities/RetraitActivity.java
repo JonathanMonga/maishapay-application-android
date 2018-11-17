@@ -51,6 +51,7 @@ import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.RetraitView;
 
+import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -69,7 +70,6 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
-    private static String pin;
     private static String destinatairePhone;
 
     @BindView(R.id.toolbar_actionbar)
@@ -92,7 +92,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         setContentView(R.layout.retrait_activity);
         ButterKnife.bind(this);
 
-        toolbar.setTitle("Retait d'argent");
+        toolbar.setTitle("Retrait d'argent");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -170,14 +170,20 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
-                            .setText("Ce Code QR n'est pas pris en charge.")
+                            .setText("Ce Code QR ne marche pas avec le retrait.")
                             .setDuration(Snacky.LENGTH_LONG)
                             .warning()
                             .show();
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
                     qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
                     ET_Destinataire.setText(qrCodeDataUser.getTelephone());
-                }
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Désolé, vous avez scanné un mauvais Code QR.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .warning()
+                            .show();
             }
         }
     }
@@ -189,8 +195,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+        if (ET_Destinataire.getText().toString().length() <= 8) {
+            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
             return;
         }
 
@@ -199,7 +205,17 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
+        if (destinatairePhone.equals(UserPrefencesManager.getCurrentUser().getTelephone())) {
+            toastMessage("Le numero doit être différent du votre.", R.id.ET_Destinataire);
+            return;
+        }
 
+        if (ET_Montant.getAmount() == 0F) {
+            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+            return;
+        }
+
+        flagRetrait = true;
         enabledControls(false);
         getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
     }
@@ -242,7 +258,6 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void finishToConfirm() {
-        flagRetrait = false;
 
         confirmRetaritFragment.dismiss();
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
@@ -258,7 +273,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void finishToRetrait(RetraitResponse retraitResponse) {
-        flagRetrait = true;
+        flagRetrait = false;
 
         FragmentManager fm = getSupportFragmentManager();
         confirmRetaritFragment = DialogConfirmRetraitFragment.newInstance(retraitResponse.getRetour());
@@ -287,7 +302,6 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void positiveClicked(String pin) {
-        RetraitActivity.pin = pin;
         enabledControls(false);
         getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
@@ -313,52 +327,46 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     public void onUnknownError(String errorMessage) {
         enabledControls(true);
 
-        Constants.showOnUnknownError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
-
-            }
-        });
+        if (flagRetrait)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Impossible de se connecter au serveur.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Impossible de se connecter au serveur.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
-            }
-        });
+        if (flagRetrait)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le délais s'est t'écouler.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else
+            Toast.makeText(this, "Le délais s'est t'écouler.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNetworkError() {
         enabledControls(true);
 
-        Constants.showOnNetworkError(findViewById(R.id.root), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-
-                if (flagRetrait)
-                    getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
-                else
-                    getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
-
-            }
-        });
+        if (flagRetrait)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Aucune connexion réseau. Réessayez plus tard.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .warning()
+                    .show();
+        else if(NetworkUtility.isOnline(this))
+            Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }
 }

@@ -85,7 +85,7 @@ public class UserPrefencesManager {
     }
 
     public static boolean getUserRefresh(){
-        return Prefs.getBoolean(USER_REFRESH, false);
+        return Prefs.getBoolean(USER_REFRESH, true);
     }
 
     public static boolean getCurentUserLoginSuccess(){
