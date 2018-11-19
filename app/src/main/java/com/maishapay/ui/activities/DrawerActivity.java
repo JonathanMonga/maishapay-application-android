@@ -33,6 +33,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,16 +63,7 @@ public class DrawerActivity extends AppCompatActivity {
         is_running = true;
 
         userProfil = new ProfileDrawerItem();
-        userProfil
-                .withIcon(R.drawable.maishapay_photo_profil)
-                .withIdentifier(1)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), 1);
-                        return false;
-                    }
-                });
+        userProfil.withIcon(R.drawable.maishapay_photo_profil);
 
         // Create a few sample profile
         // NOTE you have to define the loader logic too. See the CustomApplication for more details
@@ -85,6 +77,23 @@ public class DrawerActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.fastpro)
                 .withTranslucentStatusBar(true)
                 .addProfiles(userProfil)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), 1);
+                            }
+                        }, 400);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .withSavedInstance(savedInstanceState)
                 .build();
 
