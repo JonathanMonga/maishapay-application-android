@@ -57,12 +57,12 @@
     </style>
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/branco</item>
+        <item name="android:windowBackground">@color/branco_background</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationTansition</item>
         <item name="actionModeBackground">@color/md_light_green_600</item>
         <item name="actionModeSplitBackground">@color/md_light_green_600</item>
-        <item name="colorAccent">@color/branco_background</item>
+        <item name="colorAccent">@color/texto_action_bar</item>
         <item name="colorControlHighlight">@color/item_selected</item>
         <item name="colorPrimary">@color/md_light_green_700</item>
         <item name="colorPrimaryDark">@color/md_light_green_600</item>
@@ -346,6 +346,4 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
     </style>
-
-    <color name="branco_background">#ededed</color>
 </resources>

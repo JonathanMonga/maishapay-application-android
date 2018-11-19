@@ -5,7 +5,12 @@
     android:gravity="center"
     android:id="@+id/root">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/appbar" />
+
     <fragment
+        android:layout_below="@id/toolbar"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -22,6 +27,4 @@
         app:bmb_buttonEnum="ham"
         app:bmb_piecePlaceEnum="piecePlace_ham_2"
         app:bmb_buttonPlaceEnum="buttonPlace_ham_2"/>
-
-    <include layout="@layout/appbar_transparent" />
 </RelativeLayout>

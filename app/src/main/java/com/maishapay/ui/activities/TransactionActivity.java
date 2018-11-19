@@ -63,7 +63,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             actionBar.setHomeButtonEnabled(true);
         }
 
-        if(NetworkUtility.isOnline(this)) {
+        if(! NetworkUtility.isOnline(this)) {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
             if(userDataPreference.getTransactionResponses() != null) {

@@ -35,7 +35,7 @@
                     android:id="@+id/ET_Email"
                     android:text="Epargne personelle"
                     android:textSize="16sp"
-                    style="@style/form_edit_text" />
+                    style="@style/text_label" />
             </LinearLayout>
 
             <TextView
