@@ -17,7 +17,7 @@
 package com.maishapay.ui.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,6 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import dmax.dialog.SpotsDialog;
 
 import static com.maishapay.ui.activities.PaymentWebActivity.EXTRA_ERROR_CODE;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
@@ -88,7 +89,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
 
-    private ProgressDialog progressDialog;
+    private AlertDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
@@ -237,10 +238,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
+        progressDialog = new SpotsDialog(this, R.style.Custom);
     }
 
     @Override

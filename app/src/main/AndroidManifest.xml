@@ -12,6 +12,7 @@
                                      org.alfonz.graphics,
                                      com.afollestad.materialdialogs,
                                      pl.hypeapp.materialtimelineview,
+                                     dmax.dialog,
                                      net.sharewire.googlemapsclustering"/>
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -68,6 +69,7 @@
         <activity android:name=".ui.activities.MapsActivity" />
         <activity android:name=".ui.activities.TransfertPaiementActivity" />
         <activity android:name=".ui.activities.PaymentWebActivity" />
+        <activity android:name=".ui.activities.ErrorActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

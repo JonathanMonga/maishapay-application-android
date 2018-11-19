@@ -61,4 +61,8 @@
     <string name="atm_visa">ATM Visa</string>
     <string name="fc_usd">Francs congolais vers Dollars</string>
     <string name="usd_fc">Dollars vers Francs congolais</string>
+
+    <string name="error_title">Something went wrong!</string>
+    <string name="error_occurred">Une erreur s\'est produite. Nous sommes profondément désolés.</string>
+    <string name="restart_app">Redémarer l\'application</string>
 </resources>

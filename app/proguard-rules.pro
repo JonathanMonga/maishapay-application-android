@@ -22,3 +22,7 @@
 -dontwarn org.joda.time.**
 -dontwarn retrofit2.**
 
+-keep class dmax.dialog.** {
+    *;
+}
+
