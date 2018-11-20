@@ -19,6 +19,8 @@ import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.EpargneView;
 
@@ -56,6 +58,11 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
                             }
                         } else {
                             if (isViewAttached()) {
+                                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+                                userDataPreference.setEpargneFrancs(response.getFrancCongolais());
+                                userDataPreference.setEpargneDollars(response.getDollard());
+                                UserPrefencesManager.setUserDataPreference(userDataPreference);
+
                                 getView().enabledControls(true);
                                 getView().finishToLoadSolde(response);
                             }

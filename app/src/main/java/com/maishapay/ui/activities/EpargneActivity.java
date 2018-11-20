@@ -106,8 +106,35 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     protected void onResume() {
         super.onResume();
 
-        enabledControls(false);
-        getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        if (NetworkUtility.isOnline(this) && UserPrefencesManager.getUserFirtRun()) {
+            enabledControls(false);
+            getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else {
+            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+            if (userDataPreference != null) {
+                LL_fitDollards.setVisibility(View.VISIBLE);
+                LL_fitFrancs.setVisibility(View.VISIBLE);
+                progressBarSolde.setVisibility(View.INVISIBLE);
+
+                String francs = userDataPreference.getEpargneFrancs().replace(" ", "");
+                int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
+                int dollarsInt = Integer.valueOf(userDataPreference.getEpargneDollars().substring(0, userDataPreference.getEpargneDollars().length() - 3));
+
+                Resources resources = getResources();
+                Collection<FitChartValue> valuesFrancs = new ArrayList<>();
+                valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                Collection<FitChartValue> valuesDollars = new ArrayList<>();
+                valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                TV_Dollars.setText(String.format("%s $", userDataPreference.getEpargneDollars()));
+                TV_Francs.setText(String.format("%s Fc", userDataPreference.getEpargneFrancs()));
+                francsChart.setValues(valuesFrancs);
+                dollarsChart.setValues(valuesDollars);
+            } else {
+                onNetworkError();
+            }
+        }
     }
 
     @OnClick(R.id.cardEpargnePersonelle)

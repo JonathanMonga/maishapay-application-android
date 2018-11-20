@@ -62,6 +62,11 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if(! NetworkUtility.isOnline(this)) {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();

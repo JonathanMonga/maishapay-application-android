@@ -153,6 +153,7 @@ public class MaishapayNotification {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(new Random().nextInt(), nBuilder.build());
     }

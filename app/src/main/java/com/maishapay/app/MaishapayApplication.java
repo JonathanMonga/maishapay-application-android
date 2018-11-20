@@ -47,8 +47,6 @@ public class MaishapayApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         application = this;
-        iniPreference();
-        load();
         maishapayClient = MaishapayClient.getInstance();
         mSoundManager = new SoundManager(application, SoundManager.PLAY_SINGLE);
 
@@ -62,6 +60,9 @@ public class MaishapayApplication extends MultiDexApplication {
                 .restartActivity(DrawerActivity.class)
                 .errorActivity(ErrorActivity.class)
                 .apply();
+
+        iniPreference();
+        load();
     }
 
     private void iniPreference() {
