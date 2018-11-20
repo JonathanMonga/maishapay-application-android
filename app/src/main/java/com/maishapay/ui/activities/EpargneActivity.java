@@ -17,7 +17,6 @@
 package com.maishapay.ui.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -38,9 +37,7 @@ import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePresenter;
-import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.menu.MenuHelper;
-import com.maishapay.util.Constants;
 import com.maishapay.view.EpargneView;
 import com.txusballesteros.widgets.FitChart;
 import com.txusballesteros.widgets.FitChartValue;
@@ -75,7 +72,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @BindView(R.id.LL_fitFrancs)
     LinearLayout LL_fitFrancs;
 
-    private DialogConfirmTransfertFragment dialogForgotFragment;
     private MenuHelper menuHelper;
 
     @Override

@@ -32,7 +32,7 @@
                         style="@style/form_edit_text"
                         android:background="@color/transparente"
                         android:hint="@string/code_pin"
-                        android:inputType="textPassword"
+                        android:inputType="numberPassword"
                         android:theme="@style/form_edit_text_theme" />
                 </LinearLayout>
             </LinearLayout>

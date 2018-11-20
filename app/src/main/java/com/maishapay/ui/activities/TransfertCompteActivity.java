@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +51,7 @@ import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
+import com.wajahatkarim3.easyvalidation.core.Validator;
 
 import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -60,8 +60,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import dmax.dialog.SpotsDialog;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.PaymentWebActivity.EXTRA_ERROR_CODE;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
@@ -207,23 +207,15 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (TextUtils.isEmpty(ET_Destinataire.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_Destinataire.getHint()), R.id.ET_Destinataire);
-            return;
-        }
+        boolean validator = new Validator(ET_Destinataire.getText().toString())
+                .nonEmpty()
+                .minLength(8)
+                .maxLength(13)
+                .textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone())
+                .check();
 
-        if (ET_Destinataire.getText().toString().length() <= 8) {
+        if (!validator) {
             toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
-            return;
-        }
-
-        if (ET_Destinataire.getRecipients().length == 0)
-            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
-        else
-            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
-
-        if (destinatairePhone.equals(UserPrefencesManager.getCurrentUser().getTelephone())) {
-            toastMessage("Le numero doit être différent du votre.", R.id.ET_Destinataire);
             return;
         }
 
@@ -231,6 +223,11 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
             return;
         }
+
+        if (ET_Destinataire.getRecipients().length == 0)
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
+        else
+            destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
         flagtransfert = true;
         enabledControls(false);

@@ -9,13 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
+import com.wajahatkarim3.easyvalidation.core.Validator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +76,16 @@ public class DialogConfirmPaymentFragment extends AppCompatDialogFragment {
 
     @OnClick(R.id.BTN_Sim)
     public void positiveButton(){
+        boolean validator = new Validator(editText.getText().toString())
+                .nonEmpty()
+                .onlyNumbers()
+                .check();
+
+        if (!validator) {
+            toastMessage("Le mot de passe est incorrect");
+            return;
+        }
+
         buttonListener.positiveClicked(editText.getText().toString());
         hideSoftKeyboed(view);
     }
@@ -80,5 +93,10 @@ public class DialogConfirmPaymentFragment extends AppCompatDialogFragment {
     private void hideSoftKeyboed(View view){
         InputMethodManager inputMethodManager = (InputMethodManager) MaishapayApplication.getMaishapayContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void toastMessage(String message) {
+        getView().startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 }

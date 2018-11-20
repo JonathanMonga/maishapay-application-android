@@ -31,8 +31,8 @@
                         android:id="@+id/ET_CodePin"
                         style="@style/form_edit_text"
                         android:background="@color/transparente"
-                        android:hint="@string/email"
-                        android:inputType="textPassword"
+                        android:hint="@string/code_pin"
+                        android:inputType="numberPassword"
                         android:theme="@style/form_edit_text_theme" />
                 </LinearLayout>
             </LinearLayout>

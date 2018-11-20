@@ -1,5 +1,10 @@
 <resources>
 
+    <style name="DialogAnnimation">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
     <style name="Custom" parent="android:Theme.DeviceDefault.Light.Dialog">
         <item name="DialogTitleText">Veuillez patienter</item>
         <item name="DialogSpotColor">@color/md_light_green_700</item>

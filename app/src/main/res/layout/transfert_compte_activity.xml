@@ -66,6 +66,7 @@
                                 android:id="@+id/ET_Destinataire"
                                 style="@style/form_edit_text"
                                 android:maxLength="13"
+                                android:inputType="phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

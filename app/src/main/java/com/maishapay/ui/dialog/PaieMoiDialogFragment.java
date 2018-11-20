@@ -1,28 +1,20 @@
 package com.maishapay.ui.dialog;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
-import com.google.zxing.WriterException;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
-import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.util.Constants;
-import com.maishapay.util.LogCat;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +34,12 @@ public class PaieMoiDialogFragment extends AppCompatDialogFragment {
         bundle.putString(DATA, data);
         dialogForgotFragment.setArguments(bundle);
         return dialogForgotFragment;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnnimation;
     }
 
     @Override

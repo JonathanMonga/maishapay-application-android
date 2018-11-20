@@ -111,16 +111,6 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
             return;
         }
 
-        if (TextUtils.isEmpty(adresseEditText.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), adresseEditText.getHint()), R.id.ET_Adressse);
-            return;
-        }
-
-        if (TextUtils.isEmpty(villeEditText.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), villeEditText.getHint()), R.id.ET_Ville);
-            return;
-        }
-
         FragmentManager fm = getSupportFragmentManager();
         dialogUpdateFragment = DialogUpdateFragment.newInstance();
         dialogUpdateFragment.show(fm, "DialogUpdateFragment");

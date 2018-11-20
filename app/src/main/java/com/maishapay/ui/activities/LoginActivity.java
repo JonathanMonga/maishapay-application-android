@@ -110,7 +110,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         maskText = String.format("+%s%s", code, phone);
 
         enabledControls(false);
-        getPresenter().login(maskText, codePinEditText.getText().toString().trim());
+
+        String numero = "0999";
+        String mot_de_passe = "2223";
+
+        getPresenter().login(numero, mot_de_passe);
 
         textInputTelephone.setError(null);
         textInputTelephone.setErrorEnabled(false);

@@ -43,7 +43,7 @@ public class DialogUpdateFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.dialog_update_code_pin, container);
+        view = inflater.inflate(R.layout.dialog_update_profil, container);
         ButterKnife.bind(this, view);
         return view;
     }

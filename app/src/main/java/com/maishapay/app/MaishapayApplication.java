@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatDelegate;
 import com.maishapay.R;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.ui.activities.DrawerActivity;
+import com.maishapay.ui.activities.ErrorActivity;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import org.alfonz.media.SoundManager;
@@ -59,6 +60,7 @@ public class MaishapayApplication extends MultiDexApplication {
                 .trackActivities(true)
                 .logErrorOnRestart(false)
                 .restartActivity(DrawerActivity.class)
+                .errorActivity(ErrorActivity.class)
                 .apply();
     }
 

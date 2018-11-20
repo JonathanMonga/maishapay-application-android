@@ -120,8 +120,8 @@ public class BalanceDollarsFragment extends Fragment {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         if(solde > 0) {
-            entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Reçu"));
-            entries.add(new PieEntry((float) envoi < 0 ? 0 : recu, "Envoyé"));
+            entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
+            entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
         } else {
             SpannableString spannableString = new SpannableString("Vous avez une dette.");
             spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);

@@ -34,6 +34,12 @@ public class DialogConfirmCreationEpargneFragment extends AppCompatDialogFragmen
             buttonListener = (PossitiveButtonConfirmListener) context;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnnimation;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

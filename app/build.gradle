@@ -320,6 +320,8 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
+    implementation "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
 }
 
 apply plugin: 'com.google.gms.google-services'
