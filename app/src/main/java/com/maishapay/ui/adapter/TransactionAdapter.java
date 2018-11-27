@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
-import com.maishapay.model.client.response.TransactionResponse;
+import com.maishapay.model.client.response.TransactionItemResponse;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionHolder> {
 
-    private List<TransactionResponse> transactionResponseList;
+    private List<TransactionItemResponse> transactionItemResponseList;
 
     public class TransactionHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_category_name) TextView text_category_name;
@@ -37,8 +37,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
 
-    public TransactionAdapter(List<TransactionResponse> transactionResponseList) {
-        this.transactionResponseList = transactionResponseList;
+    public TransactionAdapter(List<TransactionItemResponse> transactionItemResponseList) {
+        this.transactionItemResponseList = transactionItemResponseList;
     }
 
     @Override
@@ -51,22 +51,22 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @Override
     public void onBindViewHolder(TransactionHolder holder, int position) {
 
-        TransactionResponse transactionResponse = transactionResponseList.get(position);
+        TransactionItemResponse transactionItemResponse = transactionItemResponseList.get(position);
 
-        if (transactionResponse.getType_jrn().equals("e")) {
+        if (transactionItemResponse.getType_jrn().equals("e")) {
             holder.text_category_name.setText("Envoi à");
-            holder.TV_Telephone.setText(transactionResponse.getTelephone_dest());
-            holder.TV_Montant.setText(String.format("%s %s", transactionResponse.getMontant_jrn(), transactionResponse.getMonnaie_jrn()));
+            holder.TV_Telephone.setText(transactionItemResponse.getTelephone_dest());
+            holder.TV_Montant.setText(String.format("%s %s", transactionItemResponse.getMontant_jrn(), transactionItemResponse.getMonnaie_jrn()));
             holder.TV_Montant.setTextColor(Color.parseColor("#ffff4444"));
-            holder.TV_Date.setText(String.format("%s %s", transactionResponse.getDate_jrn(), transactionResponse.getHeure_jrn()));
+            holder.TV_Date.setText(String.format("%s %s", transactionItemResponse.getDate_jrn(), transactionItemResponse.getHeure_jrn()));
             holder.image_category_icon.setImageResource(R.drawable.ic_menu_up);
             holder.image_category_icon_background.setImageResource(R.drawable.circle_view_envoi);
         } else {
             holder.text_category_name.setText("Reception de");
-            holder.TV_Telephone.setText(transactionResponse.getTelephone_dest());
-            holder.TV_Montant.setText(String.format("%s %s", transactionResponse.getMontant_jrn(), transactionResponse.getMonnaie_jrn()));
+            holder.TV_Telephone.setText(transactionItemResponse.getTelephone_dest());
+            holder.TV_Montant.setText(String.format("%s %s", transactionItemResponse.getMontant_jrn(), transactionItemResponse.getMonnaie_jrn()));
             holder.TV_Montant.setTextColor(Color.parseColor("#ff8bc34a"));
-            holder.TV_Date.setText(String.format("%s %s", transactionResponse.getDate_jrn(), transactionResponse.getHeure_jrn()));
+            holder.TV_Date.setText(String.format("%s %s", transactionItemResponse.getDate_jrn(), transactionItemResponse.getHeure_jrn()));
             holder.image_category_icon.setImageResource(R.drawable.ic_menu_down);
             holder.image_category_icon_background.setImageResource(R.drawable.circle_view_recu);
         }
@@ -74,6 +74,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public int getItemCount() {
-        return transactionResponseList.size();
+        return transactionItemResponseList.size();
     }
 }

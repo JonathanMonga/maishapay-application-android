@@ -190,7 +190,7 @@
         value = {
             "(",
             "Ljava/util/List<",
-            "Lcom/maishapay/model/client/response/TransactionResponse;",
+            "Lcom/maishapay/model/client/response/TransactionItemResponse;",
             ">;)V"
         }
     .end annotation

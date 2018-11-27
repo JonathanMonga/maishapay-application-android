@@ -19,14 +19,12 @@ package com.maishapay.model.client.api;
 import com.maishapay.BuildConfig;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.PaymentResponse;
-import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
+import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -134,8 +132,8 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<List<TransactionResponse>> rapport(@Field("ent") String ent,
-                                                  @Field("telephone") String telephone);
+    Observable<TransactionResponse> rapport(@Field("ent") String ent,
+                                            @Field("telephone") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
@@ -183,7 +181,7 @@ public interface MaishapayAPI {
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<Integer> taux_du_jour(@Field("ent") String ent,
-                                    @Field("mn") String telephone);
+                                     @Field("mn") String telephone);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

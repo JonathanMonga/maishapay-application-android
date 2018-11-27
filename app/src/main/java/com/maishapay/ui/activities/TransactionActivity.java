@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.maishapay.R;
-import com.maishapay.model.client.response.TransactionResponse;
+import com.maishapay.model.client.response.TransactionItemResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TransactionPresenter;
@@ -71,7 +71,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         if(! NetworkUtility.isOnline(this)) {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-            if(userDataPreference.getTransactionResponses() != null) {
+            if(userDataPreference.getTransactionItemRespons() != null) {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 ET_FrancsEnvoye.setText(String.format("%d Fc", userDataPreference.getEnvoiFrancs()));
@@ -79,7 +79,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 ET_DollarsEnvoye.setText(String.format("%d $", userDataPreference.getEnvoiDollars()));
                 ET_DollarsRecu.setText(String.format("%d $", userDataPreference.getRecuDollars()));
 
-                mAdapter = new TransactionAdapter(userDataPreference.getTransactionResponses());
+                mAdapter = new TransactionAdapter(userDataPreference.getTransactionItemRespons());
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -94,7 +94,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     }
 
     @Override
-    public void finishToLoadTransactions(List<TransactionResponse> responses) {
+    public void finishToLoadTransactions(List<TransactionItemResponse> responses) {
         menuHelper.stopLoading();
         progressBar.setVisibility(View.INVISIBLE);
         mAdapter = new TransactionAdapter(responses);

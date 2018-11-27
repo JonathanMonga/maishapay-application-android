@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.TransactionItemResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -25,8 +26,6 @@ import com.maishapay.view.TransactionView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
-
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -48,30 +47,30 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
         disposableHandler.manageDisposable(maishapayClient.rapport(telephone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<List<TransactionResponse>>(getView()) {
+                .subscribeWith(new CallbackWrapper<TransactionResponse>(getView()) {
                     @Override
-                    protected void onSuccess(List<TransactionResponse> responses) {
+                    protected void onSuccess(TransactionResponse responses) {
                         if(isViewAttached()) {
                             int envoiFrancs = 0;
                             int recuFrancs = 0;
                             int envoiDollars = 0;
                             int recuDollars = 0;
 
-                            for(TransactionResponse transactionResponse : responses){
-                                if(transactionResponse.getType_jrn().equals("e")){
-                                    if(transactionResponse.getMonnaie_jrn().equals("FC")) {
-                                        String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                            for(TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()){
+                                if(transactionItemResponse.getType_jrn().equals("e")){
+                                    if(transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                         envoiFrancs += Integer.valueOf(temp);
-                                    } else if(transactionResponse.getMonnaie_jrn().equals("USD")){
-                                        String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                                    } else if(transactionItemResponse.getMonnaie_jrn().equals("USD")){
+                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                         envoiDollars += Integer.valueOf(temp);
                                     }
                                 } else {
-                                    if(transactionResponse.getMonnaie_jrn().equals("FC")) {
-                                        String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                                    if(transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                         recuFrancs += Integer.valueOf(temp);
-                                    } else if(transactionResponse.getMonnaie_jrn().equals("USD")){
-                                        String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                                    } else if(transactionItemResponse.getMonnaie_jrn().equals("USD")){
+                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                         recuDollars += Integer.valueOf(temp);
                                     }
                                 }
@@ -85,14 +84,14 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             userDataPreference.setEnvoiDollars(envoiDollars);
                             userDataPreference.setRecuDollars(recuDollars);
 
-                            userDataPreference.setTransactionResponses(responses);
+                            userDataPreference.setTransactionItemRespons(responses.getTransactionItemResponses());
 
                             UserPrefencesManager.setUserDataPreference(userDataPreference);
 
                             getView().finishToLoadStatisics(userDataPreference);
 
                             getView().enabledControls(true);
-                            getView().finishToLoadTransactions(responses);
+                            getView().finishToLoadTransactions(responses.getTransactionItemResponses());
                         }
                     }
                 }));

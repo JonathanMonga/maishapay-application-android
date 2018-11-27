@@ -1,7 +1,7 @@
 package com.maishapay.model.domain;
 
 import com.google.gson.annotations.SerializedName;
-import com.maishapay.model.client.response.TransactionResponse;
+import com.maishapay.model.client.response.TransactionItemResponse;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class UserDataPreference {
     @SerializedName("epargneDollars")
     private String epargneDollars;
     @SerializedName("rapport")
-    private List<TransactionResponse> transactionResponses;
+    private List<TransactionItemResponse> transactionItemRespons;
 
     public int getSoldeFrancs() {
         return soldeFrancs;
@@ -102,11 +102,11 @@ public class UserDataPreference {
         this.epargneDollars = epargneDollars;
     }
 
-    public List<TransactionResponse> getTransactionResponses() {
-        return transactionResponses;
+    public List<TransactionItemResponse> getTransactionItemRespons() {
+        return transactionItemRespons;
     }
 
-    public void setTransactionResponses(List<TransactionResponse> transactionResponses) {
-        this.transactionResponses = transactionResponses;
+    public void setTransactionItemRespons(List<TransactionItemResponse> transactionItemRespons) {
+        this.transactionItemRespons = transactionItemRespons;
     }
 }

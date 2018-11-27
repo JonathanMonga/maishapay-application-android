@@ -20,11 +20,11 @@
 
 
 # instance fields
-.field private transactionResponseList:Ljava/util/List;
+.field private transactionItemResponseList:Ljava/util/List;
     .annotation system Ldalvik/annotation/Signature;
         value = {
             "Ljava/util/List<",
-            "Lcom/maishapay/model/client/response/TransactionResponse;",
+            "Lcom/maishapay/model/client/response/TransactionItemResponse;",
             ">;"
         }
     .end annotation
@@ -38,7 +38,7 @@
         value = {
             "(",
             "Ljava/util/List<",
-            "Lcom/maishapay/model/client/response/TransactionResponse;",
+            "Lcom/maishapay/model/client/response/TransactionItemResponse;",
             ">;)V"
         }
     .end annotation
@@ -47,7 +47,7 @@
     invoke-direct {p0}, Landroid/support/v7/widget/RecyclerView$Adapter;-><init>()V
 
     .line 41
-    iput-object p1, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionResponseList:Ljava/util/List;
+    iput-object p1, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionItemResponseList:Ljava/util/List;
 
     return-void
 .end method
@@ -58,7 +58,7 @@
     .locals 1
 
     .line 77
-    iget-object v0, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionResponseList:Ljava/util/List;
+    iget-object v0, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionItemResponseList:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->size()I
 
@@ -94,7 +94,7 @@
     .end annotation
 
     .line 54
-    iget-object v0, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionResponseList:Ljava/util/List;
+    iget-object v0, p0, Lcom/maishapay/ui/adapter/TransactionAdapter;->transactionItemResponseList:Ljava/util/List;
 
     invoke-interface {v0, p2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 

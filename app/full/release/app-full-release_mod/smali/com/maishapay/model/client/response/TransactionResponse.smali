@@ -1,6 +1,6 @@
 .class public Lcom/maishapay/model/client/response/TransactionResponse;
 .super Ljava/lang/Object;
-.source "TransactionResponse.java"
+.source "TransactionItemResponse.java"
 
 
 # instance fields

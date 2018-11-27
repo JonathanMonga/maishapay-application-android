@@ -18,69 +18,21 @@ package com.maishapay.model.client.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * A user response
  */
 public class TransactionResponse extends BaseResponse{
 
-    @SerializedName("type_jrn")
-    private String type_jrn;
-    @SerializedName("date_jrn")
-    private String date_jrn;
-    @SerializedName("heure_jrn")
-    private String heure_jrn;
-    @SerializedName("telephone_dest")
-    private String telephone_dest;
-    @SerializedName("montant_jrn")
-    private String montant_jrn;
-    @SerializedName("monnaie_jrn")
-    private String monnaie_jrn;
+    @SerializedName("transactions")
+    private List<TransactionItemResponse> transactionItemResponses;
 
-    public String getType_jrn() {
-        return type_jrn;
+    public List<TransactionItemResponse> getTransactionItemResponses() {
+        return transactionItemResponses;
     }
 
-    public void setType_jrn(String type_jrn) {
-        this.type_jrn = type_jrn;
-    }
-
-    public String getDate_jrn() {
-        return date_jrn;
-    }
-
-    public void setDate_jrn(String date_jrn) {
-        this.date_jrn = date_jrn;
-    }
-
-    public String getHeure_jrn() {
-        return heure_jrn;
-    }
-
-    public void setHeure_jrn(String heure_jrn) {
-        this.heure_jrn = heure_jrn;
-    }
-
-    public String getTelephone_dest() {
-        return telephone_dest;
-    }
-
-    public void setTelephone_dest(String telephone_dest) {
-        this.telephone_dest = telephone_dest;
-    }
-
-    public String getMontant_jrn() {
-        return montant_jrn;
-    }
-
-    public void setMontant_jrn(String montant_jrn) {
-        this.montant_jrn = montant_jrn;
-    }
-
-    public String getMonnaie_jrn() {
-        return monnaie_jrn;
-    }
-
-    public void setMonnaie_jrn(String monnaie_jrn) {
-        this.monnaie_jrn = monnaie_jrn;
+    public void setTransactionItemResponses(List<TransactionItemResponse> transactionItemResponses) {
+        this.transactionItemResponses = transactionItemResponses;
     }
 }

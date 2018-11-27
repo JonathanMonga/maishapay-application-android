@@ -27,8 +27,6 @@ import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 
 import static com.maishapay.BuildConfig.ATTEMPT_PAYMENT_PARAM;
@@ -130,7 +128,7 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<List<TransactionResponse>> rapport(String telephone) {
+    public Observable<TransactionResponse> rapport(String telephone) {
         return this.maishapayAPI.rapport(RAPPORT_PARAM, telephone);
     }
 

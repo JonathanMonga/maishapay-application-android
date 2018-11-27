@@ -532,7 +532,7 @@
             ")",
             "Lio/reactivex/Single<",
             "Ljava/util/List<",
-            "Lcom/maishapay/model/client/response/TransactionResponse;",
+            "Lcom/maishapay/model/client/response/TransactionItemResponse;",
             ">;>;"
         }
     .end annotation

@@ -8,12 +8,12 @@ import android.widget.TextView;
 import com.ahamed.multiviewadapter.BaseViewHolder;
 import com.ahamed.multiviewadapter.ItemBinder;
 import com.ahamed.multiviewadapter.util.ItemDecorator;
-import com.maishapay.model.client.response.TransactionResponse;
+import com.maishapay.model.client.response.TransactionItemResponse;
 
 import butterknife.ButterKnife;
 
 
-public class TransactionBinder extends ItemBinder<TransactionResponse, TransactionBinder.ViewHolder> {
+public class TransactionBinder extends ItemBinder<TransactionItemResponse, TransactionBinder.ViewHolder> {
 
     public TransactionBinder(ItemDecorator itemDecorator) {
         super(itemDecorator);
@@ -25,7 +25,7 @@ public class TransactionBinder extends ItemBinder<TransactionResponse, Transacti
     }
 
     @Override
-    public void bind(ViewHolder holder, TransactionResponse item) {
+    public void bind(ViewHolder holder, TransactionItemResponse item) {
        // holder.tvName.setText(item.getModelName());
        // holder.tvMake.setText(item.getMake());
        // holder.tvYear.setText(item.getYear());
@@ -33,7 +33,7 @@ public class TransactionBinder extends ItemBinder<TransactionResponse, Transacti
 
     @Override
     public boolean canBindData(Object item) {
-        return item instanceof TransactionResponse;
+        return item instanceof TransactionItemResponse;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TransactionBinder extends ItemBinder<TransactionResponse, Transacti
         return maxSpanCount;
     }
 
-    static class ViewHolder extends BaseViewHolder<TransactionResponse> {
+    static class ViewHolder extends BaseViewHolder<TransactionItemResponse> {
         private TextView tvName;
         private TextView tvMake;
         private TextView tvYear;

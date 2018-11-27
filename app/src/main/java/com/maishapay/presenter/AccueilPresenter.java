@@ -18,16 +18,15 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
-import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.SoldeResponse;
+import com.maishapay.model.client.response.TransactionItemResponse;
+import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.AccueilView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
-
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiFunction;
@@ -47,32 +46,32 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
     }
 
     public void solde(String userPhone) {
-        disposableHandler.manageDisposable(maishapayClient.solde(userPhone).zipWith(maishapayClient.rapport(userPhone), new BiFunction<SoldeResponse, List<TransactionResponse>, UserDataPreference>() {
-            UserDataPreference userDataPreference;
+        disposableHandler.manageDisposable(maishapayClient.solde(userPhone).zipWith(maishapayClient.rapport(userPhone), new BiFunction<SoldeResponse, TransactionResponse, UserDataPreference>() {
+            UserDataPreference userDataPreference ;
 
             @Override
-            public UserDataPreference apply(SoldeResponse soldeResponse, List<TransactionResponse> transactionRespons) {
+            public UserDataPreference apply(SoldeResponse soldeResponse, TransactionResponse transactionRespons) {
                 if(soldeResponse.getResultat() == 1) {
                     int envoiFrancs = 0;
                     int recuFrancs = 0;
                     int envoiDollars = 0;
                     int recuDollars = 0;
 
-                    for (TransactionResponse transactionResponse : transactionRespons) {
-                        if (transactionResponse.getType_jrn().equals("e")) {
-                            if (transactionResponse.getMonnaie_jrn().equals("FC")) {
-                                String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                    for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
+                        if (transactionItemResponse.getType_jrn().equals("e")) {
+                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                 envoiFrancs += Integer.valueOf(temp);
-                            } else if (transactionResponse.getMonnaie_jrn().equals("USD")) {
-                                String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                 envoiDollars += Integer.valueOf(temp);
                             }
                         } else {
-                            if (transactionResponse.getMonnaie_jrn().equals("FC")) {
-                                String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                 recuFrancs += Integer.valueOf(temp);
-                            } else if (transactionResponse.getMonnaie_jrn().equals("USD")) {
-                                String temp = transactionResponse.getMontant_jrn().replace(" ", "");
+                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
                                 recuDollars += Integer.valueOf(temp);
                             }
                         }

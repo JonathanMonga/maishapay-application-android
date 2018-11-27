@@ -22,7 +22,7 @@
         "Lio/reactivex/functions/BiFunction<",
         "Lcom/maishapay/model/client/response/SoldeResponse;",
         "Ljava/util/List<",
-        "Lcom/maishapay/model/client/response/TransactionResponse;",
+        "Lcom/maishapay/model/client/response/TransactionItemResponse;",
         ">;",
         "Lcom/maishapay/model/domain/UserDataPreference;",
         ">;"
@@ -55,7 +55,7 @@
             "(",
             "Lcom/maishapay/model/client/response/SoldeResponse;",
             "Ljava/util/List<",
-            "Lcom/maishapay/model/client/response/TransactionResponse;",
+            "Lcom/maishapay/model/client/response/TransactionItemResponse;",
             ">;)",
             "Lcom/maishapay/model/domain/UserDataPreference;"
         }
