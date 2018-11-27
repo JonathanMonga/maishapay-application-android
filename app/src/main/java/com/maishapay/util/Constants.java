@@ -74,6 +74,17 @@ public class Constants {
                 .show();
     }
 
+    public static void showAllert(View view, String message, View.OnClickListener onClickListener){
+        Snacky.builder()
+                .setView(view)
+                .setText(message)
+                .setDuration(Snacky.LENGTH_INDEFINITE)
+                .setActionText("Réessayez")
+                .setActionClickListener(onClickListener)
+                .error()
+                .show();
+    }
+
     public static String getOperatorName() {
         TelephonyManager telephonyManager = (TelephonyManager) MaishapayApplication.getMaishapayContext().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();

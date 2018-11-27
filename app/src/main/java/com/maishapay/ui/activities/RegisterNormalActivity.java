@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.RegisterNormalPresenter;
+import com.maishapay.util.Constants;
 import com.maishapay.view.RegisterNormalView;
 import com.santalu.widget.MaskEditText;
 
@@ -198,9 +200,18 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     @Override
     public void finishToRegister(UserResponse response) {
         UserPrefencesManager.setCurentUser(response);
-        Intent intent = new Intent(this, LoginActivity.class);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+
+        findViewById(R.id.root).setEnabled(false);
+
+        Constants.showAllert(findViewById(R.id.root), "Votre compte a été créer avec succés.", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enabledControls(false);
+                Intent intent = new Intent(RegisterNormalActivity.this, LoginActivity.class);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private void initProgressBar() {

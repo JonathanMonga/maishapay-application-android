@@ -55,7 +55,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> implements LoginView, PossitiveButtonListener {
 
     private static String maskText;
-    private static String email;
+    private static String pin;
 
     private ProgressDialog progressDialog;
     @BindView(R.id.ti_telephone) TextInputLayout textInputTelephone;
@@ -104,17 +104,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             return;
         }
 
-        String code = countryCodePicker.getSelectedCountryCode();
-        String phone = phoneEditText.getRawText();
-
-        maskText = String.format("+%s%s", code, phone);
+        maskText = String.format("%s%s", countryCodePicker.getSelectedCountryCode(), phoneEditText.getRawText());
+        pin = codePinEditText.getText().toString();
 
         enabledControls(false);
 
-        String numero = "099";
-        String mot_de_passe = "1234";
-
-        getPresenter().login(numero, mot_de_passe);
+        getPresenter().login(maskText, pin);
 
         textInputTelephone.setError(null);
         textInputTelephone.setErrorEnabled(false);
@@ -176,13 +171,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
-
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre compte a été créer avec succés.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
             }
         } else {
             if(resultCode == Activity.RESULT_OK){
@@ -191,13 +179,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
-
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Votre compte a été créer avec succés.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .success()
-                        .show();
             }
         }
     }
@@ -288,7 +269,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @Override
     public void positiveClicked(String telephone, String email) {
-        LoginActivity.email = email;
+        LoginActivity.pin = email;
 
         enabledControls(false);
         getPresenter().forgot(telephone, email);
@@ -339,7 +320,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 enabledControls(false);
 
                 if(flaglogin)
-                    getPresenter().forgot(maskText, email);
+                    getPresenter().forgot(maskText, pin);
                 else
                     getPresenter().login(maskText, codePinEditText.getText().toString());
             }
@@ -356,7 +337,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 enabledControls(false);
 
                 if(flaglogin)
-                    getPresenter().forgot(maskText, email);
+                    getPresenter().forgot(maskText, pin);
                 else
                     getPresenter().login(maskText, codePinEditText.getText().toString());
             }
@@ -373,7 +354,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 enabledControls(false);
 
                 if(flaglogin)
-                    getPresenter().forgot(maskText, email);
+                    getPresenter().forgot(maskText, pin);
                 else
                     getPresenter().login(maskText, codePinEditText.getText().toString());
             }
