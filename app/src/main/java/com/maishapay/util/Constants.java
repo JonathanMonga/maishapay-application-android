@@ -136,7 +136,7 @@ public class Constants {
         if(needle.equals(""))
             return true;
 
-        if(haystack == null || needle == null || haystack.equals(""))
+        if(haystack == null || haystack.equals(""))
             return false;
 
         Pattern pattern = Pattern.compile(needle, Pattern.CASE_INSENSITIVE + Pattern.LITERAL);

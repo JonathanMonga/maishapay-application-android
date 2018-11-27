@@ -275,7 +275,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
+        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(String.valueOf(ET_Montant.getAmount()), userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
     }
 

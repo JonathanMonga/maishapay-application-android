@@ -152,7 +152,7 @@ public class ConversionActivity extends AppCompatActivity implements NumPadPossi
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked(){
         FragmentManager fm = getSupportFragmentManager();
-        DialogNumberPickerFragment dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
+        DialogNumberPickerFragment dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
     }
 

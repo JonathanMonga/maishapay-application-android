@@ -68,7 +68,7 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("USD");
+        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", "USD");
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
     }
 

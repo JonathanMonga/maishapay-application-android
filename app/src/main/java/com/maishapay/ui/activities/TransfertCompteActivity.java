@@ -146,7 +146,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
         ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
-        adapter.setShowMobileOnly(true);
+        adapter.setShowMobileOnly(false);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
     }
@@ -351,7 +351,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(userCurrency);
+        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", userCurrency);
         dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
     }
 

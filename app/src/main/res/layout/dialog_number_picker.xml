@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:numpad="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:numpad="http://schemas.android.com/apk/res-auto">
+    android:layout_height="fill_parent">
 
     <LinearLayout style="@style/dialog">
 
@@ -19,54 +19,51 @@
                 android:layout_marginTop="10.0dip">
 
                 <LinearLayout
-                    style="@style/form_linha_divisor"
-                    android:layout_marginRight="0.0dip">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="300dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_width="240dp"
+                        <TextView
+                            android:id="@+id/ET_Device"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            android:text="Fc"
+                            android:textColor="@color/md_deep_orange_500"
+                            android:textSize="20sp" />
 
-                            <TextView
-                                android:id="@+id/ET_Device"
-                                android:clickable="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:text="Fc"
-                                android:textSize="20sp"
-                                android:textColor="@color/md_deep_orange_500" />
+                        <TextView
+                            android:layout_toRightOf="@id/ET_Device"
+                            android:id="@+id/ET_Montant"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            android:gravity="right"
+                            android:text="0"
+                            android:textColor="@color/texto"
+                            android:textSize="30sp" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/ET_Montant"
-                                android:clickable="true"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="right"
-                                android:text="0"
-                                android:textSize="30sp"
-                                android:textColor="@color/texto" />
-                        </LinearLayout>
-
-                        <com.fxn769.Numpad
-                            android:id="@+id/num"
-                            android:layout_width="240dp"
-                            android:layout_height="250dp"
-                            numpad:numpad_background_resource="@drawable/background_num_pad"
-                            numpad:numpad_grid_background_color="@color/md_deep_orange_500"
-                            numpad:numpad_grid_line_thickness="1dp"
-                            numpad:numpad_grid_visible="false"
-                            numpad:numpad_image_resource="@drawable/ic_backspace"
-                            numpad:numpad_text_color="@color/texto"
-                            numpad:numpad_text_limit="7"
-                            numpad:numpad_text_size="18dp" />
-                    </LinearLayout>
+                    <com.fxn769.Numpad
+                        android:id="@+id/num"
+                        android:layout_width="240dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center_horizontal"
+                        numpad:numpad_background_resource="@drawable/background_num_pad"
+                        numpad:numpad_grid_background_color="@color/md_deep_orange_500"
+                        numpad:numpad_grid_line_thickness="1dp"
+                        numpad:numpad_grid_visible="false"
+                        numpad:numpad_image_resource="@drawable/ic_backspace"
+                        numpad:numpad_text_color="@color/texto"
+                        numpad:numpad_text_limit="7"
+                        numpad:numpad_text_size="18dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -77,7 +74,7 @@
                 android:id="@+id/BTN_Nao"
                 style="@style/dialog_button"
                 android:text="@string/btn_cancelar"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/BTN_Sim"

@@ -21,6 +21,7 @@ import butterknife.OnClick;
 
 public class DialogNumberPickerFragment extends AppCompatDialogFragment {
     private static final String EXTRA_DEVISE = "device";
+    private static final String EXTRA_LAST_MONTANT = "montant";
 
     @BindView(R.id.num) Numpad num;
     @BindView(R.id.BTN_Sim) Button yesButton;
@@ -31,10 +32,11 @@ public class DialogNumberPickerFragment extends AppCompatDialogFragment {
     private View view;
     private static String number = "0.0";
 
-    public static DialogNumberPickerFragment newInstance(String devise){
+    public static DialogNumberPickerFragment newInstance(String lastMontant, String devise){
         DialogNumberPickerFragment dialogForgotFragment = new DialogNumberPickerFragment();
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_DEVISE, devise);
+        bundle.putString(EXTRA_LAST_MONTANT, lastMontant);
         dialogForgotFragment.setArguments(bundle);
         return dialogForgotFragment;
     }
@@ -67,6 +69,7 @@ public class DialogNumberPickerFragment extends AppCompatDialogFragment {
         setCancelable(false);
 
         ET_Device.setText(getArguments().getString(EXTRA_DEVISE));
+        moneyTextView.setText(getArguments().getString(EXTRA_LAST_MONTANT, "0"));
 
         num.setOnTextChangeListner(new TextGetListner() {
             @Override
@@ -75,8 +78,13 @@ public class DialogNumberPickerFragment extends AppCompatDialogFragment {
                     moneyTextView.setText("0");
                     number = "0.0";
                 } else {
-                    moneyTextView.setText(text);
-                    number = text;
+                    if(!getArguments().getString(EXTRA_LAST_MONTANT, "0").equals("0")){
+                        moneyTextView.setText(String.format("%s%s", getArguments().getString(EXTRA_LAST_MONTANT), text));
+                        number = String.format("%s%s", getArguments().getString(EXTRA_LAST_MONTANT), text);
+                    } else {
+                        moneyTextView.setText(text);
+                        number = text;
+                    }
                 }
             }
         });
