@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
-import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.model.MaishapayNotification;
+import com.maishapay.model.prefs.UserPrefencesManager;
 
 import org.alfonz.media.SoundManager;
 
@@ -27,6 +27,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     public static final String EXTRA_MONTANT = "montant";
     public static final String EXTRA_MONNAIE = "monnaie";
     public static final String EXTRA_DESTINATAIRE = "destinataire";
+    public static final String EXTRA_REFRESH = "refresh";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -69,7 +70,15 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
         UserPrefencesManager.setUserRefresh(true);
-        startActivity(new Intent(this, DrawerActivity.class));
+
+        if (getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne")) {
+            Intent intent = new Intent(this, EpargneActivity.class);
+            intent.putExtra(EXTRA_REFRESH, true);
+            startActivity(intent);
+        } else {
+            startActivity(new Intent(this, DrawerActivity.class));
+        }
+
         finish();
     }
 

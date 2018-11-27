@@ -6,6 +6,7 @@
     </style>
 
     <style name="Custom" parent="android:Theme.DeviceDefault.Light.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
         <item name="DialogTitleText">Veuillez patienter</item>
         <item name="DialogSpotColor">@color/md_light_green_700</item>
         <item name="DialogSpotCount">5</item>

@@ -194,7 +194,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-
+        startActivity(intent);
         finish();
     }
 
