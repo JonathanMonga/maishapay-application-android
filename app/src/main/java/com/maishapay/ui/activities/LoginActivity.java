@@ -81,6 +81,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         if(UserPrefencesManager.getCurrentUserDisconnect()) {
             phoneEditText.setText(UserPrefencesManager.getUserPhone());
             countryCodePicker.setCountryForPhoneCode(UserPrefencesManager.getUserCountryCodePhone());
+        } else {
+            String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+            int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
+
+            countryCodePicker.setCountryForPhoneCode(userCodePhone);
+            phoneEditText.setText(userPhone);
         }
 
         initProgressBar();
@@ -104,7 +110,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             return;
         }
 
-        maskText = String.format("%s%s", countryCodePicker.getSelectedCountryCode(), phoneEditText.getRawText());
+        maskText = Constants.generatePhoneCode(false,  phoneEditText.getRawText(), countryCodePicker.getSelectedCountryCode());
+
         pin = codePinEditText.getText().toString();
 
         enabledControls(false);
@@ -166,16 +173,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK) {
-                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
+                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
             }
         } else {
             if(resultCode == Activity.RESULT_OK){
-                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
+                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);

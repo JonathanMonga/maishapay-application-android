@@ -107,7 +107,7 @@ public class Constants {
     }
 
     public static String generatePhoneNumber(String phone) {
-        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3);
         String destinatairePhone;
         String recipient = phone.replace(" ", "");
 
@@ -123,6 +123,19 @@ public class Constants {
         LogCat.e(destinatairePhone);
 
         return destinatairePhone;
+    }
+
+    public static String generatePhoneCode(boolean plus, String phone, String code) {
+
+        return plus ? String.format("+%s%s", code, phone) : String.format("%s%s", code, phone);
+    }
+
+    public static String generatePhoneWithoutCode(boolean plus, String phone) {
+        return plus ? phone.substring(4, phone.length()) : phone.substring(3, phone.length());
+    }
+
+    public static int generateCode(boolean plus, String phone) {
+        return plus ? Integer.valueOf(phone.substring(1, 4)) : Integer.valueOf(phone.substring(0, 3));
     }
 
     public static void generateQRcode(String data, ImageView imageView, WindowManager manager){

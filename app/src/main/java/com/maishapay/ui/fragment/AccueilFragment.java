@@ -245,7 +245,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         adapter.setData(pageList);
 
-
         pager.setInterval(5000);
         pager.startAutoScroll();
         pager.setAdapter(adapter);

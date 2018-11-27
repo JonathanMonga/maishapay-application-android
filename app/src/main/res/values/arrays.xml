@@ -50,6 +50,15 @@
         <item>@string/code_rwanda</item>
     </array>
 
+    <array name="option_country_code_plus">
+        <item>@string/code_rdc</item>
+        <item>@string/code_cotedivoire</item>
+        <item>@string/code_togo</item>
+        <item>@string/code_senegal</item>
+        <item>@string/code_kenya</item>
+        <item>@string/code_rwanda</item>
+    </array>
+
     <array name="option_transfert_paiment">
         <item>Compte à compte</item>
         <item>Compte à cash</item>
@@ -61,7 +70,7 @@
     </array>
 
     <array name="option_type_compte">
-        <item>Ouvrir un compte Maishapay</item>
+        <item>Ouvrir un compte maishapay</item>
         <item>Ouvrir un compte marchant</item>
     </array>
 </resources>

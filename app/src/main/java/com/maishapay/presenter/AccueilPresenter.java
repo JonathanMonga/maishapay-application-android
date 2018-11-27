@@ -57,22 +57,24 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                 int envoiDollars = 0;
                 int recuDollars = 0;
 
-                for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
-                    if (transactionItemResponse.getType_jrn().equals("e")) {
-                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                            envoiFrancs += Integer.valueOf(temp);
-                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                            envoiDollars += Integer.valueOf(temp);
-                        }
-                    } else {
-                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                            recuFrancs += Integer.valueOf(temp);
-                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                            recuDollars += Integer.valueOf(temp);
+                if (transactionRespons.getResultat() != 0) {
+                    for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
+                        if (transactionItemResponse.getType_jrn().equals("e")) {
+                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                envoiFrancs += Integer.valueOf(temp);
+                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                envoiDollars += Integer.valueOf(temp);
+                            }
+                        } else {
+                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                recuFrancs += Integer.valueOf(temp);
+                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                recuDollars += Integer.valueOf(temp);
+                            }
                         }
                     }
                 }

@@ -12,8 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -24,6 +22,7 @@ import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
 import com.maishapay.ui.fragment.SettingsFragment;
+import com.maishapay.util.Constants;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -133,14 +132,11 @@ public class DrawerActivity extends AppCompatActivity {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 3));
-
                                 UserPrefencesManager.clearAll();
 
                                 UserPrefencesManager.setUserFirtRun(false);
-                                UserPrefencesManager.setUserPhone(userPhone);
-                                UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
+                                UserPrefencesManager.setUserPhone(Constants.generatePhoneWithoutCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
+                                UserPrefencesManager.setUserCountryCodePhone(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
 
                                 UserPrefencesManager.setCurrentUserDisconnect(true);
 
@@ -201,7 +197,7 @@ public class DrawerActivity extends AppCompatActivity {
 
                     case 6:
                         List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
-                        String codePhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+                        String codePhone = String.valueOf(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
 
                         if (strings.contains(codePhone))
                             new Handler().postDelayed(new Runnable() {
@@ -276,17 +272,6 @@ public class DrawerActivity extends AppCompatActivity {
                 userProfil.withName(userResponse.getPrenom() + " " + userResponse.getNom()).withEmail(userResponse.getTelephone());
             }
         }
-    }
-
-    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
-        Window win = activity.getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
     @Override

@@ -127,11 +127,10 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
             return;
         }
 
-
         String code = countryCodePicker.getSelectedCountryCode();
         String phone = phoneEditText.getRawText();
 
-        maskText = String.format("+%s%s", code, phone);
+        maskText = Constants.generatePhoneCode(false, phone, code);
 
         enabledControls(false);
         getPresenter().inscription(

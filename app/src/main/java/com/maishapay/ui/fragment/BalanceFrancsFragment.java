@@ -120,8 +120,12 @@ public class BalanceFrancsFragment extends Fragment {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         if(Integer.valueOf(solde) > 0) {
-            entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
-            entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
+            if(recu <= 0 && envoi <= 0) {
+                entries.add(new PieEntry((float) 100, ""));
+            } else {
+                entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
+                entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
+            }
         } else {
             SpannableString spannableString = new SpannableString("Vous avez une dette.");
             spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
