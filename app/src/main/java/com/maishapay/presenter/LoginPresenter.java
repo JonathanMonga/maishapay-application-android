@@ -19,7 +19,6 @@ import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.UserResponse;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.LoginView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -48,7 +47,6 @@ public class LoginPresenter extends TiPresenter<LoginView> {
                 .subscribeWith(new CallbackWrapper<UserResponse>(getView()) {
                     @Override
                     protected void onSuccess(UserResponse response) {
-                        LogCat.e(response.getResultat()+"");
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
