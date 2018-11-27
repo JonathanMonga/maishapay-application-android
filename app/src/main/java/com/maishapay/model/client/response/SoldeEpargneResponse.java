@@ -23,20 +23,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class SoldeEpargneResponse extends BaseResponse{
 
-    @SerializedName("resultat")
-    private int resultat;
     @SerializedName("FC")
     private String francCongolais;
     @SerializedName("USD")
     private String dollard;
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 
     public String getFrancCongolais() {
         return francCongolais;

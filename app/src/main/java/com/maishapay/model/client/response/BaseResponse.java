@@ -22,5 +22,15 @@ import com.google.gson.annotations.SerializedName;
  * A user response
  */
 public class BaseResponse {
-    //Classe vide
+
+    @SerializedName("resultat")
+    private int resultat;
+
+    public int getResultat() {
+        return resultat;
+    }
+
+    public void setResultat(int resultat) {
+        this.resultat = resultat;
+    }
 }

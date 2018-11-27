@@ -16,21 +16,9 @@
 
 package com.maishapay.model.client.response;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * A user response
  */
 public class EpargneResponse extends BaseResponse{
 
-    @SerializedName("resultat")
-    private int resultat;
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 }

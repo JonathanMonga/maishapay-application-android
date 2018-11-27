@@ -23,18 +23,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class RetraitResponse extends BaseResponse{
 
-    @SerializedName("resultat")
-    private int resultat;
     @SerializedName("retour")
     private String retour;
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 
     public String getRetour() {
         return retour;

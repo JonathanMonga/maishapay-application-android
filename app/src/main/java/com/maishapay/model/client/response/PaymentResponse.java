@@ -23,9 +23,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public class PaymentResponse extends BaseResponse{
 
-    @SerializedName("resultat")
-    private int resultat;
-
     @SerializedName("message")
     private String message;
 
@@ -34,14 +31,6 @@ public class PaymentResponse extends BaseResponse{
 
     @SerializedName("data_trans")
     private DataPaymentResponse data_trans;
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 
     public String getMessage() {
         return message;

@@ -111,8 +111,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
         enabledControls(false);
 
-        String numero = "0999";
-        String mot_de_passe = "2223";
+        String numero = "099";
+        String mot_de_passe = "1234";
 
         getPresenter().login(numero, mot_de_passe);
 

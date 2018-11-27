@@ -23,20 +23,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class TransfertResponse extends BaseResponse{
 
-    @SerializedName("resultat")
-    private int resultat;
     @SerializedName("nom")
     private String nom;
     @SerializedName("prenom")
     private String prenom;
-
-    public int getResultat() {
-        return resultat;
-    }
-
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 
     public String getNom() {
         return nom;
