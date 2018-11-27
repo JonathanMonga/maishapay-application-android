@@ -110,16 +110,6 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
             return;
         }
 
-        if (TextUtils.isEmpty(adresseEditText.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), adresseEditText.getHint()), R.id.ET_Adressse);
-            return;
-        }
-
-        if (TextUtils.isEmpty(villeEditText.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), villeEditText.getHint()), R.id.ET_Ville);
-            return;
-        }
-
         if (TextUtils.isEmpty(codePin1EditText.getText().toString())) {
             toastMessage(String.format(getString(R.string.erro_campo), codePin1EditText.getHint()), R.id.ET_Senha);
             return;

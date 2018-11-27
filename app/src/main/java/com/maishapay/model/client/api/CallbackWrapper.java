@@ -1,5 +1,6 @@
 package com.maishapay.model.client.api;
 
+import com.maishapay.util.LogCat;
 import com.maishapay.view.BaseView;
 
 import org.json.JSONObject;
@@ -29,19 +30,24 @@ public abstract class CallbackWrapper <T> extends DisposableObserver<T> {
     @Override
     public void onError(Throwable e) {
         if (e instanceof HttpException) {
+            LogCat.e(e.getMessage());
             ResponseBody responseBody = ((HttpException)e).response().errorBody();
             if(view != null)
                 view.onUnknownError(getErrorMessage(responseBody));
         } else if (e instanceof SocketTimeoutException) {
+            LogCat.e(e.getMessage());
             if(view != null)
                 view.onTimeout();
         } else if (e instanceof IOException) {
+            LogCat.e(e.getMessage());
             if(view != null)
                 view.onNetworkError();
         } else if(e instanceof Exception) {
+            LogCat.e(e.getMessage());
             if(view != null)
                 view.onUnknownError(e.getMessage());
         } else {
+            LogCat.e(e.getMessage());
             if(view != null)
                 view.onUnknownError(e.getMessage());
         }

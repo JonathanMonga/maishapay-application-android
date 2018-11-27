@@ -130,29 +130,24 @@ public class DrawerActivity extends AppCompatActivity {
                         .negativeText("Annuler")
                         .positiveText("Valider")
                         .positiveColorRes(R.color.md_red_600)
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 3));
 
+                                UserPrefencesManager.clearAll();
+
+                                UserPrefencesManager.setUserFirtRun(false);
+                                UserPrefencesManager.setUserPhone(userPhone);
+                                UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
+
+                                UserPrefencesManager.setCurrentUserDisconnect(true);
+
+                                startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
+                                finish();
                             }
-                        }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(4, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                        int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(1, 4));
-
-                        UserPrefencesManager.clearAll();
-
-                        UserPrefencesManager.setUserFirtRun(false);
-                        UserPrefencesManager.setUserPhone(userPhone);
-                        UserPrefencesManager.setUserCountryCodePhone(userCodePhone);
-
-                        UserPrefencesManager.setCurrentUserDisconnect(true);
-
-                        startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
-                        finish();
-                    }
-                })
+                        })
                         .show();
                 return false;
             }

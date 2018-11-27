@@ -41,19 +41,19 @@ public class BalanceDollarsFragment extends Fragment {
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
 
-    public static BalanceDollarsFragment newInstance(int solde, int envoi, int recu) {
+    public static BalanceDollarsFragment newInstance(String solde, int envoi, int recu) {
         BalanceDollarsFragment fragment = new BalanceDollarsFragment();
 
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_SOLDE_ENVOI, envoi);
         bundle.putInt(EXTRA_SOLDE_RECU, recu);
-        bundle.putInt(EXTRA_SOLDE_DOLLARS, solde);
+        bundle.putString(EXTRA_SOLDE_DOLLARS, solde);
 
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public void setChartData(int solde, int envoi, int recu){
+    public void setChartData(String solde, int envoi, int recu){
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -62,7 +62,7 @@ public class BalanceDollarsFragment extends Fragment {
 
         mChart.setCenterTextTypeface(mTfLight);
 
-        SpannableString spannableString = new SpannableString(String.format("%d $", solde));
+        SpannableString spannableString = new SpannableString(String.format("%s $", solde));
         spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
         mChart.setCenterText(spannableString);
 
@@ -113,13 +113,13 @@ public class BalanceDollarsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setChartData(getArguments().getInt(EXTRA_SOLDE_DOLLARS), getArguments().getInt(EXTRA_SOLDE_ENVOI), getArguments().getInt(EXTRA_SOLDE_RECU));
+        setChartData(getArguments().getString(EXTRA_SOLDE_DOLLARS), getArguments().getInt(EXTRA_SOLDE_ENVOI), getArguments().getInt(EXTRA_SOLDE_RECU));
     }
 
-    private void setData(int solde, int envoi, int recu) {
+    private void setData(String solde, int envoi, int recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(solde > 0) {
+        if(Integer.valueOf(solde) > 0) {
             entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
             entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
         } else {

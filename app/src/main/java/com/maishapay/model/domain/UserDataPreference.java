@@ -8,9 +8,9 @@ import java.util.List;
 public class UserDataPreference {
 
     @SerializedName("soldeFrancs")
-    private int soldeFrancs;
+    private String soldeFrancs;
     @SerializedName("soldeDollars")
-    private int soldeDollars;
+    private String soldeDollars;
     @SerializedName("envoiFrancs")
     private int envoiFrancs;
     @SerializedName("recuFrancs")
@@ -30,20 +30,28 @@ public class UserDataPreference {
     @SerializedName("rapport")
     private List<TransactionItemResponse> transactionItemRespons;
 
-    public int getSoldeFrancs() {
+    public String getSoldeFrancs() {
         return soldeFrancs;
     }
 
-    public void setSoldeFrancs(int soldeFrancs) {
+    public void setSoldeFrancs(String soldeFrancs) {
         this.soldeFrancs = soldeFrancs;
     }
 
-    public int getSoldeDollars() {
+    public String getSoldeDollars() {
         return soldeDollars;
     }
 
-    public void setSoldeDollars(int soldeDollars) {
+    public void setSoldeDollars(String soldeDollars) {
         this.soldeDollars = soldeDollars;
+    }
+
+    public boolean isHasEpargneCompte() {
+        return hasEpargneCompte;
+    }
+
+    public void setHasEpargneCompte(boolean hasEpargneCompte) {
+        this.hasEpargneCompte = hasEpargneCompte;
     }
 
     public int getEnvoiFrancs() {

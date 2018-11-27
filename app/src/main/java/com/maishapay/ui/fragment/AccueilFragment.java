@@ -158,8 +158,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-                TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
-                TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
+                TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
+                TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
                 TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
                 balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
@@ -231,8 +231,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public void finishToLoadSoldeAndRappot(UserDataPreference userDataPreference) {
         getPresenter().taux();
 
-        TV_Dollars.setAmount(userDataPreference.getSoldeDollars());
-        TV_Francs.setAmount(userDataPreference.getSoldeFrancs());
+        TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
+        TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
 
         balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
         balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
@@ -344,7 +344,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         Snacky.builder()
                 .setView(getView())
-                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();
@@ -357,7 +357,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         Snacky.builder()
                 .setView(getView())
-                .setText("Aucune connexion réseau. Réessayez plus tard.")
+                .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();

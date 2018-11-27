@@ -23,6 +23,7 @@ import com.maishapay.model.client.response.TransactionItemResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.AccueilView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -47,55 +48,44 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
 
     public void solde(String userPhone) {
         disposableHandler.manageDisposable(maishapayClient.solde(userPhone).zipWith(maishapayClient.rapport(userPhone), new BiFunction<SoldeResponse, TransactionResponse, UserDataPreference>() {
-            UserDataPreference userDataPreference ;
+            UserDataPreference userDataPreference;
 
             @Override
             public UserDataPreference apply(SoldeResponse soldeResponse, TransactionResponse transactionRespons) {
-                if(soldeResponse.getResultat() == 1) {
-                    int envoiFrancs = 0;
-                    int recuFrancs = 0;
-                    int envoiDollars = 0;
-                    int recuDollars = 0;
+                int envoiFrancs = 0;
+                int recuFrancs = 0;
+                int envoiDollars = 0;
+                int recuDollars = 0;
 
-                    for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
-                        if (transactionItemResponse.getType_jrn().equals("e")) {
-                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                envoiFrancs += Integer.valueOf(temp);
-                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                envoiDollars += Integer.valueOf(temp);
-                            }
-                        } else {
-                            if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                recuFrancs += Integer.valueOf(temp);
-                            } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                                String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                recuDollars += Integer.valueOf(temp);
-                            }
+                for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
+                    if (transactionItemResponse.getType_jrn().equals("e")) {
+                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                            envoiFrancs += Integer.valueOf(temp);
+                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                            envoiDollars += Integer.valueOf(temp);
+                        }
+                    } else {
+                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                            recuFrancs += Integer.valueOf(temp);
+                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                            recuDollars += Integer.valueOf(temp);
                         }
                     }
-
-                    String francs = soldeResponse.getFrancCongolais().replace(" ", "");
-                    int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
-
-                    String dollars = soldeResponse.getDollard().replace(" ", "");
-                    int dollarsInt = Integer.valueOf(dollars.substring(0, dollars.length() - 3));
-
-
-                    userDataPreference = new UserDataPreference();
-                    userDataPreference.setSoldeFrancs(francsInt);
-                    userDataPreference.setSoldeDollars(dollarsInt);
-
-                    userDataPreference.setEnvoiFrancs(envoiFrancs);
-                    userDataPreference.setRecuFrancs(recuFrancs);
-
-                    userDataPreference.setEnvoiDollars(envoiDollars);
-                    userDataPreference.setRecuDollars(recuDollars);
-
-                    return userDataPreference;
                 }
+
+                userDataPreference = new UserDataPreference();
+                userDataPreference.setSoldeFrancs(soldeResponse.getFrancCongolais());
+                userDataPreference.setSoldeDollars(soldeResponse.getDollard());
+
+                userDataPreference.setEnvoiFrancs(envoiFrancs);
+                userDataPreference.setRecuFrancs(recuFrancs);
+
+                userDataPreference.setEnvoiDollars(envoiDollars);
+                userDataPreference.setRecuDollars(recuDollars);
 
                 return userDataPreference;
             }
@@ -105,6 +95,7 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
                     @Override
                     protected void onSuccess(UserDataPreference response) {
                         if (isViewAttached()) {
+                            LogCat.e(response.getSoldeDollars());
                             UserPrefencesManager.setUserDataPreference(response);
                             getView().enabledControls(true);
                             getView().finishToLoadSoldeAndRappot(response);
