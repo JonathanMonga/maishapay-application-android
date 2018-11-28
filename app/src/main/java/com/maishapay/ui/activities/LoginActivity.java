@@ -70,6 +70,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.maishapay.R;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
+import com.maishapay.util.Constants;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
@@ -49,6 +50,7 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 

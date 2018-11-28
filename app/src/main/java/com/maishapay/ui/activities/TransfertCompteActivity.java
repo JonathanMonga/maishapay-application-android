@@ -53,7 +53,6 @@ import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
-import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -97,6 +96,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.transfert_compte_activity);
         ButterKnife.bind(this);
 
@@ -272,21 +272,10 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void showConfimationError(int type) {
-        dialogForgotFragment.dismiss();
         if (type == 0)
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Le code Pin saisi n'est pas correct.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .error()
-                    .show();
+            Toast.makeText(this, "Le code Pin saisi n'est pas correct.", Toast.LENGTH_LONG).show();
         else
-            Snacky.builder()
-                    .setView(findViewById(R.id.root))
-                    .setText("Echec de transfert.")
-                    .setDuration(Snacky.LENGTH_LONG)
-                    .error()
-                    .show();
+            Toast.makeText(this, "Echec de transfert.", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -401,8 +390,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     .setDuration(Snacky.LENGTH_LONG)
                     .error()
                     .show();
-        else if(NetworkUtility.isOnline(this))
-            Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
     }

@@ -89,6 +89,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.retrait_activity);
         ButterKnife.bind(this);
 

@@ -51,6 +51,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.payment_web_activity);
         ButterKnife.bind(this);
 

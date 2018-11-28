@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:background="@color/md_green_800"
     android:id="@+id/root"
+    android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
     <include layout="@layout/appbar_success" />

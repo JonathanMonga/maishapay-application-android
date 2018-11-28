@@ -15,22 +15,17 @@
 
 package com.maishapay.presenter;
 
-import android.app.Activity;
-
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
-import com.maishapay.model.client.response.PaymentResponse;
+import com.maishapay.model.client.response.TransactionConfirmationResponse;
 import com.maishapay.model.client.response.TransfertResponse;
-import com.maishapay.model.domain.UserDataPreference;
-import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -102,14 +97,14 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
+                .subscribeWith(new CallbackWrapper<TransactionConfirmationResponse>(getView()) {
                     @Override
-                    protected void onSuccess(Integer response) {
-                        switch (response) {
+                    protected void onSuccess(TransactionConfirmationResponse response) {
+                        switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showConfimationError(response);
+                                    getView().showConfimationError(response.getResultat());
                                     break;
                                 }
                             }
@@ -117,7 +112,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             case 2: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showConfimationError(response);
+                                    getView().showConfimationError(response.getResultat());
                                     break;
                                 }
                             }

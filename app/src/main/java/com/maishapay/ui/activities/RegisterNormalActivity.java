@@ -68,6 +68,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.register_normal_account_activity);
         ButterKnife.bind(this);
 

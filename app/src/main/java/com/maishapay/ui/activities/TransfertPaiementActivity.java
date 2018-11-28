@@ -42,6 +42,7 @@ import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
+import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 import com.santalu.widget.MaskEditText;
 
@@ -87,6 +88,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 

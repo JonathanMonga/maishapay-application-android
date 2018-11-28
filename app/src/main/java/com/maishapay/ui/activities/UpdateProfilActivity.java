@@ -36,6 +36,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.UpdateProfilePresenter;
 import com.maishapay.ui.dialog.DialogUpdateFragment;
 import com.maishapay.ui.dialog.PossitiveButtonListener;
+import com.maishapay.util.Constants;
 import com.maishapay.view.UpdateProfileView;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -64,6 +65,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.update_account_activity);
         ButterKnife.bind(this);
 

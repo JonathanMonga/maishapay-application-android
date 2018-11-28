@@ -81,7 +81,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mobile_money_layout);
-
+        Constants.initStatusBar(this);
         ButterKnife.bind(this);
 
         toolbar.setTitle("Mobile money");

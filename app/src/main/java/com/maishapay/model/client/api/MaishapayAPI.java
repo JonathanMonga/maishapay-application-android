@@ -22,6 +22,7 @@ import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
+import com.maishapay.model.client.response.TransactionConfirmationResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
@@ -90,12 +91,12 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> transfert_compte_confirmation(@Field("ent") String ent,
-                                                      @Field("pin") String pin,
-                                                      @Field("expeditaire") String expeditaire,
-                                                      @Field("destinataire") String destinataire,
-                                                      @Field("monnaie") String monnaie,
-                                                      @Field("montant") String montant);
+    Observable<TransactionConfirmationResponse> transfert_compte_confirmation(@Field("ent") String ent,
+                                                                              @Field("pin") String pin,
+                                                                              @Field("expeditaire") String expeditaire,
+                                                                              @Field("destinataire") String destinataire,
+                                                                              @Field("monnaie") String monnaie,
+                                                                              @Field("montant") String montant);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

@@ -5,6 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/historico_lembrete_item"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/appbar" />

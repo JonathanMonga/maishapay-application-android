@@ -53,6 +53,7 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
 
@@ -98,6 +99,7 @@ public class DrawerActivity extends AppCompatActivity {
                 .withSelectedItemByPosition(1)
                 .withSavedInstance(savedInstanceState)
                 .withShowDrawerOnFirstLaunch(true)
+                .withDisplayBelowStatusBar(true)
                 .withActivity(this)
                 .withHasStableIds(true)
                 .withToolbar(toolbar)
@@ -196,7 +198,7 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
+                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code_plus));
                         String codePhone = String.valueOf(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
 
                         if (strings.contains(codePhone))

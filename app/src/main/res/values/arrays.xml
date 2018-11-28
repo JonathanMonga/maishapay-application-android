@@ -51,12 +51,12 @@
     </array>
 
     <array name="option_country_code_plus">
-        <item>@string/code_rdc</item>
-        <item>@string/code_cotedivoire</item>
-        <item>@string/code_togo</item>
-        <item>@string/code_senegal</item>
-        <item>@string/code_kenya</item>
-        <item>@string/code_rwanda</item>
+        <item>@string/code_rdc_plus</item>
+        <item>@string/code_cotedivoire_plus</item>
+        <item>@string/code_togo_plus</item>
+        <item>@string/code_senegal_plus</item>
+        <item>@string/code_kenya_plus</item>
+        <item>@string/code_rwanda_plus</item>
     </array>
 
     <array name="option_transfert_paiment">

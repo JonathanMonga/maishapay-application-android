@@ -23,6 +23,7 @@ import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
+import com.maishapay.model.client.response.TransactionConfirmationResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.client.response.UserResponse;
@@ -173,11 +174,11 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> transfert_compte_confirmation(String pin,
-                                                             String expeditaire,
-                                                             String destinataire,
-                                                             String monnaie,
-                                                             String montant) {
+    public Observable<TransactionConfirmationResponse> transfert_compte_confirmation(String pin,
+                                                                                     String expeditaire,
+                                                                                     String destinataire,
+                                                                                     String monnaie,
+                                                                                     String montant) {
         return this.maishapayAPI.transfert_compte_confirmation(TRANSFERT_COMPTE_CONFIRMATION_PARAM, pin, expeditaire, destinataire, monnaie, montant);
     }
 

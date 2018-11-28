@@ -68,6 +68,7 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.register_marchant_account_activity);
         ButterKnife.bind(this);
 

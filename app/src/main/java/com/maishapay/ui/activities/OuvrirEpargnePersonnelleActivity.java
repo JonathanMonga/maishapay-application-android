@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -40,11 +39,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maishapay.R;
-import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.OuvrirEpargnePersonellePresenter;
 import com.maishapay.ui.dialog.DialogConfirmCreationEpargneFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
+import com.maishapay.util.Constants;
 import com.maishapay.view.OuvrirEpargnePersonelleView;
 
 import org.joda.time.LocalDate;
@@ -91,7 +90,7 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Constants.initStatusBar(this);
         setContentView(R.layout.creer_epargne_personnelle_activity);
         ButterKnife.bind(this);
 

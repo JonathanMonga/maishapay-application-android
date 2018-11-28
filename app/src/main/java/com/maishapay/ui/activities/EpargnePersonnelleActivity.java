@@ -77,6 +77,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.epargne_personnelle_activity);
         ButterKnife.bind(this);
 

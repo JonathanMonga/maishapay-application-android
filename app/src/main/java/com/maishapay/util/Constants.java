@@ -16,18 +16,25 @@
 
 package com.maishapay.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.google.zxing.WriterException;
+import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -167,5 +174,20 @@ public class Constants {
         Matcher matcher = pattern.matcher(haystack);
 
         return matcher.find();
+    }
+
+    public static void initStatusBar(Activity context) {
+        Window window = context.getWindow();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            SystemBarTintManager tintManager = new SystemBarTintManager(context);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setTintColor(ContextCompat.getColor(context, R.color.md_light_green_600));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 }

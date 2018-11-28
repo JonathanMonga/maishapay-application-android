@@ -35,6 +35,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.dialog.DialogConversionFragment;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
+import com.maishapay.util.Constants;
 
 import org.alfonz.media.SoundManager;
 import org.fabiomsr.moneytextview.MoneyTextView;
@@ -63,6 +64,7 @@ public class ConversionActivity extends AppCompatActivity implements NumPadPossi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.conversion_activity);
         ButterKnife.bind(this);
 

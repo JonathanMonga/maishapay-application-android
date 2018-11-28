@@ -38,6 +38,7 @@ import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePresenter;
 import com.maishapay.ui.menu.MenuHelper;
+import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.EpargneView;
 import com.txusballesteros.widgets.FitChart;
@@ -81,6 +82,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 

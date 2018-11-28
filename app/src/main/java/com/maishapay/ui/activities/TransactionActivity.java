@@ -22,6 +22,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TransactionPresenter;
 import com.maishapay.ui.adapter.TransactionAdapter;
 import com.maishapay.ui.menu.MenuHelper;
+import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
 
 import org.alfonz.utility.NetworkUtility;
@@ -49,6 +50,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.initStatusBar(this);
         setContentView(R.layout.transaction_activity);
         ButterKnife.bind(this);
 
