@@ -36,7 +36,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
     }
 
-
     public TransactionAdapter(List<TransactionItemResponse> transactionItemResponseList) {
         this.transactionItemResponseList = transactionItemResponseList;
     }
@@ -50,24 +49,23 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @SuppressLint({"ResourceAsColor", "NewApi"})
     @Override
     public void onBindViewHolder(TransactionHolder holder, int position) {
-
         TransactionItemResponse transactionItemResponse = transactionItemResponseList.get(position);
 
         if (transactionItemResponse.getType_jrn().equals("e")) {
             holder.text_category_name.setText("Envoi à");
-            holder.TV_Telephone.setText(transactionItemResponse.getTelephone_dest());
+            holder.TV_Telephone.setText(String.format("+%s", transactionItemResponse.getTelephone_dest()));
             holder.TV_Montant.setText(String.format("%s %s", transactionItemResponse.getMontant_jrn(), transactionItemResponse.getMonnaie_jrn()));
             holder.TV_Montant.setTextColor(Color.parseColor("#ffff4444"));
             holder.TV_Date.setText(String.format("%s %s", transactionItemResponse.getDate_jrn(), transactionItemResponse.getHeure_jrn()));
-            holder.image_category_icon.setImageResource(R.drawable.ic_menu_up);
+            holder.image_category_icon.setImageResource(R.mipmap.ic_arrow_up);
             holder.image_category_icon_background.setImageResource(R.drawable.circle_view_envoi);
         } else {
             holder.text_category_name.setText("Reception de");
-            holder.TV_Telephone.setText(transactionItemResponse.getTelephone_dest());
+            holder.TV_Telephone.setText(String.format("+%s", transactionItemResponse.getTelephone_dest()));
             holder.TV_Montant.setText(String.format("%s %s", transactionItemResponse.getMontant_jrn(), transactionItemResponse.getMonnaie_jrn()));
             holder.TV_Montant.setTextColor(Color.parseColor("#ff8bc34a"));
             holder.TV_Date.setText(String.format("%s %s", transactionItemResponse.getDate_jrn(), transactionItemResponse.getHeure_jrn()));
-            holder.image_category_icon.setImageResource(R.drawable.ic_menu_down);
+            holder.image_category_icon.setImageResource(R.mipmap.ic_arrow_down);
             holder.image_category_icon_background.setImageResource(R.drawable.circle_view_recu);
         }
     }

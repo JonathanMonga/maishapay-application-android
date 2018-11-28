@@ -1,6 +1,7 @@
 package com.maishapay.ui.activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,8 +25,6 @@ import com.maishapay.ui.adapter.TransactionAdapter;
 import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
-
-import org.alfonz.utility.NetworkUtility;
 
 import java.util.List;
 
@@ -66,11 +65,12 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         }
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(! NetworkUtility.isOnline(this)) {
+        if(! UserPrefencesManager.getUserRefresh()) {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
             if(userDataPreference.getTransactionItemRespons() != null) {

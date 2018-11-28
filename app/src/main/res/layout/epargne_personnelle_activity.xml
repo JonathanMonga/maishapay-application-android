@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:id="@+id/root">
+    android:orientation="vertical">
 
     <include layout="@layout/appbar" />
 
@@ -36,9 +36,9 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_margin="5dp"
                     android:layout_height="1dp"
-                    android:background="@color/ab_despesa"/>
+                    android:layout_margin="5dp"
+                    android:background="@color/ab_despesa" />
 
                 <LinearLayout
                     android:id="@+id/LinhaFormMarca"
@@ -70,10 +70,10 @@
 
                             <ImageButton
                                 android:id="@+id/qrcode"
-                                android:visibility="invisible"
-                                android:scaleType="centerInside"
                                 style="@style/form_botao_novo"
-                                android:src="@drawable/qrcode" />
+                                android:scaleType="centerInside"
+                                android:src="@drawable/qrcode"
+                                android:visibility="invisible" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -91,11 +91,11 @@
                     <LinearLayout style="@style/form_linha_divisor">
 
                         <Spinner
-                            android:entries="@array/option_devise"
-                            android:spinnerMode="dropdown"
-                            android:layout_marginLeft="-8dp"
                             android:id="@+id/SP_TypeEnvoi"
-                            style="@style/form_spinner" />
+                            style="@style/form_spinner"
+                            android:layout_marginLeft="-8dp"
+                            android:entries="@array/option_devise"
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -112,18 +112,18 @@
 
                         <org.fabiomsr.moneytextview.MoneyTextView
                             android:id="@+id/ET_Montant"
-                            android:clickable="true"
-                            android:layout_marginTop="10dp"
                             style="@style/form_edit_text"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"
+                            android:textColor="@color/green_dark"
                             app:amount="0.0"
-                            app:symbol="Fc"
                             app:baseTextColor="@color/texto"
                             app:baseTextSize="14sp"
-                            app:symbolTextSize="14sp"
                             app:decimalSeparator=","
-                            app:symbolGravity="bottom"
                             app:gravity="left"
-                            android:textColor="@color/green_dark" />
+                            app:symbol="Fc"
+                            app:symbolGravity="bottom"
+                            app:symbolTextSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10.0dip"
                     android:text="Transferer"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
