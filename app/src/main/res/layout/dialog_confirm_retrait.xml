@@ -13,10 +13,16 @@
         <LinearLayout style="@style/dialog_group_text_img_header">
 
             <TextView
-                android:id="@+id/TV_Msg"
+                android:id="@+id/TV_Numero"
                 style="@style/dialog_text"
                 android:layout_marginTop="10.0dip"
-                android:text="Saisisez votre code PIN pour envoyer l'argent à %s %s" />
+                android:text="Numéro agent : +243999999990" />
+
+            <TextView
+                android:id="@+id/TV_Noms"
+                style="@style/dialog_text"
+                android:layout_marginTop="10.0dip"
+                android:text="Noms agent : David kazad" />
 
             <LinearLayout
                 android:id="@+id/LinhaFormEmail"

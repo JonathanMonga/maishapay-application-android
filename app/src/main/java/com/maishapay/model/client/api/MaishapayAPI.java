@@ -17,6 +17,7 @@
 package com.maishapay.model.client.api;
 
 import com.maishapay.BuildConfig;
+import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
@@ -118,18 +119,18 @@ public interface MaishapayAPI {
     @POST(BuildConfig.END_POINT)
     Observable<RetraitResponse> retrait(@Field("ent") String ent,
                                         @Field("expeditaire") String expeditaire,
-                                        @Field("tel_agent") String tel_agent,
-                                        @Field("mt") String mt,
+                                        @Field("destinataire") String tel_agent,
+                                        @Field("montant") String montant,
                                         @Field("monnaie") String monnaie);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> confirm_retrait(@Field("ent") String ent,
-                                        @Field("expeditaire") String expeditaire,
-                                        @Field("pin") String pin,
-                                        @Field("tel_agent") String tel_agent,
-                                        @Field("mt") String mt,
-                                        @Field("monnaie") String monnaie);
+    Observable<ConfirmRetraitResponse> confirm_retrait(@Field("ent") String ent,
+                                                       @Field("expeditaire") String expeditaire,
+                                                       @Field("pin") String pin,
+                                                       @Field("destinataire") String tel_agent,
+                                                       @Field("montant") String mt,
+                                                       @Field("monnaie") String monnaie);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

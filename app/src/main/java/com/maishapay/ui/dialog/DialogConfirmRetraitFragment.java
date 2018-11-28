@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +24,23 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DialogConfirmRetraitFragment extends AppCompatDialogFragment {
-    private static final String EXTRA_MSG = "msg";
+    private static final String EXTRA_PRENOM = "prenom";
+    private static final String EXTRA_NOM = "nom";
+    private static final String EXTRA_NUMERO = "numero";
 
-    @BindView(R.id.TV_Msg) TextView TV_Msg;
+    @BindView(R.id.TV_Numero) TextView TV_Numero;
+    @BindView(R.id.TV_Noms) TextView TV_Noms;
+
     @BindView(R.id.ET_CodePin) EditText editText;
     private PossitiveButtonConfirmListener buttonListener;
     private View view;
 
-    public static DialogConfirmRetraitFragment newInstance(String msg){
+    public static DialogConfirmRetraitFragment newInstance(String prenom, String nom, String numero){
         DialogConfirmRetraitFragment dialogForgotFragment = new DialogConfirmRetraitFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_MSG, msg);
+        bundle.putString(EXTRA_PRENOM, prenom);
+        bundle.putString(EXTRA_NOM, nom);
+        bundle.putString(EXTRA_NUMERO, numero);
         dialogForgotFragment.setArguments(bundle);
         return dialogForgotFragment;
     }
@@ -51,7 +56,7 @@ public class DialogConfirmRetraitFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.dialog_confirm_transfert, container);
+        view = inflater.inflate(R.layout.dialog_confirm_retrait, container);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -59,7 +64,8 @@ public class DialogConfirmRetraitFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TV_Msg.setText(Html.fromHtml(getArguments().getString(EXTRA_MSG)));
+        TV_Numero.setText(String.format("Numéro agent : +%s", getArguments().getString(EXTRA_NUMERO)));
+        TV_Noms.setText(String.format("Noms agent : %s %s", getArguments().getString(EXTRA_PRENOM), getArguments().getString(EXTRA_NOM)));
         editText.requestFocus();
         setCancelable(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED);

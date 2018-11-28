@@ -18,17 +18,14 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.RetraitResponse;
-import com.maishapay.model.domain.UserDataPreference;
-import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.RetraitView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -78,14 +75,22 @@ public class RetraitConfirmationPresenter extends TiPresenter<RetraitView> {
         disposableHandler.manageDisposable(maishapayClient.confirm_retrait(expeditaire, pin, destinataire, montant, monnaie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
+                .subscribeWith(new CallbackWrapper<ConfirmRetraitResponse>(getView()) {
                     @Override
-                    protected void onSuccess(Integer response) {
-                        switch (response) {
+                    protected void onSuccess(ConfirmRetraitResponse response) {
+                        switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showConfimationError(response);
+                                    getView().showConfimationError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 2: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showConfimationError(response.getResultat());
                                     break;
                                 }
                             }

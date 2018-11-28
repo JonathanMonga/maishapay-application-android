@@ -83,11 +83,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             phoneEditText.setText(UserPrefencesManager.getUserPhone());
             countryCodePicker.setCountryForPhoneCode(UserPrefencesManager.getUserCountryCodePhone());
         } else {
-            String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-            int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
+            if(UserPrefencesManager.getCurrentUser() != null) {
+                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
 
-            countryCodePicker.setCountryForPhoneCode(userCodePhone);
-            phoneEditText.setText(userPhone);
+                countryCodePicker.setCountryForPhoneCode(userCodePhone);
+                phoneEditText.setText(userPhone);
+            }
         }
 
         initProgressBar();

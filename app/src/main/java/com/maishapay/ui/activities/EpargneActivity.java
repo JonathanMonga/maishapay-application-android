@@ -39,7 +39,6 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePresenter;
 import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.EpargneView;
 import com.txusballesteros.widgets.FitChart;
 import com.txusballesteros.widgets.FitChartValue;
@@ -108,9 +107,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         dollarsChart.setMaxValue(1000000f);
 
         userDataPreference = UserPrefencesManager.getUserDataPreference();
-
-        LogCat.e(UserPrefencesManager.getUserDataPreference().getEpargneDollars());
-        LogCat.e(UserPrefencesManager.getUserDataPreference().getEpargneFrancs());
     }
 
     @Override
@@ -131,11 +127,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             LL_fitFrancs.setVisibility(View.VISIBLE);
             progressBarSolde.setVisibility(View.INVISIBLE);
 
-            String francs = userDataPreference.getEpargneFrancs().replace(" ", "");
-            String dollars = userDataPreference.getEpargneDollars().replace(" ", "");
-
-            int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
-            int dollarsInt = Integer.valueOf(dollars.substring(0, dollars.length() - 3));
+            int francsInt = Integer.valueOf(userDataPreference.getEpargneFrancs());
+            int dollarsInt = Integer.valueOf(userDataPreference.getEpargneDollars());
 
             Resources resources = getResources();
             Collection<FitChartValue> valuesFrancs = new ArrayList<>();
@@ -187,9 +180,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         LL_fitFrancs.setVisibility(View.VISIBLE);
         progressBarSolde.setVisibility(View.INVISIBLE);
 
-        String francs = response.getFrancCongolais().replace(" ", "");
-        int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
-        int dollarsInt = Integer.valueOf(response.getDollard().substring(0, response.getDollard().length() - 3));
+        int francsInt = Integer.valueOf(response.getFrancCongolais());
+        int dollarsInt = Integer.valueOf(response.getDollard());
 
         Resources resources = getResources();
         Collection<FitChartValue> valuesFrancs = new ArrayList<>();
@@ -217,6 +209,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
             if (resultCode == Activity.RESULT_OK) {
                 enabledControls(false);
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+            } else {
+                finish();
             }
         } else if (requestCode == 2)
             if (resultCode == Activity.RESULT_OK) {
@@ -285,10 +279,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-                String francs = String.valueOf(userDataPreference.getEpargneFrancs()).replace(" ", "");
-                int francsInt = Integer.valueOf(francs.substring(0, francs.length() - 3));
-
-                int dollarsInt = Integer.valueOf(String.valueOf(userDataPreference.getEpargneDollars()).substring(0, String.valueOf(userDataPreference.getEpargneDollars()).length() - 3));
+                int francsInt = Integer.valueOf(userDataPreference.getEpargneFrancs());
+                int dollarsInt = Integer.valueOf(userDataPreference.getEpargneDollars());
 
                 Resources resources = getResources();
                 Collection<FitChartValue> valuesFrancs = new ArrayList<>();

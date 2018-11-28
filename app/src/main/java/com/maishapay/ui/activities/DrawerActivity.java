@@ -99,7 +99,7 @@ public class DrawerActivity extends AppCompatActivity {
                 .withSelectedItemByPosition(1)
                 .withSavedInstance(savedInstanceState)
                 .withShowDrawerOnFirstLaunch(true)
-                .withDisplayBelowStatusBar(true)
+                .withDisplayBelowStatusBar(false)
                 .withActivity(this)
                 .withHasStableIds(true)
                 .withToolbar(toolbar)
@@ -134,13 +134,13 @@ public class DrawerActivity extends AppCompatActivity {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                String numero = UserPrefencesManager.getCurrentUser().getTelephone();
                                 UserPrefencesManager.clearAll();
 
-                                UserPrefencesManager.setUserFirtRun(false);
-                                UserPrefencesManager.setUserPhone(Constants.generatePhoneWithoutCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
-                                UserPrefencesManager.setUserCountryCodePhone(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
-
                                 UserPrefencesManager.setCurrentUserDisconnect(true);
+                                UserPrefencesManager.setUserFirtRun(false);
+                                UserPrefencesManager.setUserPhone(Constants.generatePhoneWithoutCode(false, numero));
+                                UserPrefencesManager.setUserCountryCodePhone(Constants.generateCode(false, numero));
 
                                 startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
                                 finish();
@@ -198,7 +198,7 @@ public class DrawerActivity extends AppCompatActivity {
                         return false;
 
                     case 6:
-                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code_plus));
+                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
                         String codePhone = String.valueOf(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
 
                         if (strings.contains(codePhone))

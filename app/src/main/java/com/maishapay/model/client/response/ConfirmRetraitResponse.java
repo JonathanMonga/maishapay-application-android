@@ -21,30 +21,10 @@ import com.google.gson.annotations.SerializedName;
 /**
  * A user response
  */
-public class RetraitResponse extends BaseResponse{
+public class ConfirmRetraitResponse extends BaseResponse{
 
-    @SerializedName("nom")
-    private String nom;
-    @SerializedName("prenom")
-    private String prenom;
     @SerializedName("message")
     private String message;
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
 
     public String getMessage() {
         return message;

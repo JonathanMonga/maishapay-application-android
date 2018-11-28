@@ -18,6 +18,7 @@ package com.maishapay.model.client;
 
 import com.maishapay.model.client.api.MaishapayAPI;
 import com.maishapay.model.client.api.ServiceGenerator;
+import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
@@ -223,11 +224,11 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> confirm_retrait(String expeditaire,
-                                               String pin,
-                                               String tel_agent,
-                                               String montant,
-                                               String monnaie) {
+    public Observable<ConfirmRetraitResponse> confirm_retrait(String expeditaire,
+                                                              String pin,
+                                                              String tel_agent,
+                                                              String montant,
+                                                              String monnaie) {
         return this.maishapayAPI.confirm_retrait(RETRAIT_CONFIMATION_PARAM, expeditaire, pin, tel_agent, montant, monnaie);
     }
 

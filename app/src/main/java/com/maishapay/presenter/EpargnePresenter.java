@@ -38,7 +38,6 @@ public class EpargnePresenter extends TiPresenter<EpargneView> {
     @Override
     protected void onCreate() {
         super.onCreate();
-
         maishapayClient = MaishapayApplication.getMaishapayContext().getMaishapayClient();
     }
 

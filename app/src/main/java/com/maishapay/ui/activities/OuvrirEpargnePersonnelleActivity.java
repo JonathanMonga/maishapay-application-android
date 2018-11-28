@@ -160,16 +160,24 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(Activity.RESULT_CANCELED);
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
     @OnClick(R.id.BTN_Valider)
     public void transfertClicked() {
         if (longLocalDatePhone == longUserLocalDate) {
-            toastMessage("La date doit être posterieur", R.id.ET_CodeSecret);
+            toastMessage("La date doit être posterieur", R.id.ET_Date);
             return;
         }
 

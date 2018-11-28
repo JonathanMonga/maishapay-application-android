@@ -246,12 +246,10 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public void showConfimationError(int type) {
-        Snacky.builder()
-                .setView(confirmRetaritFragment.getView())
-                .setText("Le numero de l'Agent n'est pas correct.")
-                .setDuration(Snacky.LENGTH_LONG)
-                .error()
-                .show();
+        if (type == 0)
+            Toast.makeText(this, "Le mot de passe est incorrect.", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Desolé, votre solde est insuffisant.", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -274,7 +272,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         flagRetrait = false;
 
         FragmentManager fm = getSupportFragmentManager();
-        confirmRetaritFragment = DialogConfirmRetraitFragment.newInstance(retraitResponse.getRetour());
+        confirmRetaritFragment = DialogConfirmRetraitFragment.newInstance(retraitResponse.getPrenom(), retraitResponse.getNom(), destinatairePhone);
         confirmRetaritFragment.show(fm, "DialogConfirmRetraitFragment");
     }
 
@@ -362,7 +360,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                     .setDuration(Snacky.LENGTH_LONG)
                     .error()
                     .show();
-        else if(NetworkUtility.isOnline(this))
+        else if (NetworkUtility.isOnline(this))
             Toast.makeText(this, "Votre mot de passe est incorrect.", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();

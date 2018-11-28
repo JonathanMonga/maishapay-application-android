@@ -34,7 +34,6 @@ import com.maishapay.ui.activities.PaiementActivity;
 import com.maishapay.ui.activities.RetraitActivity;
 import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.ui.activities.TransfertCompteActivity;
-import com.maishapay.ui.activities.TransfertCompteCashActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
 import com.maishapay.ui.menu.MenuHelper;
@@ -213,7 +212,12 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                             }
 
                             case 1: {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteCashActivity.class));
+                                Snacky.builder()
+                                        .setView(getView())
+                                        .setText("Cette fonctionnalité n'est disponible pour le moment.")
+                                        .setDuration(Snacky.LENGTH_LONG)
+                                        .warning()
+                                        .show();
                                 break;
                             }
 
