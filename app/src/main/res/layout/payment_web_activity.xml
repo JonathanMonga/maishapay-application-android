@@ -6,7 +6,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@color/md_green_800"
     android:id="@+id/root"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
@@ -31,31 +30,49 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="40dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    app:srcCompat="@drawable/ic_thumb_up" />
+                    app:srcCompat="@drawable/wenzeasy" />
 
-                <RelativeLayout
-                    android:background="@color/md_green_900"
+                <TextView
                     android:layout_below="@id/imageView"
-                    android:layout_width="fill_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="50dip">
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/TV_Nom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/md_light_green_800"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:text="Wenzeasy food."
+                    app:srcCompat="@drawable/ic_twitter" />
 
-                    <TextView
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/TV_Msg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10.0dip"
-                        android:textColor="@color/branco"
-                        android:layout_centerVertical="true"
-                        android:textSize="14sp"
-                        android:text="Votre %s s'est éffectué avec succés."
-                        app:srcCompat="@drawable/ic_twitter" />
-                </RelativeLayout>
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/TV_Produit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/md_light_green_800"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:text="Mutete"
+                    app:srcCompat="@drawable/ic_twitter" />
+
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/TV_Montant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/md_light_green_800"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:text="1000 Fc"
+                    app:srcCompat="@drawable/ic_twitter" />
             </RelativeLayout>
 
             <LinearLayout

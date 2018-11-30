@@ -15,6 +15,7 @@
                                      dmax.dialog,
                                      com.wajahatkarim3.easyvalidation.core,
                                      com.luseen.verticalintrolibrary,
+                                     com.vipulasri.ticketview,
                                      net.sharewire.googlemapsclustering" />
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -61,7 +62,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.RegisterMarchantActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeRegister"/>
         <activity
             android:name=".ui.activities.UpdateProfilActivity"
             android:screenOrientation="portrait" />
@@ -98,7 +100,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.RegisterNormalActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeRegister"/>
         <activity
             android:name=".ui.activities.MaishapayPayPal"
             android:screenOrientation="portrait" />

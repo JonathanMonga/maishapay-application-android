@@ -79,17 +79,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             finish();
         }
 
-        if(UserPrefencesManager.getCurrentUserDisconnect()) {
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
+            int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
+
+            countryCodePicker.setCountryForPhoneCode(userCodePhone);
+            phoneEditText.setText(userPhone);
+        } else if(UserPrefencesManager.getCurrentUserDisconnect()) {
             phoneEditText.setText(UserPrefencesManager.getUserPhone());
             countryCodePicker.setCountryForPhoneCode(UserPrefencesManager.getUserCountryCodePhone());
-        } else {
-            if(UserPrefencesManager.getCurrentUser() != null) {
-                String userPhone = UserPrefencesManager.getCurrentUser().getTelephone().substring(3, UserPrefencesManager.getCurrentUser().getTelephone().length());
-                int userCodePhone = Integer.valueOf(UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 3));
-
-                countryCodePicker.setCountryForPhoneCode(userCodePhone);
-                phoneEditText.setText(userPhone);
-            }
         }
 
         initProgressBar();
@@ -181,6 +179,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
+
+                Constants.showAllertNoAction(findViewById(R.id.root), "Votre compte a été créer avec succés.");
             }
         } else {
             if(resultCode == Activity.RESULT_OK){
@@ -189,6 +189,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
                 countryCodePicker.setCountryForPhoneCode(userCodePhone);
                 phoneEditText.setText(userPhone);
+
+                Constants.showAllertNoAction(findViewById(R.id.root), "Votre compte a été créer avec succés.");
             }
         }
     }
@@ -341,7 +343,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+        Constants.showOnTimeoutErro(findViewById(R.id.root), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enabledControls(false);

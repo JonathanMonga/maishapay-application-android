@@ -119,7 +119,7 @@ public class BalanceFrancsFragment extends Fragment {
     private void setData(String solde, int envoi, int recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(Integer.valueOf(solde) > 0) {
+        if(Integer.valueOf(solde) >= 0) {
             if(recu <= 0 && envoi <= 0) {
                 entries.add(new PieEntry((float) 100, ""));
             } else {

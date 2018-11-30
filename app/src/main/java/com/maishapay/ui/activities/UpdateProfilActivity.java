@@ -51,13 +51,20 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
     private static String PIN;
 
-    @BindView(R.id.ET_Phone) EditText phoneEditText;
-    @BindView(R.id.ET_Email) EditText emailEditText;
-    @BindView(R.id.ET_Sobrenome) EditText nomEditText;
-    @BindView(R.id.ET_Nome) EditText prenomEditText;
-    @BindView(R.id.ET_Ville) EditText villeEditText;
-    @BindView(R.id.ET_Adressse) EditText adresseEditText;
-    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
+    @BindView(R.id.ET_Phone)
+    EditText phoneEditText;
+    @BindView(R.id.ET_Email)
+    EditText emailEditText;
+    @BindView(R.id.ET_Sobrenome)
+    EditText nomEditText;
+    @BindView(R.id.ET_Nome)
+    EditText prenomEditText;
+    @BindView(R.id.ET_Ville)
+    EditText villeEditText;
+    @BindView(R.id.ET_Adressse)
+    EditText adresseEditText;
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
 
     private ProgressDialog progressDialog;
     private DialogUpdateFragment dialogUpdateFragment;
@@ -74,7 +81,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
         ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
@@ -91,7 +98,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     }
 
     @OnClick(R.id.BTN_CriarConta)
-    public void clickCriarConta(){
+    public void clickCriarConta() {
 
         if (TextUtils.isEmpty(prenomEditText.getText().toString())) {
             toastMessage(String.format(getString(R.string.erro_campo), prenomEditText.getHint()), R.id.ET_Nome);
@@ -179,7 +186,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         progressDialog.setMessage("Veuillez patienter");
     }
 
-    private void toastMessage(String message, int view){
+    private void toastMessage(String message, int view) {
         findViewById(view).startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }

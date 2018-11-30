@@ -26,7 +26,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -201,18 +200,9 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     @Override
     public void finishToRegister(UserResponse response) {
         UserPrefencesManager.setCurentUser(response);
-
-        findViewById(R.id.root).setEnabled(false);
-
-        Constants.showAllert(findViewById(R.id.root), "Votre compte a été créer avec succés.", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enabledControls(false);
-                Intent intent = new Intent(RegisterNormalActivity.this, LoginActivity.class);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-        });
+        Intent intent = new Intent(RegisterNormalActivity.this, LoginActivity.class);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     private void initProgressBar() {

@@ -146,7 +146,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
             setResult(RESULT_NETWORK_ERROR);
             finish();
         } else {
-            Constants.showOnTimeout(findViewById(R.id.root), new View.OnClickListener() {
+            Constants.showOnTimeoutErro(findViewById(R.id.root), new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enabledControls(false);

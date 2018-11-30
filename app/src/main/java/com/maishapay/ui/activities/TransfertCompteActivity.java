@@ -219,8 +219,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
 

@@ -99,7 +99,7 @@ public class DrawerActivity extends AppCompatActivity {
                 .withSelectedItemByPosition(1)
                 .withSavedInstance(savedInstanceState)
                 .withShowDrawerOnFirstLaunch(true)
-                .withDisplayBelowStatusBar(false)
+                .withFullscreen(false)
                 .withActivity(this)
                 .withHasStableIds(true)
                 .withToolbar(toolbar)

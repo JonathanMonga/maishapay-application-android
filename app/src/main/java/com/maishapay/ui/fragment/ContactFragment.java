@@ -126,7 +126,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
     public void onTimeout() {
         enabledControls(true);
 
-        Constants.showOnTimeout(getView(), new View.OnClickListener() {
+        Constants.showOnTimeoutErro(getView(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enabledControls(false);
