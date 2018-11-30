@@ -1,7 +1,7 @@
 package com.maishapay.ui.activities;
 
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresenter, PaymentView> implements PaymentView, PossitiveButtonConfirmListener {
@@ -58,7 +59,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
     private QRCodeResponse qrCodeResponse;
     private PaymentResponse paymentResponse;
-    private ProgressDialog progressDialog;
+    private SpotsDialog progressDialog;
     private DialogConfirmPaymentFragment dialogConfirmPaymentFragment;
 
     private boolean flagtransfert = false;
@@ -74,7 +75,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
         qrCodeResponse = new Gson().fromJson(getIntent().getStringExtra(EXTRA_DATA), QRCodeResponse.class);
 
-        toolbar.setTitle("Effectuer un depot");
+        toolbar.setTitle("Effectuer un paiement");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -97,6 +98,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(Activity.RESULT_CANCELED);
                 finish();
                 return true;
             case R.id.action_checkout:
@@ -114,7 +116,6 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
         super.onResume();
         flagtransfert = true;
         enabledControls(false);
-
         getPresenter().attempt_payment(qrCodeResponse.getApi_key(), qrCodeResponse.getToken(), qrCodeResponse.getMonnaie(), qrCodeResponse.getMontant());
     }
 
@@ -133,10 +134,12 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
     @Override
     public void showConfimationError(int type) {
+        dialogConfirmPaymentFragment.dismiss();
+
         if (type == 0)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
-                    .setText("Le code Pin saisi n'est pas correct.")
+                    .setText("Votre demande de paiement a ete refuser.")
                     .setDuration(Snacky.LENGTH_LONG)
                     .error()
                     .show();
@@ -162,8 +165,6 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
         startActivity(intent);
         finish();
-        startActivity(new Intent(this, DrawerActivity.class));
-        finish();
     }
 
     @Override
@@ -176,7 +177,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
 
             Picasso.get()
                     .load(paymentResponse.getData_api().getProject_logo())
-                    .centerInside()
+                    .fit()
                     .error(R.drawable.icon_logo)
                     .tag(this)
                     .into(merchantLogo);
@@ -200,7 +201,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                 @Override
                 public void onClick(View view) {
                     enabledControls(false);
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getApi_key(), paymentResponse.getData_trans().getToken(),  UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
                 }
             });
         }
@@ -218,7 +219,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                 @Override
                 public void onClick(View view) {
                     enabledControls(false);
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getApi_key(), paymentResponse.getData_trans().getToken(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
                 }
             });
         }
@@ -236,7 +237,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                 @Override
                 public void onClick(View view) {
                     enabledControls(false);
-                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+                    getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getApi_key(), paymentResponse.getData_trans().getToken(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
                 }
             });
         }
@@ -252,10 +253,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     }
 
     private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
+        progressDialog = new SpotsDialog(this, R.style.Custom);
     }
 
     @NonNull
@@ -268,6 +266,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     public void positiveClicked(String pin) {
         PIN = pin;
         flagtransfert = false;
-        getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getToken(), paymentResponse.getData_trans().getApi_key(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
+        enabledControls(false);
+        getPresenter().confirm_payment(PIN, paymentResponse.getData_trans().getApi_key(), paymentResponse.getData_trans().getToken(), UserPrefencesManager.getCurrentUser().getTelephone(), paymentResponse.getData_api().getTelephone(), paymentResponse.getData_trans().getMonnaie(), paymentResponse.getData_trans().getMontant());
     }
 }

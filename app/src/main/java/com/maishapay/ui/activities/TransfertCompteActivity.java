@@ -194,13 +194,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         } else if (requestCode == REQUEST_PAYMENT) {
             if (resultCode == RESULT_TRANSFERT_ERROR) {
                 showTranfertError(data.getIntExtra(EXTRA_ERROR_CODE, -1));
-            } else {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Aucune connexion réseau. Réessayez plus tard.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
             }
         }
     }

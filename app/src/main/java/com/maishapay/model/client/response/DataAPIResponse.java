@@ -26,10 +26,7 @@ public class DataAPIResponse extends BaseResponse{
     @SerializedName("id")
     private String id;
 
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("telephone")
+    @SerializedName("merchant_phone")
     private String telephone;
 
     @SerializedName("api_key")
@@ -62,14 +59,6 @@ public class DataAPIResponse extends BaseResponse{
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTelephone() {

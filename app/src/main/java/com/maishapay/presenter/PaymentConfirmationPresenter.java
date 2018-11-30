@@ -20,6 +20,7 @@ import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
 import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.PaymentResponse;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.PaymentView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -95,12 +96,14 @@ public class PaymentConfirmationPresenter extends TiPresenter<PaymentView> {
     }
 
     public void confirm_payment(String pin, String token, String api_key, final String expeditaire, final String destinataire, final String monnaie, final String montant){
-        disposableHandler.manageDisposable(maishapayClient.confirm_payment(pin, api_key, token, expeditaire, destinataire, monnaie, montant)
+        disposableHandler.manageDisposable(maishapayClient.confirm_payment(pin, token, api_key, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new CallbackWrapper<ConfirmPaymentResponse>(getView()) {
                     @Override
                     protected void onSuccess(ConfirmPaymentResponse response) {
+                        LogCat.e(response.getResultat()+"");
+
                         switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
