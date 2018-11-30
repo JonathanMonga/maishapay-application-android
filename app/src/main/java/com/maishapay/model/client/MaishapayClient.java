@@ -18,6 +18,7 @@ package com.maishapay.model.client;
 
 import com.maishapay.model.client.api.MaishapayAPI;
 import com.maishapay.model.client.api.ServiceGenerator;
+import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.PaymentResponse;
@@ -325,13 +326,13 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> confirm_payment(String pin,
-                                               String api_key,
-                                               String token,
-                                               String expeditaire,
-                                               String destinataire,
-                                               String monnaie,
-                                               String montant) {
+    public Observable<ConfirmPaymentResponse> confirm_payment(String pin,
+                                                              String api_key,
+                                                              String token,
+                                                              String expeditaire,
+                                                              String destinataire,
+                                                              String monnaie,
+                                                              String montant) {
         return this.maishapayAPI.confirm_payment(CONFIRM_PAYMENT_PARAM, pin, api_key, token, expeditaire, destinataire, monnaie, montant);
     }
 }

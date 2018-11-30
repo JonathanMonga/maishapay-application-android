@@ -17,6 +17,7 @@
 package com.maishapay.model.client.api;
 
 import com.maishapay.BuildConfig;
+import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.PaymentResponse;
@@ -188,20 +189,20 @@ public interface MaishapayAPI {
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<PaymentResponse> attempt_payment(@Field("ent") String ent,
-                                                @Field("api_key") String api_key,
+                                                @Field("client_api_key") String api_key,
                                                 @Field("token") String token,
                                                 @Field("monnaie") String monnaie,
                                                 @Field("montant") String montant);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> confirm_payment(@Field("ent") String ent,
-                                        @Field("pin") String pin,
-                                        @Field("api_key") String api_key,
-                                        @Field("token") String token,
-                                        @Field("expeditaire") String expeditaire,
-                                        @Field("destinataire") String destinataire,
-                                        @Field("monnaie") String monnaie,
-                                        @Field("montant") String montant);
+    Observable<ConfirmPaymentResponse> confirm_payment(@Field("ent") String ent,
+                                                       @Field("pin") String pin,
+                                                       @Field("client_api_key") String api_key,
+                                                       @Field("token") String token,
+                                                       @Field("expeditaire") String expeditaire,
+                                                       @Field("destinataire") String destinataire,
+                                                       @Field("monnaie") String monnaie,
+                                                       @Field("montant") String montant);
 
 }

@@ -41,6 +41,9 @@ public class DataAPIResponse extends BaseResponse{
     @SerializedName("project_type")
     private String project_type;
 
+    @SerializedName("project_description")
+    private String project_description;
+
     @SerializedName("project_id")
     private String project_id;
 
@@ -131,5 +134,13 @@ public class DataAPIResponse extends BaseResponse{
 
     public void setProject_callback_url(String project_callback_url) {
         this.project_callback_url = project_callback_url;
+    }
+
+    public String getProject_description() {
+        return project_description;
+    }
+
+    public void setProject_description(String project_description) {
+        this.project_description = project_description;
     }
 }

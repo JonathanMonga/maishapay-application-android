@@ -327,6 +327,7 @@ dependencies {
 
     implementation 'com.github.sharish:CreditCardView:v1.0.4'
     implementation 'com.vipulasri:ticketview:1.0.7'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.gms.google-services'

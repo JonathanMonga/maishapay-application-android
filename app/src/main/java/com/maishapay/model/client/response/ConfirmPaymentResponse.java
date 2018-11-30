@@ -16,9 +16,21 @@
 
 package com.maishapay.model.client.response;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * A user response
  */
-public class EpargneResponse extends BaseResponse {
+public class ConfirmPaymentResponse extends BaseResponse{
 
+    @SerializedName("message")
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

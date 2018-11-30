@@ -18,14 +18,11 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.PaymentResponse;
-import com.maishapay.model.client.response.TransfertResponse;
-import com.maishapay.util.LogCat;
 import com.maishapay.view.PaymentView;
-import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-import net.grandcentrix.thirtyinch.ViewAction;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -101,14 +98,14 @@ public class PaymentConfirmationPresenter extends TiPresenter<PaymentView> {
         disposableHandler.manageDisposable(maishapayClient.confirm_payment(pin, api_key, token, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
+                .subscribeWith(new CallbackWrapper<ConfirmPaymentResponse>(getView()) {
                     @Override
-                    protected void onSuccess(Integer response) {
-                        switch (response) {
+                    protected void onSuccess(ConfirmPaymentResponse response) {
+                        switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showConfimationError(response);
+                                    getView().showConfimationError(response.getResultat());
                                     break;
                                 }
                             }
@@ -116,7 +113,7 @@ public class PaymentConfirmationPresenter extends TiPresenter<PaymentView> {
                             case 2: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showConfimationError(response);
+                                    getView().showConfimationError(response.getResultat());
                                     break;
                                 }
                             }

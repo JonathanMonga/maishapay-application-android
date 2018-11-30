@@ -26,10 +26,10 @@ public class PaymentResponse extends BaseResponse{
     @SerializedName("message")
     private String message;
 
-    @SerializedName("data_api")
+    @SerializedName("apiData")
     private DataAPIResponse data_api;
 
-    @SerializedName("data_trans")
+    @SerializedName("transactionData")
     private DataPaymentResponse data_trans;
 
     public String getMessage() {
