@@ -38,6 +38,7 @@ import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -51,6 +52,7 @@ import com.maishapay.util.Constants;
 import com.maishapay.view.RetraitView;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
+import org.alfonz.media.SoundManager;
 import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
@@ -85,6 +87,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private DialogConfirmRetraitFragment confirmRetaritFragment;
     private boolean flagRetrait = false;
     private QRCodeDataUser qrCodeDataUser;
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         }
 
         initProgressBar();
+        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,6 +149,12 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        soundManager.stopAll();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_transfert, menu);
         return super.onCreateOptionsMenu(menu);
@@ -176,6 +186,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                             .error()
                             .show();
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
                     qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
                     ET_Destinataire.setText(qrCodeDataUser.getTelephone());
                 } else
@@ -203,8 +214,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
 

@@ -38,6 +38,7 @@ import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.TransfertResponse;
@@ -53,6 +54,7 @@ import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
+import org.alfonz.media.SoundManager;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import butterknife.BindView;
@@ -92,6 +94,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         }
 
         initProgressBar();
+        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -152,6 +156,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        soundManager.stopAll();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_transfert, menu);
         return super.onCreateOptionsMenu(menu);
@@ -176,6 +186,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         if (requestCode == REQUEST_QRCODE) {
             if (resultCode == Activity.RESULT_OK) {
                 if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
                     String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
                     Intent intent = new Intent(this, PaymentWebActivity.class);
                     intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);

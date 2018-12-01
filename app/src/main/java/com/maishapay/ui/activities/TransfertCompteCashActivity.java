@@ -38,6 +38,7 @@ import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.domain.QRCodeDataUser;
@@ -52,6 +53,7 @@ import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
+import org.alfonz.media.SoundManager;
 import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
@@ -87,6 +89,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
     private QRCodeDataUser qrCodeDataUser;
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
         }
 
         initProgressBar();
+        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,6 +151,12 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        soundManager.stopAll();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_transfert, menu);
         return super.onCreateOptionsMenu(menu);
@@ -178,6 +188,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
                             .error()
                             .show();
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
                     qrCodeDataUser = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), QRCodeDataUser.class);
                     ET_Destinataire.setText(qrCodeDataUser.getTelephone());
                 } else
@@ -205,8 +216,8 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
 
