@@ -117,9 +117,9 @@ public class DecoderActivity extends AppCompatActivity implements ActivityCompat
     private void initQRCodeReaderView() {
         View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
 
-        qrCodeReaderView = (QRCodeReaderView) content.findViewById(R.id.qrdecoderview);
-        resultTextView = (TextView) content.findViewById(R.id.result_text_view);
-        pointsOverlayView = (PointsOverlayView) content.findViewById(R.id.points_overlay_view);
+        qrCodeReaderView = content.findViewById(R.id.qrdecoderview);
+        resultTextView = content.findViewById(R.id.result_text_view);
+        pointsOverlayView = content.findViewById(R.id.points_overlay_view);
 
         qrCodeReaderView.setAutofocusInterval(2000L);
         qrCodeReaderView.setOnQRCodeReadListener(this);
