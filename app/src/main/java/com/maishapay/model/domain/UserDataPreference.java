@@ -12,13 +12,13 @@ public class UserDataPreference {
     @SerializedName("soldeDollars")
     private String soldeDollars;
     @SerializedName("envoiFrancs")
-    private int envoiFrancs;
+    private float envoiFrancs;
     @SerializedName("recuFrancs")
-    private int recuFrancs;
+    private float recuFrancs;
     @SerializedName("envoiDollars")
-    private int envoiDollars;
+    private float envoiDollars;
     @SerializedName("recuDollars")
-    private int recuDollars;
+    private float recuDollars;
     @SerializedName("taux")
     private double taux;
     @SerializedName("hasEpargneCompte")
@@ -54,35 +54,35 @@ public class UserDataPreference {
         this.hasEpargneCompte = hasEpargneCompte;
     }
 
-    public int getEnvoiFrancs() {
+    public float getEnvoiFrancs() {
         return envoiFrancs;
     }
 
-    public void setEnvoiFrancs(int envoiFrancs) {
+    public void setEnvoiFrancs(float envoiFrancs) {
         this.envoiFrancs = envoiFrancs;
     }
 
-    public int getRecuFrancs() {
+    public float getRecuFrancs() {
         return recuFrancs;
     }
 
-    public void setRecuFrancs(int recuFrancs) {
+    public void setRecuFrancs(float recuFrancs) {
         this.recuFrancs = recuFrancs;
     }
 
-    public int getEnvoiDollars() {
+    public float getEnvoiDollars() {
         return envoiDollars;
     }
 
-    public void setEnvoiDollars(int envoiDollars) {
+    public void setEnvoiDollars(float envoiDollars) {
         this.envoiDollars = envoiDollars;
     }
 
-    public int getRecuDollars() {
+    public float getRecuDollars() {
         return recuDollars;
     }
 
-    public void setRecuDollars(int recuDollars) {
+    public void setRecuDollars(float recuDollars) {
         this.recuDollars = recuDollars;
     }
 
@@ -110,7 +110,7 @@ public class UserDataPreference {
         this.epargneDollars = epargneDollars;
     }
 
-    public List<TransactionItemResponse> getTransactionItemRespons() {
+    public List<TransactionItemResponse> getTransactionItemResponse() {
         return transactionItemRespons;
     }
 

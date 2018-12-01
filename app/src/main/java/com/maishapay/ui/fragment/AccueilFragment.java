@@ -112,13 +112,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         TV_Francs.setVisibility(View.GONE);
         TV_Dollars.setVisibility(View.GONE);
 
-        HamButton.Builder builder1 = new HamButton.Builder()
-                .normalImageRes(R.drawable.epargne)
-                .normalColorRes(R.color.ab_default)
-                .normalTextRes(R.string.compte_epargne)
-                .subNormalTextRes(R.string.sub_ouvrir_compte);
-        bmb.addBuilder(builder1);
-
         HamButton.Builder builder2 = new HamButton.Builder()
                 .normalImageRes(R.drawable.ic_despesa_branco)
                 .normalColorRes(R.color.ab_abastecimento)
@@ -388,23 +381,13 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-                        }
-                    }, 430);
-                    break;
-                }
-
-                case 1: {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
                             startActivity(new Intent(MaishapayApplication.getMaishapayContext(), RetraitActivity.class));
                         }
                     }, 430);
                     break;
                 }
 
-                case 2: {
+                case 1: {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

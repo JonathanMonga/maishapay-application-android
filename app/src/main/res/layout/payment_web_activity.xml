@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:ticketBorderColor="@color/colorAccent"
-            app:ticketBackgroundColor="@color/black_overlay"
+            app:ticketBackgroundColor="@color/branco"
             app:ticketBorderWidth="1dp"
             app:ticketCornerType="rounded"
             app:ticketDividerPadding="0dp"
@@ -56,18 +56,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/merchantProjectName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:text="Wenzeasy food"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/branco"
-                android:textSize="20sp"
-                fontPath="fonts/Roboto-Bold.ttf"/>
-
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/merchantLogo"
                 android:layout_gravity="center"
@@ -81,15 +69,17 @@
                 android:scaleType="centerInside"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/merchantProjectType"
+                android:id="@+id/merchantProjectName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:text="E-Commerce"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Wenzeasy food"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/branco"
-                android:textSize="16sp" />
+                android:textColor="@color/texto"
+                android:textSize="23sp"
+                fontPath="fonts/Roboto-Bold.ttf"/>
 
         </LinearLayout>
 
@@ -111,7 +101,7 @@
                 android:text="@string/informations_sur_le_produit"
                 android:textSize="14sp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/branco" />
+                android:textColor="@color/texto" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,7 +124,7 @@
                         android:text="Nom"
                         android:textSize="14sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/branco" />
+                        android:textColor="@color/texto" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/productName"
@@ -142,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:text="Paiement facture"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/branco"
+                        android:textColor="@color/texto"
                         android:textSize="16sp"
                         fontPath="fonts/Roboto-Bold.ttf"/>
 
@@ -154,7 +144,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@color/branco" />
+                    android:background="@color/texto" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -171,7 +161,7 @@
                         android:textSize="14sp"
                         android:layout_marginBottom="10dp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/branco" />
+                        android:textColor="@color/texto" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/productPrise"
@@ -179,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:text="1000 Fc"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/branco"
+                        android:textColor="@color/texto"
                         android:textSize="16sp"
                         fontPath="fonts/Roboto-Bold.ttf"/>
                 </LinearLayout>

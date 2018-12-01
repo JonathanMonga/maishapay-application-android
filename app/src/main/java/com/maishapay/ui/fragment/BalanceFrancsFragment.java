@@ -41,12 +41,12 @@ public class BalanceFrancsFragment extends Fragment {
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
 
-    public static BalanceFrancsFragment newInstance(String solde, int envoi, int recu) {
+    public static BalanceFrancsFragment newInstance(String solde, float envoi, float recu) {
         BalanceFrancsFragment fragment = new BalanceFrancsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(EXTRA_SOLDE_ENVOI, envoi);
-        bundle.putInt(EXTRA_SOLDE_RECU, recu);
+        bundle.putFloat(EXTRA_SOLDE_ENVOI, envoi);
+        bundle.putFloat(EXTRA_SOLDE_RECU, recu);
         bundle.putString(EXTRA_SOLDE_FRANCS, solde);
 
         fragment.setArguments(bundle);
@@ -119,7 +119,7 @@ public class BalanceFrancsFragment extends Fragment {
     private void setData(String solde, int envoi, int recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(Integer.valueOf(solde) >= 0) {
+        if(Float.valueOf(solde) >= 0) {
             if(recu <= 0 && envoi <= 0) {
                 entries.add(new PieEntry((float) 100, ""));
             } else {

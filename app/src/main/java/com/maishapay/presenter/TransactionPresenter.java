@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.client.response.TransactionItemResponse;
 import com.maishapay.model.client.response.TransactionResponse;
 import com.maishapay.model.domain.UserDataPreference;
@@ -50,28 +51,28 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                 .subscribeWith(new CallbackWrapper<TransactionResponse>(getView()) {
                     @Override
                     protected void onSuccess(TransactionResponse responses) {
-                        if(isViewAttached()) {
-                            int envoiFrancs = 0;
-                            int recuFrancs = 0;
-                            int envoiDollars = 0;
-                            int recuDollars = 0;
+                        if (isViewAttached()) {
+                            float envoiFrancs = 0;
+                            float recuFrancs = 0;
+                            float envoiDollars = 0;
+                            float recuDollars = 0;
 
-                            for(TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()){
-                                if(transactionItemResponse.getType_jrn().equals("e")){
-                                    if(transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                            for (TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()) {
+                                if (transactionItemResponse.getType_jrn().equals("e")) {
+                                    if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
                                         String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        envoiFrancs += Integer.valueOf(temp);
-                                    } else if(transactionItemResponse.getMonnaie_jrn().equals("USD")){
+                                        envoiFrancs += Float.valueOf(temp);
+                                    } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
                                         String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        envoiDollars += Integer.valueOf(temp);
+                                        envoiDollars += Float.valueOf(temp);
                                     }
                                 } else {
-                                    if(transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                    if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
                                         String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        recuFrancs += Integer.valueOf(temp);
-                                    } else if(transactionItemResponse.getMonnaie_jrn().equals("USD")){
+                                        recuFrancs += Float.valueOf(temp);
+                                    } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
                                         String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        recuDollars += Integer.valueOf(temp);
+                                        recuDollars += Float.valueOf(temp);
                                     }
                                 }
                             }
@@ -93,6 +94,21 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             getView().enabledControls(true);
                             getView().finishToLoadTransactions(responses.getTransactionItemResponses());
                         }
+                    }
+                }));
+    }
+
+    public void solde(String telephone) {
+        disposableHandler.manageDisposable(maishapayClient.solde(telephone)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<SoldeResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(SoldeResponse response) {
+                        UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+                        userDataPreference.setSoldeFrancs(response.getFrancCongolais());
+                        userDataPreference.setSoldeDollars(response.getDollard());
+                        UserPrefencesManager.setUserDataPreference(userDataPreference);
                     }
                 }));
     }

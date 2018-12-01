@@ -41,19 +41,19 @@ public class BalanceDollarsFragment extends Fragment {
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
 
-    public static BalanceDollarsFragment newInstance(String solde, int envoi, int recu) {
+    public static BalanceDollarsFragment newInstance(String solde, float envoi, float recu) {
         BalanceDollarsFragment fragment = new BalanceDollarsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(EXTRA_SOLDE_ENVOI, envoi);
-        bundle.putInt(EXTRA_SOLDE_RECU, recu);
+        bundle.putFloat(EXTRA_SOLDE_ENVOI, envoi);
+        bundle.putFloat(EXTRA_SOLDE_RECU, recu);
         bundle.putString(EXTRA_SOLDE_DOLLARS, solde);
 
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public void setChartData(String solde, int envoi, int recu){
+    public void setChartData(String solde, float envoi, float recu){
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -112,19 +112,18 @@ public class BalanceDollarsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setChartData(getArguments().getString(EXTRA_SOLDE_DOLLARS), getArguments().getInt(EXTRA_SOLDE_ENVOI), getArguments().getInt(EXTRA_SOLDE_RECU));
     }
 
-    private void setData(String solde, int envoi, int recu) {
+    private void setData(String solde, float envoi, float recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(Integer.valueOf(solde) >= 0) {
+        if(Float.valueOf(solde) >= 0) {
             if(recu <= 0 && envoi <= 0) {
                 entries.add(new PieEntry((float) 100, ""));
             } else {
-                entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
-                entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
+                entries.add(new PieEntry(recu < 0 ? 0 : recu, "Reçu"));
+                entries.add(new PieEntry(envoi < 0 ? 0 : envoi, "Envoyé"));
             }
         } else {
             SpannableString spannableString = new SpannableString("Vous avez une dette.");

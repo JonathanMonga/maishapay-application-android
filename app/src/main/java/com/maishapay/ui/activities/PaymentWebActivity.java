@@ -52,8 +52,6 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     AppCompatImageView merchantLogo;
     @BindView(R.id.merchantProjectName)
     AppCompatTextView merchantProjectName;
-    @BindView(R.id.merchantProjectType)
-    AppCompatTextView merchantProjectType;
     @BindView(R.id.productPrise)
     AppCompatTextView productPrise;
 
@@ -183,7 +181,6 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                     .into(merchantLogo);
 
             merchantProjectName.setText(paymentResponse.getData_api().getProject_name());
-            merchantProjectType.setText(paymentResponse.getData_api().getProject_type());
             productPrise.setText(String.format("%s %s", paymentResponse.getData_trans().getMontant(), paymentResponse.getData_trans().getMonnaie()));
         } else
             finish();

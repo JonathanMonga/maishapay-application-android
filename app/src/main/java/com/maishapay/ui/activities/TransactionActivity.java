@@ -26,12 +26,16 @@ import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
 import com.maishapay.view.TransactionView;
 
+import org.alfonz.utility.NetworkUtility;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.maishapay.model.MaishapayNotification.EXTRA_NOTIFICATION;
 
 public class TransactionActivity extends BaseActivity<TransactionPresenter, TransactionView> implements TransactionView{
 
@@ -63,6 +67,8 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
+
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("DefaultLocale")
@@ -70,18 +76,22 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     protected void onResume() {
         super.onResume();
 
-        if(! UserPrefencesManager.getUserRefresh()) {
+        if(getIntent().hasExtra(EXTRA_NOTIFICATION) && NetworkUtility.isOnline(this)) {
+            progressBar.setVisibility(View.VISIBLE);
+            getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-            if(userDataPreference.getTransactionItemRespons() != null) {
+            if(userDataPreference.getTransactionItemResponse() != null) {
                 progressBar.setVisibility(View.INVISIBLE);
 
-                ET_FrancsEnvoye.setText(String.format("%d Fc", userDataPreference.getEnvoiFrancs()));
-                ET_FrancsRecu.setText(String.format("%d Fc", userDataPreference.getRecuFrancs()));
-                ET_DollarsEnvoye.setText(String.format("%d $", userDataPreference.getEnvoiDollars()));
-                ET_DollarsRecu.setText(String.format("%d $", userDataPreference.getRecuDollars()));
+                ET_FrancsEnvoye.setText(String.format("%s Fc", userDataPreference.getEnvoiFrancs()));
+                ET_FrancsRecu.setText(String.format("%s Fc", userDataPreference.getRecuFrancs()));
+                ET_DollarsEnvoye.setText(String.format("%s $", userDataPreference.getEnvoiDollars()));
+                ET_DollarsRecu.setText(String.format("%s $", userDataPreference.getRecuDollars()));
 
-                mAdapter = new TransactionAdapter(userDataPreference.getTransactionItemRespons());
+                mAdapter = new TransactionAdapter(userDataPreference.getTransactionItemResponse());
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,9 +99,6 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             } else {
                 progressBar.setVisibility(View.VISIBLE);
             }
-        } else {
-            progressBar.setVisibility(View.VISIBLE);
-            getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
         }
     }
 
@@ -122,10 +129,10 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void finishToLoadStatisics(UserDataPreference responses) {
-        ET_FrancsEnvoye.setText(String.format("%d Fc", responses.getEnvoiFrancs()));
-        ET_FrancsRecu.setText(String.format("%d Fc", responses.getRecuFrancs()));
-        ET_DollarsEnvoye.setText(String.format("%d $", responses.getEnvoiDollars()));
-        ET_DollarsRecu.setText(String.format("%d $", responses.getRecuDollars()));
+        ET_FrancsEnvoye.setText(String.format("%s Fc", responses.getEnvoiFrancs()));
+        ET_FrancsRecu.setText(String.format("%s Fc", responses.getRecuFrancs()));
+        ET_DollarsEnvoye.setText(String.format("%s $", responses.getEnvoiDollars()));
+        ET_DollarsRecu.setText(String.format("%s $", responses.getRecuDollars()));
     }
 
     @NonNull
@@ -153,6 +160,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 

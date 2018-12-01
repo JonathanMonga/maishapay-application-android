@@ -21,13 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.maishapay.R;
 import com.maishapay.model.domain.NotificationBean;
-import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.LogCat;
 
 import java.util.Random;
 
 public class MaishapayNotification {
 
+    public static final String EXTRA_NOTIFICATION = "notif";
     private Context mContext;
     private String title;
     private String subtitle;
@@ -138,9 +138,9 @@ public class MaishapayNotification {
             return;
         }
 
-        UserPrefencesManager.setUserRefresh(true);
-
         Intent intent = new Intent(mContext, startActivity);
+        intent.putExtra(EXTRA_NOTIFICATION, true);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);

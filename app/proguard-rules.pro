@@ -21,18 +21,8 @@
 -renamesourcefileattribute SourceFile
 -dontwarn org.joda.time.**
 -dontwarn retrofit2.**
+-dontwarn okhttp3.**
 
 -keep class dmax.dialog.** {
     *;
 }
-
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
-
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
-

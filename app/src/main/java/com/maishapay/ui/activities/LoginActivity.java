@@ -28,7 +28,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -128,26 +127,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @OnClick({R.id.BTN_CriarConta})
     public void clickCriarConta(){
-        new MaterialDialog.Builder(this)
-                .title("Type des comptes")
-                .items(R.array.option_type_compte)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                        switch (position) {
-                            case 0 : {
-                                startActivityForResult(new Intent(LoginActivity.this, RegisterNormalActivity.class), 1);
-                                break;
-                            }
-
-                            default : {
-                                startActivityForResult(new Intent(LoginActivity.this, RegisterMarchantActivity.class), 2);
-                                break;
-                            }
-                        }
-                    }
-                })
-                .show();
+        startActivityForResult(new Intent(LoginActivity.this, RegisterNormalActivity.class), 1);
     }
 
     @OnClick(R.id.BTN_ForgotCodePin)
