@@ -72,6 +72,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
+    public static final String EXTRA_DATA = "transfert_data";
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
 
@@ -153,6 +154,9 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         adapter.setShowMobileOnly(false);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
+
+        if(getIntent().getStringExtra(EXTRA_DATA) != null)
+            ET_Destinataire.setText(getIntent().getStringExtra(EXTRA_DATA));
     }
 
     @Override
@@ -192,6 +196,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                     intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
                     startActivityForResult(intent, REQUEST_PAYMENT);
                 } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
                     userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
                     ET_Destinataire.setText(userResponse.getTelephone());
                 } else

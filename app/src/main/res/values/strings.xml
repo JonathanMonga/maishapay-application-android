@@ -72,4 +72,6 @@
     <string name="error_occurred">Une erreur s\'est produite. Nous sommes profondément désolés.</string>
     <string name="restart_app">Redémarer l\'application</string>
     <string name="informations_sur_le_produit"><u>Informations sur la transaction</u></string>
+    <string name="scan">Scanner un code QR</string>
+    <string name="scan_sub">Scanner pour effectuer une transaction.</string>
 </resources>

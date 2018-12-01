@@ -13,16 +13,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView.OnQRCodeReadListener;
-import com.google.gson.Gson;
 import com.maishapay.R;
-import com.maishapay.model.client.response.UserResponse;
-import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.util.Constants;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -86,9 +81,6 @@ public class DecoderActivity extends AppCompatActivity implements ActivityCompat
         }
     }
 
-    // Called when a QR is decoded
-    // "text" : the text encoded in QR
-    // "points" : points where QR control points are placed
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
         Intent intent = new Intent();
