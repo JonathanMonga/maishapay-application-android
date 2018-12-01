@@ -72,6 +72,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
+
     public static final String EXTRA_DATA = "transfert_data";
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
