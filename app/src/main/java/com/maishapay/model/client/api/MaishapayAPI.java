@@ -103,15 +103,15 @@ public interface MaishapayAPI {
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<EpargneResponse> transfert_epargne(@Field("ent") String ent,
-                                                  @Field("type_transfert") String type_transfert,
+                                                  @Field("type_epargne") String type_transfert,
                                                   @Field("telephone") String telephone,
                                                   @Field("monnaie") String monnaie,
                                                   @Field("montant") String montant);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> confirmation_transfert_epargne(@Field("ent") String ent,
-                                                       @Field("type_transfert_ep") String type_transfert_ep,
+    Observable<EpargneResponse> confirmation_transfert_epargne(@Field("ent") String ent,
+                                                       @Field("type_epargne") String type_transfert_ep,
                                                        @Field("telephone") String telephone,
                                                        @Field("monnaie") String monnaie,
                                                        @Field("montant") String montant);

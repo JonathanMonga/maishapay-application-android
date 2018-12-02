@@ -66,6 +66,7 @@
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
                 android:paddingTop="30dp"
+                android:src="@drawable/wenzeasy"
                 android:scaleType="centerInside"/>
 
             <android.support.v7.widget.AppCompatTextView

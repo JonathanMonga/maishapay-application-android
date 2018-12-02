@@ -15,13 +15,17 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
 import com.maishapay.R;
+import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
+import com.maishapay.ui.fragment.ScannerListener;
 import com.maishapay.ui.fragment.SettingsFragment;
+import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -33,6 +37,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import org.alfonz.media.SoundManager;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,14 +47,21 @@ import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class DrawerActivity extends AppCompatActivity {
+import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
+
+public class DrawerActivity extends AppCompatActivity implements ScannerListener {
     public static boolean is_running = false;
+    private static final int REQUEST_QRCODE = 1;
+    private static final int REQUEST_PAYMENT = 2;
+    private static final int REQUEST_PROFIL = 3;
+    public static final String EXTRA_QR_CODE_FRAGMENT = "scan_from_fragment";
 
     private Drawer result = null;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
     private ProfileDrawerItem userProfil;
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +71,7 @@ public class DrawerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         is_running = true;
 
@@ -81,7 +95,7 @@ public class DrawerActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), 1);
+                                startActivityForResult(new Intent(DrawerActivity.this, UpdateProfilActivity.class), REQUEST_PROFIL);
                             }
                         }, 400);
                         return false;
@@ -106,17 +120,16 @@ public class DrawerActivity extends AppCompatActivity {
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Accueil").withIcon(R.drawable.bank).withIdentifier(1),
-                        new PrimaryDrawerItem().withName("Transactions").withSelectable(false).withIcon(R.drawable.transaction).withIdentifier(2),
-                        new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(3),
+                        new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(2),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Point Fastpay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(5),
+                        new PrimaryDrawerItem().withName("Point Fastpay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(4),
+                        new PrimaryDrawerItem().withName("Achat crédit unité").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
                         new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(6),
                         new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(7),
-                        new PrimaryDrawerItem().withName("Scan card").withSelectable(false).withIcon(R.drawable.scann).withIdentifier(8),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(10),
-                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(11),
-                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(12)
+                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(9),
+                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(10),
+                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(11)
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
@@ -174,16 +187,16 @@ public class DrawerActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(DrawerActivity.this, TransactionActivity.class));
+                                startActivity(new Intent(DrawerActivity.this, ProfilActivity.class));
                             }
                         }, 400);
                         return false;
 
-                    case 3:
+                    case 4:
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(DrawerActivity.this, ProfilActivity.class));
+                                startActivity(new Intent(DrawerActivity.this, MapsActivity.class));
                             }
                         }, 400);
                         return false;
@@ -192,7 +205,7 @@ public class DrawerActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(DrawerActivity.this, MapsActivity.class));
+                                startActivity(new Intent(DrawerActivity.this, AirtimeActivity.class));
                             }
                         }, 400);
                         return false;
@@ -225,28 +238,19 @@ public class DrawerActivity extends AppCompatActivity {
                         }, 400);
                         return false;
 
-                    case 8:
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Cette fonctionnalité sera bientôt disponible!")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .error()
-                                .show();
-                        return false;
-
-                    case 10:
+                    case 9:
                         setTitle("Paramètres");
                         mFragment = new SettingsFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 11:
+                    case 10:
                         setTitle("Nous contacter");
                         mFragment = new ContactFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 12:
+                    case 11:
                         setTitle("A propros");
                         mFragment = new AboutFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
@@ -260,6 +264,12 @@ public class DrawerActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        soundManager.stopAll();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         is_running = false;
@@ -268,10 +278,41 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_PROFIL) {
             if (resultCode == Activity.RESULT_OK) {
                 UserResponse userResponse = UserPrefencesManager.getCurrentUser();
                 userProfil.withName(userResponse.getPrenom() + " " + userResponse.getNom()).withEmail(userResponse.getTelephone());
+            }
+        } else if (requestCode == REQUEST_QRCODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
+                    String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
+                    Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), PaymentWebActivity.class);
+                    intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
+                    startActivityForResult(intent, REQUEST_PAYMENT);
+                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
+                    soundManager.playAsset("sounds/job-done.mp3");
+                    UserResponse userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
+                    Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
+                    intent.putExtra(TransfertCompteActivity.EXTRA_DATA, userResponse.getTelephone());
+                    startActivity(intent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Désolé, vous avez scanné un mauvais Code QR.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
+            }
+        } else if (requestCode == REQUEST_PAYMENT) {
+            if (resultCode == RESULT_TRANSFERT_ERROR) {
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Désolé, une erreur est survenu lors du paiement.")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .error()
+                        .show();
             }
         }
     }
@@ -290,5 +331,12 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    public void onScanClicked() {
+        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), DecoderActivity.class);
+        intent.putExtra(EXTRA_QR_CODE_FRAGMENT, true);
+        startActivityForResult(intent, REQUEST_QRCODE);
     }
 }

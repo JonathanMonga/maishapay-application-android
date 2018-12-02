@@ -201,7 +201,7 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> confirmation_transfert_epargne(String type_transfert_ep,
+    public Observable<EpargneResponse> confirmation_transfert_epargne(String type_transfert_ep,
                                                               String telephone,
                                                               String monnaie,
                                                               String montant) {

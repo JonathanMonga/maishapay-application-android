@@ -114,6 +114,7 @@
         <activity android:name=".ui.activities.TransfertPaiementActivity" />
         <activity android:name=".ui.activities.PaymentWebActivity" />
         <activity android:name=".ui.activities.ErrorActivity" />
+        <activity android:name=".ui.activities.AirtimeActivity" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

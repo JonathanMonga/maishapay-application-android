@@ -73,4 +73,18 @@
         <item>Ouvrir un compte maishapay</item>
         <item>Ouvrir un compte marchant</item>
     </array>
+
+    <array name="option_unite_orange_aitel">
+        <item>25 unités</item>
+        <item>50 unités</item>
+        <item>100 unités</item>
+        <item>500 unités</item>
+    </array>
+
+    <array name="option_unite_vodacom">
+        <item>0.25 $</item>
+        <item>0.50 $</item>
+        <item>1 $</item>
+        <item>5 $</item>
+    </array>
 </resources>

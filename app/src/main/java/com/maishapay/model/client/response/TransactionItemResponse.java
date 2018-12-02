@@ -27,14 +27,16 @@ public class TransactionItemResponse extends BaseResponse{
     private String type_jrn;
     @SerializedName("date_jrn")
     private String date_jrn;
-    @SerializedName("heure_jrn")
-    private String heure_jrn;
     @SerializedName("telephone_dest")
     private String telephone_dest;
     @SerializedName("montant_jrn")
     private String montant_jrn;
     @SerializedName("monnaie_jrn")
     private String monnaie_jrn;
+    @SerializedName("nom_dest")
+    private String nom_dest;
+    @SerializedName("prenom_dest")
+    private String prenom_dest;
 
     public String getType_jrn() {
         return type_jrn;
@@ -50,14 +52,6 @@ public class TransactionItemResponse extends BaseResponse{
 
     public void setDate_jrn(String date_jrn) {
         this.date_jrn = date_jrn;
-    }
-
-    public String getHeure_jrn() {
-        return heure_jrn;
-    }
-
-    public void setHeure_jrn(String heure_jrn) {
-        this.heure_jrn = heure_jrn;
     }
 
     public String getTelephone_dest() {
@@ -82,5 +76,21 @@ public class TransactionItemResponse extends BaseResponse{
 
     public void setMonnaie_jrn(String monnaie_jrn) {
         this.monnaie_jrn = monnaie_jrn;
+    }
+
+    public String getNom_dest() {
+        return nom_dest;
+    }
+
+    public void setNom_dest(String nom_dest) {
+        this.nom_dest = nom_dest;
+    }
+
+    public String getPrenom_dest() {
+        return prenom_dest;
+    }
+
+    public void setPrenom_dest(String prenom_dest) {
+        this.prenom_dest = prenom_dest;
     }
 }

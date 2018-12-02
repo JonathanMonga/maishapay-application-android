@@ -38,6 +38,9 @@ import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,7 +68,7 @@ public class Constants {
         return (int) dp;
     }
 
-    public static void showOnUnknownError(View view, View.OnClickListener onClickListener){
+    public static void showOnUnknownError(View view, View.OnClickListener onClickListener) {
         Snacky.builder()
                 .setView(view)
                 .setText("Impossible de se connecter au serveur.")
@@ -76,7 +79,7 @@ public class Constants {
                 .show();
     }
 
-    public static void showOnTimeoutErro(View view, View.OnClickListener onClickListener){
+    public static void showOnTimeoutErro(View view, View.OnClickListener onClickListener) {
         Snacky.builder()
                 .setView(view)
                 .setText("Le délais s'est t'écouler.")
@@ -87,7 +90,7 @@ public class Constants {
                 .show();
     }
 
-    public static void showOnNetworkError(View view, View.OnClickListener onClickListener){
+    public static void showOnNetworkError(View view, View.OnClickListener onClickListener) {
         Snacky.builder()
                 .setView(view)
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
@@ -98,7 +101,7 @@ public class Constants {
                 .show();
     }
 
-    public static void showAllertSucces(View view, String message, String action, View.OnClickListener onClickListener){
+    public static void showAllertSucces(View view, String message, String action, View.OnClickListener onClickListener) {
         Snacky.builder()
                 .setView(view)
                 .setText(message)
@@ -117,11 +120,11 @@ public class Constants {
     public static Uri ussdToCallableUri(String ussd) {
         String uriString = "";
 
-        if(!ussd.startsWith("tel:"))
+        if (!ussd.startsWith("tel:"))
             uriString += "tel:";
 
-        for(char c : ussd.toCharArray()) {
-            if(c == '#')
+        for (char c : ussd.toCharArray()) {
+            if (c == '#')
                 uriString += Uri.encode("#");
             else
                 uriString += c;
@@ -137,7 +140,7 @@ public class Constants {
 
         int stringLength = recipient.length();
 
-        if(recipient.length() == 9)
+        if (recipient.length() == 9)
             destinatairePhone = codePhone + recipient;
         else if (recipient.length() == 10)
             destinatairePhone = codePhone + recipient.substring(1, stringLength);
@@ -162,7 +165,7 @@ public class Constants {
         return plus ? Integer.valueOf(phone.substring(1, 4)) : Integer.valueOf(phone.substring(0, 3));
     }
 
-    public static void generateQRcode(String data, ImageView imageView, WindowManager manager){
+    public static void generateQRcode(String data, ImageView imageView, WindowManager manager) {
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
@@ -180,11 +183,11 @@ public class Constants {
         }
     }
 
-    public static boolean containsIgnoreCase(String haystack, String needle){
-        if(needle.equals(""))
+    public static boolean containsIgnoreCase(String haystack, String needle) {
+        if (needle.equals(""))
             return true;
 
-        if(haystack == null || haystack.equals(""))
+        if (haystack == null || haystack.equals(""))
             return false;
 
         Pattern pattern = Pattern.compile(needle, Pattern.CASE_INSENSITIVE + Pattern.LITERAL);
@@ -216,5 +219,13 @@ public class Constants {
                 .setDuration(Snacky.LENGTH_LONG)
                 .success()
                 .show();
+    }
+
+    public static String truncFloat(float number) {
+        DecimalFormat df = new DecimalFormat("#######.##");
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator(',');
+        df.setDecimalFormatSymbols(dfs);
+        return df.format(BigDecimal.valueOf(number).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
     }
 }

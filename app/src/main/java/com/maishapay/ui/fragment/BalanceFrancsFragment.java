@@ -24,6 +24,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.util.Constants;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class BalanceFrancsFragment extends Fragment {
         return fragment;
     }
 
-    public void setChartData(String solde, int envoi, int recu) {
+    public void setChartData(String solde, float envoi, float recu) {
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -62,7 +63,7 @@ public class BalanceFrancsFragment extends Fragment {
 
         mChart.setCenterTextTypeface(mTfLight);
 
-        SpannableString spannableString = new SpannableString(String.format("%s Fc", solde));
+        SpannableString spannableString = new SpannableString(String.format("%s Fc", Constants.truncFloat(Float.valueOf(solde))));
         spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
         mChart.setCenterText(spannableString);
 
@@ -113,18 +114,18 @@ public class BalanceFrancsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setChartData(getArguments().getString(EXTRA_SOLDE_FRANCS), getArguments().getInt(EXTRA_SOLDE_ENVOI), getArguments().getInt(EXTRA_SOLDE_RECU));
+        setChartData(getArguments().getString(EXTRA_SOLDE_FRANCS), getArguments().getFloat(EXTRA_SOLDE_ENVOI), getArguments().getFloat(EXTRA_SOLDE_RECU));
     }
 
-    private void setData(String solde, int envoi, int recu) {
+    private void setData(String solde, float envoi, float recu) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        if(Float.valueOf(solde) >= 0) {
-            if(recu <= 0 && envoi <= 0) {
-                entries.add(new PieEntry((float) 100, ""));
+        if(Float.valueOf(solde) >= 0f) {
+            if(recu <= 0f && envoi <= 0f) {
+                entries.add(new PieEntry(100f, "Pas de transactions."));
             } else {
-                entries.add(new PieEntry((float) recu < 0 ? 0 : recu, "Reçu"));
-                entries.add(new PieEntry((float) envoi < 0 ? 0 : envoi, "Envoyé"));
+                entries.add(new PieEntry(recu < 0f ? 0f : recu, "Reçu"));
+                entries.add(new PieEntry(envoi < 0f ? 0f : envoi, "Envoyé"));
             }
         } else {
             SpannableString spannableString = new SpannableString("Vous avez une dette.");

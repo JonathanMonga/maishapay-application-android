@@ -17,7 +17,6 @@
 package com.maishapay.ui.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,6 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -69,7 +69,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
 
-    private ProgressDialog progressDialog;
+    private SpotsDialog progressDialog;
     private DialogConfirmEpargneFragment dialogConfirmEpargneFragment;
     private static String userCurrency;
     private boolean flagTransfert = false;
@@ -151,14 +151,11 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     }
 
     private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
+        progressDialog = new SpotsDialog(this, R.style.Custom);
     }
-
     @Override
     public void showTranfertError(int type) {
+        enabledControls(true);
         if (type == 0)
             Snacky.builder()
                     .setView(findViewById(R.id.root))

@@ -24,6 +24,7 @@ import com.maishapay.presenter.TransactionPresenter;
 import com.maishapay.ui.adapter.TransactionAdapter;
 import com.maishapay.ui.menu.MenuHelper;
 import com.maishapay.util.Constants;
+import com.maishapay.util.LogCat;
 import com.maishapay.view.TransactionView;
 
 import org.alfonz.utility.NetworkUtility;
@@ -37,15 +38,22 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.model.MaishapayNotification.EXTRA_NOTIFICATION;
 
-public class TransactionActivity extends BaseActivity<TransactionPresenter, TransactionView> implements TransactionView{
+public class TransactionActivity extends BaseActivity<TransactionPresenter, TransactionView> implements TransactionView {
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.loadingProgressBar) ProgressBar progressBar;
-    @BindView(R.id.ET_FrancsEnvoye) TextView ET_FrancsEnvoye;
-    @BindView(R.id.ET_FrancsRecu) TextView ET_FrancsRecu;
-    @BindView(R.id.ET_DollarsEnvoye) TextView ET_DollarsEnvoye;
-    @BindView(R.id.ET_DollarsRecu) TextView ET_DollarsRecu;
-    @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.loadingProgressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.ET_FrancsEnvoye)
+    TextView ET_FrancsEnvoye;
+    @BindView(R.id.ET_FrancsRecu)
+    TextView ET_FrancsRecu;
+    @BindView(R.id.ET_DollarsEnvoye)
+    TextView ET_DollarsEnvoye;
+    @BindView(R.id.ET_DollarsRecu)
+    TextView ET_DollarsRecu;
+    @BindView(R.id.toolbar_actionbar)
+    Toolbar toolbar;
 
     private TransactionAdapter mAdapter;
     private MenuHelper menuHelper;
@@ -63,7 +71,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
         ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
@@ -76,20 +84,24 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     protected void onResume() {
         super.onResume();
 
-        if(getIntent().hasExtra(EXTRA_NOTIFICATION) && NetworkUtility.isOnline(this)) {
+        if (NetworkUtility.isOnline(this)) {
+            progressBar.setVisibility(View.VISIBLE);
+            getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else if (getIntent().hasExtra(EXTRA_NOTIFICATION) && NetworkUtility.isOnline(this)) {
             progressBar.setVisibility(View.VISIBLE);
             getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
             getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
         } else {
             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-            if(userDataPreference.getTransactionItemResponse() != null) {
+            if (userDataPreference.getTransactionItemResponse() != null) {
                 progressBar.setVisibility(View.INVISIBLE);
+                LogCat.e("Tout est bon " + userDataPreference.getTransactionItemResponse().size());
 
-                ET_FrancsEnvoye.setText(String.format("%s Fc", userDataPreference.getEnvoiFrancs()));
-                ET_FrancsRecu.setText(String.format("%s Fc", userDataPreference.getRecuFrancs()));
-                ET_DollarsEnvoye.setText(String.format("%s $", userDataPreference.getEnvoiDollars()));
-                ET_DollarsRecu.setText(String.format("%s $", userDataPreference.getRecuDollars()));
+                ET_FrancsEnvoye.setText(String.format("%s Fc", Constants.truncFloat(userDataPreference.getEnvoiFrancs())));
+                ET_FrancsRecu.setText(String.format("%s Fc", Constants.truncFloat(userDataPreference.getRecuFrancs())));
+                ET_DollarsEnvoye.setText(String.format("%s $", Constants.truncFloat(userDataPreference.getEnvoiDollars())));
+                ET_DollarsRecu.setText(String.format("%s $", Constants.truncFloat(userDataPreference.getRecuDollars())));
 
                 mAdapter = new TransactionAdapter(userDataPreference.getTransactionItemResponse());
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -98,6 +110,8 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
                 recyclerView.setAdapter(mAdapter);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
+
+                LogCat.e("Tout n'est bon ");
             }
         }
     }
@@ -129,10 +143,10 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
 
     @Override
     public void finishToLoadStatisics(UserDataPreference responses) {
-        ET_FrancsEnvoye.setText(String.format("%s Fc", responses.getEnvoiFrancs()));
-        ET_FrancsRecu.setText(String.format("%s Fc", responses.getRecuFrancs()));
-        ET_DollarsEnvoye.setText(String.format("%s $", responses.getEnvoiDollars()));
-        ET_DollarsRecu.setText(String.format("%s $", responses.getRecuDollars()));
+        ET_FrancsEnvoye.setText(String.format("%s Fc", Constants.truncFloat(responses.getEnvoiFrancs())));
+        ET_FrancsRecu.setText(String.format("%s Fc", Constants.truncFloat(responses.getRecuFrancs())));
+        ET_DollarsEnvoye.setText(String.format("%s $", Constants.truncFloat(responses.getEnvoiDollars())));
+        ET_DollarsRecu.setText(String.format("%s $", Constants.truncFloat(responses.getRecuDollars())));
     }
 
     @NonNull
@@ -152,12 +166,19 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_rafrechir : {
-                menuHelper.setMenuItem(item);
-                menuHelper.startLoading();
-
-                progressBar.setVisibility(View.VISIBLE);
-                getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+            case R.id.action_rafrechir: {
+                if (NetworkUtility.isOnline(this)) {
+                    menuHelper.setMenuItem(item);
+                    menuHelper.startLoading();
+                    progressBar.setVisibility(View.VISIBLE);
+                    getPresenter().transactions(UserPrefencesManager.getCurrentUser().getTelephone());
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Aucune connexion réseau. Réessayez plus tard.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
             }
         }
 

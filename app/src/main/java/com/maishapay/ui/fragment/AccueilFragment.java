@@ -1,8 +1,8 @@
 package com.maishapay.ui.fragment;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,15 +32,12 @@ import com.maishapay.service.MaishapayService;
 import com.maishapay.ui.activities.ConversionActivity;
 import com.maishapay.ui.activities.EpargneActivity;
 import com.maishapay.ui.activities.PaiementActivity;
-import com.maishapay.ui.activities.PaymentWebActivity;
 import com.maishapay.ui.activities.RetraitActivity;
 import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.ui.activities.TransfertCompteActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
 import com.maishapay.ui.menu.MenuHelper;
-import com.maishapay.ui.qrcode.DecoderActivity;
-import com.maishapay.util.Constants;
 import com.maishapay.view.AccueilView;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -51,7 +48,6 @@ import com.rd.animation.type.AnimationType;
 import com.rd.draw.data.Orientation;
 import com.rd.draw.data.RtlMode;
 
-import org.alfonz.media.SoundManager;
 import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
@@ -64,12 +60,7 @@ import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import de.mateware.snacky.Snacky;
 
-import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
-
 public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView> implements AccueilView {
-    public static final String EXTRA_QR_CODE_FRAGMENT = "scan_from_fragment";
-    private static final int REQUEST_QRCODE = 1;
-    private static final int REQUEST_PAYMENT = 2;
 
     @BindView(R.id.progressBarSolde)
     ProgressBar progressBarSolde;
@@ -94,7 +85,15 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     private MenuHelper menuHelper;
     private BalanceFrancsFragment balanceFrancsFragment;
     private BalanceDollarsFragment balanceDollarsFragment;
-    private SoundManager soundManager;
+    private ScannerListener scannerListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof ScannerListener)
+            scannerListener = (ScannerListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +104,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         setHasOptionsMenu(true);
 
         getContext().startService(new Intent(getContext(), MaishapayService.class));
-        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
         menuHelper = new MenuHelper();
 
         mAuth = FirebaseAuth.getInstance();
@@ -114,49 +112,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         initProgressBar();
 
         return view;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        soundManager.stopAll();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_QRCODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "urn:maishapay://data=")) {
-                    soundManager.playAsset("sounds/job-done.mp3");
-                    String response = data.getStringExtra(DecoderActivity.EXTRA_QRCODE).substring(21, data.getStringExtra(DecoderActivity.EXTRA_QRCODE).length());
-                    Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), PaymentWebActivity.class);
-                    intent.putExtra(PaymentWebActivity.EXTRA_DATA, response);
-                    startActivityForResult(intent, REQUEST_PAYMENT);
-                } else if (Constants.containsIgnoreCase(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), "telephone")) {
-                    soundManager.playAsset("sounds/job-done.mp3");
-                    UserResponse userResponse = new Gson().fromJson(data.getStringExtra(DecoderActivity.EXTRA_QRCODE), UserResponse.class);
-                    Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
-                    intent.putExtra(TransfertCompteActivity.EXTRA_DATA, userResponse.getTelephone());
-                    startActivity(intent);
-                } else
-                    Snacky.builder()
-                            .setView(getView())
-                            .setText("Désolé, vous avez scanné un mauvais Code QR.")
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
-            }
-        } else if (requestCode == REQUEST_PAYMENT) {
-            if (resultCode == RESULT_TRANSFERT_ERROR) {
-                Snacky.builder()
-                        .setView(getView())
-                        .setText("Désolé, une erreur est survenu lors du paiement.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
-            }
-        }
     }
 
     @Override
@@ -367,17 +322,22 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-
             case R.id.action_rafrechir: {
-                menuHelper.setMenuItem(item);
-                enabledControls(false);
-                getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+                if (NetworkUtility.isOnline(getActivity())) {
+                    menuHelper.setMenuItem(item);
+                    enabledControls(false);
+                    getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+                } else
+                    Snacky.builder()
+                            .setView(getView())
+                            .setText("Aucune connexion réseau. Réessayez plus tard.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
             }
 
-            default:
-                return super.onOptionsItemSelected(item);
+            default: return super.onOptionsItemSelected(item);
         }
     }
 
@@ -442,9 +402,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), DecoderActivity.class);
-                            intent.putExtra(EXTRA_QR_CODE_FRAGMENT, true);
-                            startActivity(intent);
+                            scannerListener.onScanClicked();
                         }
                     }, 430);
                     break;

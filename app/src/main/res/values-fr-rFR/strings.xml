@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Maishapay</string>
+
+    <string name="time_ago_now">il y a quelques instants</string>
+    <string name="time_ago_full_seconds">il y a %1$d secondes</string>
+    <string name="time_ago_full_minute">il y a %1$d minute</string>
+    <string name="time_ago_full_minutes">%1$d minutes auparavant</string>
+    <string name="time_ago_full_hour">Il y a %1$d heure</string>
+    <string name="time_ago_full_hours">Il y a %1$d heures</string>  
+    <string name="time_ago_full_yesterday_at">Hier à %1$s</string>
+    <string name="time_ago_full_days">il y a %1$d jours</string>
+    <string name="time_ago_full_month">%1$d mois auparavant</string>   
+    <string name="time_ago_full_months">il y a %1$d mois</string>
+    <string name="time_ago_seconds">Il y a %1$d seconde</string>
+    <string name="time_ago_minute">Il y a %1$d minute</string>
+    <string name="time_ago_minutes">%1$d min de plus tôt</string>
+    <string name="time_ago_hour">il y a %1$h</string>
+    <string name="time_ago_hours">il y a %1$d h</string>
+    <string name="time_ago_yesterday_at">Hier à %1$s</string>
+    <string name="time_ago_days">Il y a %1$d jours</string>    
+    <string name="time_ago_month">Il y a %1$d mois</string>  
+    <string name="time_ago_months">Il y a %1$ mois</string>
+</resources>
