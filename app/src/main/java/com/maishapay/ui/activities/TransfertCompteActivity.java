@@ -72,6 +72,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
+    private static final int REQUEST_SUCCESS_PAYMENT = 3;
 
     public static final String EXTRA_DATA = "transfert_data";
     private static String CDF = "Francs congolais (CDF)";
@@ -212,6 +213,9 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             if (resultCode == RESULT_TRANSFERT_ERROR) {
                 showTranfertError(data.getIntExtra(EXTRA_ERROR_CODE, -1));
             }
+        } else if (requestCode == REQUEST_SUCCESS_PAYMENT) {
+            UserPrefencesManager.setUserRefresh(true);
+            finish();
         }
     }
 
@@ -290,6 +294,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
     @Override
     public void finishToConfirm() {
+        getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
+
         dialogForgotFragment.dismiss();
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
@@ -299,8 +305,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
         intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
 
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent, REQUEST_SUCCESS_PAYMENT);
     }
 
     @Override

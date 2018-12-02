@@ -18,8 +18,11 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.client.response.TransactionConfirmationResponse;
 import com.maishapay.model.client.response.TransfertResponse;
+import com.maishapay.model.domain.UserDataPreference;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.TransfertView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -125,6 +128,21 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                                 }
                             }
                         }
+                    }
+                }));
+    }
+
+    public void solde(String telephone) {
+        disposableHandler.manageDisposable(maishapayClient.solde(telephone)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<SoldeResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(SoldeResponse response) {
+                        UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+                        userDataPreference.setSoldeFrancs(response.getFrancCongolais());
+                        userDataPreference.setSoldeDollars(response.getDollard());
+                        UserPrefencesManager.setUserDataPreference(userDataPreference);
                     }
                 }));
     }

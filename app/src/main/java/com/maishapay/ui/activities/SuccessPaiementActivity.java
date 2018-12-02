@@ -2,7 +2,6 @@ package com.maishapay.ui.activities;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +28,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     public static final String EXTRA_MONNAIE = "monnaie";
     public static final String EXTRA_DESTINATAIRE = "destinataire";
     public static final String EXTRA_REFRESH = "refresh";
+    public static final int RESULT_REFRESH = 1;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -71,16 +71,6 @@ public class SuccessPaiementActivity extends AppCompatActivity {
 
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
-        UserPrefencesManager.setUserRefresh(true);
-
-        if (getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Epargne")) {
-            Intent intent = new Intent(this, EpargneActivity.class);
-            intent.putExtra(EXTRA_REFRESH, true);
-            startActivity(intent);
-        } else {
-            startActivity(new Intent(this, DrawerActivity.class));
-        }
-
         finish();
     }
 
