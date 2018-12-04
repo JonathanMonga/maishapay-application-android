@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -50,7 +51,6 @@ import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -137,27 +137,29 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
                 Resources resources = getResources();
                 Collection<FitChartValue> valuesFrancs = new ArrayList<>();
-                valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, resources.getColor(R.color.ab_abastecimento_status_bar)));
+                valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, Color.parseColor("#689F38")));
 
                 Collection<FitChartValue> valuesDollars = new ArrayList<>();
-                valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
+                valuesDollars.add(new FitChartValue(dollarsInt * 100, R.color.md_light_green_700));
 
                 TV_Dollars.setText(String.format("%s $", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneDollars()))));
                 TV_Francs.setText(String.format("%s Fc", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneFrancs()))));
+
                 francsChart.setValues(valuesFrancs);
                 dollarsChart.setValues(valuesDollars);
             }
         }
     }
 
-    @OnClick(R.id.cardEpargnePersonelle)
-    public void cardEpargnePersonelleClicked() {
-        startActivityForResult(new Intent(this, EpargnePersonnelleActivity.class), 2);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return menuHelper.onCreateOptionsMenu(getMenuInflater(), menu, true);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_transfert).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -167,14 +169,23 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 if(UserPrefencesManager.getUserRefresh()){
                     setResult(RESULT_EPARGNE_OK);
                 }
+
                 finish();
                 return true;
+
+            case R.id.action_transfert: {
+                menuHelper.stopLoading();
+                startActivityForResult(new Intent(this, EpargnePersonnelleActivity.class), 2);
+                return true;
+            }
+
             case R.id.action_rafrechir: {
                 menuHelper.setMenuItem(item);
                 menuHelper.startLoading();
 
                 enabledControls(false);
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+                return true;
             }
         }
         return super.onOptionsItemSelected(item);

@@ -101,7 +101,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:text="0996980422"
+                                    android:text="Jonathan Monga"
                                     android:id="@+id/TV_Noms"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
@@ -121,10 +121,11 @@
 
                                     <TextView
                                         android:id="@+id/telephone"
+                                        android:text="+243996980422"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/black_36"
-                                        android:textSize="@dimen/font_normal_minus" />
+                                        android:textSize="@dimen/font_small" />
                                 </LinearLayout>
                             </LinearLayout>
 

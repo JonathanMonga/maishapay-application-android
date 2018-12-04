@@ -52,10 +52,13 @@ import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.DrawerActivity.EXTRA_EPARGNE_DRAWER;
+
 
 public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePresenter, EpargnePersonelleView> implements NumPadPossitiveButtonListener, PossitiveButtonConfirmListener, EpargnePersonelleView {
 
     private static final int REQUEST_QRCODE = 1;
+    public static final int RESULT_TRANSFERT_EPARGNE_OK = 2;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
 
@@ -188,9 +191,14 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     public void finishToConfirm() {
         flagTransfert = false;
         dialogConfirmEpargneFragment.dismiss();
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_REFRESH, true);
-        setResult(Activity.RESULT_OK, intent);
+        if(getIntent().hasExtra(EXTRA_EPARGNE_DRAWER)) {
+            setResult(RESULT_TRANSFERT_EPARGNE_OK);
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_REFRESH, true);
+            setResult(Activity.RESULT_OK, intent);
+        }
+
         finish();
     }
 

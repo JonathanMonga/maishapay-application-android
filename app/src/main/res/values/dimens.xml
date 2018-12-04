@@ -45,7 +45,7 @@
     <dimen name="item_view_min_height">72.0dip</dimen>
     <dimen name="record_list_category_icon_size">40.0dip</dimen>
     <dimen name="font_normal_plus">16.0sp</dimen>
-    <dimen name="font_normal_minus">14.0sp</dimen>
+    <dimen name="font_normal_minus">12.0sp</dimen>
     <dimen name="font_smaller">10.0sp</dimen>
     <dimen name="font_small">12.0sp</dimen>
 </resources>

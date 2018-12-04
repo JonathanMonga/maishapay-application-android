@@ -68,7 +68,8 @@
                                 android:layout_height="120dp"
                                 android:layout_gravity="center"
                                 app:animationMode="overdraw"
-                                app:strokeSize="10dp" />
+                                app:valueStrokeColor="@color/md_light_green_700"
+                                app:strokeSize="20dp" />
 
                             <TextView
                                 android:id="@+id/TV_Francs"
@@ -113,7 +114,8 @@
                                 android:layout_height="120dp"
                                 android:layout_gravity="center"
                                 app:animationMode="overdraw"
-                                app:strokeSize="10dp" />
+                                app:valueStrokeColor="@color/md_light_green_700"
+                                app:strokeSize="20dp" />
 
                             <TextView
                                 android:id="@+id/TV_Dollars"
@@ -141,7 +143,9 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
-            <include layout="@layout/card_epargne_personelle" />
+            <include
+                android:visibility="gone"
+                layout="@layout/card_epargne_personelle" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

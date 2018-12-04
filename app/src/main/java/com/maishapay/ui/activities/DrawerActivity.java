@@ -48,10 +48,12 @@ import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.EpargneActivity.RESULT_EPARGNE_OK;
+import static com.maishapay.ui.activities.EpargnePersonnelleActivity.RESULT_TRANSFERT_EPARGNE_OK;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
 import static com.maishapay.ui.activities.TransfertCompteActivity.RESULT_TRANSFERT_OK;
 
 public class DrawerActivity extends AppCompatActivity implements DashboardClickListener {
+    public static final String EXTRA_EPARGNE_DRAWER = "epargnr";
     public static boolean is_running = false;
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
@@ -60,6 +62,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     private static final int REQUEST_EPARGNE = 5;
     private static final int REQUEST_TRANSITION = 6;
     private static final int REQUEST_PAIEMENT = 7;
+    private static final int REQUEST_TRANSFERT_EPARGNE = 8;
 
     public static final String EXTRA_QR_CODE_FRAGMENT = "scan_from_fragment";
 
@@ -333,6 +336,15 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                 Fragment f = new AccueilFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
             }
+        } else if (requestCode == REQUEST_TRANSFERT_EPARGNE) {
+            if (resultCode == RESULT_TRANSFERT_EPARGNE_OK) {
+                setTitle("Maishapay");
+                Fragment f = new AccueilFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
+
+                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -361,8 +373,39 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
     @Override
     public void onTransfertClicked() {
-        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
-        startActivityForResult(intent, REQUEST_TRANSFERT);
+        new MaterialDialog.Builder(this)
+                .title("Type de transfert.")
+                .items(R.array.option_transfert)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                        switch (position) {
+                            case 0: {
+                                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
+                                startActivityForResult(intent, REQUEST_TRANSFERT);
+                                break;
+                            }
+
+                            case 1: {
+                                Snacky.builder()
+                                        .setView(findViewById(R.id.root))
+                                        .setText("Désolé, cette fonctionnalit n'est pas disponible.")
+                                        .setDuration(Snacky.LENGTH_LONG)
+                                        .warning()
+                                        .show();
+                                break;
+                            }
+
+                            default: {
+                                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargnePersonnelleActivity.class);
+                                intent.putExtra(EXTRA_EPARGNE_DRAWER, true);
+                                startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
+                                break;
+                            }
+                        }
+                    }
+                })
+                .show();
     }
 
     @Override

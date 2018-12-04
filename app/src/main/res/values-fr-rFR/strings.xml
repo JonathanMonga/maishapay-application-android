@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Maishapay</string>
 
-    <string name="time_ago_now">il y a quelques instants</string>
+    <string name="time_ago_now">Aujourd\'hui</string>
     <string name="time_ago_full_seconds">il y a %1$d secondes</string>
     <string name="time_ago_full_minute">il y a %1$d minute</string>
     <string name="time_ago_full_minutes">%1$d minutes auparavant</string>
