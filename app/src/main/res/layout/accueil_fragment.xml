@@ -74,7 +74,7 @@
                         fontPath="fonts/Roboto-Light.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Taux d'echange"
+                        android:text="@string/taux_d_echange"
                         android:textColor="@color/green_dark"
                         android:textSize="16sp" />
 
@@ -144,7 +144,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Transfert d'argent"
+                            android:text="@string/transfert_d_argent"
                             android:textColor="@color/ab_despesa"
                             android:textStyle="bold" />
 
@@ -159,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Transferer de l'agent ou que vous soyez."
+                            android:text="@string/transferer_de_l_agent_ou_que_vous_soyez"
                             android:textColor="@android:color/darker_gray" />
 
                     </LinearLayout>
@@ -198,7 +198,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Epargne"
+                            android:text="@string/epargne"
                             android:textColor="@color/ab_despesa"
                             android:textStyle="bold" />
 
@@ -213,7 +213,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Epargner pour vous ou pour un proche."
+                            android:text="@string/epargner_pour_vous_ou_pour_un_proche"
                             android:textColor="@android:color/darker_gray" />
 
                     </LinearLayout>
@@ -261,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Transactions"
+                            android:text="@string/transactions"
                             android:textColor="@color/ab_despesa"
                             android:textStyle="bold" />
 
@@ -276,7 +276,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
-                            android:text="Consulter votre historique des transactions."
+                            android:text="@string/consulter_votre_historique_des_transactions"
                             android:textColor="@android:color/darker_gray" />
 
                     </LinearLayout>

@@ -73,6 +73,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
     private static final int REQUEST_SUCCESS_PAYMENT = 3;
+    public static final int RESULT_TRANSFERT_OK = 4;
 
     public static final String EXTRA_DATA = "transfert_data";
     private static String CDF = "Francs congolais (CDF)";
@@ -215,6 +216,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             }
         } else if (requestCode == REQUEST_SUCCESS_PAYMENT) {
             UserPrefencesManager.setUserRefresh(true);
+            setResult(RESULT_TRANSFERT_OK);
             finish();
         }
     }
@@ -229,12 +231,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                 .check();
 
         if (! validator) {
-            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
-            return;
-        }
-
-        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
-            toastMessage("Montant incorrect.", R.id.ET_Montant);
+            toastMessage("Le numero est incorrect.", R.id.ET_Destinataire);
             return;
         }
 
@@ -244,7 +241,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
 
         if (! new Validator(destinatairePhone).textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone()).check()) {
-            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
+            toastMessage("Le numero est incorrect.", R.id.ET_Destinataire);
+            return;
+        }
+
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
 

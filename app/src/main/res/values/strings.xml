@@ -74,4 +74,5 @@
     <string name="informations_sur_le_produit"><u>Informations sur la transaction</u></string>
     <string name="scan">Scanner un code QR</string>
     <string name="scan_sub">Scanner pour effectuer une transaction.</string>
+    <string name="www_maishapay_online">www.maishapay.online</string>
 </resources>

@@ -23,7 +23,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
 import com.maishapay.ui.fragment.ContactFragment;
-import com.maishapay.ui.fragment.ScannerListener;
+import com.maishapay.ui.fragment.DashboardClickListener;
 import com.maishapay.ui.fragment.SettingsFragment;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
@@ -47,13 +47,20 @@ import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.EpargneActivity.RESULT_EPARGNE_OK;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
+import static com.maishapay.ui.activities.TransfertCompteActivity.RESULT_TRANSFERT_OK;
 
-public class DrawerActivity extends AppCompatActivity implements ScannerListener {
+public class DrawerActivity extends AppCompatActivity implements DashboardClickListener {
     public static boolean is_running = false;
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
     private static final int REQUEST_PROFIL = 3;
+    private static final int REQUEST_TRANSFERT = 4;
+    private static final int REQUEST_EPARGNE = 5;
+    private static final int REQUEST_TRANSITION = 6;
+    private static final int REQUEST_PAIEMENT = 7;
+
     public static final String EXTRA_QR_CODE_FRAGMENT = "scan_from_fragment";
 
     private Drawer result = null;
@@ -314,6 +321,18 @@ public class DrawerActivity extends AppCompatActivity implements ScannerListener
                         .error()
                         .show();
             }
+        } else if (requestCode == REQUEST_TRANSFERT) {
+            if (resultCode == RESULT_TRANSFERT_OK) {
+                setTitle("Maishapay");
+                Fragment f = new AccueilFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
+            }
+        } else if (requestCode == REQUEST_EPARGNE) {
+            if (resultCode == RESULT_EPARGNE_OK) {
+                setTitle("Maishapay");
+                Fragment f = new AccueilFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
+            }
         }
     }
 
@@ -338,5 +357,27 @@ public class DrawerActivity extends AppCompatActivity implements ScannerListener
         Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), DecoderActivity.class);
         intent.putExtra(EXTRA_QR_CODE_FRAGMENT, true);
         startActivityForResult(intent, REQUEST_QRCODE);
+    }
+
+    @Override
+    public void onTransfertClicked() {
+        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
+        startActivityForResult(intent, REQUEST_TRANSFERT);
+    }
+
+    @Override
+    public void onTransactiosClicked() {
+
+    }
+
+    @Override
+    public void onEpargneClicked() {
+        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class);
+        startActivityForResult(intent, REQUEST_EPARGNE);
+    }
+
+    @Override
+    public void onPaiementClicked() {
+
     }
 }

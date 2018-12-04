@@ -209,13 +209,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
                 .textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone())
                 .check();
 
-        if (!validator) {
-            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
-            return;
-        }
-
-        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
-            toastMessage("Montant incorrect.", R.id.ET_Montant);
+        if (! validator) {
+            toastMessage("Le numero est incorrect.", R.id.ET_Destinataire);
             return;
         }
 
@@ -223,6 +218,16 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+
+        if (! new Validator(destinatairePhone).textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone()).check()) {
+            toastMessage("Le numero est incorrect.", R.id.ET_Destinataire);
+            return;
+        }
+
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 3000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 3F) ) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
+            return;
+        }
 
         flagRetrait = true;
         enabledControls(false);

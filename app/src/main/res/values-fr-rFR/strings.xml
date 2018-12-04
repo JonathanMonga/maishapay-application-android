@@ -21,4 +21,11 @@
     <string name="time_ago_days">Il y a %1$d jours</string>    
     <string name="time_ago_month">Il y a %1$d mois</string>  
     <string name="time_ago_months">Il y a %1$d mois</string>
+    <string name="taux_d_echange">Taux d\'echange</string>
+    <string name="transfert_d_argent">Transfert d\'argent</string>
+    <string name="transferer_de_l_agent_ou_que_vous_soyez">Transferer de l\'agent ou que vous soyez.</string>
+    <string name="epargne">Epargne</string>
+    <string name="epargner_pour_vous_ou_pour_un_proche">Epargner pour vous ou pour un proche.</string>
+    <string name="transactions">Transactions</string>
+    <string name="consulter_votre_historique_des_transactions">Consulter votre historique des transactions.</string>
 </resources>

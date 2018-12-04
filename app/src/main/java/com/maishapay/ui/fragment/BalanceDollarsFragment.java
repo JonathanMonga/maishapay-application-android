@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.maishapay.R;
@@ -34,13 +37,17 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BalanceDollarsFragment extends Fragment {
+public class BalanceDollarsFragment extends Fragment implements OnChartValueSelectedListener {
     private static final String EXTRA_SOLDE_DOLLARS = "solde";
     private static final String EXTRA_SOLDE_ENVOI = "envoi";
     private static final String EXTRA_SOLDE_RECU = "recu";
 
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
+    private ArrayList<PieEntry> entries;
+    private float mSolde;
+    private float mRecu;
+    private float mEnvoi;
 
     public static BalanceDollarsFragment newInstance(String solde, float envoi, float recu) {
         BalanceDollarsFragment fragment = new BalanceDollarsFragment();
@@ -55,6 +62,10 @@ public class BalanceDollarsFragment extends Fragment {
     }
 
     public void setChartData(String solde, float envoi, float recu){
+        mSolde = Float.valueOf(solde);
+        mRecu = recu;
+        mEnvoi = envoi;
+
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -66,6 +77,8 @@ public class BalanceDollarsFragment extends Fragment {
         SpannableString spannableString = new SpannableString(String.format("%s $", Constants.truncFloat(Float.valueOf(solde))));
         spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
         mChart.setCenterText(spannableString);
+
+        mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);
@@ -82,7 +95,7 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setRotationEnabled(true);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData(solde, envoi, recu);
+        setData();
 
         mChart.animateY(1400, Easing.EasingOption.EaseInBack);
 
@@ -116,15 +129,15 @@ public class BalanceDollarsFragment extends Fragment {
         setChartData(getArguments().getString(EXTRA_SOLDE_DOLLARS), getArguments().getFloat(EXTRA_SOLDE_ENVOI), getArguments().getFloat(EXTRA_SOLDE_RECU));
     }
 
-    private void setData(String solde, float envoi, float recu) {
-        ArrayList<PieEntry> entries = new ArrayList<>();
+    private void setData() {
+        entries = new ArrayList<>();
 
-        if(Float.valueOf(solde) >= 0f) {
-            if(recu <= 0f && envoi <= 0f) {
+        if(mSolde >= 0f) {
+            if(mRecu <= 0f && mEnvoi <= 0f) {
                 entries.add(new PieEntry(100f, "Pas de transactions."));
             } else {
-                entries.add(new PieEntry(recu < 0f ? 0f : recu, "Reçu"));
-                entries.add(new PieEntry(envoi < 0f ? 0f : envoi, "Envoyé"));
+                entries.add(new PieEntry(mRecu < 0f ? 0f : mRecu, "Reçu"));
+                entries.add(new PieEntry(mEnvoi < 0f ? 0f : mEnvoi, "Envoyé"));
             }
         } else {
             SpannableString spannableString = new SpannableString("Vous avez une dette.");
@@ -156,5 +169,31 @@ public class BalanceDollarsFragment extends Fragment {
         mChart.setData(data);
 
         mChart.invalidate();
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if(((PieEntry)e).getLabel().equalsIgnoreCase("Pas de transactions.")) {
+            SpannableString spannableString = new SpannableString(String.format("%s $", Constants.truncFloat(0f)));
+            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+            mChart.setCenterText(spannableString);
+        } else if(((PieEntry)e).getLabel().equalsIgnoreCase("Reçu")) {
+            SpannableString spannableString = new SpannableString(String.format("%s $", Constants.truncFloat(((PieEntry)e).getValue())));
+            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+            mChart.setCenterText(spannableString);
+        } if(((PieEntry)e).getLabel().equalsIgnoreCase("Envoyé")) {
+            SpannableString spannableString = new SpannableString(String.format("%s $", Constants.truncFloat(((PieEntry)e).getValue())));
+            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+            mChart.setCenterText(spannableString);
+        }
+    }
+
+    @Override
+    public void onNothingSelected() {
+        SpannableString spannableString = new SpannableString(String.format("%s $", Constants.truncFloat(mSolde)));
+        spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
+        mChart.setCenterText(spannableString);
+
+        setData();
     }
 }

@@ -57,6 +57,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import static com.maishapay.ui.activities.SuccessPaiementActivity.EXTRA_REFRESH;
 
 public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView> implements EpargneView {
+    public static final int RESULT_EPARGNE_OK = 1;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -163,6 +164,9 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                if(UserPrefencesManager.getUserRefresh()){
+                    setResult(RESULT_EPARGNE_OK);
+                }
                 finish();
                 return true;
             case R.id.action_rafrechir: {
@@ -309,5 +313,15 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                     .error()
                     .show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(UserPrefencesManager.getUserRefresh()){
+            setResult(RESULT_EPARGNE_OK);
+            finish();
+        }
+
+        super.onBackPressed();
     }
 }

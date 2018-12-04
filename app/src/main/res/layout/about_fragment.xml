@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Maishapay"
+                    android:text="@string/app_name"
                     android:textSize="30sp"
                     android:textStyle="bold"/>
 
@@ -142,7 +142,7 @@
                     android:layout_weight="1.0"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="www.maishapay.online"
+                    android:text="@string/www_maishapay_online"
                     android:textColor="#ffffffff"
                     android:textSize="16.0sp"
                     fontpath="Roboto-Medium.ttf" />

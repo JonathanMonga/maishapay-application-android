@@ -29,11 +29,9 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.AccueilPresenter;
 import com.maishapay.service.MaishapayService;
 import com.maishapay.ui.activities.ConversionActivity;
-import com.maishapay.ui.activities.EpargneActivity;
 import com.maishapay.ui.activities.PaiementActivity;
 import com.maishapay.ui.activities.RetraitActivity;
 import com.maishapay.ui.activities.TransactionActivity;
-import com.maishapay.ui.activities.TransfertCompteActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
 import com.maishapay.ui.menu.MenuHelper;
@@ -82,14 +80,14 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public PaieMoiDialogFragment paieMoiDialogFragment;
 
     private MenuHelper menuHelper;
-    private ScannerListener scannerListener;
+    private DashboardClickListener dashboardClickListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if(context instanceof ScannerListener)
-            scannerListener = (ScannerListener) context;
+        if(context instanceof DashboardClickListener)
+            dashboardClickListener = (DashboardClickListener) context;
     }
 
     @Override
@@ -195,7 +193,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.epargneCardId})
     public void epargneClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
+        dashboardClickListener.onEpargneClicked();
     }
 
     @OnClick({R.id.transactionCardId})
@@ -205,7 +203,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.bankcardId})
     public void transfertClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class));
+        dashboardClickListener.onTransfertClicked();
     }
 
     @Override
@@ -370,7 +368,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            scannerListener.onScanClicked();
+                            dashboardClickListener.onScanClicked();
                         }
                     }, 430);
                     break;
