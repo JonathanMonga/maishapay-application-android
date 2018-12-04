@@ -12,7 +12,6 @@ import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.MaishapayNotification;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.util.Constants;
 
 import org.alfonz.media.SoundManager;
 
@@ -39,7 +38,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
 

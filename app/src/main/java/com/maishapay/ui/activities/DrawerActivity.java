@@ -66,7 +66,7 @@ public class DrawerActivity extends AppCompatActivity implements ScannerListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
 

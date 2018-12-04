@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:id="@+id/root"
     android:background="@color/md_light_green_700"
     tools:ignore="MissingPrefix">

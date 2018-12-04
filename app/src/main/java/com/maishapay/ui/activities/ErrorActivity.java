@@ -19,7 +19,7 @@ public class ErrorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.activity_error);
         ButterKnife.bind(this);
 

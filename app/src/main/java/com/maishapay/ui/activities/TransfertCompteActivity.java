@@ -102,7 +102,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.transfert_compte_activity);
         ButterKnife.bind(this);
 
@@ -228,7 +228,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                 .textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone())
                 .check();
 
-        if (!validator) {
+        if (! validator) {
             toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
             return;
         }
@@ -242,6 +242,11 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getText().toString());
         else
             destinatairePhone = Constants.generatePhoneNumber(ET_Destinataire.getRecipients()[0].getEntry().getDestination());
+
+        if (! new Validator(destinatairePhone).textNotEqualTo(UserPrefencesManager.getCurrentUser().getTelephone()).check()) {
+            toastMessage("Le numero est incorrect", R.id.ET_Destinataire);
+            return;
+        }
 
         flagtransfert = true;
         enabledControls(false);
@@ -287,7 +292,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void showConfimationError(int type) {
         if (type == 0)
-            Toast.makeText(this, "Le code Pin saisi n'est pas correct.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Le code pin saisi n'est pas correct.", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Echec de transfert.", Toast.LENGTH_LONG).show();
     }
@@ -344,7 +349,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void positiveClicked(String pin) {
         enabledControls(false);
-        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_Destinataire.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override

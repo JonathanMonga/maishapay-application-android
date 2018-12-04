@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/md_green_800"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:ignore="MissingPrefix">
 
     <include layout="@layout/appbar_success" />

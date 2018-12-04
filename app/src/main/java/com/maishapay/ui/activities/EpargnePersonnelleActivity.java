@@ -61,6 +61,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
+    public static final String EXTRA_REFRESH = "refresh";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -77,7 +78,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.epargne_personnelle_activity);
         ButterKnife.bind(this);
 
@@ -187,12 +188,9 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     public void finishToConfirm() {
         flagTransfert = false;
         dialogConfirmEpargneFragment.dismiss();
-        Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Epargne");
-        intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        startActivity(intent);
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_REFRESH, true);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 

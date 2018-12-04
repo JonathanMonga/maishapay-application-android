@@ -61,7 +61,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.transaction_activity);
         ButterKnife.bind(this);
 

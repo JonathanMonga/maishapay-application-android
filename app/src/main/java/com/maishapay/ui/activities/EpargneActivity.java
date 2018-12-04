@@ -81,7 +81,6 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 
@@ -122,27 +121,31 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     protected void onResume() {
         super.onResume();
-        if (userDataPreference.getEpargneDollars() != null) {
-            LL_fitDollards.setVisibility(View.VISIBLE);
-            LL_fitFrancs.setVisibility(View.VISIBLE);
-            progressBarSolde.setVisibility(View.INVISIBLE);
-
-            int francsInt = Integer.valueOf(userDataPreference.getEpargneFrancs());
-            int dollarsInt = Integer.valueOf(userDataPreference.getEpargneDollars());
-
-            Resources resources = getResources();
-            Collection<FitChartValue> valuesFrancs = new ArrayList<>();
-            valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, resources.getColor(R.color.ab_abastecimento_status_bar)));
-
-            Collection<FitChartValue> valuesDollars = new ArrayList<>();
-            valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
-
-            TV_Dollars.setText(String.format("%s $", userDataPreference.getEpargneDollars()));
-            TV_Francs.setText(String.format("%s Fc", userDataPreference.getEpargneFrancs()));
-            francsChart.setValues(valuesFrancs);
-            dollarsChart.setValues(valuesDollars);
-        } else {
+        if (NetworkUtility.isOnline(this)) {
             getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
+        } else {
+            if (UserPrefencesManager.getUserDataPreference() != null) {
+                LL_fitDollards.setVisibility(View.VISIBLE);
+                LL_fitFrancs.setVisibility(View.VISIBLE);
+                progressBarSolde.setVisibility(View.INVISIBLE);
+
+                UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
+                float francsInt = Float.valueOf(userDataPreference.getEpargneFrancs());
+                float dollarsInt = Float.valueOf(userDataPreference.getEpargneDollars());
+
+                Resources resources = getResources();
+                Collection<FitChartValue> valuesFrancs = new ArrayList<>();
+                valuesFrancs.add(new FitChartValue(francsInt < 0 ? 0 : francsInt, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                Collection<FitChartValue> valuesDollars = new ArrayList<>();
+                valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
+
+                TV_Dollars.setText(String.format("%s $", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneDollars()))));
+                TV_Francs.setText(String.format("%s Fc", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneFrancs()))));
+                francsChart.setValues(valuesFrancs);
+                dollarsChart.setValues(valuesDollars);
+            }
         }
     }
 
@@ -180,8 +183,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         LL_fitFrancs.setVisibility(View.VISIBLE);
         progressBarSolde.setVisibility(View.INVISIBLE);
 
-        int francsInt = Integer.valueOf(response.getFrancCongolais());
-        int dollarsInt = Integer.valueOf(response.getDollard());
+        float francsInt = Float.valueOf(response.getFrancCongolais());
+        float dollarsInt = Float.valueOf(response.getDollard());
 
         Resources resources = getResources();
         Collection<FitChartValue> valuesFrancs = new ArrayList<>();
@@ -190,8 +193,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         Collection<FitChartValue> valuesDollars = new ArrayList<>();
         valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
 
-        TV_Dollars.setText(String.format("%s $", response.getDollard()));
-        TV_Francs.setText(String.format("%s Fc", response.getFrancCongolais()));
+        TV_Dollars.setText(String.format("%s $", Constants.truncFloat(Float.valueOf(response.getDollard()))));
+        TV_Francs.setText(String.format("%s Fc", Constants.truncFloat(Float.valueOf(response.getFrancCongolais()))));
         francsChart.setValues(valuesFrancs);
         dollarsChart.setValues(valuesDollars);
     }
@@ -215,6 +218,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         } else if (requestCode == 2)
             if (resultCode == Activity.RESULT_OK) {
                 enabledControls(false);
+                UserPrefencesManager.setUserRefresh(true);
                 getPresenter().soldeEpargne(UserPrefencesManager.getCurrentUser().getTelephone());
             }
     }
@@ -279,8 +283,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
 
                 UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
 
-                int francsInt = Integer.valueOf(userDataPreference.getEpargneFrancs());
-                int dollarsInt = Integer.valueOf(userDataPreference.getEpargneDollars());
+                float francsInt = Float.valueOf(userDataPreference.getEpargneFrancs());
+                float dollarsInt = Float.valueOf(userDataPreference.getEpargneDollars());
 
                 Resources resources = getResources();
                 Collection<FitChartValue> valuesFrancs = new ArrayList<>();
@@ -289,8 +293,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
                 Collection<FitChartValue> valuesDollars = new ArrayList<>();
                 valuesDollars.add(new FitChartValue(dollarsInt * 100, resources.getColor(R.color.ab_abastecimento_status_bar)));
 
-                TV_Dollars.setText(String.format("%s $", userDataPreference.getEpargneDollars()));
-                TV_Francs.setText(String.format("%s Fc", userDataPreference.getEpargneFrancs()));
+                TV_Dollars.setText(String.format("%s $", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneDollars()))));
+                TV_Francs.setText(String.format("%s Fc", Constants.truncFloat(Float.valueOf(userDataPreference.getEpargneFrancs()))));
                 francsChart.setValues(valuesFrancs);
                 dollarsChart.setValues(valuesDollars);
             }

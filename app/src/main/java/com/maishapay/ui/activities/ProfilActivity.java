@@ -42,7 +42,7 @@ public class ProfilActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.profil_layout);
 
         ButterKnife.bind(this);

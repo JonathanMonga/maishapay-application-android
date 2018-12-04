@@ -88,7 +88,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 

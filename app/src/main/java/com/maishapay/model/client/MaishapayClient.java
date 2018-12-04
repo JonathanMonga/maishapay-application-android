@@ -305,7 +305,7 @@ public final class MaishapayClient {
      *
      * @return The Double response.
      */
-    public Observable<Double> taux_du_jour() {
+    public Observable<Float> taux_du_jour() {
         return this.maishapayAPI.taux_du_jour(TAUX_PARAM, "usd");
     }
 

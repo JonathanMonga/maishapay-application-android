@@ -74,7 +74,7 @@ public class AirtimeActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airtime_layout);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         ButterKnife.bind(this);
 
         toolbar.setTitle("Achat crédit unité");

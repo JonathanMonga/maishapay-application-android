@@ -108,12 +108,12 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
         disposableHandler.manageDisposable(maishapayClient.taux_du_jour()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<Double>(getView()) {
+                .subscribeWith(new CallbackWrapper<Float>(getView()) {
                     @Override
-                    protected void onSuccess(Double aDouble) {
+                    protected void onSuccess(Float response) {
                         if (isViewAttached()) {
                             UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
-                            userDataPreference.setTaux(aDouble);
+                            userDataPreference.setTaux(response);
                             UserPrefencesManager.setUserDataPreference(userDataPreference);
                             getView().enabledControls(true);
                             getView().finishToLoadTaux();

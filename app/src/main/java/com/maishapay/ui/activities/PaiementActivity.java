@@ -40,7 +40,7 @@ public class PaiementActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.paiement_activity);
         ButterKnife.bind(this);
 

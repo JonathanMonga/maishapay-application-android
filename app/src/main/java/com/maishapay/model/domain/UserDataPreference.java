@@ -20,7 +20,7 @@ public class UserDataPreference {
     @SerializedName("recuDollars")
     private float recuDollars;
     @SerializedName("taux")
-    private double taux;
+    private float taux;
     @SerializedName("hasEpargneCompte")
     private boolean hasEpargneCompte = false;
     @SerializedName("epargneFrancs")
@@ -86,11 +86,11 @@ public class UserDataPreference {
         this.recuDollars = recuDollars;
     }
 
-    public double getTaux() {
+    public float getTaux() {
         return taux;
     }
 
-    public void setTaux(double taux) {
+    public void setTaux(float taux) {
         this.taux = taux;
     }
 

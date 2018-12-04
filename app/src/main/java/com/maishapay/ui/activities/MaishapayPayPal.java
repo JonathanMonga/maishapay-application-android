@@ -50,7 +50,7 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 

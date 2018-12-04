@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.maishapay.R;
+import com.maishapay.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +59,7 @@ public class DialogConfirmEpargneFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TV_Msg.setText(String.format("Vous allez transferer %s %s vers compte epargne, confirmez-vous ce transfert ?", getArguments().getString(EXTRA_MONTANT), getArguments().getString(EXTRA_DEVISE)));
+        TV_Msg.setText(String.format("Vous allez transferer %s %s vers compte epargne, confirmez-vous ce transfert ?", Constants.truncFloat(Float.valueOf(getArguments().getString(EXTRA_MONTANT))), getArguments().getString(EXTRA_DEVISE)));
         setCancelable(false);
     }
 

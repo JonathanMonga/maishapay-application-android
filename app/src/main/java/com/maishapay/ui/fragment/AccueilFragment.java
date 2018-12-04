@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.maishapay.R;
@@ -83,8 +82,6 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     public PaieMoiDialogFragment paieMoiDialogFragment;
 
     private MenuHelper menuHelper;
-    private BalanceFrancsFragment balanceFrancsFragment;
-    private BalanceDollarsFragment balanceDollarsFragment;
     private ScannerListener scannerListener;
 
     @Override
@@ -170,8 +167,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
                 TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
 
-                balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
-                balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+                BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+                BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
 
                 HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
 
@@ -208,36 +205,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.bankcardId})
     public void transfertClicked() {
-        new MaterialDialog.Builder(getActivity())
-                .title("Type des transferts")
-                .items(R.array.option_transfert)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                        switch (position) {
-                            case 0: {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class));
-                                break;
-                            }
-
-                            case 1: {
-                                Snacky.builder()
-                                        .setView(getView())
-                                        .setText("Cette fonctionnalité n'est disponible pour le moment.")
-                                        .setDuration(Snacky.LENGTH_LONG)
-                                        .warning()
-                                        .show();
-                                break;
-                            }
-
-                            default: {
-                                startActivity(new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class));
-                                break;
-                            }
-                        }
-                    }
-                })
-                .show();
+        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class));
     }
 
     @Override
@@ -247,8 +215,8 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
         TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
         TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
 
-        balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
-        balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+        BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+        BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
 
         HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
 
@@ -267,7 +235,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
     @Override
     public void finishToLoadTaux() {
         enabledControls(true);
-        TV_Taux.setAmount(Float.valueOf(String.valueOf(UserPrefencesManager.getUserDataPreference().getTaux())));
+        TV_Taux.setAmount(UserPrefencesManager.getUserDataPreference().getTaux());
     }
 
     @Override

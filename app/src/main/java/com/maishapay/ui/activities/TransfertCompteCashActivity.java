@@ -94,7 +94,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.transfert_compte_cash_activity);
         ButterKnife.bind(this);
 

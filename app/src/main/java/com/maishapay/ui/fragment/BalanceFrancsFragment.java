@@ -44,12 +44,11 @@ public class BalanceFrancsFragment extends Fragment {
 
     public static BalanceFrancsFragment newInstance(String solde, float envoi, float recu) {
         BalanceFrancsFragment fragment = new BalanceFrancsFragment();
-
         Bundle bundle = new Bundle();
+
         bundle.putFloat(EXTRA_SOLDE_ENVOI, envoi);
         bundle.putFloat(EXTRA_SOLDE_RECU, recu);
         bundle.putString(EXTRA_SOLDE_FRANCS, solde);
-
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -154,6 +153,7 @@ public class BalanceFrancsFragment extends Fragment {
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(mTfLight);
+
         mChart.setData(data);
 
         mChart.invalidate();

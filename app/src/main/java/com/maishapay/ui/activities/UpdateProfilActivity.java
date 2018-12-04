@@ -72,7 +72,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.initStatusBar(this);
+        //Constants.initStatusBar(this);
         setContentView(R.layout.update_account_activity);
         ButterKnife.bind(this);
 

@@ -15,10 +15,10 @@
     <string name="time_ago_seconds">Il y a %1$d seconde</string>
     <string name="time_ago_minute">Il y a %1$d minute</string>
     <string name="time_ago_minutes">%1$d min de plus tôt</string>
-    <string name="time_ago_hour">il y a %1$h</string>
+    <string name="time_ago_hour">il y a %1$d h</string>
     <string name="time_ago_hours">il y a %1$d h</string>
     <string name="time_ago_yesterday_at">Hier à %1$s</string>
     <string name="time_ago_days">Il y a %1$d jours</string>    
     <string name="time_ago_month">Il y a %1$d mois</string>  
-    <string name="time_ago_months">Il y a %1$ mois</string>
+    <string name="time_ago_months">Il y a %1$d mois</string>
 </resources>
