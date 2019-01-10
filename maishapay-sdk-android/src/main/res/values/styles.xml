@@ -1,0 +1,33 @@
+<resources>
+    <style name="MaishapayTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_dark</item>
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/green_light</item>
+        <item name="android:textColorHint">@color/green_light</item>
+        <item name="colorControlNormal">@color/green_light</item>
+        <item name="colorControlActivated">@color/green_dark</item>
+    </style>
+
+    <style name="MaishapayTheme.Normal" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/green_dark</item>
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/green_light</item>
+        <item name="android:textColorHint">@color/green_light</item>
+        <item name="colorControlNormal">@color/green_light</item>
+        <item name="colorControlActivated">@color/green_dark</item>
+    </style>
+
+    <style name="flat_button" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:layout_marginLeft">4.0dip</item>
+        <item name="android:layout_marginRight">4.0dip</item>
+        <item name="android:minWidth">64.0dip</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+</resources>

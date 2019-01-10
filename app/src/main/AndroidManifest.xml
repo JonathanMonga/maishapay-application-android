@@ -49,6 +49,19 @@
             </intent-filter>
         </activity>
 
+        <!--
+        <activity
+            android:name=".MainActivity"
+            android:label="Maishapay sdk"
+            android:noHistory="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+
         <activity
             android:name=".ui.activities.DrawerActivity"
             android:screenOrientation="portrait" />

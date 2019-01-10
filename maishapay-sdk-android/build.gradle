@@ -1,0 +1,107 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'PROD_BASE_URL', PROD_BASE_URL
+            it.buildConfigField 'String', 'TEST_BASE_URL', TEST_BASE_URL
+            it.buildConfigField 'String', 'END_POINT', END_POINT
+            it.buildConfigField 'String', 'LOGIN_PARAM', LOGIN_PARAM
+            it.buildConfigField 'String', 'REGISTER_PARAM', REGISTER_PARAM
+            it.buildConfigField 'String', 'PIN_PERDU_PARAM', PIN_PERDU_PARAM
+            it.buildConfigField 'String', 'TRANSFERT_COMPTE_PARAM', TRANSFERT_COMPTE_PARAM
+            it.buildConfigField 'String', 'TRANSFERT_COMPTE_CONFIRMATION_PARAM', TRANSFERT_COMPTE_CONFIRMATION_PARAM
+            it.buildConfigField 'String', 'FORGOT_PASSWORD_PARAM', FORGOT_PASSWORD_PARAM
+            it.buildConfigField 'String', 'CONTACT_PARAM', CONTACT_PARAM
+            it.buildConfigField 'String', 'ATTEMPT_PAYMENT_PARAM', ATTEMPT_PAYMENT_PARAM
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation ('com.android.support:cardview-v7:27.1.1') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.android.support:design:27.1.1') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.google.code.gson:gson:2.8.2') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.squareup.picasso:picasso:2.71828') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.pixplicity.easyprefs:library:1.9.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('org.alfonz:alfonz-utility:0.9.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.squareup.retrofit2:retrofit:2.3.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.squareup.retrofit2:converter-gson:2.3.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('com.squareup.retrofit2:adapter-rxjava2:2.3.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation ('io.reactivex.rxjava2:rxandroid:2.1.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation('com.hbb20:ccp:2.2.3') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation('org.fabiomsr:moneytextview:1.1.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+    implementation('com.github.santalu:mask-edittext:1.0.9') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+}

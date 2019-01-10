@@ -50,14 +50,14 @@ public class AccueilPresenter extends TiPresenter<AccueilView> {
             UserDataPreference userDataPreference;
 
             @Override
-            public UserDataPreference apply(SoldeResponse soldeResponse, TransactionResponse transactionRespons) {
+            public UserDataPreference apply(SoldeResponse soldeResponse, TransactionResponse transactionResponse) {
                 float envoiFrancs = 0;
                 float recuFrancs = 0;
                 float envoiDollars = 0;
                 float recuDollars = 0;
 
-                if (transactionRespons.getResultat() != 0) {
-                    for (TransactionItemResponse transactionItemResponse : transactionRespons.getTransactionItemResponses()) {
+                if (transactionResponse.getResultat() != 0) {
+                    for (TransactionItemResponse transactionItemResponse : transactionResponse.getTransactionItemResponses()) {
                         if (transactionItemResponse.getType_jrn().equals("e")) {
                             if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
                                 String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");

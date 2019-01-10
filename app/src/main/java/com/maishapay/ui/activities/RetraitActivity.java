@@ -156,7 +156,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_transfert, menu);
+        getMenuInflater().inflate(R.menu.menu_splash_screen, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

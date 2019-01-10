@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.maishapay.sdk.android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true">
+        <activity android:name=".MaishapaySplashScreenActivity"  android:configChanges="orientation|keyboardHidden" android:theme="@style/MaishapayTheme.NoActionBar"/>
+        <activity android:name=".MaishapayPaymentActivity"  android:configChanges="orientation|keyboardHidden" android:theme="@style/MaishapayTheme.NoActionBar"/>
+        <activity android:name=".MaishapayConfirmationActivity"  android:configChanges="orientation|keyboardHidden" android:theme="@style/MaishapayTheme.NoActionBar"/>
+        <activity android:name=".MaishapayLoginActivity"  android:configChanges="orientation|keyboardHidden" android:theme="@style/MaishapayTheme.NoActionBar"/>
+        <activity android:name=".MaishapayCodePinOublieActivity"  android:configChanges="orientation|keyboardHidden" android:theme="@style/MaishapayTheme.NoActionBar"/>
+    </application>
+</manifest>

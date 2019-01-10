@@ -28,6 +28,8 @@ import com.maishapay.view.TransactionView;
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
+import java.util.Collections;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -52,40 +54,44 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                     @Override
                     protected void onSuccess(TransactionResponse responses) {
                         if (isViewAttached()) {
+                            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
                             float envoiFrancs = 0;
                             float recuFrancs = 0;
                             float envoiDollars = 0;
                             float recuDollars = 0;
 
-                            for (TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()) {
-                                if (transactionItemResponse.getType_jrn().equals("e")) {
-                                    if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        envoiFrancs += Float.valueOf(temp);
-                                    } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        envoiDollars += Float.valueOf(temp);
-                                    }
-                                } else {
-                                    if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
-                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        recuFrancs += Float.valueOf(temp);
-                                    } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
-                                        String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
-                                        recuDollars += Float.valueOf(temp);
+                            if (responses.getResultat() != 0) {
+                                for (TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()) {
+                                    if (transactionItemResponse.getType_jrn().equals("e")) {
+                                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                            envoiFrancs += Float.valueOf(temp);
+                                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                            envoiDollars += Float.valueOf(temp);
+                                        }
+                                    } else {
+                                        if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {
+                                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                            recuFrancs += Float.valueOf(temp);
+                                        } else if (transactionItemResponse.getMonnaie_jrn().equals("USD")) {
+                                            String temp = transactionItemResponse.getMontant_jrn().replace(" ", "");
+                                            recuDollars += Float.valueOf(temp);
+                                        }
                                     }
                                 }
+
+                                userDataPreference.setEnvoiFrancs(envoiFrancs);
+                                userDataPreference.setRecuFrancs(recuFrancs);
+
+                                userDataPreference.setEnvoiDollars(envoiDollars);
+                                userDataPreference.setRecuDollars(recuDollars);
+
+                                userDataPreference.setTransactionItemRespons(responses.getTransactionItemResponses());
+                            } else {
+                                userDataPreference.setTransactionItemRespons(Collections.<TransactionItemResponse>emptyList());
                             }
-
-                            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
-
-                            userDataPreference.setEnvoiFrancs(envoiFrancs);
-                            userDataPreference.setRecuFrancs(recuFrancs);
-
-                            userDataPreference.setEnvoiDollars(envoiDollars);
-                            userDataPreference.setRecuDollars(recuDollars);
-
-                            userDataPreference.setTransactionItemRespons(responses.getTransactionItemResponses());
 
                             UserPrefencesManager.setUserDataPreference(userDataPreference);
 

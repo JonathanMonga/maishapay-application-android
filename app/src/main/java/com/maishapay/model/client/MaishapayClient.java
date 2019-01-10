@@ -42,7 +42,6 @@ import static com.maishapay.BuildConfig.EMPRUNT_CHECK_PARAM;
 import static com.maishapay.BuildConfig.EMPRUNT_PARAM;
 import static com.maishapay.BuildConfig.LOGIN_PARAM;
 import static com.maishapay.BuildConfig.PIN_PERDU_PARAM;
-import static com.maishapay.BuildConfig.PROD_BASE_URL;
 import static com.maishapay.BuildConfig.RAPPORT_PARAM;
 import static com.maishapay.BuildConfig.REGISTER_PARAM;
 import static com.maishapay.BuildConfig.RETRAIT_CONFIMATION_PARAM;
@@ -50,6 +49,7 @@ import static com.maishapay.BuildConfig.RETRAIT_PARAM;
 import static com.maishapay.BuildConfig.SOLDE_EPARGNE_PERSONNEL_PARAM;
 import static com.maishapay.BuildConfig.SOLDE_PARAM;
 import static com.maishapay.BuildConfig.TAUX_PARAM;
+import static com.maishapay.BuildConfig.TEST_BASE_URL;
 import static com.maishapay.BuildConfig.TRANSFERT_COMPTE_CONFIRMATION_PARAM;
 import static com.maishapay.BuildConfig.TRANSFERT_COMPTE_PARAM;
 import static com.maishapay.BuildConfig.TRANSFERT_EPARGNE_CONFIRMATION_PARAM;
@@ -70,7 +70,7 @@ public final class MaishapayClient {
     private final MaishapayAPI maishapayAPI;
 
     private MaishapayClient() {
-        this.maishapayAPI = ServiceGenerator.createService(MaishapayAPI.class, PROD_BASE_URL);
+        this.maishapayAPI = ServiceGenerator.createService(MaishapayAPI.class, TEST_BASE_URL);
     }
 
     /**

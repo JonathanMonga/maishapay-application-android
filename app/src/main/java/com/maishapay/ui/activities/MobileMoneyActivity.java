@@ -36,6 +36,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     private static final String ORANGE_OPERATOR = "Orange";
     private static final String TIGO_OPERATOR = "Tigo";
     private static final String EXPRESSO_OPERATOR = "Expresso";
+    private static final String AFRICELL_OPERATOR = "Africell";
     private static final String MTN_OPERATOR = "mtn";
 
     private String country;
@@ -277,6 +278,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
                         // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
+
                     startActivity(callIntent);
                 } else
                     Snacky.builder()
@@ -338,12 +340,26 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Pas de service pour cet operateur.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
+                if (Constants.getOperatorName().equals(AFRICELL_OPERATOR)) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*111#"));
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    startActivity(callIntent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
             }
         }
     }
