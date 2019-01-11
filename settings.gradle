@@ -1,1 +1,1 @@
-include ':app', ':ussd', ':maishapay-sdk-android'
+include ':app', ':maishapay-sdk-android'

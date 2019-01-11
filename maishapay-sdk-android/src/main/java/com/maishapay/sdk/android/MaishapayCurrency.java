@@ -2,8 +2,8 @@ package com.maishapay.sdk.android;
 
 public enum MaishapayCurrency {
 
-    USD("Dollars US"),
-    CDF("Franc Congolais");
+    USD("USD"),
+    FC("FC");
 
     private String currencyName;
 

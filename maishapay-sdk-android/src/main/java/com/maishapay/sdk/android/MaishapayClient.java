@@ -20,7 +20,6 @@ import android.content.Context;
 
 import io.reactivex.Observable;
 
-import static com.maishapay.sdk.android.BuildConfig.ATTEMPT_PAYMENT_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.CONTACT_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.LOGIN_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.PIN_PERDU_PARAM;
@@ -115,7 +114,7 @@ final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> pin_perdu(String telephone,
+    public Observable<ForgotMDPResponse> pin_perdu(String telephone,
                                          String email) {
         return this.maishapayAPI.pin_perdu(PIN_PERDU_PARAM, telephone, email);
     }
@@ -125,10 +124,9 @@ final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<PaymentResponse> attempt_payment(String api_key,
-                                                       String token,
-                                                       String monnaie,
-                                                       String montant) {
-        return this.maishapayAPI.attempt_payment(ATTEMPT_PAYMENT_PARAM, api_key, token, monnaie, montant);
+    public Observable<PaymentResponse> request_payment(String api_key,
+                                                       String montant,
+                                                       String monnaie) {
+        return this.maishapayAPI.request_payment("request_payment2", api_key, montant, monnaie);
     }
 }

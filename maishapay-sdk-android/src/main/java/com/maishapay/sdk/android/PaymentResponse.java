@@ -25,12 +25,17 @@ class PaymentResponse extends BaseResponse{
 
     @SerializedName("message")
     private String message;
+    @SerializedName("token")
+    private String token;
+    @SerializedName("api_key")
+    private String api_key;
+    @SerializedName("montant")
+    private String montant;
+    @SerializedName("monnaie")
+    private String monnaie;
 
-    @SerializedName("apiData")
-    private DataAPIResponse data_api;
-
-    @SerializedName("transactionData")
-    private DataPaymentResponse data_trans;
+    @SerializedName("api_info")
+    private DataAPIResponse api_info;
 
     public String getMessage() {
         return message;
@@ -40,19 +45,43 @@ class PaymentResponse extends BaseResponse{
         this.message = message;
     }
 
-    public DataAPIResponse getData_api() {
-        return data_api;
+    public String getToken() {
+        return token;
     }
 
-    public void setData_api(DataAPIResponse data_api) {
-        this.data_api = data_api;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public DataPaymentResponse getData_trans() {
-        return data_trans;
+    public String getApi_key() {
+        return api_key;
     }
 
-    public void setData_trans(DataPaymentResponse data_trans) {
-        this.data_trans = data_trans;
+    public void setApi_key(String api_key) {
+        this.api_key = api_key;
+    }
+
+    public String getMontant() {
+        return montant;
+    }
+
+    public void setMontant(String montant) {
+        this.montant = montant;
+    }
+
+    public String getMonnaie() {
+        return monnaie;
+    }
+
+    public void setMonnaie(String monnaie) {
+        this.monnaie = monnaie;
+    }
+
+    public DataAPIResponse getApi_info() {
+        return api_info;
+    }
+
+    public void setApi_info(DataAPIResponse api_info) {
+        this.api_info = api_info;
     }
 }

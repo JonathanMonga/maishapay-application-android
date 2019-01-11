@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBuyPressed(View view) {
-        MaishapayPayment thingToBuy = getThingToBuy();
+        MaishapayPayment thingToBuy = getStuffToBuy();
 
         Intent intent = new Intent(this, MaishapayPaymentActivity.class);
 
@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(MaishapayPaymentActivity.EXTRA_PAYMENT, thingToBuy);
 
         startActivityForResult(intent, REQUEST_CODE_PAYMENT);
-    }
-
-    private MaishapayPayment getThingToBuy() {
-        return new MaishapayPayment("100 unités airtel", new BigDecimal("1000"), MaishapayCurrency.CDF);
     }
 
 
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         MaishapayPaymentItem [] items =
                 {
                         new MaishapayPaymentItem("Musta Creame", "Biscuit Musta Creame",
-                                new BigDecimal("500").doubleValue(), MaishapayCurrency.CDF, 1),
+                                new BigDecimal("500").doubleValue(), MaishapayCurrency.FC, 1),
                 };
 
         BigDecimal sousTotal = MaishapayPaymentItem.getItemTotal(items);
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         //Calcul du Montant net à pqyer
         BigDecimal totalAmount = MaishapayPaymentDetails.getAmount(paymentDetails);
 
-        MaishapayPayment payment = new MaishapayPayment("Vente", totalAmount, MaishapayCurrency.CDF)
+        MaishapayPayment payment = new MaishapayPayment("Vente", totalAmount, MaishapayCurrency.FC)
                 .items(Arrays.asList(items))
                 .details(paymentDetails);
 

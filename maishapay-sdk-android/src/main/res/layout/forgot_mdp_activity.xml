@@ -86,19 +86,18 @@
                     </LinearLayout>
 
                     <EditText
-                        android:id="@+id/ET_Code_Pin"
+                        android:id="@+id/ET_Email"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/bg_oval_border"
-                        android:hint="@string/hint_password"
-                        android:imeOptions="actionDone"
-                        android:inputType="numberPassword"
-                        android:maxLength="4"
+                        android:hint="@string/e_mail"
+                        android:inputType="textEmailAddress"
                         android:textSize="18.0sp" />
 
                     <Button
+                        android:visibility="invisible"
                         android:id="@+id/BTN_ForgotCodePin"
                         style="@style/flat_button"
                         fontpath="Roboto-Regular.ttf"
@@ -112,17 +111,17 @@
                         android:text="J'ai perdu mon code pin"
                         android:textAllCaps="false"
                         android:textColor="@color/green_dark"
-                        android:textSize="13.0sp" />
+                        android:textSize="12.0sp" />
 
                     <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/appCompatButtonAccepter"
+                        android:id="@+id/appCompatButtonSoumettre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@color/bg_confirm_selector"
-                        android:text="S'identifier"
+                        android:text="Soumettre"
+                        android:textSize="18sp"
                         android:textAllCaps="false"
-                        android:textSize="18.0sp"
                         android:textColor="@android:color/white"
                         android:visibility="visible" />
                 </LinearLayout>

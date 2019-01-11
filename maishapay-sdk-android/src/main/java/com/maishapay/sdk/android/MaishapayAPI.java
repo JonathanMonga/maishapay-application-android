@@ -69,15 +69,14 @@ interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> pin_perdu(@Field("ent") String ent,
+    Observable<ForgotMDPResponse> pin_perdu(@Field("ent") String ent,
                                   @Field("telephone") String telephone,
                                   @Field("email") String email);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<PaymentResponse> attempt_payment(@Field("ent") String ent,
+    Observable<PaymentResponse> request_payment(@Field("ent") String ent,
                                                 @Field("client_api_key") String api_key,
-                                                @Field("token") String token,
-                                                @Field("monnaie") String monnaie,
-                                                @Field("montant") String montant);
+                                                @Field("payment_amount") String montant,
+                                                @Field("payment_devise") String monnaie);
 }

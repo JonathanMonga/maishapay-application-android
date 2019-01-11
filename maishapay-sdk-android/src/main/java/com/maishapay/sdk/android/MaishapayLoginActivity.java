@@ -16,6 +16,8 @@
 
 package com.maishapay.sdk.android;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +28,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.santalu.widget.MaskEditText;
+import com.hbb20.CountryCodePicker;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -42,10 +43,12 @@ import static com.maishapay.sdk.android.MaishapayPaymentActivity.EXTRA_MAISHAPAY
 public class MaishapayLoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private MaishapayClient maishapayClient;
-    private MaskEditText phoneEditText;
+    private EditText phoneEditText;
     private EditText codePinEditText;
+    private CountryCodePicker mCountryCodePicker;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private AlertDialog dialog;
+    private ProgressDialog mProgressDialog;
 
     private DialogInterface.OnClickListener negativeDialodButton = new DialogInterface.OnClickListener() {
         @Override
@@ -77,7 +80,11 @@ public class MaishapayLoginActivity extends AppCompatActivity implements View.On
         mToolbar = findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Veuillez patienter...");
+
         phoneEditText = findViewById(R.id.ET_Telephone);
+        mCountryCodePicker = findViewById(R.id.ET_CodePicker);
         codePinEditText = findViewById(R.id.ET_Code_Pin);
 
         findViewById(R.id.appCompatButtonAccepter).setOnClickListener(this);
@@ -96,20 +103,18 @@ public class MaishapayLoginActivity extends AppCompatActivity implements View.On
             String userLogin = codePinEditText.getText().toString();
 
             if (TextUtils.isEmpty(userPhone)) {
-                findViewById(R.id.ti_telephone).startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
                 Toast.makeText(this, R.string.msg_phone_require, Toast.LENGTH_LONG).show();
                 return;
             }
 
             if (TextUtils.isEmpty(userLogin)) {
-                findViewById(R.id.ti_code_pin).startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
                 Toast.makeText(this, R.string.msg_email_require, Toast.LENGTH_LONG).show();
                 return;
             }
 
             enabledControls(false);
 
-            compositeDisposable.add(maishapayClient.login(userPhone, userLogin)
+            compositeDisposable.add(maishapayClient.login(String.format("%s%s", mCountryCodePicker.getSelectedCountryCode(), userPhone), userLogin)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<UserResponse>() {
@@ -124,6 +129,7 @@ public class MaishapayLoginActivity extends AppCompatActivity implements View.On
 
                                 default: {
                                     MaishapayUserSessionManager.setUserSession(MaishapayLoginActivity.this, response);
+                                    setResult(Activity.RESULT_OK);
                                     finish();
                                     break;
                                 }
@@ -147,13 +153,11 @@ public class MaishapayLoginActivity extends AppCompatActivity implements View.On
         if(isEnabled) {
             phoneEditText.setEnabled(true);
             codePinEditText.setEnabled(true);
-            findViewById(R.id.ti_telephone).setEnabled(true);
-            findViewById(R.id.loadingLayout).setVisibility(View.GONE);
+            mProgressDialog.dismiss();
         } else {
             phoneEditText.setEnabled(false);
             codePinEditText.setEnabled(false);
-            findViewById(R.id.ti_telephone).setEnabled(false);
-            findViewById(R.id.loadingLayout).setVisibility(View.VISIBLE);
+            mProgressDialog.show();
         }
     }
 
