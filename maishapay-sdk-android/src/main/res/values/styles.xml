@@ -30,4 +30,99 @@
         <item name="android:minWidth">64.0dip</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
+    <style name="dialog">
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_titulo">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textColor">@color/green_light</item>
+        <item name="android:paddingLeft">24.0dip</item>
+        <item name="android:paddingTop">24.0dip</item>
+        <item name="android:paddingRight">24.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_group_text_img_header" parent="@style/dialog_group_text">
+        <item name="android:paddingTop">14.0dip</item>
+    </style>
+
+    <style name="dialog_group_text">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">24.0dip</item>
+        <item name="android:paddingTop">24.0dip</item>
+        <item name="android:paddingRight">24.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="text">
+        <item name="android:textColor">@color/green_light</item>
+    </style>
+
+    <style name="dialog_text" parent="@style/text">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="form_linha">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="form_linha_divisor">
+        <item name="android:gravity">bottom</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/form_linha</item>
+        <item name="android:paddingBottom">1.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginRight">10.0dip</item>
+        <item name="android:layout_marginBottom">4.0dip</item>
+    </style>
+
+    <style name="form_edit_text">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/green_dark</item>
+        <item name="android:textColorHint">@color/green_light</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginBottom">8.0dip</item>
+    </style>
+
+    <style name="form_edit_text_theme" parent="@style/MaishapayTheme.NoActionBar">
+    </style>
+
+    <style name="dialog_group_button" parent="@style/Theme.AppCompat.Light">
+        <item name="android:gravity">end|center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">8.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5.0dip</item>
+    </style>
+
+    <style name="dialog_button" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/green_light</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36.0dip</item>
+        <item name="android:layout_marginLeft">8.0dip</item>
+        <item name="android:minWidth">64.0dip</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
 </resources>

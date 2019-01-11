@@ -53,8 +53,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="Maishapay sdk"
-            android:noHistory="true">
+            android:label="Maishapay sdk">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

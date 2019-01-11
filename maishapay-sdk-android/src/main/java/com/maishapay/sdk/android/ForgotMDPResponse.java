@@ -21,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * A user response
  */
-public class ForgotMDPResponse extends BaseResponse {
+class ForgotMDPResponse extends BaseResponse {
 
     @SerializedName("message")
     private String message;

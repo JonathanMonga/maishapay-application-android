@@ -21,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * A user response
  */
-public class TransactionConfirmationResponse extends BaseResponse {
+class TransactionConfirmationResponse extends BaseResponse {
 
     @SerializedName("message")
     private String message;

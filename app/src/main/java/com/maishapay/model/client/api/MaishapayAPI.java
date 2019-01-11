@@ -183,8 +183,7 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Float> taux_du_jour(@Field("ent") String ent,
-                                     @Field("mn") String telephone);
+    Observable<Float> taux_du_jour(@Field("ent") String ent);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

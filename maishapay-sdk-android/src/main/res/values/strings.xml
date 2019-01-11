@@ -39,4 +39,5 @@
     <string name="approuves">• Approuves les paiements qui se seront effectués sur <u>ton compte Maishapay</u></string>
     <string name="maishapay_prot_ge_tes_informations_financi_res">Maishapay ne divulguéra en aucun cas tes informations.</string>
     <string name="commande">Ta commande</string>
+    <string name="description">Description</string>
 </resources>

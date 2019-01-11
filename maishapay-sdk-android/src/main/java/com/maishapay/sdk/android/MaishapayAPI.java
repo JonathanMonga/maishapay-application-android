@@ -34,25 +34,6 @@ interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<UserResponse> inscription(@Field("ent") String ent,
-                                         @Field("nom") String nom,
-                                         @Field("prenom") String prenom,
-                                         @Field("telephone") String telephone,
-                                         @Field("email") String email,
-                                         @Field("adresse") String adresse,
-                                         @Field("ville") String ville,
-                                         @Field("code_pin") String code_pin);
-
-    @FormUrlEncoded
-    @POST(BuildConfig.END_POINT)
-    Observable<TransfertResponse> transfert_compte(@Field("ent") String ent,
-                                                   @Field("expeditaire") String expeditaire,
-                                                   @Field("destinataire") String destinataire,
-                                                   @Field("monnaie") String monnaie,
-                                                   @Field("montant") String montant);
-
-    @FormUrlEncoded
-    @POST(BuildConfig.END_POINT)
     Observable<TransactionConfirmationResponse> transfert_compte_confirmation(@Field("ent") String ent,
                                                                               @Field("pin") String pin,
                                                                               @Field("expeditaire") String expeditaire,
@@ -62,10 +43,7 @@ interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> nous_contacter(@Field("ent") String ent,
-                                       @Field("expeditaire") String expeditaire,
-                                       @Field("sujet") String sujet,
-                                       @Field("msg") String msg);
+    Observable<Float> taux_du_jour(@Field("ent") String ent);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

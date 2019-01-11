@@ -13,12 +13,20 @@
        android:orientation="vertical" >
 
        <Button
-           android:id="@+id/buyItBtn"
+           android:id="@+id/buyItBtn1"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="20dp"
-           android:onClick="onBuyPressed"
-           android:text="Buy a Thing" />
+           android:onClick="onBuyThingPressed"
+           android:text="Acheter une chose" />
+
+       <Button
+           android:id="@+id/buyItBtn2"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:onClick="onBuyManyThingsPressed"
+           android:text="Acheter plusieurs choses" />
 
        <TextView
            android:layout_width="wrap_content"

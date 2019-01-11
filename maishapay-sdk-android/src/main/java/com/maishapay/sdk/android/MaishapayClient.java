@@ -20,12 +20,9 @@ import android.content.Context;
 
 import io.reactivex.Observable;
 
-import static com.maishapay.sdk.android.BuildConfig.CONTACT_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.LOGIN_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.PIN_PERDU_PARAM;
-import static com.maishapay.sdk.android.BuildConfig.REGISTER_PARAM;
 import static com.maishapay.sdk.android.BuildConfig.TRANSFERT_COMPTE_CONFIRMATION_PARAM;
-import static com.maishapay.sdk.android.BuildConfig.TRANSFERT_COMPTE_PARAM;
 
 /**
  * Maishapay client
@@ -63,28 +60,6 @@ final class MaishapayClient {
         return this.maishapayAPI.login(LOGIN_PARAM, telephone, password);
     }
 
-    public Observable<UserResponse> inscription (String nom,
-                                                String prenom,
-                                                String telephone,
-                                                String email,
-                                                String adresse,
-                                                String ville,
-                                                String code_pin) {
-        return this.maishapayAPI.inscription (REGISTER_PARAM, nom, prenom, telephone, email, adresse, ville, code_pin);
-    }
-
-    /**
-     * creation_compte_epargne_avenir method.
-     *
-     * @return The solde response.
-     */
-    public Observable<TransfertResponse> transfert_compte (String expeditaire,
-                                                          String destinataire,
-                                                          String monnaie,
-                                                          String montant) {
-        return this.maishapayAPI.transfert_compte (TRANSFERT_COMPTE_PARAM, expeditaire, destinataire, monnaie, montant);
-    }
-
     /**
      * creation_compte_epargne_avenir method.
      *
@@ -99,17 +74,6 @@ final class MaishapayClient {
     }
 
     /**
-     * creation_compte_epargne_avenir method.
-     *
-     * @return The solde response.
-     */
-    public Observable<Integer> nous_contacter(String expeditaire,
-                                              String sujet,
-                                              String message) {
-        return this.maishapayAPI.nous_contacter(CONTACT_PARAM, expeditaire, sujet, message);
-    }
-
-    /**
      * pin_perdu method.
      *
      * @return The solde response.
@@ -117,6 +81,15 @@ final class MaishapayClient {
     public Observable<ForgotMDPResponse> pin_perdu(String telephone,
                                          String email) {
         return this.maishapayAPI.pin_perdu(PIN_PERDU_PARAM, telephone, email);
+    }
+
+    /**
+     * pin_perdu method.
+     *
+     * @return The solde response.
+     */
+    public Observable<Float> taux_du_jour() {
+        return this.maishapayAPI.taux_du_jour("taux");
     }
 
     /**

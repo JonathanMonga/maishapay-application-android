@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Generates Maishapay API Service.
  */
-public class ServiceGenerator {
+class ServiceGenerator {
 
     public static <S> S createService(final Context context, Class<S> serviceClass, String baseURL) {
 

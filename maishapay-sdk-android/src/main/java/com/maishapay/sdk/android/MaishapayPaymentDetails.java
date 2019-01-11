@@ -50,7 +50,10 @@ public class MaishapayPaymentDetails implements Parcelable{
     }
 
     public static BigDecimal getAmount(MaishapayPaymentDetails details){
-        return details.getSubTotal().add(details.getShipping()).add(details.getTax());
+        double total = details.getSubTotal().add(details.getShipping()).doubleValue();
+        double totalTva = ((total * details.getTax().doubleValue()) / 100);
+        double totalNet = total + totalTva;
+        return new BigDecimal(totalNet);
     }
 
     private MaishapayPaymentDetails(Parcel in) {
