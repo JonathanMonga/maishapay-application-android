@@ -62,12 +62,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/LinhaFormCombustivel"
+                    android:id="@+id/Monnaie"
                     style="@style/form_linha"
                     android:layout_marginTop="@dimen/form_margem_top">
 
                     <ImageView
-                        android:id="@+id/IV_TipoVeiculo"
                         style="@style/form_icon_left"
                         app:srcCompat="@drawable/ic_form_despesa" />
 
@@ -82,6 +81,25 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/Bouquet"
+                    style="@style/form_linha"
+                    android:layout_marginTop="@dimen/form_margem_top">
+
+                    <ImageView
+                        style="@style/form_icon_left"
+                        app:srcCompat="@drawable/ic_bouquet" />
+
+                    <LinearLayout style="@style/form_linha_divisor">
+
+                        <Spinner
+                            android:entries="@array/option_bouquet_canal"
+                            android:spinnerMode="dropdown"
+                            android:layout_marginLeft="-8dp"
+                            android:id="@+id/SP_Bouquet"
+                            style="@style/form_spinner" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinhaFormModelo"

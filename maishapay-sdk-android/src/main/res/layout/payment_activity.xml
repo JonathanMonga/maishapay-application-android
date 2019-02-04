@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,90 +22,100 @@
 
             <LinearLayout
                 android:id="@+id/layout"
-                android:visibility="visible"
-                android:layout_margin="15dp"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="15dp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
-                    android:layout_weight="0.0001"
                     android:id="@+id/marchant_nom"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.0001"
                     android:padding="10dp"
                     android:text="Wenzeasy food"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_weight="0.0001"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="0.0001"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_weight="1"
                         android:padding="5dp"
                         android:text="Article"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="center"
-                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:padding="5dp"
                         android:text="Quantite"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:gravity="right"
-                        android:layout_weight="1"
-                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_weight="1"
+                        android:gravity="right"
                         android:padding="5dp"
                         android:text="Prix"
                         android:textSize="16sp" />
                 </LinearLayout>
 
                 <View
-                    android:layout_weight="0.0001"
                     android:layout_width="match_parent"
-                    android:background="@color/green_light"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_weight="0.0001"
+                    android:background="@color/green_light" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
-                    android:layout_weight="0.1"
-                    android:scrollbars="none"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="0.1"
                     android:clipToPadding="false"
+                    android:scrollbars="none"
                     tools:visibility="visible" />
 
-                <View
-                    android:layout_weight="0.0001"
+                <TextView
+                    android:id="@+id/tv_confirmation"
                     android:layout_width="match_parent"
-                    android:background="@color/green_light"
-                    android:layout_height="1dp"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Vous etes sur le point de payer 10000 FC"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.0001"
+                    android:background="@color/green_light" />
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.0001"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:id="@+id/tax_layout"
@@ -117,18 +126,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:text="Tax"
-                            android:textSize="12sp"
-                            android:layout_alignParentStart="true" />
+                            android:textSize="12sp" />
 
                         <TextView
-                            android:layout_alignParentRight="true"
                             android:id="@+id/prix_tax"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:text="0,6 USD"
-                            android:textSize="12sp"
-                            android:layout_alignParentEnd="true" />
+                            android:textSize="12sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -140,42 +149,42 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:text="Transport"
-                            android:textSize="12sp"
-                            android:layout_alignParentStart="true" />
+                            android:textSize="12sp" />
 
                         <TextView
-                            android:layout_alignParentRight="true"
                             android:id="@+id/prix_transport"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:text="0,5 USD"
-                            android:textSize="12sp"
-                            android:layout_alignParentEnd="true" />
+                            android:textSize="12sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/prix_ht_layout"
-                        android:layout_marginBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:text="Prix Hors Taxe"
-                            android:textSize="12sp"
-                            android:layout_alignParentStart="true" />
+                            android:textSize="12sp" />
 
                         <TextView
-                            android:layout_alignParentRight="true"
                             android:id="@+id/prix_ht"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:text="100 USD"
-                            android:textSize="12sp"
-                            android:layout_alignParentEnd="true" />
+                            android:textSize="12sp" />
                     </RelativeLayout>
 
                     <android.support.v7.widget.AppCompatButton
@@ -185,17 +194,28 @@
                         android:background="@color/bg_confirm_selector"
                         android:text="Payer 100,11 $"
                         android:textAllCaps="false"
-                        android:textSize="18.0sp"
                         android:textColor="@android:color/white"
+                        android:textSize="18.0sp"
                         android:visibility="visible" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/appCompatButtonConfirmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bg_confirm_selector"
+                        android:text="Confirmer"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="18.0sp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/progressbarIntialization"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ProgressBar
@@ -204,37 +224,103 @@
                     android:layout_centerInParent="true" />
 
                 <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/progressbarIntialization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/progressbarIntialization"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Veuillez patienter,\npendant que nous verifions votre telephone."
                     android:textSize="12sp" />
             </LinearLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/progressbarConfirmation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
                 <View
-                    android:background="@color/dark_transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
 
                 <LinearLayout
-                    android:background="@drawable/bg_rectangle"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
                     android:layout_width="100dp"
-                    android:layout_height="100dp">
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_rectangle"
+                    android:gravity="center">
 
                     <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/paymentView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_rectangle"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_oval_green_light">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_done"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Votre paiement s'effectuer avec succes."
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_marginTop="30dp"
+                        android:layout_width="match_parent"
+                        android:background="@color/green_light"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/text_payment_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Votre nouveau solde en francs est 10000 FC."
+                        android:textSize="18sp" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/appCompatButtonQuitter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bg_confirm_selector"
+                        android:text="Cliquez ici. Pour sortir."
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="18.0sp"
+                        android:visibility="visible" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>

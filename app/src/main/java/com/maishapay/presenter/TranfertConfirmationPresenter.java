@@ -24,9 +24,18 @@ import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.view.TransfertView;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -143,6 +152,66 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                         userDataPreference.setSoldeFrancs(response.getFrancCongolais());
                         userDataPreference.setSoldeDollars(response.getDollard());
                         UserPrefencesManager.setUserDataPreference(userDataPreference);
+                    }
+                }));
+    }
+
+    public void createAbonnementObject(String mobileNumberColumn, String usernameColumn, String nomAbonnementColumn, String cardNumberColumn, String montantColumn, String monnaieColumn) {
+        Date date = Calendar.getInstance().getTime();
+
+        DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
+        String  today = formatter.format(date);
+
+        ParseObject abonnementObject = new ParseObject("Abonnement");
+        abonnementObject.put("Date", today);
+        abonnementObject.put("MobileNumber", mobileNumberColumn);
+        abonnementObject.put("Username", usernameColumn);
+        abonnementObject.put("NomAbonnement", nomAbonnementColumn);
+        abonnementObject.put("CardNumber", cardNumberColumn);
+        abonnementObject.put("Montant", montantColumn);
+        abonnementObject.put("Monnaie", monnaieColumn);
+
+        // Saves the new object.
+        // Notice that the SaveCallback is totally optional!
+        abonnementObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(isViewAttached()) {
+                    getView().enabledControls(true);
+                    getView().finishToConfirm();
+                }
+            }
+        });
+    }
+
+    public void confirmTransfertAbonnement(String pin, final String telephone, String s, final String userCurrency, final String s1, final String format, final String stringExtra, final String rawText) {
+        disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, telephone, s, userCurrency, s1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<TransactionConfirmationResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(TransactionConfirmationResponse response) {
+                        switch (response.getResultat()) {
+                            case 0: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showConfimationError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 2: {
+                                if(isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showConfimationError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            default: {
+                                createAbonnementObject(telephone, format, stringExtra, rawText, s1, userCurrency);
+                            }
+                        }
                     }
                 }));
     }

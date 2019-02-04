@@ -45,7 +45,7 @@ public class DialogConfirmPaymentFragment extends AppCompatDialogFragment implem
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.dialog_confirm_transfert, container);
+        view = inflater.inflate(R.layout.dialog_confirm, container);
         return view;
     }
 
@@ -61,7 +61,7 @@ public class DialogConfirmPaymentFragment extends AppCompatDialogFragment implem
         BTN_Nao.setOnClickListener(this);
         BTN_Sim.setOnClickListener(this);
 
-        textView.setText(String.format("Saisisez votre code PIN pour envoyer l'argent à %s", getArguments().getString(EXTRA_NOM)));
+        textView.setText(String.format("Saisisez votre code PIN pour confirmer le paiement vers %s", getArguments().getString(EXTRA_NOM)));
         editText.requestFocus();
         setCancelable(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED);

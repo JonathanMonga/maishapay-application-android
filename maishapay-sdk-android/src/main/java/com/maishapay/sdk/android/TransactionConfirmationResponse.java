@@ -23,8 +23,28 @@ import com.google.gson.annotations.SerializedName;
  */
 class TransactionConfirmationResponse extends BaseResponse {
 
+    @SerializedName("type_solde")
+    private String type_solde;
+    @SerializedName("solde_actuel")
+    private String solde_actuel;
     @SerializedName("message")
     private String message;
+
+    public String getType_solde() {
+        return type_solde;
+    }
+
+    public void setType_solde(String type_solde) {
+        this.type_solde = type_solde;
+    }
+
+    public String getSolde_actuel() {
+        return solde_actuel;
+    }
+
+    public void setSolde_actuel(String solde_actuel) {
+        this.solde_actuel = solde_actuel;
+    }
 
     public String getMessage() {
         return message;

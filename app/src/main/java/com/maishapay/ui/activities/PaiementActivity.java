@@ -12,16 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.maishapay.R;
 import com.maishapay.model.domain.PaiementModel;
 import com.maishapay.ui.adapter.PaiementAdapter;
-import com.maishapay.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_NUMERO_SERVICE;
@@ -55,7 +53,7 @@ public class PaiementActivity extends AppCompatActivity{
                     case 10: {
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Canal +");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
                         startActivity(intent);
                         break;
                     }
@@ -63,7 +61,7 @@ public class PaiementActivity extends AppCompatActivity{
                     case 11: {
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Easy Tv");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
                         startActivity(intent);
                         break;
                     }
@@ -71,33 +69,18 @@ public class PaiementActivity extends AppCompatActivity{
                     case 12: {
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Startimes");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "+243999999969");
+                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
                         startActivity(intent);
                         break;
                     }
 
                     default:{
-                        new MaterialDialog.Builder(PaiementActivity.this)
-                                .title("Type des transferts")
-                                .items(R.array.option_transfert_paiment)
-                                .itemsCallback(new MaterialDialog.ListCallback() {
-                                    @Override
-                                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                                        switch (position) {
-
-                                            case 0: {
-                                                startActivity(new Intent(PaiementActivity.this, TransfertCompteActivity.class));
-                                                break;
-                                            }
-
-                                            default: {
-                                                startActivity(new Intent(PaiementActivity.this, TransfertCompteCashActivity.class));
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }).show();
-                        break;
+                        Snacky.builder()
+                                .setView(findViewById(R.id.root))
+                                .setText("Desolé, cette fonctionnalité n'est disponible pour le moment.")
+                                .setDuration(Snacky.LENGTH_LONG)
+                                .warning()
+                                .show();
                     }
                 }
             }

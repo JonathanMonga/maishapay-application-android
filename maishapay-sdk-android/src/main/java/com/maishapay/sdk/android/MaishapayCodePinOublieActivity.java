@@ -17,20 +17,18 @@
 package com.maishapay.sdk.android;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
+
+import org.alfonz.utility.NetworkUtility;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -44,28 +42,7 @@ public class MaishapayCodePinOublieActivity extends AppCompatActivity implements
     private EditText emailEditText;
     private CountryCodePicker mCountryCodePicker;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private AlertDialog dialog;
     private ProgressDialog mProgressDialog;
-
-
-    private DialogInterface.OnClickListener negativeDialodButton = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            dialog.dismiss();
-        }
-    };
-
-    private DialogInterface.OnClickListener positiveDialodButton = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            try {
-                dialog.dismiss();
-                startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-            } catch (Exception ex) {
-                dialog.dismiss();
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,61 +69,63 @@ public class MaishapayCodePinOublieActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(final View view) {
-        String userPhone = phoneEditText.getText().toString();
-        String userEmail = emailEditText.getText().toString();
+        if(NetworkUtility.isOnline(this)) {
+            String userPhone = phoneEditText.getText().toString();
+            String userEmail = emailEditText.getText().toString();
 
-        if (TextUtils.isEmpty(userPhone)) {
-            Toast.makeText(this, R.string.msg_phone_require, Toast.LENGTH_LONG).show();
-            return;
-        }
+            if (TextUtils.isEmpty(userPhone)) {
+                Toast.makeText(this, R.string.msg_phone_require, Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        if (TextUtils.isEmpty(userEmail)) {
-            Toast.makeText(this, R.string.msg_email_require, Toast.LENGTH_LONG).show();
-            return;
-        }
+            if (TextUtils.isEmpty(userEmail)) {
+                Toast.makeText(this, R.string.msg_email_require, Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        enabledControls(false);
+            enabledControls(false);
 
-        compositeDisposable.add(maishapayClient.pin_perdu(String.format("%s%s", mCountryCodePicker.getSelectedCountryCode(), userPhone), userEmail)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ForgotMDPResponse>() {
-                    @Override
-                    public void accept(ForgotMDPResponse integer) {
-                        switch (integer.getResultat()) {
-                            case 0: {
-                                enabledControls(true);
-                                Snackbar.make(view, R.string.msg_pin_perdu_error_0, Snackbar.LENGTH_LONG).show();
-                                break;
-                            }
+            compositeDisposable.add(maishapayClient.pin_perdu(String.format("%s%s", mCountryCodePicker.getSelectedCountryCode(), userPhone), userEmail)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<ForgotMDPResponse>() {
+                        @Override
+                        public void accept(ForgotMDPResponse integer) {
+                            switch (integer.getResultat()) {
+                                case 0: {
+                                    enabledControls(true);
+                                    Snackbar.make(view, R.string.msg_pin_perdu_error_0, Snackbar.LENGTH_LONG).show();
+                                    break;
+                                }
 
-                            case 2: {
-                                enabledControls(true);
-                                Snackbar.make(view, R.string.msg_pin_perdu_error_2, Snackbar.LENGTH_LONG).show();
-                                break;
-                            }
+                                case 2: {
+                                    enabledControls(true);
+                                    Snackbar.make(view, R.string.msg_pin_perdu_error_2, Snackbar.LENGTH_LONG).show();
+                                    break;
+                                }
 
-                            default: {
-                                enabledControls(false);
-                                Snackbar.make(view, R.string.msg_pin_perdu_success, Snackbar.LENGTH_INDEFINITE)
-                                        .setAction("Retour", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                finish();
-                                            }
-                                        }).show();
-                                break;
+                                default: {
+                                    enabledControls(false);
+                                    Snackbar.make(view, R.string.msg_pin_perdu_success, Snackbar.LENGTH_INDEFINITE)
+                                            .setAction("Retour", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    finish();
+                                                }
+                                            }).show();
+                                    break;
+                                }
                             }
                         }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        Log.e("Maishapy", throwable.getMessage());
-                        enabledControls(true);
-                        showDialog();
-                    }
-                }));
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) {
+                            Snackbar.make(view, "Impossible de se connecter au serveur", Snackbar.LENGTH_LONG).show();
+                        }
+                    }));
+        } else {
+            Snackbar.make(view, "Impossible de se connecter au serveur", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void enabledControls(boolean isEnabled){
@@ -165,15 +144,5 @@ public class MaishapayCodePinOublieActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
-    }
-
-    private void showDialog() {
-        dialog = new AlertDialog.Builder(MaishapayCodePinOublieActivity.this)
-                .setIcon(R.mipmap.ic_info)
-                .setTitle(R.string.reessayer)
-                .setMessage(R.string.msg_network_error)
-                .setNegativeButton(R.string.annuler, negativeDialodButton)
-                .setPositiveButton(R.string.parametres, positiveDialodButton)
-                .show();
     }
 }

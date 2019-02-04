@@ -132,7 +132,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         new PrimaryDrawerItem().withName("Accueil").withIcon(R.drawable.bank).withIdentifier(1),
                         new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(2),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Point Fastpay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(4),
+                        new PrimaryDrawerItem().withName("Points Maishapay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(4),
                         new PrimaryDrawerItem().withName("Achat crédit unité").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
                         new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(6),
                         new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(7),
@@ -235,7 +235,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                             new MaterialDialog.Builder(DrawerActivity.this)
                                     .title("Remarque")
                                     .iconRes(R.drawable.ic_informacao_azul)
-                                    .content("Désolé cette fonctionnalité n'est disponible dans votre pays")
+                                    .content("Désolé cette fonctionnalité n'est disponible dans votre pays.")
                                     .show();
                         return false;
 

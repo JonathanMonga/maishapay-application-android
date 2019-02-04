@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.maishapay.R;
 import com.maishapay.model.client.MaishapayClient;
+import com.parse.Parse;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import org.alfonz.media.SoundManager;
@@ -47,17 +48,11 @@ public class MaishapayApplication extends MultiDexApplication {
         maishapayClient = MaishapayClient.getInstance();
         mSoundManager = new SoundManager(application, SoundManager.PLAY_SINGLE);
 
-//        CaocConfig.Builder.create()
-//                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
-//                .enabled(true)
-//                .showErrorDetails(false)
-//                .showRestartButton(true)
-//                .trackActivities(true)
-//                .logErrorOnRestart(false)
-//                .restartActivity(DrawerActivity.class)
-//                .errorActivity(ErrorActivity.class)
-//                .apply();
-
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                        .applicationId("OB8xFxFGzmeyntdEjd0hKvcRYT52iK4WY4joDieg")
+                        .clientKey("o1O14naeiSc5OiKKpRgMZCyVYfm0qce7uRCIVQa5")
+                        .server("https://parseapi.back4app.com")
+                        .build());
         iniPreference();
         load();
     }

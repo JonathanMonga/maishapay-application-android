@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -46,12 +45,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class MaishapayPaymentActivity extends AppCompatActivity implements PossitiveButtonConfirmListener{
+public class MaishapayPaymentActivity extends AppCompatActivity implements PossitiveButtonConfirmListener {
 
     public static final String EXTRA_MAISHAPAY_CONFIGURATION = "config";
     public static final String EXTRA_PAYMENT = "payment_data";
     public static final int REQUEST_SPLASH_SCREEN = 1;
     public static final int REQUEST_LOGIN = 2;
+    private static String PIN;
+    private static boolean confirmation = false;
 
     private PaymentResponse mPaymentResponse;
     private TextView nomMarchant;
@@ -60,12 +61,14 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
     private RelativeLayout mPrixHTLinearLayout;
     private RelativeLayout mTransportLinearLayout;
     private TextView tv_tax;
+    private TextView tv_confirmation;
     private TextView tv_shipping;
     private TextView tv_prix_ht;
     private RecyclerView mRecyclerView;
     private LinearLayout mProgressBarInitialization;
-    private LinearLayout mProgressBarConfirmation;
-    private AppCompatButton mAppCompatButton;
+    private RelativeLayout mProgressBarConfirmation;
+    private AppCompatButton mAppCompatButtonPayer;
+    private AppCompatButton mAppCompatButtonConfirmer;
     private MaishapayConfiguration configuration;
     private MaishapayPayment mMaishapayPayment;
     private MaishapayClient maishapayClient;
@@ -83,12 +86,12 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
     private DialogInterface.OnClickListener positiveDialodButton = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            try {
-                dialog.dismiss();
-                startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-            } catch (Exception ex) {
-                dialog.dismiss();
-            }
+            dialog.dismiss();
+            if (confirmation)
+                confirmPayment(PIN);
+            else
+                checkPayment();
+
         }
     };
 
@@ -123,12 +126,16 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
         mPrixHTLinearLayout = findViewById(R.id.prix_ht_layout);
         mTransportLinearLayout = findViewById(R.id.transport_layout);
         mRecyclerView = findViewById(R.id.recycler_view);
+        tv_confirmation = findViewById(R.id.tv_confirmation);
         tv_prix_ht = findViewById(R.id.prix_ht);
         tv_shipping = findViewById(R.id.prix_transport);
         tv_tax = findViewById(R.id.prix_tax);
         mProgressBarInitialization = findViewById(R.id.progressbarIntialization);
+        mProgressBarConfirmation = findViewById(R.id.progressbarConfirmation);
         nomMarchant = findViewById(R.id.marchant_nom);
-        mAppCompatButton = findViewById(R.id.appCompatButtonPayer);
+        mAppCompatButtonPayer = findViewById(R.id.appCompatButtonPayer);
+        mAppCompatButtonConfirmer = findViewById(R.id.appCompatButtonConfirmer);
+        mLinearLayout.setVisibility(View.GONE);
 
         if (mMaishapayPayment.getDetails() != null) {
             if (mMaishapayPayment.getDetails().getTax() == null)
@@ -166,22 +173,29 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
             @Override
             public void onClick(View view, int position) {
                 if (mMaishapayPayment.getItems().size() > 0)
-                    showDescription(mMaishapayPayment.getItems().get(position).getDescription());
+                    showDescription(String.format("%s\n%s", mMaishapayPayment.getItems().get(position).getName(), mMaishapayPayment.getItems().get(position).getDescription()));
                 else
-                    showDescription(maishapayPaymentItem.getDescription());
+                    showDescription(String.format("%s\n%s", maishapayPaymentItem.getName(), maishapayPaymentItem.getDescription()));
             }
 
             @Override
             public void onLongClick(View view, int position) {
                 if (mMaishapayPayment.getItems().size() > 0)
-                    showDescription(mMaishapayPayment.getItems().get(position).getDescription());
+                    showDescription(String.format("%s\n%s", mMaishapayPayment.getItems().get(position).getName(), mMaishapayPayment.getItems().get(position).getDescription()));
                 else
-                    showDescription(maishapayPaymentItem.getDescription());
+                    showDescription(String.format("%s\n%s", maishapayPaymentItem.getName(), maishapayPaymentItem.getDescription()));
             }
         }));
 
-        mAppCompatButton.setEnabled(false);
+        mAppCompatButtonPayer.setEnabled(false);
         checkPayment();
+
+        mAppCompatButtonConfirmer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmPayment(PIN);
+            }
+        });
     }
 
     @Override
@@ -231,10 +245,10 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
                             default: {
                                 enabledControls(true);
                                 nomMarchant.setText(response.getApi_info().getProject_name());
-                                mAppCompatButton.setText(String.format("Payer %s %s", MaishapayPaymentActivity.truncFloat(Float.valueOf(response.getMontant())), response.getMonnaie()));
+                                mAppCompatButtonPayer.setText(String.format("Payer %s %s", MaishapayPaymentActivity.truncFloat(Float.valueOf(response.getMontant())), response.getMonnaie()));
 
-                                mAppCompatButton.setEnabled(true);
-                                mAppCompatButton.setOnClickListener(new View.OnClickListener() {
+                                mAppCompatButtonPayer.setEnabled(true);
+                                mAppCompatButtonPayer.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         FragmentManager fm = getSupportFragmentManager();
@@ -249,7 +263,6 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-                        enabledControls(true);
                         showDialogSettings();
                     }
                 }));
@@ -303,13 +316,19 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
 
     @Override
     public void positiveClicked(String pin) {
-        mAppCompatButton.setText("Confirmer");
-        confirmPayment(pin);
+        confirmation = true;
+        dialogForgotFragment.dismiss();
+        MaishapayPaymentActivity.PIN = pin;
+        mAppCompatButtonPayer.setVisibility(View.GONE);
+        mAppCompatButtonConfirmer.setVisibility(View.VISIBLE);
+        tv_confirmation.setVisibility(View.VISIBLE);
+        tv_confirmation.setText(String.format("Vous etes sur le point de payer %s %s", truncFloat(Float.valueOf(mPaymentResponse.getMontant())), mPaymentResponse.getMonnaie()));
+        mAppCompatButtonConfirmer.setText("Confirmer");
     }
 
     private void confirmPayment(String pin) {
         mProgressBarConfirmation.setVisibility(View.VISIBLE);
-        compositeDisposable.add(maishapayClient.transfert_compte_confirmation(pin, MaishapayUserSessionManager.getCurrentUser(this).getTelephone(), mPaymentResponse.getApi_info().getTelephone(), mPaymentResponse.getMonnaie(), mPaymentResponse.getMontant())
+        compositeDisposable.add(maishapayClient.transfert_compte_confirmation(pin, mPaymentResponse.getApi_info().getTelephone(), MaishapayUserSessionManager.getCurrentUser(this).getTelephone(), mPaymentResponse.getMonnaie(), mPaymentResponse.getMontant())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<TransactionConfirmationResponse>() {
@@ -333,7 +352,7 @@ public class MaishapayPaymentActivity extends AppCompatActivity implements Possi
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-                        enabledControls(true);
+                        mProgressBarConfirmation.setVisibility(View.GONE);
                         showDialogSettings();
                     }
                 }));

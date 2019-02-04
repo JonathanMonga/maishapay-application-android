@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,11 +44,13 @@ import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
-import com.maishapay.util.Constants;
 import com.maishapay.view.TransfertView;
+import com.nmaltais.calcdialog.CalcDialog;
 import com.santalu.widget.MaskEditText;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,9 +59,9 @@ import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements PossitiveButtonConfirmListener, NumPadPossitiveButtonListener, TransfertView {
+public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, NumPadPossitiveButtonListener, TransfertView {
 
-    private static final int REQUEST_QRCODE = 1;
+    private static final int DIALOG_REQUEST_CODE = 0;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
 
@@ -75,6 +79,12 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     EditText ET_NumeroService;
     @BindView(R.id.SP_TypeEnvoi)
     Spinner SP_TypeEnvoi;
+    @BindView(R.id.SP_Bouquet)
+    Spinner SP_Bouquet;
+    @BindView(R.id.Bouquet)
+    LinearLayout Bouquet;
+    @BindView(R.id.Monnaie)
+    LinearLayout Monnaie;
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
     @BindView(R.id.ET_CodeCarte)
@@ -84,6 +94,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
+    private CalcDialog calcDialog;
+    private BouquetCanalPlus mBouquetCanalPlus = BouquetCanalPlus.TOUT_CANAL_PLUS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +135,45 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             }
         });
 
+        SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String[] bouquets = getResources().getStringArray(R.array.option_bouquet_canal);
+
+                mBouquetCanalPlus = BouquetCanalPlus.getBouquetFromName(bouquets[i]);
+
+                ET_Montant.setAmount(mBouquetCanalPlus.amount, mBouquetCanalPlus.currency);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+            Bouquet.setVisibility(View.GONE);
+        else {
+            Monnaie.setVisibility(View.GONE);
+            ET_Montant.setEnabled(false);
+        }
+
         ET_NumeroService.setEnabled(false);
         ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
+
+        calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
+
+        BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
+
+        calcDialog.setValue(bigDecimal)
+                .setFormatSymbols(',', '.')
+                .setShowSignButton(true)
+                .setShowAnswerButton(true)
+                .setSignCanBeChanged(true, bigDecimal.signum())
+                .setClearDisplayOnOperation(true)
+                .setShowZeroWhenNoValue(true)
+                .setMaxValue(new BigDecimal(1000000))
+                .setMaxDigits(7, 2);
     }
 
     @Override
@@ -144,8 +193,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             return;
         }
 
-        if (ET_Montant.getAmount() == 0F) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Montant"), R.id.ET_Montant);
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
 
@@ -155,7 +204,19 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         }
 
         enabledControls(false);
-        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+
+        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+            getPresenter().transfert(
+                    UserPrefencesManager.getCurrentUser().getTelephone(),
+                    ET_NumeroService.getText().toString(),
+                    userCurrency,
+                    String.valueOf(ET_Montant.getAmount()));
+        else
+            getPresenter().transfert(
+                    UserPrefencesManager.getCurrentUser().getTelephone(),
+                    ET_NumeroService.getText().toString(),
+                    mBouquetCanalPlus.currency,
+                    String.valueOf(mBouquetCanalPlus.amount));
     }
 
     private void initProgressBar() {
@@ -237,7 +298,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         flagtransfert = true;
 
         FragmentManager fm = getSupportFragmentManager();
-        dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse)baseResponse).getPrenom(), ((TransfertResponse)baseResponse).getNom());
+        dialogForgotFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse) baseResponse).getPrenom(), ((TransfertResponse) baseResponse).getNom());
         dialogForgotFragment.show(fm, "DialogConfirmTransfertFragment");
     }
 
@@ -266,7 +327,26 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         TransfertPaiementActivity.pin = pin;
 
         enabledControls(false);
-        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), ET_NumeroService.getText().toString(), userCurrency, String.valueOf(ET_Montant.getAmount()));
+        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+            getPresenter().confirmTransfertAbonnement(
+                    pin,
+                    UserPrefencesManager.getCurrentUser().getTelephone(),
+                    ET_NumeroService.getText().toString(),
+                    userCurrency,
+                    String.valueOf(ET_Montant.getAmount()),
+                    String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
+                    getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
+                    ET_CodeCarte.getRawText());
+        else
+            getPresenter().confirmTransfertAbonnement(
+                    pin,
+                    UserPrefencesManager.getCurrentUser().getTelephone(),
+                    ET_NumeroService.getText().toString(),
+                    mBouquetCanalPlus.currency,
+                    String.valueOf(mBouquetCanalPlus.amount),
+                    String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
+                    getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
+                    ET_CodeCarte.getRawText());
     }
 
     @Override
@@ -277,8 +357,10 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance(String.valueOf(ET_Montant.getAmount()), userCurrency);
-        dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
+
+        if (fm.findFragmentByTag("calc_dialog") == null) {
+            calcDialog.show(fm, "calc_dialog");
+        }
     }
 
     @Override
@@ -329,5 +411,38 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     .show();
         else
             Toast.makeText(this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
+        ET_Montant.setAmount(value.floatValue(), userCurrency);
+    }
+
+    private enum BouquetCanalPlus {
+        TOUT_CANAL_PLUS("Bouquet Tout Canal +", 40000, "FC"),
+        EVASION_CANAL_PLUS("Bouquet Evasion +", 20000, "FC"),
+        ACCESS_CANAL_PLUS("Bouquet Access +", 15000, "FC"),
+        ESSENTIEL_CANAL_PLUS("Bouquet Essentiel +", 12000, "FC"),
+        EVASION_CANAL("Bouquet Evasion", 10000, "FC"),
+        ACESS_CANAL("Bouquet Access", 5000, "FC"),
+        UNKNOWN(null, 0, null);
+
+        String name;
+        float amount;
+        String currency;
+
+        BouquetCanalPlus(String name, float amount, String currency) {
+            this.name = name;
+            this.amount = amount;
+            this.currency = currency;
+        }
+
+        static BouquetCanalPlus getBouquetFromName(String name) {
+            for (BouquetCanalPlus bcp : values())
+                if (bcp.name.equalsIgnoreCase(name))
+                    return bcp;
+
+            return UNKNOWN;
+        }
     }
 }

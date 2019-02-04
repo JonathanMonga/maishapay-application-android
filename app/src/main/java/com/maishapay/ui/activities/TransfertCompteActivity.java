@@ -154,7 +154,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
 
         ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
-        adapter.setShowMobileOnly(false);
+        adapter.setShowMobileOnly(true);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
 
