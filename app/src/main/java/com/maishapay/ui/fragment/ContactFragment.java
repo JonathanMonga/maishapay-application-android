@@ -59,7 +59,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
         }
 
         enabledControls(false);
-        getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+        getPresenter().send(UserPrefencesManager.getCurrentUser().getEmail(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
             @Override
             public void onClick(View view) {
                 enabledControls(false);
-                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getEmail(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
             }
         });
     }
@@ -130,7 +130,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
             @Override
             public void onClick(View view) {
                 enabledControls(false);
-                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getEmail(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
             }
         });
     }
@@ -143,7 +143,7 @@ public class ContactFragment extends BaseFragment<ContactPresenter, ContactView>
             @Override
             public void onClick(View view) {
                 enabledControls(false);
-                getPresenter().send(UserPrefencesManager.getCurrentUser().getTelephone(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
+                getPresenter().send(UserPrefencesManager.getCurrentUser().getEmail(), ET_Assunto.getText().toString(), ET_Mensagem.getText().toString());
             }
         });
     }

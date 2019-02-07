@@ -20,7 +20,9 @@ import com.maishapay.model.client.api.MaishapayAPI;
 import com.maishapay.model.client.api.ServiceGenerator;
 import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.ConfirmRetraitResponse;
+import com.maishapay.model.client.response.EmailResponse;
 import com.maishapay.model.client.response.EpargneResponse;
+import com.maishapay.model.client.response.ForgotPinResponse;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
@@ -269,10 +271,10 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> nous_contacter(String expeditaire,
-                                              String sujet,
-                                              String message) {
-        return this.maishapayAPI.nous_contacter(CONTACT_PARAM, expeditaire, sujet, message);
+    public Observable<EmailResponse> nous_contacter(String email,
+                                                    String subject,
+                                                    String body) {
+        return this.maishapayAPI.nous_contacter(CONTACT_PARAM, email, subject, body);
     }
 
     /**
@@ -281,12 +283,12 @@ public final class MaishapayClient {
      * @return The solde response.
      */
     public Observable<Integer> update_profil(String nom,
-                                             String prenom,
-                                             String telephone,
-                                             String email,
-                                             String adresse,
-                                             String ville,
-                                             String code_pin) {
+                                                           String prenom,
+                                                           String telephone,
+                                                           String email,
+                                                           String adresse,
+                                                           String ville,
+                                                           String code_pin) {
         return this.maishapayAPI.update_profil(UPDATE_PROFIL_PARAM, nom, prenom, telephone, email, adresse, ville, code_pin);
     }
 
@@ -295,8 +297,8 @@ public final class MaishapayClient {
      *
      * @return The solde response.
      */
-    public Observable<Integer> pin_perdu(String telephone,
-                                         String email) {
+    public Observable<ForgotPinResponse> pin_perdu(String telephone,
+                                                   String email) {
         return this.maishapayAPI.pin_perdu(PIN_PERDU_PARAM, telephone, email);
     }
 

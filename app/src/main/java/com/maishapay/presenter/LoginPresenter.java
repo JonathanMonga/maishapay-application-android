@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.ForgotPinResponse;
 import com.maishapay.model.client.response.UserResponse;
 import com.maishapay.view.LoginView;
 
@@ -72,14 +73,14 @@ public class LoginPresenter extends TiPresenter<LoginView> {
         disposableHandler.manageDisposable(maishapayClient.pin_perdu(telephone, email)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(new CallbackWrapper<Integer>(getView()) {
+                .subscribeWith(new CallbackWrapper<ForgotPinResponse>(getView()) {
                     @Override
-                    protected void onSuccess(Integer response) {
-                        switch (response) {
+                    protected void onSuccess(ForgotPinResponse response) {
+                        switch (response.getResultat()) {
                             case 0: {
                                 if(isViewAttached()) {
                                     getView().enabledControls(true);
-                                    getView().showForgotError(response);
+                                    getView().showForgotError(response.getResultat());
                                     break;
                                 }
                             }

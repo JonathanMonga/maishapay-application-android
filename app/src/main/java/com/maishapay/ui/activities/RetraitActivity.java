@@ -22,10 +22,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -44,17 +44,18 @@ import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.RetraitConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmRetraitFragment;
-import com.maishapay.ui.dialog.DialogNumberPickerFragment;
-import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.RetraitView;
+import com.nmaltais.calcdialog.CalcDialog;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
 import org.alfonz.media.SoundManager;
 import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,11 +64,12 @@ import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, RetraitView> implements PossitiveButtonConfirmListener, NumPadPossitiveButtonListener, RetraitView {
+public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, RetraitView> implements PossitiveButtonConfirmListener, CalcDialog.CalcDialogCallback, RetraitView {
 
     private static final int REQUEST_QRCODE = 1;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
+    private static final int DIALOG_REQUEST_CODE = 0;
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
@@ -88,6 +90,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     private boolean flagRetrait = false;
     private QRCodeDataUser qrCodeDataUser;
     private SoundManager soundManager;
+    private CalcDialog calcDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,20 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         adapter.setShowMobileOnly(true);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
+
+        calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
+
+        BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
+
+        calcDialog.setValue(bigDecimal)
+                .setFormatSymbols(',', '.')
+                .setShowSignButton(true)
+                .setShowAnswerButton(true)
+                .setSignCanBeChanged(true, bigDecimal.signum())
+                .setClearDisplayOnOperation(true)
+                .setShowZeroWhenNoValue(true)
+                .setMaxValue(new BigDecimal(1000000))
+                .setMaxDigits(7, 2);
     }
 
     @Override
@@ -155,20 +172,10 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_splash_screen, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                return true;
-            case R.id.action_scan:
-                Intent intent = new Intent(this, DecoderActivity.class);
-                startActivityForResult(intent, REQUEST_QRCODE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -326,13 +333,15 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        DialogNumberPickerFragment dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", userCurrency);
-        dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
+
+        if (fm.findFragmentByTag("calc_dialog") == null) {
+            calcDialog.show(fm, "calc_dialog");
+        }
     }
 
     @Override
-    public void numPadPositiveClicked(String number) {
-        ET_Montant.setAmount(Float.valueOf(number));
+    public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
+        ET_Montant.setAmount(value.floatValue(), userCurrency);
     }
 
     @Override

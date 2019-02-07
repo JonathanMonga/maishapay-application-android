@@ -15,7 +15,7 @@
     <string name="email">E-mail</string>
     <string name="endereco">Adresse</string>
     <string name="erro_campo">Vous devez remplir ce champ %s</string>
-    <string name="login">"S'identifier"</string>
+    <string name="login">Connexion</string>
     <string name="msg_alterar_senha">Le mot de passe a été changé avec succès!</string>
     <string name="msg_editar_conta">Modification avec succès!</string>
     <string name="msg_email_sucesso">E-mail envoyé avec succès!</string>

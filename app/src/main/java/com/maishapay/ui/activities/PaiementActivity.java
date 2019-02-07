@@ -1,6 +1,7 @@
 package com.maishapay.ui.activities;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import com.maishapay.ui.adapter.PaiementAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_NUMERO_SERVICE;
@@ -29,6 +29,8 @@ import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_TYPE_A
  * A simple {@link Fragment} subclass.
  */
 public class PaiementActivity extends AppCompatActivity{
+    private static final int REQUEST_ABONNEMENT = 1;
+    public static final int RESULT_ABONNEMENT_OK = 1;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
@@ -54,7 +56,7 @@ public class PaiementActivity extends AppCompatActivity{
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Canal +");
                         intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_ABONNEMENT);
                         break;
                     }
 
@@ -62,7 +64,7 @@ public class PaiementActivity extends AppCompatActivity{
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Easy Tv");
                         intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_ABONNEMENT);
                         break;
                     }
 
@@ -70,17 +72,14 @@ public class PaiementActivity extends AppCompatActivity{
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
                         intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Startimes");
                         intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_ABONNEMENT);
                         break;
                     }
 
                     default:{
-                        Snacky.builder()
-                                .setView(findViewById(R.id.root))
-                                .setText("Desolé, cette fonctionnalité n'est disponible pour le moment.")
-                                .setDuration(Snacky.LENGTH_LONG)
-                                .warning()
-                                .show();
+                        Intent intent = new Intent(PaiementActivity.this, TransfertCompteActivity.class);
+                        intent.putExtra(Intent.EXTRA_TITLE, PaiementModel.getData().get(position).getName());
+                        startActivityForResult(intent, REQUEST_ABONNEMENT);
                     }
                 }
             }
@@ -104,5 +103,15 @@ public class PaiementActivity extends AppCompatActivity{
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == Activity.RESULT_OK) {
+            setResult(RESULT_ABONNEMENT_OK);
+            finish();
+        }
     }
 }

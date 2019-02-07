@@ -19,7 +19,9 @@ package com.maishapay.model.client.api;
 import com.maishapay.BuildConfig;
 import com.maishapay.model.client.response.ConfirmPaymentResponse;
 import com.maishapay.model.client.response.ConfirmRetraitResponse;
+import com.maishapay.model.client.response.EmailResponse;
 import com.maishapay.model.client.response.EpargneResponse;
+import com.maishapay.model.client.response.ForgotPinResponse;
 import com.maishapay.model.client.response.PaymentResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
@@ -159,27 +161,27 @@ public interface MaishapayAPI {
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> nous_contacter(@Field("ent") String ent,
-                                       @Field("expeditaire") String expeditaire,
-                                       @Field("sujet") String sujet,
-                                       @Field("msg") String msg);
+    Observable<EmailResponse> nous_contacter(@Field("ent") String ent,
+                                             @Field("email") String email,
+                                             @Field("subject") String subject,
+                                             @Field("body") String body);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<Integer> update_profil(@Field("ent") String ent,
-                                      @Field("nom") String nom,
-                                      @Field("prenom") String prenom,
-                                      @Field("telephone") String telephone,
-                                      @Field("email") String email,
-                                      @Field("adresse") String adresse,
-                                      @Field("ville") String ville,
-                                      @Field("pin") String code_pin);
+                                                    @Field("nom") String nom,
+                                                    @Field("prenom") String prenom,
+                                                    @Field("telephone") String telephone,
+                                                    @Field("email") String email,
+                                                    @Field("adresse") String adresse,
+                                                    @Field("ville") String ville,
+                                                    @Field("pin") String code_pin);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
-    Observable<Integer> pin_perdu(@Field("ent") String ent,
-                                  @Field("telephone") String telephone,
-                                  @Field("email") String email);
+    Observable<ForgotPinResponse> pin_perdu(@Field("ent") String ent,
+                                            @Field("telephone") String telephone,
+                                            @Field("email") String email);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)

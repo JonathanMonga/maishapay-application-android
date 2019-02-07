@@ -63,7 +63,7 @@
         <activity
             android:name=".ui.activities.RegisterMarchantActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeRegister"/>
+            android:theme="@style/AppThemeRegister" />
         <activity
             android:name=".ui.activities.UpdateProfilActivity"
             android:screenOrientation="portrait" />
@@ -101,19 +101,35 @@
         <activity
             android:name=".ui.activities.RegisterNormalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeRegister"/>
+            android:theme="@style/AppThemeRegister" />
         <activity
             android:name=".ui.activities.MaishapayPayPal"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.SuccessDepositActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activities.TransfertCompteCashActivity" />
-        <activity android:name=".ui.activities.MobileMoneyActivity" />
-        <activity android:name=".ui.activities.MapsActivity" />
-        <activity android:name=".ui.activities.TransfertPaiementActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ui.activities.PaymentWebActivity" />
-        <activity android:name=".ui.activities.AirtimeActivity" />
+        <activity
+            android:name=".ui.activities.TransfertCompteCashActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.MobileMoneyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.MapsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.TransfertPaiementActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activities.PaymentWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AirtimeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.MaishapayWebviewActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

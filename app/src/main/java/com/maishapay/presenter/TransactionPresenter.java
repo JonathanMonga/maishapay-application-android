@@ -61,7 +61,7 @@ public class TransactionPresenter extends TiPresenter<TransactionView> {
                             float envoiDollars = 0;
                             float recuDollars = 0;
 
-                            if (responses.getResultat() != 0) {
+                            if (responses != null && responses.getResultat() != 0) {
                                 for (TransactionItemResponse transactionItemResponse : responses.getTransactionItemResponses()) {
                                     if (transactionItemResponse.getType_jrn().equals("e")) {
                                         if (transactionItemResponse.getMonnaie_jrn().equals("FC")) {

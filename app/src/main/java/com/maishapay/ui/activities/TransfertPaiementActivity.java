@@ -16,7 +16,6 @@
 
 package com.maishapay.ui.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,8 +40,6 @@ import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TranfertConfirmationPresenter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
-import com.maishapay.ui.dialog.DialogNumberPickerFragment;
-import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.view.TransfertView;
 import com.nmaltais.calcdialog.CalcDialog;
@@ -56,10 +53,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.PaiementActivity.RESULT_ABONNEMENT_OK;
 
-public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, NumPadPossitiveButtonListener, TransfertView {
+
+public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, TransfertView {
 
     private static final int DIALOG_REQUEST_CODE = 0;
     private static String CDF = "Francs congolais (CDF)";
@@ -90,9 +90,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @BindView(R.id.ET_CodeCarte)
     MaskEditText ET_CodeCarte;
 
-    private ProgressDialog progressDialog;
+    private SpotsDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
-    private DialogNumberPickerFragment dialogNumberPickerFragment;
     private boolean flagtransfert = false;
     private CalcDialog calcDialog;
     private BouquetCanalPlus mBouquetCanalPlus = BouquetCanalPlus.TOUT_CANAL_PLUS;
@@ -151,7 +150,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             }
         });
 
-        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+        if (! getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
             Bouquet.setVisibility(View.GONE);
         else {
             Monnaie.setVisibility(View.GONE);
@@ -188,18 +187,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (TextUtils.isEmpty(ET_NumeroService.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), "Numero service"), R.id.ET_Destinataire);
-            return;
-        }
-
-        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
-            toastMessage("Montant incorrect.", R.id.ET_Montant);
-            return;
-        }
+        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+            if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+                toastMessage("Montant incorrect.", R.id.ET_Montant);
+                return;
+            }
 
         if (TextUtils.isEmpty(ET_CodeCarte.getRawText())) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_CodeCarte.getHint().toString()), R.id.ET_Destinataire);
+            toastMessage(String.format(getString(R.string.erro_campo), ET_CodeCarte.getHint().toString()), R.id.ET_CodeCarte);
             return;
         }
 
@@ -220,10 +215,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     }
 
     private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
+        progressDialog = new SpotsDialog(this, R.style.Custom);
     }
 
     @Override
@@ -336,7 +328,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     String.valueOf(ET_Montant.getAmount()),
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
-                    ET_CodeCarte.getRawText());
+                    ET_CodeCarte.getMask());
         else
             getPresenter().confirmTransfertAbonnement(
                     pin,
@@ -345,7 +337,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     mBouquetCanalPlus.currency,
                     String.valueOf(mBouquetCanalPlus.amount),
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
-                    getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
+                    mBouquetCanalPlus.name,
                     ET_CodeCarte.getRawText());
     }
 
@@ -361,11 +353,6 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         if (fm.findFragmentByTag("calc_dialog") == null) {
             calcDialog.show(fm, "calc_dialog");
         }
-    }
-
-    @Override
-    public void numPadPositiveClicked(String number) {
-        ET_Montant.setAmount(Float.valueOf(number));
     }
 
     @Override
@@ -416,6 +403,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @Override
     public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
         ET_Montant.setAmount(value.floatValue(), userCurrency);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        setResult(RESULT_ABONNEMENT_OK);
+        finish();
     }
 
     private enum BouquetCanalPlus {

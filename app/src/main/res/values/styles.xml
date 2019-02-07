@@ -364,13 +364,4 @@
     <style name="AppTheme.FormAzul" parent="@style/AppTheme">
         <item name="colorAccent">@color/ab_default</item>
     </style>
-
-    <style name="form_switch">
-        <item name="android:theme">@style/AppTheme.FormAzul</item>
-        <item name="android:textColor">@color/texto</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:paddingBottom">8.0dip</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-    </style>
 </resources>

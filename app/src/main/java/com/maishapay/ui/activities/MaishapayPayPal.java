@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,7 @@ import android.widget.Toast;
 
 import com.maishapay.R;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
-import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
-import com.maishapay.util.Constants;
+import com.nmaltais.calcdialog.CalcDialog;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
@@ -30,13 +30,16 @@ import java.math.BigDecimal;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.model.Configuration.PAYPAL_CONFIGURATION;
 import static com.maishapay.model.Configuration.PAYPAL_REQUEST_CODE;
 import static com.maishapay.ui.activities.SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY;
 
-public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiveButtonListener {
+public class MaishapayPayPal extends AppCompatActivity implements CalcDialog.CalcDialogCallback {
+
+    private static final int DIALOG_REQUEST_CODE = 0;
 
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
@@ -46,15 +49,15 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     Toolbar toolbar;
 
     private DialogNumberPickerFragment dialogNumberPickerFragment;
+    private CalcDialog calcDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 
-        toolbar.setTitle("Effectuer un depot");
+        toolbar.setTitle("Dépot avec paypal");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -65,13 +68,29 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
         }
 
         initPaypalService();
+
+        calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
+
+        BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
+
+        calcDialog.setValue(bigDecimal)
+                .setFormatSymbols(',', '.')
+                .setShowSignButton(true)
+                .setShowAnswerButton(true)
+                .setSignCanBeChanged(true, bigDecimal.signum())
+                .setClearDisplayOnOperation(true)
+                .setShowZeroWhenNoValue(true)
+                .setMaxValue(new BigDecimal(1000000))
+                .setMaxDigits(7, 2);
     }
 
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked() {
         FragmentManager fm = getSupportFragmentManager();
-        dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", "USD");
-        dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
+
+        if (fm.findFragmentByTag("calc_dialog") == null) {
+            calcDialog.show(fm, "calc_dialog");
+        }
     }
 
     @OnClick(R.id.btnPayNow)
@@ -130,21 +149,21 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED)
-                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Dépot annulé", Toast.LENGTH_SHORT).show();
 
         } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
-            Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Une erreur est survénue lors de votre dépot:")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .error()
+                    .show();
     }
 
     @Override
     protected void onDestroy() {
         stopService(new Intent(getApplicationContext(), PayPalService.class));
         super.onDestroy();
-    }
-
-    @Override
-    public void numPadPositiveClicked(String number) {
-        ET_Montant.setAmount(Float.valueOf(number), "USD");
     }
 
     private void toastMessage(String message, int view) {
@@ -165,5 +184,10 @@ public class MaishapayPayPal extends AppCompatActivity implements NumPadPossitiv
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
+        ET_Montant.setAmount(value.floatValue(), "USD");
     }
 }

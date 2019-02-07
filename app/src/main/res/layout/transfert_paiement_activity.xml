@@ -55,6 +55,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:textStyle="bold"
                             android:id="@+id/ET_NumeroService"
                             style="@style/form_edit_text"/>
 
@@ -151,6 +152,7 @@
                                 style="@style/form_edit_text"
                                 android:hint="Code de la carte"
                                 android:inputType="number"
+                                android:textStyle="bold"
                                 app:met_mask="# ##.###.###.### ##"/>
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>

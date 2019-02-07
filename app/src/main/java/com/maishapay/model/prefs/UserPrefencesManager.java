@@ -39,6 +39,8 @@ import static com.maishapay.BuildConfig.USER_SESSION;
  */
 public class UserPrefencesManager {
 
+    private static final String USER_SESSION_EXPIRE = "session_expire";
+
     public static void setCurentUser(UserResponse userResponse){
         String userResponseString;
 
@@ -148,5 +150,13 @@ public class UserPrefencesManager {
 
     public static String getUserPhone(){
         return Prefs.getString(USER_PHONE, "");
+    }
+
+    public static void setSessionExpire(boolean b){
+        Prefs.putBoolean(USER_SESSION_EXPIRE, b);
+    }
+
+    public static boolean getSessionExpire(){
+        return Prefs.getBoolean(USER_SESSION_EXPIRE, false);
     }
 }

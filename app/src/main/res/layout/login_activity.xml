@@ -152,7 +152,7 @@
                         android:paddingLeft="5.0dip"
                         android:text="J'ai perdu mon code pin"
                         android:textAllCaps="false"
-                        android:textColor="@color/md_orange_A700"
+                        android:textColor="@color/branco"
                         android:textSize="12.0sp" />
 
                     <LinearLayout
@@ -170,7 +170,7 @@
                             android:layout_marginRight="20.0dip"
                             android:layout_marginTop="10.0dip"
                             android:text="Créer un compte"
-                            android:textColor="@color/md_orange_A700" />
+                            android:textColor="@color/branco" />
 
                         <Button
                             android:id="@+id/BTN_Login"
@@ -186,7 +186,7 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"

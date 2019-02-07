@@ -29,9 +29,7 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.AccueilPresenter;
 import com.maishapay.service.MaishapayService;
 import com.maishapay.ui.activities.ConversionActivity;
-import com.maishapay.ui.activities.PaiementActivity;
 import com.maishapay.ui.activities.RetraitActivity;
-import com.maishapay.ui.activities.TransactionActivity;
 import com.maishapay.ui.adapter.HeaderPagerAdapter;
 import com.maishapay.ui.dialog.PaieMoiDialogFragment;
 import com.maishapay.ui.menu.MenuHelper;
@@ -188,7 +186,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.paiementCardId})
     public void paiementCardIdClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), PaiementActivity.class));
+        dashboardClickListener.onPaiementClicked();
     }
 
     @OnClick({R.id.epargneCardId})
@@ -198,7 +196,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
     @OnClick({R.id.transactionCardId})
     public void transactionCardIdClicked() {
-        startActivity(new Intent(MaishapayApplication.getMaishapayContext(), TransactionActivity.class));
+        dashboardClickListener.onTransactiosClicked();
     }
 
     @OnClick({R.id.bankcardId})
@@ -344,6 +342,32 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();
+
+        if (UserPrefencesManager.getUserDataPreference() != null) {
+            enabledControls(true);
+
+            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
+            TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
+            TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
+            TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+
+            BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+            BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+
+            HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+            List<Fragment> pageList = new ArrayList<>();
+            pageList.add(balanceFrancsFragment);
+            pageList.add(balanceDollarsFragment);
+
+            adapter.setData(pageList);
+
+            pager.setInterval(5000);
+            pager.startAutoScroll();
+            pager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -69,7 +69,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
         setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 
@@ -139,6 +138,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
             textInputTelephone.setError(String.format(getString(R.string.erro_campo), getString(R.string.telephone)));
             return;
         }
+
+        maskText = Constants.generatePhoneCode(false,  phoneEditText.getRawText(), countryCodePicker.getSelectedCountryCode());
 
         FragmentManager fm = getSupportFragmentManager();
         dialogForgotFragment = DialogForgotFragment.newInstance(maskText);
@@ -252,7 +253,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
                 .show();
     }
 
-    private void initProgressBar(){
+    private void initProgressBar() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
@@ -261,17 +262,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
     @Override
     public void positiveClicked(String telephone, String email) {
-        LoginActivity.pin = email;
-
         enabledControls(false);
-        getPresenter().forgot(telephone, email);
+        getPresenter().forgot(maskText, email);
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
 
     @Override
     public void onBackPressed() {

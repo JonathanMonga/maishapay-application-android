@@ -19,12 +19,9 @@ package com.maishapay.ui.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -36,7 +33,6 @@ import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.UpdateProfilePresenter;
 import com.maishapay.ui.dialog.DialogUpdateFragment;
 import com.maishapay.ui.dialog.PossitiveButtonListener;
-import com.maishapay.util.Constants;
 import com.maishapay.view.UpdateProfileView;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -50,6 +46,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, UpdateProfileView> implements PossitiveButtonListener, UpdateProfileView {
 
     private static String PIN;
+    private static boolean update = false;
 
     @BindView(R.id.ET_Phone)
     EditText phoneEditText;
@@ -72,7 +69,6 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
         setContentView(R.layout.update_account_activity);
         ButterKnife.bind(this);
 
@@ -99,19 +95,15 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
     @OnClick(R.id.BTN_CriarConta)
     public void clickCriarConta() {
+        Toast.makeText(this, "Vous ne pouvez pas modifier votre compte pour le moment.", Toast.LENGTH_LONG).show();
 
-        if (TextUtils.isEmpty(prenomEditText.getText().toString())) {
+        /*if (TextUtils.isEmpty(prenomEditText.getText().toString())) {
             toastMessage(String.format(getString(R.string.erro_campo), prenomEditText.getHint()), R.id.ET_Nome);
             return;
         }
 
         if (TextUtils.isEmpty(nomEditText.getText().toString())) {
             toastMessage(String.format(getString(R.string.erro_campo), nomEditText.getHint()), R.id.ET_Sobrenome);
-            return;
-        }
-
-        if (TextUtils.isEmpty(phoneEditText.getText().toString())) {
-            toastMessage(String.format(getString(R.string.erro_campo), nomEditText.getHint()), R.id.ET_Nome);
             return;
         }
 
@@ -122,13 +114,14 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
         FragmentManager fm = getSupportFragmentManager();
         dialogUpdateFragment = DialogUpdateFragment.newInstance();
-        dialogUpdateFragment.show(fm, "DialogUpdateFragment");
+        dialogUpdateFragment.show(fm, "DialogUpdateFragment");*/
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(1);
                 finish();
                 return true;
         }
@@ -162,6 +155,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
 
     @Override
     public void finishToUpdate() {
+        update = true;
         dialogUpdateFragment.dismiss();
         Snacky.builder()
                 .setView(findViewById(R.id.LL_Register))
@@ -169,14 +163,6 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
                 .setDuration(Snacky.LENGTH_LONG)
                 .success()
                 .show();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setResult(1);
-                finish();
-            }
-        }, 500);
     }
 
     private void initProgressBar() {
@@ -201,13 +187,13 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         PIN = pin;
         enabledControls(false);
         getPresenter().updateProfile(
-                nomEditText.getText().toString(),
-                prenomEditText.getText().toString(),
-                phoneEditText.getText().toString(),
-                emailEditText.getText().toString(),
+                UserPrefencesManager.getCurrentUser().getNom(),
+                UserPrefencesManager.getCurrentUser().getPrenom(),
+                UserPrefencesManager.getCurrentUser().getTelephone(),
+                UserPrefencesManager.getCurrentUser().getEmail(),
                 adresseEditText.getText().toString(),
                 villeEditText.getText().toString(),
-                pin);
+                PIN);
     }
 
     @Override
@@ -215,7 +201,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         enabledControls(true);
 
         Snacky.builder()
-                .setView(findViewById(R.id.root))
+                .setView(findViewById(R.id.LL_Register))
                 .setText("Impossible de se connecter au serveur.")
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
@@ -226,7 +212,7 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
     public void onTimeout() {
         enabledControls(true);
         Snacky.builder()
-                .setView(findViewById(R.id.root))
+                .setView(findViewById(R.id.LL_Register))
                 .setText("Le délais s'est t'écouler.")
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
@@ -238,10 +224,20 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         enabledControls(true);
 
         Snacky.builder()
-                .setView(findViewById(R.id.root))
+                .setView(findViewById(R.id.LL_Register))
                 .setText("Aucune connexion réseau. Réessayez plus tard.")
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (update) {
+            setResult(1);
+            finish();
+        }
     }
 }

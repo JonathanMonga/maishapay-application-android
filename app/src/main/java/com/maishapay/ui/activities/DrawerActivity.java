@@ -39,9 +39,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.alfonz.media.SoundManager;
 
-import java.util.Arrays;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
@@ -49,18 +46,19 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.EpargneActivity.RESULT_EPARGNE_OK;
 import static com.maishapay.ui.activities.EpargnePersonnelleActivity.RESULT_TRANSFERT_EPARGNE_OK;
+import static com.maishapay.ui.activities.PaiementActivity.RESULT_ABONNEMENT_OK;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
 import static com.maishapay.ui.activities.TransfertCompteActivity.RESULT_TRANSFERT_OK;
 
 public class DrawerActivity extends AppCompatActivity implements DashboardClickListener {
-    public static final String EXTRA_EPARGNE_DRAWER = "epargnr";
-    public static boolean is_running = false;
+    public static final String EXTRA_EPARGNE_DRAWER = "epargne";
+
     private static final int REQUEST_QRCODE = 1;
     private static final int REQUEST_PAYMENT = 2;
     private static final int REQUEST_PROFIL = 3;
     private static final int REQUEST_TRANSFERT = 4;
     private static final int REQUEST_EPARGNE = 5;
-    private static final int REQUEST_TRANSITION = 6;
+    private static final int REQUEST_TRANSACTION = 6;
     private static final int REQUEST_PAIEMENT = 7;
     private static final int REQUEST_TRANSFERT_EPARGNE = 8;
 
@@ -76,17 +74,16 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
-
-        is_running = true;
 
         userProfil = new ProfileDrawerItem();
         userProfil.withIcon(R.drawable.maishapay_photo_profil);
+
+        soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         // Create a few sample profile
         // NOTE you have to define the loader logic too. See the CustomApplication for more details
@@ -133,13 +130,12 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(2),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Points Maishapay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(4),
-                        new PrimaryDrawerItem().withName("Achat crédit unité").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
-                        new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(6),
-                        new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(7),
+                        new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
+                        new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(6),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(9),
-                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(10),
-                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(11)
+                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(8),
+                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(9),
+                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(10)
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
@@ -206,40 +202,20 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(DrawerActivity.this, MapsActivity.class));
+                                startActivity(new Intent(DrawerActivity.this, MaishapayWebviewActivity.class));
                             }
                         }, 400);
                         return false;
 
                     case 5:
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(DrawerActivity.this, AirtimeActivity.class));
-                            }
-                        }, 400);
-                        return false;
-
-                    case 6:
-                        List<String> strings = Arrays.asList(getResources().getStringArray(R.array.option_country_code));
-                        String codePhone = String.valueOf(Constants.generateCode(false, UserPrefencesManager.getCurrentUser().getTelephone()));
-
-                        if (strings.contains(codePhone))
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startActivity(new Intent(DrawerActivity.this, MobileMoneyActivity.class));
-                                }
-                            }, 400);
-                        else
-                            new MaterialDialog.Builder(DrawerActivity.this)
+                         new MaterialDialog.Builder(DrawerActivity.this)
                                     .title("Remarque")
                                     .iconRes(R.drawable.ic_informacao_azul)
-                                    .content("Désolé cette fonctionnalité n'est disponible dans votre pays.")
+                                    .content("Désolé, Le dépot par mobile money n'est pas disponible.\nVeuillez-vous rendre dans un cash-point Maishapay pour déposer ou retirer votre argent.")
                                     .show();
                         return false;
 
-                    case 7:
+                    case 6:
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -248,19 +224,19 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         }, 400);
                         return false;
 
-                    case 9:
+                    case 8:
                         setTitle("Paramètres");
                         mFragment = new SettingsFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 10:
+                    case 9:
                         setTitle("Nous contacter");
                         mFragment = new ContactFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                         return false;
 
-                    case 11:
+                    case 10:
                         setTitle("A propros");
                         mFragment = new AboutFragment();
                         mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
@@ -276,13 +252,9 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     @Override
     public void onStop() {
         super.onStop();
-        soundManager.stopAll();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        is_running = false;
+        if(soundManager != null)
+            soundManager.stopAll();
     }
 
     @Override
@@ -330,6 +302,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                 Fragment f = new AccueilFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
             }
+
         } else if (requestCode == REQUEST_EPARGNE) {
             if (resultCode == RESULT_EPARGNE_OK) {
                 setTitle("Maishapay");
@@ -338,6 +311,15 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
             }
         } else if (requestCode == REQUEST_TRANSFERT_EPARGNE) {
             if (resultCode == RESULT_TRANSFERT_EPARGNE_OK) {
+                setTitle("Maishapay");
+                Fragment f = new AccueilFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
+
+                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class);
+                startActivity(intent);
+            }
+        } else if (requestCode == REQUEST_PAIEMENT) {
+            if (resultCode == RESULT_ABONNEMENT_OK) {
                 setTitle("Maishapay");
                 Fragment f = new AccueilFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
@@ -354,6 +336,8 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
         if (result != null && result.isDrawerOpen()) {
             result.closeDrawer();
+        } else if(result != null && ! result.getAdapter().getItem(1).isSelected()){
+            result.setSelection(1);
         } else {
             super.onBackPressed();
         }
@@ -389,7 +373,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                             case 1: {
                                 Snacky.builder()
                                         .setView(findViewById(R.id.root))
-                                        .setText("Désolé, cette fonctionnalit n'est pas disponible.")
+                                        .setText("Désolé, cette fonctionnalit n'est pas disponible pour le moment.")
                                         .setDuration(Snacky.LENGTH_LONG)
                                         .warning()
                                         .show();
@@ -410,7 +394,8 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
     @Override
     public void onTransactiosClicked() {
-
+        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransactionActivity.class);
+        startActivityForResult(intent, REQUEST_TRANSACTION);
     }
 
     @Override
@@ -421,6 +406,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
     @Override
     public void onPaiementClicked() {
-
+        Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), PaiementActivity.class);
+        startActivityForResult(intent, REQUEST_PAIEMENT);
     }
 }

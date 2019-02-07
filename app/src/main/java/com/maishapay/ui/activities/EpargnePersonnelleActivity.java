@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -36,14 +37,15 @@ import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.EpargnePersonellePresenter;
 import com.maishapay.ui.dialog.DialogConfirmEpargneFragment;
-import com.maishapay.ui.dialog.DialogNumberPickerFragment;
-import com.maishapay.ui.dialog.NumPadPossitiveButtonListener;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
 import com.maishapay.view.EpargnePersonelleView;
+import com.nmaltais.calcdialog.CalcDialog;
 
 import org.fabiomsr.moneytextview.MoneyTextView;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,10 +57,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import static com.maishapay.ui.activities.DrawerActivity.EXTRA_EPARGNE_DRAWER;
 
 
-public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePresenter, EpargnePersonelleView> implements NumPadPossitiveButtonListener, PossitiveButtonConfirmListener, EpargnePersonelleView {
+public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePresenter, EpargnePersonelleView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, EpargnePersonelleView {
 
     private static final int REQUEST_QRCODE = 1;
     public static final int RESULT_TRANSFERT_EPARGNE_OK = 2;
+    private static final int DIALOG_REQUEST_CODE = 0;
+
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
 
@@ -77,6 +81,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     private DialogConfirmEpargneFragment dialogConfirmEpargneFragment;
     private static String userCurrency;
     private boolean flagTransfert = false;
+    private CalcDialog calcDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,20 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
 
             }
         });
+
+        calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
+
+        BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
+
+        calcDialog.setValue(bigDecimal)
+                .setFormatSymbols(',', '.')
+                .setShowSignButton(true)
+                .setShowAnswerButton(true)
+                .setSignCanBeChanged(true, bigDecimal.signum())
+                .setClearDisplayOnOperation(true)
+                .setShowZeroWhenNoValue(true)
+                .setMaxValue(new BigDecimal(1000000))
+                .setMaxDigits(7, 2);
     }
 
     @Override
@@ -245,13 +264,10 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     @OnClick(R.id.ET_Montant)
     public void ET_MontantClicked(){
         FragmentManager fm = getSupportFragmentManager();
-        DialogNumberPickerFragment dialogNumberPickerFragment = DialogNumberPickerFragment.newInstance("0", userCurrency);
-        dialogNumberPickerFragment.show(fm, "DialogNumberPickerFragment");
-    }
 
-    @Override
-    public void numPadPositiveClicked(String number) {
-        ET_Montant.setAmount(Float.valueOf(number));
+        if (fm.findFragmentByTag("calc_dialog") == null) {
+            calcDialog.show(fm, "calc_dialog");
+        }
     }
 
     @Override
@@ -301,5 +317,10 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
                     getPresenter().transfertEpargnePersonelle("", UserPrefencesManager.getCurrentUser().getTelephone(), userCurrency, String.valueOf(ET_Montant.getAmount()));
             }
         });
+    }
+
+    @Override
+    public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
+        ET_Montant.setAmount(value.floatValue(), userCurrency);
     }
 }

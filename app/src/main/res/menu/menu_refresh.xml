@@ -12,7 +12,7 @@
         android:id="@+id/action_transfert"
         android:orderInCategory="1"
         android:visible="false"
-        android:icon="@drawable/ic_menu_send"
+        android:icon="@drawable/ic_epargne"
         android:title="Rafrechir"
         app:showAsAction="ifRoom" />
 </menu>
