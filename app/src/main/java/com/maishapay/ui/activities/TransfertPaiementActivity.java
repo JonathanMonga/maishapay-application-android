@@ -16,6 +16,7 @@
 
 package com.maishapay.ui.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,8 +56,6 @@ import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static com.maishapay.ui.activities.PaiementActivity.RESULT_ABONNEMENT_OK;
 
 
 public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, TransfertView {
@@ -322,16 +321,18 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
             getPresenter().confirmTransfertAbonnement(
                     pin,
+                    "",
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
                     userCurrency,
                     String.valueOf(ET_Montant.getAmount()),
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
-                    ET_CodeCarte.getMask());
+                    ET_CodeCarte.getRawText());
         else
             getPresenter().confirmTransfertAbonnement(
                     pin,
+                    "Canal +",
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
                     mBouquetCanalPlus.currency,
@@ -409,7 +410,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        setResult(RESULT_ABONNEMENT_OK);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 

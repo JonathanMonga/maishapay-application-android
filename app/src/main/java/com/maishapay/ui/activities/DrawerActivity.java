@@ -46,7 +46,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.EpargneActivity.RESULT_EPARGNE_OK;
 import static com.maishapay.ui.activities.EpargnePersonnelleActivity.RESULT_TRANSFERT_EPARGNE_OK;
-import static com.maishapay.ui.activities.PaiementActivity.RESULT_ABONNEMENT_OK;
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
 import static com.maishapay.ui.activities.TransfertCompteActivity.RESULT_TRANSFERT_OK;
 
@@ -319,13 +318,10 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                 startActivity(intent);
             }
         } else if (requestCode == REQUEST_PAIEMENT) {
-            if (resultCode == RESULT_ABONNEMENT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 setTitle("Maishapay");
                 Fragment f = new AccueilFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
-
-                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class);
-                startActivity(intent);
             }
         }
     }
@@ -408,5 +404,12 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     public void onPaiementClicked() {
         Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), PaiementActivity.class);
         startActivityForResult(intent, REQUEST_PAIEMENT);
+    }
+
+    @Override
+    public void recreateFragment() {
+        setTitle("Maishapay");
+        Fragment f = new AccueilFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
     }
 }

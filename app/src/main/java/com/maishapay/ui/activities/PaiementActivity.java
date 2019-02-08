@@ -30,7 +30,6 @@ import static com.maishapay.ui.activities.TransfertPaiementActivity.EXTRA_TYPE_A
  */
 public class PaiementActivity extends AppCompatActivity{
     private static final int REQUEST_ABONNEMENT = 1;
-    public static final int RESULT_ABONNEMENT_OK = 1;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.toolbar_actionbar) Toolbar toolbar;
@@ -109,9 +108,7 @@ public class PaiementActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == Activity.RESULT_OK) {
-            setResult(RESULT_ABONNEMENT_OK);
-            finish();
-        }
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

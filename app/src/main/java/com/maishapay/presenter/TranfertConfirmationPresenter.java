@@ -156,7 +156,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                 }));
     }
 
-    public void createAbonnementObject(String mobileNumberColumn, String usernameColumn, String nomAbonnementColumn, String cardNumberColumn, String montantColumn, String monnaieColumn) {
+    public void createAbonnementObject(String type, String mobileNumberColumn, String usernameColumn, String nomAbonnementColumn, String cardNumberColumn, String montantColumn, String monnaieColumn) {
         Date date = Calendar.getInstance().getTime();
 
         DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
@@ -166,10 +166,16 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         abonnementObject.put("Date", today);
         abonnementObject.put("MobileNumber", mobileNumberColumn);
         abonnementObject.put("Username", usernameColumn);
-        abonnementObject.put("NomAbonnement", nomAbonnementColumn);
+
+        if(type.equals("Canal +"))
+            abonnementObject.put("NomAbonnement", "Canal + : " + nomAbonnementColumn);
+        else
+            abonnementObject.put("NomAbonnement", nomAbonnementColumn);
+
         abonnementObject.put("CardNumber", cardNumberColumn);
         abonnementObject.put("Montant", montantColumn);
         abonnementObject.put("Monnaie", monnaieColumn);
+        abonnementObject.put("Confirmer", "NON");
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
@@ -184,7 +190,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         });
     }
 
-    public void confirmTransfertAbonnement(String pin, final String telephone, String s, final String userCurrency, final String s1, final String format, final String stringExtra, final String rawText) {
+    public void confirmTransfertAbonnement(String pin, final String type, final String telephone, String s, final String userCurrency, final String s1, final String format, final String stringExtra, final String rawText) {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, telephone, s, userCurrency, s1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -209,7 +215,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             default: {
-                                createAbonnementObject(telephone, format, stringExtra, rawText, s1, userCurrency);
+                                createAbonnementObject(type, telephone, format, stringExtra, rawText, s1, userCurrency);
                             }
                         }
                     }

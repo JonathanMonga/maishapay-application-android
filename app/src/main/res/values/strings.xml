@@ -1,6 +1,8 @@
-<resources>
-    <string name="app_name" translatable="false">Maishapay</string>
-    <string name="google_maps_key" translatable="false">AIzaSyCCKKKhB83EeJfSiNnn3a3gLn9zjIdhpes</string>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="app_name">Maishapay</string>
+    <string name="google_maps_key">AIzaSyCCKKKhB83EeJfSiNnn3a3gLn9zjIdhpes</string>
     <string name="btn_cancelar">Annuler</string>
     <string name="btn_compartilhar">Partager</string>
     <string name="btn_editar">Modifier</string>
@@ -75,4 +77,31 @@
     <string name="scan">Scanner un code QR</string>
     <string name="scan_sub">Scanner pour effectuer une transaction.</string>
     <string name="www_maishapay_online">www.maishapay.online</string>
+
+    <string name="time_ago_now">Aujourd\'hui</string>
+    <string name="time_ago_full_seconds">il y a %1$d secondes</string>
+    <string name="time_ago_full_minute">il y a %1$d minute</string>
+    <string name="time_ago_full_minutes">%1$d minutes auparavant</string>
+    <string name="time_ago_full_hour">Il y a %1$d heure</string>
+    <string name="time_ago_full_hours">Il y a %1$d heures</string>  
+    <string name="time_ago_full_yesterday_at">Hier à %1$s</string>
+    <string name="time_ago_full_days">il y a %1$d jours</string>
+    <string name="time_ago_full_month">%1$d mois auparavant</string>   
+    <string name="time_ago_full_months">il y a %1$d mois</string>
+    <string name="time_ago_seconds">Il y a %1$d seconde</string>
+    <string name="time_ago_minute">Il y a %1$d minute</string>
+    <string name="time_ago_minutes">%1$d min de plus tôt</string>
+    <string name="time_ago_hour">il y a %1$d h</string>
+    <string name="time_ago_hours">il y a %1$d h</string>
+    <string name="time_ago_yesterday_at">Hier à %1$s</string>
+    <string name="time_ago_days">Il y a %1$d jours</string>    
+    <string name="time_ago_month">Il y a %1$d mois</string>  
+    <string name="time_ago_months">Il y a %1$d mois</string>
+    <string name="taux_d_echange">Taux d\'echange</string>
+    <string name="transfert_d_argent">Transfert d\'argent</string>
+    <string name="transferer_de_l_agent_ou_que_vous_soyez">Transferer de l\'agent ou que vous soyez.</string>
+    <string name="epargne">Epargne</string>
+    <string name="epargner_pour_vous_ou_pour_un_proche">Epargner pour vous ou pour un proche.</string>
+    <string name="transactions">Transactions</string>
+    <string name="consulter_votre_historique_des_transactions">Consulter votre historique des transactions.</string>
 </resources>

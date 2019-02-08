@@ -158,7 +158,7 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_splash_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_transfert, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

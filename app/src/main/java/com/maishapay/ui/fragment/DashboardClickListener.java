@@ -11,4 +11,6 @@ public interface DashboardClickListener {
     void onEpargneClicked();
 
     void onPaiementClicked();
+
+    void recreateFragment();
 }

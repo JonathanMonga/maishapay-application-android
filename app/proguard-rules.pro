@@ -8,9 +8,9 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
@@ -22,6 +22,8 @@
 -dontwarn org.joda.time.**
 -dontwarn retrofit2.**
 -dontwarn okhttp3.**
+-dontwarn android.support.design.internal.**
+-dontwarn com.squareup.picasso.**
 
 -keep class dmax.dialog.** {
     *;
