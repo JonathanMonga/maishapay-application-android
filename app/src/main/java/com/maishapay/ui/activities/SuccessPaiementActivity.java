@@ -31,7 +31,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.maishapay.util.Constants.ACCESS_TOKEN;
 import static com.maishapay.util.Constants.CLIENT_ID;
 import static com.maishapay.util.Constants.CLIENT_SECRET;
 import static com.maishapay.util.Constants.RECEIVER_ADDRESS;
@@ -60,12 +59,10 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
 
         osms = new Osms(CLIENT_ID, CLIENT_SECRET);
-        osms.setAccessToken(ACCESS_TOKEN);
 
         OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
                 RECEIVER_ADDRESS,
@@ -118,7 +115,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
 
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
-        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement")) {
+        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Transfert")) {
             messagingService = osms.messaging();
             messagingService.sendMessage(SENDER_ADDRESS, MESSAGE_ENTITY, new Callback<MessageEntity>() {
                         @Override

@@ -104,6 +104,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private boolean flagtransfert = false;
     private SoundManager soundManager;
     private CalcDialog calcDialog;
+    private String MESSAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,6 +330,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
         intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
 
         startActivityForResult(intent, REQUEST_SUCCESS_PAYMENT);
     }
@@ -369,6 +371,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void positiveClicked(String pin) {
         enabledControls(false);
+        MESSAGE = String.format("Transfert Maishapay\n%s %s\nNumero : %s\nViens de transferer %s %s\nVers Le numero : %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency, destinatairePhone);
         getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
