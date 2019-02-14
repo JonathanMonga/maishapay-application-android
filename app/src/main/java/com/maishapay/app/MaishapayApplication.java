@@ -17,6 +17,8 @@ package com.maishapay.app;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.os.Build;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
@@ -45,6 +47,12 @@ public class MaishapayApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         application = this;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Kitkat and lower has a bug that can cause in correct strict mode
+            // warnings about expected activity counts
+            enableStrictMode();
+        }
+
         maishapayClient = MaishapayClient.getInstance();
         mSoundManager = new SoundManager(application, SoundManager.PLAY_SINGLE);
 
@@ -100,5 +108,19 @@ public class MaishapayApplication extends MultiDexApplication {
 
     public SoundManager getmSoundManager() {
         return mSoundManager;
+    }
+
+    public void enableStrictMode() {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
+
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
     }
 }

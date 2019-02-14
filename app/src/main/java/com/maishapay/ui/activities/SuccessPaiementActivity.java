@@ -6,8 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.github.ismaeltoe.osms.library.Osms;
+import com.github.ismaeltoe.osms.library.entities.CredentialsEntity;
+import com.github.ismaeltoe.osms.library.entities.messaging.MessageEntity;
+import com.github.ismaeltoe.osms.library.entities.messaging.OutboundSMSMessageRequest;
+import com.github.ismaeltoe.osms.library.entities.messaging.OutboundSMSTextMessage;
+import com.github.ismaeltoe.osms.library.services.CredentialsService;
+import com.github.ismaeltoe.osms.library.services.MessagingService;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.MaishapayNotification;
@@ -18,22 +26,36 @@ import org.alfonz.media.SoundManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.util.Constants.ACCESS_TOKEN;
+import static com.maishapay.util.Constants.CLIENT_ID;
+import static com.maishapay.util.Constants.CLIENT_SECRET;
+import static com.maishapay.util.Constants.RECEIVER_ADDRESS;
+import static com.maishapay.util.Constants.SENDER_ADDRESS;
+import static com.maishapay.util.Constants.SENDER_NAME;
+
 public class SuccessPaiementActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "message";
+
     public static final String EXTRA_TITLE_ACTIVITY = "title_activity";
     public static final String EXTRA_PHONE = "phone";
     public static final String EXTRA_MONTANT = "montant";
     public static final String EXTRA_MONNAIE = "monnaie";
     public static final String EXTRA_DESTINATAIRE = "destinataire";
-    public static final String EXTRA_REFRESH = "refresh";
-    public static final int RESULT_REFRESH = 1;
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
     @BindView(R.id.TV_Msg)
     TextView TV_Msg;
     private SoundManager soundManager;
+    private MessagingService messagingService;
+    private MessageEntity MESSAGE_ENTITY;
+    private OutboundSMSMessageRequest OUTBOUND_SMS_MESSAGE_REQUEST;
+    private Osms osms;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +63,32 @@ public class SuccessPaiementActivity extends AppCompatActivity {
         //Constants.initStatusBar(this);
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
+
+        osms = new Osms(CLIENT_ID, CLIENT_SECRET);
+        osms.setAccessToken(ACCESS_TOKEN);
+
+        OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
+                RECEIVER_ADDRESS,
+                new OutboundSMSTextMessage(getIntent().getStringExtra(EXTRA_MESSAGE)),
+                SENDER_ADDRESS,
+                SENDER_NAME
+        );
+
+        MESSAGE_ENTITY = new MessageEntity(OUTBOUND_SMS_MESSAGE_REQUEST);
+
+        CredentialsService credentialsService = osms.credentials();
+
+        credentialsService.getAccessToken("client_credentials", new Callback<CredentialsEntity>() {
+            @Override
+            public void success(CredentialsEntity credentialsEntity, Response response) {
+                osms.setAccessToken(credentialsEntity.getAccessToken());
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e("Maishapay","Failled");
+            }
+        });
 
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
@@ -70,7 +118,23 @@ public class SuccessPaiementActivity extends AppCompatActivity {
 
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
-        finish();
+        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement")) {
+            messagingService = osms.messaging();
+            messagingService.sendMessage(SENDER_ADDRESS, MESSAGE_ENTITY, new Callback<MessageEntity>() {
+                        @Override
+                        public void success(MessageEntity messageEntity, Response response) {
+                            Log.e("Maishapay", messageEntity.toString());
+                            finish();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError retrofitError) {
+                            Log.e("Maishapay",retrofitError.toString());
+                            finish();
+                        }
+                    }
+            );
+        }
     }
 
     @Override

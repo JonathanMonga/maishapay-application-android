@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -198,12 +199,10 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         return false;
 
                     case 4:
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(DrawerActivity.this, MaishapayWebviewActivity.class));
-                            }
-                        }, 400);
+                        String url = "http://www.maishapay.online/cash/";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
                         return false;
 
                     case 5:

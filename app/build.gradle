@@ -2,27 +2,30 @@ apply plugin: 'com.android.application'
 
 try {
     apply from: '../../../signing.gradle'
-} catch (ex) {
+} catch (ignored) {
+
 }
 
 android {
-    signingConfigs {
+    /*signingConfigs {
         config {
             keyAlias 'Maishapay'
             keyPassword 'maishapay'
             storeFile file('C:/Users/Administrateur/Documents/Android projects/MaishapayApplication/keystore/keystore.jks')
             storePassword 'maishapay'
         }
-    }
+    }*/
 
     compileSdkVersion 27
 
     defaultConfig {
         applicationId "com.maishapay"
         minSdkVersion 14
+        //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1${releaseTime()}"
+        archivesBaseName = "${applicationId}-${versionName}"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -81,12 +84,21 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.config
+            //signingConfig signingConfigs.config
         }
     }
 
     lintOptions {
         abortOnError false
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi', 'armeabi-v7a', 'x86'
+            universalApk true
+        }
     }
 
     packagingOptions {
@@ -102,23 +114,11 @@ android {
         exclude 'META-INF/*.version'
         exclude 'META-INF/*.version'
     }
-
-    // Specifies one flavor dimension.
-    flavorDimensions "version"
-    productFlavors {
-        demo {
-            dimension "version"
-            versionNameSuffix "-full"
-        }
-        full {
-            dimension "version"
-            versionNameSuffix "-full"
-        }
-    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible,GradleDependency
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation('com.google.code.gson:gson:2.8.2') {
         exclude group: 'com.android.support'
@@ -384,21 +384,34 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
     implementation('com.github.thunder413:DateTimeUtils:1.0') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
     implementation('com.github.parse-community.Parse-SDK-Android:parse:1.18.5') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
     implementation('com.maltaisn:calcdialog:1.3.1') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
+    implementation ('com.github.ismaeltoe:osms-android:1.0') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+}
+
+static def releaseTime() {
+    return new Date().format(".dd.MM.yyyy.HH.mm", TimeZone.getTimeZone("GMT"))
 }
 
 apply plugin: 'com.google.gms.google-services'

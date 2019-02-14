@@ -54,6 +54,14 @@ import de.mateware.snacky.Snacky;
 
 public class Constants {
 
+    public static String CLIENT_ID = "r9MSiKjfBghqvEsUBQNeypNf1hAi2PDS";
+    public static String CLIENT_SECRET = "rewtuGqP7ngTIUG2";
+    public static String ACCESS_TOKEN = "cjlNU2lLamZCZ2hxdkVzVUJRTmV5cE5mMWhBaTJQRFM6cmV3dHVHcVA3bmdUSVVHMg==";
+
+    public static String SENDER_ADDRESS = "tel:+243859152704";
+    public static String RECEIVER_ADDRESS = "tel:+243859152704";
+    public static String SENDER_NAME = "Maishapay";
+
     public static int dpToPx(float dp, Context context) {
         return dpToPx(dp, context.getResources());
     }

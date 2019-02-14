@@ -63,6 +63,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private static final int DIALOG_REQUEST_CODE = 0;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
+    private static String MESSAGE;
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
@@ -272,13 +273,19 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     public void finishToConfirm() {
         flagtransfert = false;
         dialogForgotFragment.dismiss();
+        String title;
+        if(getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +") || getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Easy Tv") || getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Startimes"))
+            title = "Abonnement";
+        else
+            title = "Paiement";
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Paiement");
+        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
         intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
+        intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
 
         startActivity(intent);
         finish();
@@ -318,7 +325,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         TransfertPaiementActivity.pin = pin;
 
         enabledControls(false);
-        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +")) {
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "",
@@ -329,7 +336,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
                     ET_CodeCarte.getRawText());
-        else
+
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+        } else {
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "Canal +",
@@ -340,6 +349,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
                     mBouquetCanalPlus.name,
                     ET_CodeCarte.getRawText());
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetCanalPlus.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(mBouquetCanalPlus.amount), mBouquetCanalPlus.currency);
+        }
     }
 
     @Override

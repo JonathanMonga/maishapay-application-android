@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="false"
+    android:gravity="center"
+    tools:ignore="MissingPrefix">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/background"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10.0dip">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_marginRight="10.0dip"
+                    android:layout_marginTop="100dip"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="40.0dip"
+                        android:layout_marginLeft="10.0dip"
+                        android:layout_marginRight="10.0dip"
+                        android:layout_marginTop="20.0dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="invisible">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1.0dip"
+                            android:layout_weight="1.0"
+                            android:background="#ff80deea" />
+
+                        <TextView
+                            fontpath="Roboto-Regular.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.0"
+                            android:paddingLeft="10.0dip"
+                            android:paddingRight="10.0dip"
+                            android:textAllCaps="true"
+                            android:textColor="@color/branco"
+                            android:textSize="14.0sp" />
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1.0dip"
+                            android:layout_weight="1.0"
+                            android:background="#ff80deea" />
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/ti_telephone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5.0dip"
+                        android:layout_marginRight="5dip"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.hbb20.CountryCodePicker
+                                android:id="@+id/ET_CodePicker"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                app:ccpDialog_textColor="@color/branco"
+                                app:ccp_areaCodeDetectedCountry="true"
+                                app:ccp_autoDetectLanguage="true"
+                                app:ccp_contentColor="@color/branco"
+                                app:ccp_countryAutoDetectionPref="LOCALE_SIM"
+                                app:ccp_defaultNameCode="cd"
+                                app:ccp_rememberLastSelection="true"
+                                app:ccp_showArrow="false"
+                                app:ccp_showFlag="false"
+                                app:ccp_showNameCode="false" />
+
+                            <com.santalu.widget.MaskEditText
+                                android:id="@+id/ET_Telephone"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/telephone"
+                                android:inputType="phone"
+                                android:textColor="@color/branco"
+                                android:textSize="16.0sp"
+                                app:met_mask="## #### ###" />
+
+                        </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/ti_code_pin"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5.0dip"
+                        android:layout_marginRight="5dip"
+                        android:layout_marginTop="10.0dip"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
+
+                        <EditText
+                            android:id="@+id/ET_Code_Pin"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/code_pin"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberPassword"
+                            android:maxLength="5"
+                            android:textColor="@color/branco"
+                            android:textSize="16.0sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/BTN_ForgotCodePin"
+                        style="@style/flat_button"
+                        fontpath="Roboto-Regular.ttf"
+                        android:layout_width="fill_parent"
+                        android:layout_height="20.0dip"
+                        android:layout_marginLeft="10.0dip"
+                        android:layout_marginRight="5.0dip"
+                        android:layout_marginTop="10dp"
+                        android:gravity="end|center"
+                        android:paddingLeft="5.0dip"
+                        android:text="J'ai perdu mon code pin"
+                        android:textAllCaps="false"
+                        android:textColor="@color/branco"
+                        android:textSize="12.0sp" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10.0dip"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/BTN_CriarConta"
+                            style="@style/flat_button"
+                            android:layout_marginBottom="10.0dip"
+                            android:layout_marginLeft="10.0dip"
+                            android:layout_marginRight="20.0dip"
+                            android:layout_marginTop="10.0dip"
+                            android:text="Créer un compte"
+                            android:textColor="@color/branco" />
+
+                        <Button
+                            android:id="@+id/BTN_Login"
+                            style="@style/botao_branco_canto_redondo"
+                            android:layout_width="wrap_content"
+                            android:layout_marginBottom="10.0dip"
+                            android:layout_marginRight="10.0dip"
+                            android:layout_marginTop="10.0dip"
+                            android:text="@string/login"
+                            android:textColor="@color/md_orange_A700" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/mpay_icon" />
+
+            <Button
+                android:id="@+id/btn_nao_criar_conta"
+                style="@style/flat_button"
+                android:layout_width="fill_parent"
+                android:layout_height="30.0dip"
+                android:layout_marginBottom="10.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_weight="0.0"
+                android:textColor="#ff80deea"
+                android:textSize="14.0sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

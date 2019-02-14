@@ -129,6 +129,12 @@ public class BalanceDollarsFragment extends Fragment implements OnChartValueSele
         setChartData(getArguments().getString(EXTRA_SOLDE_DOLLARS), getArguments().getFloat(EXTRA_SOLDE_ENVOI), getArguments().getFloat(EXTRA_SOLDE_RECU));
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getArguments().clear();
+    }
+
     private void setData() {
         entries = new ArrayList<>();
 
