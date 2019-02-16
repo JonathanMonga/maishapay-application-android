@@ -69,9 +69,13 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private static String USD_CURRENCY = "USD";
     private static String userCurrency;
     private static String pin;
+    private static String data;
 
     public static final String EXTRA_TYPE_ABONNEMENT = "type_abonnement";
     public static final String EXTRA_NUMERO_SERVICE = "numero_service";
+    public static final String EXTRA_DATA_CANAL = "Canal +";
+    public static final String EXTRA_DATA_EASY = "Easy Tv";
+    public static final String EXTRA_DATA_STARTIMES = "Startimes";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -105,6 +109,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         toolbar.setTitle("Abonnemt " + getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT));
         setSupportActionBar(toolbar);
+
+        data = getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -150,7 +156,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             }
         });
 
-        if (! getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+        if (!data.equals(EXTRA_DATA_CANAL))
             Bouquet.setVisibility(View.GONE);
         else {
             Monnaie.setVisibility(View.GONE);
@@ -187,7 +193,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+        if (!data.equals(EXTRA_DATA_CANAL))
             if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
                 toastMessage("Montant incorrect.", R.id.ET_Montant);
                 return;
@@ -200,7 +206,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         enabledControls(false);
 
-        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +"))
+        if (!data.equals(EXTRA_DATA_CANAL))
             getPresenter().transfert(
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
@@ -274,7 +280,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         flagtransfert = false;
         dialogForgotFragment.dismiss();
         String title;
-        if(getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +") || getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Easy Tv") || getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Startimes"))
+        if(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES))
             title = "Abonnement";
         else
             title = "Paiement";
@@ -325,7 +331,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         TransfertPaiementActivity.pin = pin;
 
         enabledControls(false);
-        if (!getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT).equals("Canal +")) {
+        if (!data.equals(EXTRA_DATA_CANAL)) {
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "",

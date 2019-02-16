@@ -39,15 +39,16 @@ import com.android.ex.chips.RecipientEditTextView;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
-import com.maishapay.model.client.response.RetraitResponse;
+import com.maishapay.model.client.response.BaseResponse;
+import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.domain.QRCodeDataUser;
 import com.maishapay.model.prefs.UserPrefencesManager;
-import com.maishapay.presenter.RetraitConfirmationPresenter;
-import com.maishapay.ui.dialog.DialogConfirmRetraitFragment;
+import com.maishapay.presenter.TranfertConfirmationPresenter;
+import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.ui.qrcode.DecoderActivity;
 import com.maishapay.util.Constants;
-import com.maishapay.view.RetraitView;
+import com.maishapay.view.TransfertView;
 import com.nmaltais.calcdialog.CalcDialog;
 import com.wajahatkarim3.easyvalidation.core.Validator;
 
@@ -64,7 +65,7 @@ import de.mateware.snacky.Snacky;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, RetraitView> implements PossitiveButtonConfirmListener, CalcDialog.CalcDialogCallback, RetraitView {
+public class RetraitActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements PossitiveButtonConfirmListener, CalcDialog.CalcDialogCallback, TransfertView {
 
     private static final int REQUEST_QRCODE = 1;
     private static String MESSAGE;
@@ -87,7 +88,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     RecipientEditTextView ET_Destinataire;
 
     private ProgressDialog progressDialog;
-    private DialogConfirmRetraitFragment confirmRetaritFragment;
+    private DialogConfirmTransfertFragment confirmRetaritFragment;
     private boolean flagRetrait = false;
     private QRCodeDataUser qrCodeDataUser;
     private SoundManager soundManager;
@@ -239,7 +240,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
         flagRetrait = true;
         enabledControls(false);
-        getPresenter().retrait(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, String.valueOf(ET_Montant.getAmount()), userCurrency);
+        getPresenter().transfert(UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -250,22 +251,35 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @Override
-    public void showRetraitError(int type) {
-        if (type == 0) {
+    public void showTranfertError(int type) {
+        if (type == 0)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
-                    .setText("Le numero de l'Agent n'est pas correct.")
+                    .setText("Le numero de destinataire n'existe pas dans Maishapay.")
                     .setDuration(Snacky.LENGTH_LONG)
                     .error()
                     .show();
-        } else if (type == 2) {
+        else if (type == 2)
             Snacky.builder()
                     .setView(findViewById(R.id.root))
-                    .setText("Desolé, votre solde est insuffisant.")
+                    .setText("Desolé, votre compte ne dispose pas beaucoup de solde pour effectuer ce transfert.")
                     .setDuration(Snacky.LENGTH_LONG)
                     .error()
                     .show();
-        }
+        else if (type == 3)
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Le compte de votre destinataire est indisponible pour le moment.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .error()
+                    .show();
+        else
+            Snacky.builder()
+                    .setView(findViewById(R.id.root))
+                    .setText("Desolé, vous n'êtes pas autorisé à effectuer cette operation, veuillez contacter le service Maishpay.")
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .error()
+                    .show();
     }
 
     @Override
@@ -294,11 +308,11 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     }
 
     @Override
-    public void finishToRetrait(RetraitResponse retraitResponse) {
+    public void finishToTranfert(BaseResponse transfertResponse) {
         flagRetrait = false;
 
         FragmentManager fm = getSupportFragmentManager();
-        confirmRetaritFragment = DialogConfirmRetraitFragment.newInstance(retraitResponse.getPrenom(), retraitResponse.getNom(), destinatairePhone);
+        confirmRetaritFragment = DialogConfirmTransfertFragment.newInstance(((TransfertResponse) transfertResponse).getPrenom(), ((TransfertResponse) transfertResponse).getNom());
         confirmRetaritFragment.show(fm, "DialogConfirmRetraitFragment");
     }
 
@@ -313,8 +327,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
 
     @NonNull
     @Override
-    public RetraitConfirmationPresenter providePresenter() {
-        return new RetraitConfirmationPresenter();
+    public TranfertConfirmationPresenter providePresenter() {
+        return new TranfertConfirmationPresenter();
     }
 
     private void toastMessage(String message, int view) {
@@ -325,8 +339,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     public void positiveClicked(String pin) {
         enabledControls(false);
-        MESSAGE = String.format("Transfert Maishapay\n%s %s, %s\nVous venez de retirer %s %s\nChez %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency, destinatairePhone);
-        getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
+        MESSAGE = String.format("Retrait Maishapay\n%s %s, %s\nViens de retirer %s %s\nChez %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency, destinatairePhone);
+        getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override

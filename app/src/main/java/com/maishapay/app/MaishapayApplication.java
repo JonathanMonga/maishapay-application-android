@@ -22,7 +22,12 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 
+import com.github.ismaeltoe.osms.library.Osms;
+import com.github.ismaeltoe.osms.library.entities.CredentialsEntity;
+import com.github.ismaeltoe.osms.library.services.CredentialsService;
+import com.github.ismaeltoe.osms.library.services.MessagingService;
 import com.maishapay.R;
 import com.maishapay.model.client.MaishapayClient;
 import com.parse.Parse;
@@ -35,18 +40,48 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+import static com.maishapay.util.Constants.ACCESS_TOKEN;
+import static com.maishapay.util.Constants.CLIENT_ID;
+import static com.maishapay.util.Constants.CLIENT_SECRET;
 
 public class MaishapayApplication extends MultiDexApplication {
 
     private static MaishapayApplication application;
     private MaishapayClient maishapayClient;
     private SoundManager mSoundManager;
+    private Osms osms;
+    private MessagingService messagingService;
+    private CredentialsService credentialsService;
 
     @Override
     public void onCreate() {
         super.onCreate();
         application = this;
+
+        osms = new Osms(CLIENT_ID, CLIENT_SECRET);
+        osms.setAccessToken(ACCESS_TOKEN);
+
+        credentialsService = osms.credentials();
+
+        credentialsService.getAccessToken("client_credentials", new Callback<CredentialsEntity>() {
+            @Override
+            public void success(CredentialsEntity credentialsEntity, Response response) {
+                osms.setAccessToken(credentialsEntity.getAccessToken());
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e("Maishapay","Failled");
+            }
+        });
+
+        messagingService = osms.messaging();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Kitkat and lower has a bug that can cause in correct strict mode
             // warnings about expected activity counts
@@ -63,6 +98,18 @@ public class MaishapayApplication extends MultiDexApplication {
                         .build());
         iniPreference();
         load();
+    }
+
+    public Osms getOsms() {
+        return osms;
+    }
+
+    public CredentialsService getCredentialsService() {
+        return credentialsService;
+    }
+
+    public MessagingService getMessagingService() {
+        return messagingService;
     }
 
     private void iniPreference() {

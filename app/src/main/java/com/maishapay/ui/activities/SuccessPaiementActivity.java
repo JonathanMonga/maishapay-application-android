@@ -14,8 +14,6 @@ import com.github.ismaeltoe.osms.library.entities.CredentialsEntity;
 import com.github.ismaeltoe.osms.library.entities.messaging.MessageEntity;
 import com.github.ismaeltoe.osms.library.entities.messaging.OutboundSMSMessageRequest;
 import com.github.ismaeltoe.osms.library.entities.messaging.OutboundSMSTextMessage;
-import com.github.ismaeltoe.osms.library.services.CredentialsService;
-import com.github.ismaeltoe.osms.library.services.MessagingService;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.MaishapayNotification;
@@ -31,10 +29,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.maishapay.util.Constants.ACCESS_TOKEN;
-import static com.maishapay.util.Constants.CLIENT_ID;
-import static com.maishapay.util.Constants.CLIENT_SECRET;
-import static com.maishapay.util.Constants.RECEIVER_ADDRESS;
 import static com.maishapay.util.Constants.SENDER_ADDRESS;
 import static com.maishapay.util.Constants.SENDER_NAME;
 
@@ -53,41 +47,12 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     @BindView(R.id.TV_Msg)
     TextView TV_Msg;
     private SoundManager soundManager;
-    private MessagingService messagingService;
-    private MessageEntity MESSAGE_ENTITY;
-    private Osms osms;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
-
-        osms = new Osms(CLIENT_ID, CLIENT_SECRET);
-        osms.setAccessToken(ACCESS_TOKEN);
-
-        OutboundSMSMessageRequest OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
-                getIntent().getStringExtra(EXTRA_RECEIVER) != null ? getIntent().getStringExtra(EXTRA_RECEIVER) : RECEIVER_ADDRESS,
-                new OutboundSMSTextMessage(getIntent().getStringExtra(EXTRA_MESSAGE)),
-                SENDER_ADDRESS,
-                SENDER_NAME
-        );
-
-        MESSAGE_ENTITY = new MessageEntity(OUTBOUND_SMS_MESSAGE_REQUEST);
-
-        CredentialsService credentialsService = osms.credentials();
-
-        credentialsService.getAccessToken("client_credentials", new Callback<CredentialsEntity>() {
-            @Override
-            public void success(CredentialsEntity credentialsEntity, Response response) {
-                osms.setAccessToken(credentialsEntity.getAccessToken());
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.e("Maishapay","Failled");
-            }
-        });
 
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
@@ -117,20 +82,44 @@ public class SuccessPaiementActivity extends AppCompatActivity {
 
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
-        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Retrait")) {
-            messagingService = osms.messaging();
-            messagingService.sendMessage(SENDER_ADDRESS, MESSAGE_ENTITY, new Callback<MessageEntity>() {
-                        @Override
-                        public void success(MessageEntity messageEntity, Response response) {
-                            finish();
-                        }
-
-                        @Override
-                        public void failure(RetrofitError retrofitError) {
-                            finish();
-                        }
-                    }
+        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Retrait") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Transfert")) {
+            OutboundSMSMessageRequest OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
+                    String.format("tel:+%s", getIntent().getStringExtra(EXTRA_DESTINATAIRE)),
+                    new OutboundSMSTextMessage(getIntent().getStringExtra(EXTRA_MESSAGE)),
+                    SENDER_ADDRESS,
+                    SENDER_NAME
             );
+
+            final MessageEntity MESSAGE_ENTITY = new MessageEntity(OUTBOUND_SMS_MESSAGE_REQUEST);
+
+            MaishapayApplication.getMaishapayContext().getCredentialsService().getAccessToken("client_credentials", new Callback<CredentialsEntity>() {
+                @Override
+                public void success(CredentialsEntity credentialsEntity, Response response) {
+                    Osms osms = MaishapayApplication.getMaishapayContext().getOsms();
+                    osms.setAccessToken(credentialsEntity.getAccessToken());
+
+                    osms.messaging().sendMessage(SENDER_ADDRESS, MESSAGE_ENTITY, new Callback<MessageEntity>() {
+                                @Override
+                                public void success(MessageEntity messageEntity, Response response) {
+                                    finish();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError retrofitError) {
+                                    Log.e("Maishapay","Failled");
+                                    finish();
+                                }
+                            }
+                    );
+                }
+
+                @Override
+                public void failure(RetrofitError retrofitError) {
+                    Log.e("Maishapay","Failled");
+                }
+            });
+        } else {
+            finish();
         }
     }
 
