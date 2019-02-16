@@ -31,6 +31,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.util.Constants.ACCESS_TOKEN;
 import static com.maishapay.util.Constants.CLIENT_ID;
 import static com.maishapay.util.Constants.CLIENT_SECRET;
 import static com.maishapay.util.Constants.RECEIVER_ADDRESS;
@@ -45,6 +46,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     public static final String EXTRA_MONTANT = "montant";
     public static final String EXTRA_MONNAIE = "monnaie";
     public static final String EXTRA_DESTINATAIRE = "destinataire";
+    public static final String EXTRA_RECEIVER = "receive";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -53,7 +55,6 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     private SoundManager soundManager;
     private MessagingService messagingService;
     private MessageEntity MESSAGE_ENTITY;
-    private OutboundSMSMessageRequest OUTBOUND_SMS_MESSAGE_REQUEST;
     private Osms osms;
 
     @Override
@@ -63,9 +64,10 @@ public class SuccessPaiementActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         osms = new Osms(CLIENT_ID, CLIENT_SECRET);
+        osms.setAccessToken(ACCESS_TOKEN);
 
-        OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
-                RECEIVER_ADDRESS,
+        OutboundSMSMessageRequest OUTBOUND_SMS_MESSAGE_REQUEST = new OutboundSMSMessageRequest(
+                getIntent().getStringExtra(EXTRA_RECEIVER) != null ? getIntent().getStringExtra(EXTRA_RECEIVER) : RECEIVER_ADDRESS,
                 new OutboundSMSTextMessage(getIntent().getStringExtra(EXTRA_MESSAGE)),
                 SENDER_ADDRESS,
                 SENDER_NAME
@@ -115,18 +117,16 @@ public class SuccessPaiementActivity extends AppCompatActivity {
 
     @OnClick(R.id.LL_Site)
     public void LL_SiteClicked() {
-        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Transfert")) {
+        if(getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Abonnement") || getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY).equals("Retrait")) {
             messagingService = osms.messaging();
             messagingService.sendMessage(SENDER_ADDRESS, MESSAGE_ENTITY, new Callback<MessageEntity>() {
                         @Override
                         public void success(MessageEntity messageEntity, Response response) {
-                            Log.e("Maishapay", messageEntity.toString());
                             finish();
                         }
 
                         @Override
                         public void failure(RetrofitError retrofitError) {
-                            Log.e("Maishapay",retrofitError.toString());
                             finish();
                         }
                     }

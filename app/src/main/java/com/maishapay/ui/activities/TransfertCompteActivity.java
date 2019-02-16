@@ -371,7 +371,6 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void positiveClicked(String pin) {
         enabledControls(false);
-        MESSAGE = String.format("Transfert Maishapay\n%s %s\nNumero : %s\nViens de transferer %s %s\nVers Le numero : %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency, destinatairePhone);
         getPresenter().confirmTransfert(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 

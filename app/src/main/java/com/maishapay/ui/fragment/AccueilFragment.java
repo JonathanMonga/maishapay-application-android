@@ -329,6 +329,32 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();
+
+        if (UserPrefencesManager.getUserDataPreference() != null) {
+            enabledControls(true);
+
+            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
+            TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
+            TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
+            TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+
+            BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+            BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+
+            HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+            List<Fragment> pageList = new ArrayList<>();
+            pageList.add(balanceFrancsFragment);
+            pageList.add(balanceDollarsFragment);
+
+            adapter.setData(pageList);
+
+            pager.setInterval(5000);
+            pager.startAutoScroll();
+            pager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -381,6 +407,32 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
                 .setDuration(Snacky.LENGTH_LONG)
                 .error()
                 .show();
+
+        if (UserPrefencesManager.getUserDataPreference() != null) {
+            enabledControls(true);
+
+            UserDataPreference userDataPreference = UserPrefencesManager.getUserDataPreference();
+
+            TV_Dollars.setAmount(Float.valueOf(userDataPreference.getSoldeDollars()));
+            TV_Francs.setAmount(Float.valueOf(userDataPreference.getSoldeFrancs()));
+            TV_Taux.setAmount(Float.valueOf(String.valueOf(userDataPreference.getTaux())));
+
+            BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
+            BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+
+            HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
+
+            List<Fragment> pageList = new ArrayList<>();
+            pageList.add(balanceFrancsFragment);
+            pageList.add(balanceDollarsFragment);
+
+            adapter.setData(pageList);
+
+            pager.setInterval(5000);
+            pager.startAutoScroll();
+            pager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private class OnBoomClickListener implements OnBoomListener {

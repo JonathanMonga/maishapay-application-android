@@ -67,6 +67,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, RetraitView> implements PossitiveButtonConfirmListener, CalcDialog.CalcDialogCallback, RetraitView {
 
     private static final int REQUEST_QRCODE = 1;
+    private static String MESSAGE;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
     private static final int DIALOG_REQUEST_CODE = 0;
@@ -285,6 +286,8 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
         intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_RECEIVER, destinatairePhone);
 
         startActivity(intent);
         finish();
@@ -322,6 +325,7 @@ public class RetraitActivity extends BaseActivity<RetraitConfirmationPresenter, 
     @Override
     public void positiveClicked(String pin) {
         enabledControls(false);
+        MESSAGE = String.format("Transfert Maishapay\n%s %s, %s\nVous venez de retirer %s %s\nChez %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency, destinatairePhone);
         getPresenter().confirmRetrait(pin, UserPrefencesManager.getCurrentUser().getTelephone(), destinatairePhone, userCurrency, String.valueOf(ET_Montant.getAmount()));
     }
 
