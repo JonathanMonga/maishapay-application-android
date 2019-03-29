@@ -26,7 +26,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!--<uses-permission android:name="android.permission.RECEIVE_SMS" />-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -134,6 +134,7 @@
         <activity
             android:name=".ui.activities.MaishapayWebviewActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activities.MaishapayPayPalDeposit" />
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

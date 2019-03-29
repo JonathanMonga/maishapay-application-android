@@ -18,6 +18,7 @@ package com.maishapay.presenter;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
+import com.maishapay.model.client.response.InternalMessageResponse;
 import com.maishapay.model.client.response.SoldeResponse;
 import com.maishapay.model.client.response.TransactionConfirmationResponse;
 import com.maishapay.model.client.response.TransfertResponse;
@@ -53,7 +54,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         maishapayClient = MaishapayApplication.getMaishapayContext().getMaishapayClient();
     }
 
-    public void transfert(String expeditaire, String destinataire, String monnaie, String montant){
+    public void transfert(String expeditaire, String destinataire, String monnaie, String montant) {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte(expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -62,7 +63,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                     protected void onSuccess(TransfertResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showTranfertError(response.getResultat());
                                     break;
@@ -70,7 +71,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             case 2: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showTranfertError(response.getResultat());
                                     break;
@@ -78,7 +79,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             case 3: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showTranfertError(response.getResultat());
                                     break;
@@ -86,7 +87,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             case 4: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showTranfertError(response.getResultat());
                                     break;
@@ -94,7 +95,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             default: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().finishToTranfert(response);
                                     break;
@@ -105,7 +106,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                 }));
     }
 
-    public void confirmTransfert(String pin, final String expeditaire, final String destinataire, final String monnaie, final String montant){
+    public void confirmTransfert(String pin, final String expeditaire, final String destinataire, final String monnaie, final String montant) {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, expeditaire, destinataire, monnaie, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -114,7 +115,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                     protected void onSuccess(TransactionConfirmationResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showConfimationError(response.getResultat());
                                     break;
@@ -122,7 +123,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             case 2: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showConfimationError(response.getResultat());
                                     break;
@@ -130,7 +131,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             default: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().finishToConfirm();
                                     break;
@@ -161,7 +162,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
 
         Date date = Calendar.getInstance().getTime();
         DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
-        String  today = formatter.format(date);
+        String today = formatter.format(date);
 
         ParseObject abonnementObject = new ParseObject("Abonnement");
         abonnementObject.put("Date", today);
@@ -178,7 +179,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         abonnementObject.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(isViewAttached()) {
+                if (isViewAttached()) {
                     getView().enabledControls(true);
                     getView().finishToConfirm();
                 }
@@ -195,7 +196,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                     protected void onSuccess(TransactionConfirmationResponse response) {
                         switch (response.getResultat()) {
                             case 0: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showConfimationError(response.getResultat());
                                     break;
@@ -203,7 +204,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             case 2: {
-                                if(isViewAttached()) {
+                                if (isViewAttached()) {
                                     getView().enabledControls(true);
                                     getView().showConfimationError(response.getResultat());
                                     break;
@@ -213,6 +214,21 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             default: {
                                 createAbonnementObject(type, telephone, format, stringExtra, rawText, s1, userCurrency);
                             }
+                        }
+                    }
+                }));
+    }
+
+    public void internalMessage(String telephone, String message) {
+        disposableHandler.manageDisposable(maishapayClient.internalMessage(telephone, message)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<InternalMessageResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(InternalMessageResponse response) {
+                        if (isViewAttached()) {
+                            getView().enabledControls(true);
+                            getView().finishToConfirm();
                         }
                     }
                 }));

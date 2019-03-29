@@ -23,7 +23,9 @@ import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EmailResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.ForgotPinResponse;
+import com.maishapay.model.client.response.InternalMessageResponse;
 import com.maishapay.model.client.response.PaymentResponse;
+import com.maishapay.model.client.response.PaypalDepositResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
@@ -40,9 +42,11 @@ import static com.maishapay.BuildConfig.CONTACT_PARAM;
 import static com.maishapay.BuildConfig.CONVERSION_MONNAIE_PARAM;
 import static com.maishapay.BuildConfig.CREATION_COMPTE_EPARGNE_AVENIR_PARAM;
 import static com.maishapay.BuildConfig.CREATION_COMPTE_EPARGNE_PERSONNEL_PARAM;
+import static com.maishapay.BuildConfig.DEPOT_PARAM;
 import static com.maishapay.BuildConfig.EMPRUNT_CHECK_PARAM;
 import static com.maishapay.BuildConfig.EMPRUNT_PARAM;
 import static com.maishapay.BuildConfig.LOGIN_PARAM;
+import static com.maishapay.BuildConfig.MESSAGE_PARAM;
 import static com.maishapay.BuildConfig.PIN_PERDU_PARAM;
 import static com.maishapay.BuildConfig.PROD_BASE_URL;
 import static com.maishapay.BuildConfig.RAPPORT_PARAM;
@@ -336,5 +340,13 @@ public final class MaishapayClient {
                                                               String monnaie,
                                                               String montant) {
         return this.maishapayAPI.confirm_payment(CONFIRM_PAYMENT_PARAM, pin, api_key, token, expeditaire, destinataire, monnaie, montant);
+    }
+
+    public Observable<PaypalDepositResponse> depot(String telephone, String montant, String monnaie) {
+        return this.maishapayAPI.depot(DEPOT_PARAM, telephone, montant, monnaie);
+    }
+
+    public Observable<InternalMessageResponse> internalMessage(String telephone, String body) {
+        return this.maishapayAPI.internalMessage(MESSAGE_PARAM, telephone,body);
     }
 }

@@ -105,6 +105,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     private SoundManager soundManager;
     private CalcDialog calcDialog;
     private String MESSAGE;
+    private boolean isInternalMessage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,18 +322,22 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     public void finishToConfirm() {
         getPresenter().solde(UserPrefencesManager.getCurrentUser().getTelephone());
-
         dialogForgotFragment.dismiss();
 
-        Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Transfert");
-        intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
+        if(isInternalMessage) {
+            Intent intent = new Intent(this, SuccessPaiementActivity.class);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Transfert");
+            intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
+            intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
+            intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, destinatairePhone);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
 
-        startActivityForResult(intent, REQUEST_SUCCESS_PAYMENT);
+            startActivityForResult(intent, REQUEST_SUCCESS_PAYMENT);
+        } else {
+            isInternalMessage = true;
+            getPresenter().internalMessage(destinatairePhone, String.format("*INTERNAL_MESSAGE*%s", MESSAGE));
+        }
     }
 
     @Override

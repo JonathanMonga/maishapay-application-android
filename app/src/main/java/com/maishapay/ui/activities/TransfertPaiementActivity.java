@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -40,15 +41,23 @@ import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.TranfertConfirmationPresenter;
+import com.maishapay.ui.adapter.CustomAdapter;
 import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.view.TransfertView;
 import com.nmaltais.calcdialog.CalcDialog;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.santalu.widget.MaskEditText;
 
+import org.alfonz.utility.NetworkUtility;
 import org.fabiomsr.moneytextview.MoneyTextView;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +76,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
-    private static String userCurrency;
+    private static String userCurrency = CDF_CURRENCY;
+    ;
     private static String pin;
     private static String data;
 
@@ -98,12 +108,16 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private boolean flagtransfert = false;
     private CalcDialog calcDialog;
-    private BouquetCanalPlus mBouquetCanalPlus = BouquetCanalPlus.TOUT_CANAL_PLUS;
+    private BouquetCanalPlusObject mBouquetCanalPlusObject = new BouquetCanalPlusObject("", "0", "");
+    private List<String> bouquetNames = new ArrayList<>();
+    private List<String> bouquetPrixCDF = new ArrayList<>();
+    private List<String> bouquetPrixUSD = new ArrayList<>();
+    private int currentPosition = 0;
+    private boolean isInternalMessage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
         setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 
@@ -121,45 +135,128 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         initProgressBar();
 
-        SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String[] currencies = getResources().getStringArray(R.array.option_devise);
-
-                if (currencies[i].equals(CDF))
-                    userCurrency = CDF_CURRENCY;
-                else
-                    userCurrency = USD_CURRENCY;
-
-                ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
+        SP_Bouquet.setEnabled(false);
+        if (data.equals(EXTRA_DATA_CANAL)) {
+            if (!NetworkUtility.isOnline(this)) {
+                Toast.makeText(TransfertPaiementActivity.this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 5000);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetCanal");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (objects == null) {
+                        return;
+                    }
 
-            }
-        });
+                    for (ParseObject object : objects) {
+                        bouquetNames.add(object.getString("Nom"));
+                    }
 
-        SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String[] bouquets = getResources().getStringArray(R.array.option_bouquet_canal);
+                    for (ParseObject object : objects) {
+                        bouquetPrixCDF.add(object.getString("Prix_CDF"));
+                    }
 
-                mBouquetCanalPlus = BouquetCanalPlus.getBouquetFromName(bouquets[i]);
+                    for (ParseObject object : objects) {
+                        bouquetPrixUSD.add(object.getString("Prix_USD"));
+                    }
 
-                ET_Montant.setAmount(mBouquetCanalPlus.amount, mBouquetCanalPlus.currency);
-            }
+                    SP_Bouquet.setEnabled(true);
+                    SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, bouquetNames));
+                    SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (userCurrency.equals(CDF_CURRENCY)) {
+                                if (bouquetPrixCDF.get(i) == null || bouquetPrixCDF.get(i).equals("")) {
+                                    ET_Montant.setAmount(0, userCurrency);
+                                    Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour ce bouquet", Toast.LENGTH_LONG).show();
+                                } else {
+                                    currentPosition = i;
+                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixCDF.get(i), "FC");
+                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                }
+                            } else {
+                                if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
+                                    ET_Montant.setAmount(0, userCurrency);
+                                    Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    currentPosition = i;
+                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                }
+                            }
+                        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
+                        }
+                    });
+                }
+            });
+
+            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String[] currencies = getResources().getStringArray(R.array.option_devise);
+
+                    if (currencies[i].equals(CDF)) {
+                        userCurrency = CDF_CURRENCY;
+                        if (bouquetPrixCDF.size() != 0) {
+                            ET_Montant.setAmount(bouquetPrixCDF.get(currentPosition) == null || bouquetPrixCDF.get(currentPosition).equals("") ?
+                                            Float.valueOf("0")
+                                            : Float.valueOf(bouquetPrixCDF.get(currentPosition))
+                                    , userCurrency
+                            );
+                        }
+                    } else {
+                        userCurrency = USD_CURRENCY;
+                        if (bouquetPrixUSD.size() != 0) {
+                            ET_Montant.setAmount(bouquetPrixUSD.get(currentPosition) == null || bouquetPrixUSD.get(currentPosition).equals("") ?
+                                            Float.valueOf("0")
+                                            : Float.valueOf(bouquetPrixUSD.get(currentPosition))
+                                    , userCurrency
+                            );
+                        }
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        } else {
+            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String[] currencies = getResources().getStringArray(R.array.option_devise);
+
+                    if (currencies[i].equals(CDF))
+                        userCurrency = CDF_CURRENCY;
+                    else
+                        userCurrency = USD_CURRENCY;
+
+                    ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+
 
         if (!data.equals(EXTRA_DATA_CANAL))
             Bouquet.setVisibility(View.GONE);
         else {
-            Monnaie.setVisibility(View.GONE);
             ET_Montant.setEnabled(false);
         }
 
@@ -216,8 +313,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             getPresenter().transfert(
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
-                    mBouquetCanalPlus.currency,
-                    String.valueOf(mBouquetCanalPlus.amount));
+                    userCurrency,
+                    String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -280,21 +377,25 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         flagtransfert = false;
         dialogForgotFragment.dismiss();
         String title;
-        if(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES))
+        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES))
             title = "Abonnement";
         else
             title = "Paiement";
 
-        Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
-        intent.putExtra(SuccessPaiementActivity.EXTRA_MESSAGE, MESSAGE);
+        if(isInternalMessage) {
+            Intent intent = new Intent(this, SuccessPaiementActivity.class);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
+            intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
+            intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
+            intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
 
-        startActivity(intent);
-        finish();
+            startActivity(intent);
+            finish();
+        } else {
+            isInternalMessage = true;
+            getPresenter().internalMessage("243972435000", String.format("*INTERNAL_MESSAGE*%s", MESSAGE));
+        }
     }
 
     @Override
@@ -332,6 +433,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         enabledControls(false);
         if (!data.equals(EXTRA_DATA_CANAL)) {
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "",
@@ -342,20 +444,18 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
                     ET_CodeCarte.getRawText());
-
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
         } else {
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetCanalPlusObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "Canal +",
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
-                    mBouquetCanalPlus.currency,
-                    String.valueOf(mBouquetCanalPlus.amount),
+                    mBouquetCanalPlusObject.currency,
+                    String.valueOf(mBouquetCanalPlusObject.amount),
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
-                    mBouquetCanalPlus.name,
+                    mBouquetCanalPlusObject.name,
                     ET_CodeCarte.getRawText());
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetCanalPlus.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(mBouquetCanalPlus.amount), mBouquetCanalPlus.currency);
         }
     }
 
@@ -431,31 +531,15 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         finish();
     }
 
-    private enum BouquetCanalPlus {
-        TOUT_CANAL_PLUS("Bouquet Tout Canal +", 40000, "FC"),
-        EVASION_CANAL_PLUS("Bouquet Evasion +", 20000, "FC"),
-        ACCESS_CANAL_PLUS("Bouquet Access +", 15000, "FC"),
-        ESSENTIEL_CANAL_PLUS("Bouquet Essentiel +", 12000, "FC"),
-        EVASION_CANAL("Bouquet Evasion", 10000, "FC"),
-        ACESS_CANAL("Bouquet Access", 5000, "FC"),
-        UNKNOWN(null, 0, null);
-
+    private class BouquetCanalPlusObject {
         String name;
         float amount;
         String currency;
 
-        BouquetCanalPlus(String name, float amount, String currency) {
+        public BouquetCanalPlusObject(String name, String amount, String currency) {
             this.name = name;
-            this.amount = amount;
+            this.amount = Float.valueOf(amount);
             this.currency = currency;
-        }
-
-        static BouquetCanalPlus getBouquetFromName(String name) {
-            for (BouquetCanalPlus bcp : values())
-                if (bcp.name.equalsIgnoreCase(name))
-                    return bcp;
-
-            return UNKNOWN;
         }
     }
 }

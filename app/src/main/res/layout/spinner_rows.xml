@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="3dip">
+
+    <TextView
+        android:id="@+id/BouquetName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingBottom="6dip"
+        android:text=" Bouquet Tout Canal +"
+        android:textSize="16sp"
+        android:textColor="@color/black_87" />
+</RelativeLayout>

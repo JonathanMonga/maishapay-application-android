@@ -22,7 +22,9 @@ import com.maishapay.model.client.response.ConfirmRetraitResponse;
 import com.maishapay.model.client.response.EmailResponse;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.client.response.ForgotPinResponse;
+import com.maishapay.model.client.response.InternalMessageResponse;
 import com.maishapay.model.client.response.PaymentResponse;
+import com.maishapay.model.client.response.PaypalDepositResponse;
 import com.maishapay.model.client.response.RetraitResponse;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
 import com.maishapay.model.client.response.SoldeResponse;
@@ -113,10 +115,10 @@ public interface MaishapayAPI {
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<EpargneResponse> confirmation_transfert_epargne(@Field("ent") String ent,
-                                                       @Field("type_epargne") String type_transfert_ep,
-                                                       @Field("telephone") String telephone,
-                                                       @Field("monnaie") String monnaie,
-                                                       @Field("montant") String montant);
+                                                               @Field("type_epargne") String type_transfert_ep,
+                                                               @Field("telephone") String telephone,
+                                                               @Field("monnaie") String monnaie,
+                                                               @Field("montant") String montant);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
@@ -169,19 +171,32 @@ public interface MaishapayAPI {
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<Integer> update_profil(@Field("ent") String ent,
-                                                    @Field("nom") String nom,
-                                                    @Field("prenom") String prenom,
-                                                    @Field("telephone") String telephone,
-                                                    @Field("email") String email,
-                                                    @Field("adresse") String adresse,
-                                                    @Field("ville") String ville,
-                                                    @Field("pin") String code_pin);
+                                      @Field("nom") String nom,
+                                      @Field("prenom") String prenom,
+                                      @Field("telephone") String telephone,
+                                      @Field("email") String email,
+                                      @Field("adresse") String adresse,
+                                      @Field("ville") String ville,
+                                      @Field("pin") String code_pin);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
     Observable<ForgotPinResponse> pin_perdu(@Field("ent") String ent,
                                             @Field("telephone") String telephone,
                                             @Field("email") String email);
+
+    @FormUrlEncoded
+    @POST(BuildConfig.END_POINT)
+    Observable<InternalMessageResponse> internalMessage(@Field("ent") String ent,
+                                                        @Field("telephone") String telephone,
+                                                        @Field("body") String body);
+
+    @FormUrlEncoded
+    @POST(BuildConfig.END_POINT)
+    Observable<PaypalDepositResponse> depot(@Field("ent") String ent,
+                                            @Field("telephone") String telephone,
+                                            @Field("montant") String montant,
+                                            @Field("monnaie") String monnaie);
 
     @FormUrlEncoded
     @POST(BuildConfig.END_POINT)
