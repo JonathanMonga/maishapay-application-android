@@ -3,6 +3,7 @@ package com.maishapay.ui.adapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -53,11 +54,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         holder.mTextView.setText(mValues.get(position).getString("NomMarchant"));
-        holder.mTextView.setText(mValues.get(position).getString("NomMarchant"));
-        holder.mTextView.setText(mValues.get(position).getString("NomMarchant"));
+        holder.location.setText(mValues.get(position).getString("NomMarchant"));
+        holder.service.setText(mValues.get(position).getString("NomMarchant"));
 
         holder.mIcon.setInitials(true);
-        holder.mIcon.setInitialsNumber(2);
+        holder.mIcon.setInitialsNumber(1);
         holder.mIcon.setLetterSize(18);
         holder.mIcon.setShapeColor(mMaterialColors[RANDOM.nextInt(mMaterialColors.length)]);
         holder.mIcon.setLetter(mValues.get(position).getString("NomMarchant"));
@@ -68,13 +69,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
             @Override
             public void onPreOpen() {
-                holder.createRotateAnimator(holder.buttonLayout, 0f, 180f).start();
                 expandState.put(position, true);
             }
 
             @Override
             public void onPreClose() {
-                holder.createRotateAnimator(holder.buttonLayout, 180f, 0f).start();
                 expandState.put(position, false);
             }
         });
@@ -103,9 +102,13 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         @BindView(R.id.text1)
         TextView mTextView;
         @BindView(R.id.button)
-        LinearLayout buttonLayout;
+        CardView buttonLayout;
         @BindView(R.id.expandableLayout)
         ExpandableLinearLayout expandableLayout;
+        @BindView(R.id.location)
+        TextView location;
+        @BindView(R.id.service)
+        TextView service;
 
         public ViewHolder(View view) {
             super(view);

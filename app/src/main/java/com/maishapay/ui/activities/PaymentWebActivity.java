@@ -100,10 +100,19 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
                 finish();
                 return true;
             case R.id.action_checkout:
-                FragmentManager fm = getSupportFragmentManager();
-                dialogConfirmPaymentFragment = DialogConfirmPaymentFragment.newInstance(paymentResponse.getData_api().getProject_name(), "");
-                dialogConfirmPaymentFragment.show(fm, "DialogConfirmPaymentFragment");
-                return true;
+                if(! UserPrefencesManager.getCurrentUser().getTelephone().equals(paymentResponse.getData_api().getTelephone())) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    dialogConfirmPaymentFragment = DialogConfirmPaymentFragment.newInstance(paymentResponse.getData_api().getProject_name(), "");
+                    dialogConfirmPaymentFragment.show(fm, "DialogConfirmPaymentFragment");
+                    return true;
+                } else {
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText("Pas moyen de payer, vous etes un marchant.")
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
+                }
         }
 
         return super.onOptionsItemSelected(item);

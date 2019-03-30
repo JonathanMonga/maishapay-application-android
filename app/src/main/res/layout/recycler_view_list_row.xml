@@ -4,52 +4,109 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp">
+        android:layout_height="80dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="1dp"
+        android:layout_marginLeft="@dimen/cardMarginHorizontal"
+        android:layout_marginRight="@dimen/cardMarginHorizontal"
+        android:layout_marginTop="@dimen/cardMarginVertical"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
 
-        <com.github.ivbaranov.mli.MaterialLetterIcon
-            android:id="@+id/icon"
-            android:layout_width="@dimen/list_item_avatar_size"
-            android:layout_height="@dimen/list_item_avatar_size"
-            android:layout_marginRight="16dp" />
-
-        <TextView
-            android:id="@android:id/text1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp">
 
-        <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/triangle" />
-    </LinearLayout>
+            <com.github.ivbaranov.mli.MaterialLetterIcon
+                android:id="@+id/icon"
+                android:layout_weight="0.02"
+                android:layout_width="@dimen/list_item_avatar_size"
+                android:layout_height="@dimen/list_item_avatar_size"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:textColor="@color/texto"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_navigate_next_black_24dp" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
     <com.github.aakira.expandablelayout.ExpandableLinearLayout
         android:id="@+id/expandableLayout"
+        android:background="@drawable/historico_lembrete_item"
+        android:layout_marginLeft="@dimen/cardMarginHorizontal"
+        android:layout_marginRight="@dimen/cardMarginHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="2000dp"
         android:layout_below="@id/button"
         android:orientation="vertical"
         app:ael_duration="400"
         app:ael_expanded="false">
 
-        <TextView
+        <LinearLayout
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Test"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_form_local"/>
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Test"
+                android:textColor="@color/texto"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_form_valor"/>
+
+            <TextView
+                android:id="@+id/service"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Test"
+                android:textColor="@color/texto"
+                android:textSize="15sp" />
+        </LinearLayout>
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 </RelativeLayout>

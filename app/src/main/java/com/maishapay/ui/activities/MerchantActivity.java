@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.maishapay.R;
 import com.maishapay.ui.adapter.MerchantListAdapter;
@@ -32,6 +34,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MerchantActivity extends AppCompatActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.img_no_network)
+    ImageView img_no_network;
+    @BindView(R.id.text_no_network)
+    TextView text_no_network;
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
     @BindView(R.id.loadingProgressBar)
@@ -55,6 +61,9 @@ public class MerchantActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
 
+        img_no_network.setVisibility(View.GONE);
+        text_no_network.setVisibility(View.GONE);
+
         progressBar.setVisibility(View.VISIBLE);
         setupRecyclerView();
     }
@@ -75,13 +84,10 @@ public class MerchantActivity extends AppCompatActivity {
                     menuHelper.setMenuItem(item);
                     menuHelper.startLoading();
                     setupRecyclerView();
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText("Aucune connexion réseau. Réessayez plus tard.")
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                } else {
+                    img_no_network.setVisibility(View.VISIBLE);
+                    text_no_network.setVisibility(View.VISIBLE);
+                }
             }
         }
 
@@ -93,9 +99,17 @@ public class MerchantActivity extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                progressBar.setVisibility(View.GONE);
-                recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-                setContactsAdapter(objects);
+                if(e == null) {
+                    menuHelper.stopLoading();
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+                    setContactsAdapter(objects);
+                } else {
+                    menuHelper.stopLoading();
+                    progressBar.setVisibility(View.GONE);
+                    img_no_network.setVisibility(View.VISIBLE);
+                    text_no_network.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
