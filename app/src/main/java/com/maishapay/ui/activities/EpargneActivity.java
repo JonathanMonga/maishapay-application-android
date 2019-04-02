@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.SoldeEpargneResponse;
@@ -52,6 +53,7 @@ import java.util.Collection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView> implements EpargneView {
@@ -80,6 +82,7 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 

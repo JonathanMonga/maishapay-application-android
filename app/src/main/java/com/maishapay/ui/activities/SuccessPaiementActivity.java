@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.MaishapayNotification;
@@ -18,6 +19,7 @@ import org.alfonz.media.SoundManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SuccessPaiementActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class SuccessPaiementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
 

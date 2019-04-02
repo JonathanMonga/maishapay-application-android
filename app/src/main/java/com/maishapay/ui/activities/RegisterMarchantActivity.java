@@ -30,6 +30,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.hbb20.CountryCodePicker;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
@@ -45,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresenter, RegisterMerchantView> implements RegisterMerchantView {
@@ -67,7 +69,7 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.register_marchant_account_activity);
         ButterKnife.bind(this);
 

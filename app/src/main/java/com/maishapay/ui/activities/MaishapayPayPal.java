@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.nmaltais.calcdialog.CalcDialog;
@@ -31,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.model.Configuration.PAYPAL_CONFIGURATION;
@@ -54,6 +56,7 @@ public class MaishapayPayPal extends AppCompatActivity implements CalcDialog.Cal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 

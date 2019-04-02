@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -68,7 +69,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         holder.mTextView.setText(parseObject.getString("NomMarchant"));
         holder.location.setText(parseObject.getString("Adresse"));
         holder.service.setText(parseObject.getString("Service"));
-        holder.telephone.setText(parseObject.getString("Telephone") == null ? "Pas disponible." : parseObject.getString("Telephone"));
+        holder.telephone.setText(parseObject.getString("Telephone") == null || TextUtils.isEmpty(parseObject.getString("Telephone")) ? "Pas disponible." : parseObject.getString("Telephone"));
 
         BetterLinkMovementMethod
                 .linkify(Linkify.PHONE_NUMBERS, holder.telephone)

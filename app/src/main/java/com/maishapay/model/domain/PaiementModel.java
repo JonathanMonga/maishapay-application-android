@@ -53,11 +53,11 @@ public class PaiementModel {
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Hôpital | Pharmacie", "Payer vos frais médicaux."));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Autres", "Tout autres types de paiement."));
 
-
         paiementModels.add(new PaiementModel(HEADER_TYPE, "Abonnement", ""));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Canal +", "Réabonnez vous aux bouqué Canal +."));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Easy Tv", "Réabonnez vous aux bouqué Easy Tv."));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Startimes", "Réabonnez vous aux bouqué Startimes."));
+        paiementModels.add(new PaiementModel(CONTENT_TYPE, "DSTV", "Réabonnez vous aux bouqué DSTV."));
 
         return paiementModels;
     }

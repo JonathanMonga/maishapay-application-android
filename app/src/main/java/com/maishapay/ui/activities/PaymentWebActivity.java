@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.model.client.response.BaseResponse;
@@ -34,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresenter, PaymentView> implements PaymentView, PossitiveButtonConfirmListener {
@@ -65,7 +67,7 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.payment_web_activity);
         ButterKnife.bind(this);
 

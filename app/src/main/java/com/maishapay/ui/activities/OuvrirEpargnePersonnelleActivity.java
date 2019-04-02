@@ -38,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.presenter.OuvrirEpargnePersonellePresenter;
@@ -55,6 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -90,7 +92,7 @@ public class OuvrirEpargnePersonnelleActivity extends BaseActivity<OuvrirEpargne
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.creer_epargne_personnelle_activity);
         ButterKnife.bind(this);
 

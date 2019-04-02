@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="20dp"
-                    android:text="Transfert votre argent de votre compte courant sur votre epargne sans frais supplaimentaire"
+                    android:text="Transférer votre argent de votre compte courant sur votre compte épargne sans frais supplaimentaires"
                     android:textAlignment="center"
                     android:textSize="15sp" />
 

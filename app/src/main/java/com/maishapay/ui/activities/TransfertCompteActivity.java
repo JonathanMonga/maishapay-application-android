@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
@@ -65,6 +66,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.PaymentWebActivity.EXTRA_ERROR_CODE;
@@ -110,6 +112,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.transfert_compte_activity);
         ButterKnife.bind(this);
 

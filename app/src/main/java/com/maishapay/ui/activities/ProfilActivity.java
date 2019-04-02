@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
@@ -23,6 +24,7 @@ import com.maishapay.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -42,7 +44,7 @@ public class ProfilActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.profil_layout);
 
         ButterKnife.bind(this);

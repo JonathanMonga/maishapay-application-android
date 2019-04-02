@@ -3,9 +3,9 @@ package com.maishapay.ui.menu;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.SearchView;
 
 import com.maishapay.R;
 import com.maishapay.ui.adapter.MerchantListAdapter;

@@ -5,8 +5,9 @@
         android:id="@+id/action_search"
         android:orderInCategory="1"
         android:icon="@drawable/ic_search"
-        android:title="Rafrechir"
-        app:showAsAction="ifRoom" />
+        android:title="Recherche"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView"  />
 
     <item
         android:id="@+id/action_rafrechir"

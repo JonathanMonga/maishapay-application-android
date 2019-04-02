@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
@@ -42,6 +43,7 @@ import org.alfonz.media.SoundManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.EpargneActivity.RESULT_EPARGNE_OK;
@@ -73,9 +75,11 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
+
+        logUser();
 
         setSupportActionBar(toolbar);
 
@@ -412,4 +416,13 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
         Fragment f = new AccueilFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
     }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+    }
+
 }

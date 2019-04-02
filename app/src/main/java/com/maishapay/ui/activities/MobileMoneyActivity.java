@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.util.Constants;
 
@@ -23,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 
 import static com.maishapay.util.Constants.ussdToCallableUri;
 
@@ -82,7 +84,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mobile_money_layout);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         ButterKnife.bind(this);
 
         toolbar.setTitle("Mobile money");

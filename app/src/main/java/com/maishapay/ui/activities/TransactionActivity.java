@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.model.client.response.TransactionItemResponse;
 import com.maishapay.model.domain.UserDataPreference;
@@ -34,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mateware.snacky.Snacky;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.model.MaishapayNotification.EXTRA_NOTIFICATION;
@@ -61,7 +63,7 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.transaction_activity);
         ButterKnife.bind(this);
 

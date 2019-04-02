@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.model.client.response.EpargneResponse;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -52,6 +53,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maishapay.ui.activities.DrawerActivity.EXTRA_EPARGNE_DRAWER;
@@ -86,7 +88,7 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Constants.initStatusBar(this);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.epargne_personnelle_activity);
         ButterKnife.bind(this);
 

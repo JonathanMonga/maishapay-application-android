@@ -84,6 +84,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     public static final String EXTRA_TYPE_ABONNEMENT = "type_abonnement";
     public static final String EXTRA_NUMERO_SERVICE = "numero_service";
     public static final String EXTRA_DATA_CANAL = "Canal +";
+    public static final String EXTRA_DATA_DSTV = "DSTV";
     public static final String EXTRA_DATA_EASY = "Easy Tv";
     public static final String EXTRA_DATA_STARTIMES = "Startimes";
 
@@ -136,21 +137,15 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         initProgressBar();
 
         SP_Bouquet.setEnabled(false);
-        if (data.equals(EXTRA_DATA_CANAL)) {
+        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)) {
             if (!NetworkUtility.isOnline(this)) {
                 Toast.makeText(TransfertPaiementActivity.this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 5000);
+                new Handler().postDelayed(() -> finish(), 5000);
             }
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetCanal");
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
+            if (data.equals(EXTRA_DATA_CANAL)) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetCanal");
+                query.findInBackground((objects, e) -> {
                     if (objects == null) {
                         return;
                     }
@@ -198,8 +193,49 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
                         }
                     });
-                }
-            });
+                });
+            } else {
+                SP_TypeEnvoi.setSelection(1);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetDSTV");
+                query.findInBackground((objects, e) -> {
+                    if (objects == null) {
+                        return;
+                    }
+
+                    for (ParseObject object : objects) {
+                        bouquetNames.add(object.getString("Nom"));
+                    }
+
+                    for (ParseObject object : objects) {
+                        bouquetPrixUSD.add(object.getString("Prix_USD"));
+                    }
+
+                    SP_Bouquet.setEnabled(true);
+                    SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, bouquetNames));
+                    SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (userCurrency.equals(CDF_CURRENCY)) {
+                                Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
+                            } else {
+                                if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
+                                    ET_Montant.setAmount(0, userCurrency);
+                                    Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    currentPosition = i;
+                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                });
+            }
 
             SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
