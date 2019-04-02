@@ -1,46 +1,57 @@
 package com.maishapay.ui.adapter;
 
-import android.animation.ObjectAnimator;
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
-import com.github.aakira.expandablelayout.Utils;
 import com.github.ivbaranov.mli.MaterialLetterIcon;
 import com.maishapay.R;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 
-public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> {
+public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> implements Filterable {
     private static final Random RANDOM = new Random();
 
     private final TypedValue mTypedValue = new TypedValue();
     private int mBackground;
     private List<ParseObject> mValues;
+    private List<ParseObject> mValuesFiltered;
     private int[] mMaterialColors;
+    private Context mContext;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
     public MerchantListAdapter(Context context, List<ParseObject> items) {
+        mContext = context;
         context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
         mMaterialColors = context.getResources().getIntArray(R.array.colors);
         mBackground = mTypedValue.resourceId;
         mValues = items;
+        mValuesFiltered = items;
     }
 
     @Override
@@ -52,19 +63,60 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        ParseObject parseObject = mValues.get(position);
 
-        holder.mTextView.setText(mValues.get(position).getString("NomMarchant"));
-        holder.location.setText(mValues.get(position).getString("NomMarchant"));
-        holder.service.setText(mValues.get(position).getString("NomMarchant"));
+        holder.mTextView.setText(parseObject.getString("NomMarchant"));
+        holder.location.setText(parseObject.getString("Adresse"));
+        holder.service.setText(parseObject.getString("Service"));
+        holder.telephone.setText(parseObject.getString("Telephone") == null ? "Pas disponible." : parseObject.getString("Telephone"));
+
+        BetterLinkMovementMethod
+                .linkify(Linkify.PHONE_NUMBERS, holder.telephone)
+                .setOnLinkClickListener((textView, url) -> {
+                    if (MerchantListAdapter.isPhoneNumber(url)) {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
+                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details
+                        }
+
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+
+                    return true;
+                })
+                .setOnLinkLongClickListener((textView, url) -> {
+                    if (MerchantListAdapter.isPhoneNumber(url)) {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
+                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details
+                        }
+
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+                    return true;
+                });
 
         holder.mIcon.setInitials(true);
         holder.mIcon.setInitialsNumber(1);
         holder.mIcon.setLetterSize(18);
         holder.mIcon.setShapeColor(mMaterialColors[RANDOM.nextInt(mMaterialColors.length)]);
-        holder.mIcon.setLetter(mValues.get(position).getString("NomMarchant"));
+        holder.mIcon.setLetter(parseObject.getString("NomMarchant"));
 
         holder.expandableLayout.setInRecyclerView(true);
-        holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.DECELERATE_INTERPOLATOR));
         holder.expandableLayout.setExpanded(expandState.get(position));
         holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
             @Override
@@ -78,13 +130,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             }
         });
 
-        holder.buttonLayout.setRotation(expandState.get(position) ? 180f : 0f);
-        holder.buttonLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                onClickButton(holder.expandableLayout);
-            }
-        });
+        holder.buttonLayout.setOnClickListener(v -> onClickButton(holder.expandableLayout));
     }
 
     private void onClickButton(final ExpandableLayout expandableLayout) {
@@ -94,6 +140,41 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mValuesFiltered = mValues;
+                } else {
+                    List<ParseObject> filteredList = new ArrayList<>();
+                    for (ParseObject row : mValues) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getString("NomMarchant").toLowerCase().contains(charString.toLowerCase()) || row.getString("Adresse").contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    mValuesFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mValuesFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mValuesFiltered = (List<ParseObject>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -109,17 +190,16 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         TextView location;
         @BindView(R.id.service)
         TextView service;
+        @BindView(R.id.telephone)
+        TextView telephone;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
 
-        public ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
-            ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
-            animator.setDuration(300);
-            animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
-            return animator;
-        }
+    private static boolean isPhoneNumber(String url) {
+        return url.startsWith("tel:");
     }
 }
