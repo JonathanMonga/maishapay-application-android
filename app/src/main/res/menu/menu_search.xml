@@ -6,7 +6,6 @@
         android:orderInCategory="1"
         android:icon="@drawable/ic_search"
         android:title="Rafrechir"
-        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item

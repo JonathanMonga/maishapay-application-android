@@ -136,7 +136,15 @@
             android:name=".ui.activities.MaishapayWebviewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.MaishapayPayPalDeposit" />
-        <activity android:name=".ui.activities.MerchantActivity" />
+        <activity android:name=".ui.activities.MerchantActivity" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.MaishapayFirebaseInstanceIDService">
             <intent-filter>

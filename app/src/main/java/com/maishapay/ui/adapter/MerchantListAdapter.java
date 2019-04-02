@@ -63,7 +63,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        ParseObject parseObject = mValues.get(position);
+        ParseObject parseObject = mValuesFiltered.get(position);
 
         holder.mTextView.setText(parseObject.getString("NomMarchant"));
         holder.location.setText(parseObject.getString("Adresse"));
@@ -139,7 +139,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValuesFiltered.size();
     }
 
     @Override

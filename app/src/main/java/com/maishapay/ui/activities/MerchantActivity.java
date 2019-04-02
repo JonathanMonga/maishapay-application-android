@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.view.Menu;
@@ -17,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.maishapay.R;
@@ -27,12 +27,17 @@ import com.parse.ParseQuery;
 
 import org.alfonz.utility.NetworkUtility;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static java.util.Collections.EMPTY_LIST;
 
 public class MerchantActivity extends AppCompatActivity {
     @BindView(R.id.recyclerview)
@@ -47,6 +52,7 @@ public class MerchantActivity extends AppCompatActivity {
     @BindView(R.id.loadingProgressBar)
     ProgressBar progressBar;
     private MenuSearchHelper menuHelper;
+    private MerchantListAdapter merchantListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,6 @@ public class MerchantActivity extends AppCompatActivity {
 
         toolbar.setTitle("Marchants");
         setSupportActionBar(toolbar);
-        menuHelper = new MenuSearchHelper();
 
         BetterLinkMovementMethod.linkify(Linkify.ALL, this);
 
@@ -73,23 +78,26 @@ public class MerchantActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         setupRecyclerView();
 
+        merchantListAdapter = new MerchantListAdapter(this, new ArrayList<>());
+        menuHelper = new MenuSearchHelper(this, merchantListAdapter);
+
         // white background notification bar
         whiteNotificationBar(recyclerView);
     }
 
     @Override
+    public void onBackPressed() {
+        // close search view on back button pressed
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menuHelper.onCreateOptionsMenu(getMenuInflater(), menu, true);
-
-        /*
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        */
         return true;
     }
 
@@ -144,28 +152,10 @@ public class MerchantActivity extends AppCompatActivity {
     }
 
     private void setContactsAdapter(List<ParseObject> merchants) {
-        MerchantListAdapter merchantListAdapter = new MerchantListAdapter(this, merchants);
+        merchantListAdapter = new MerchantListAdapter(this, merchants);
         recyclerView.setAdapter(merchantListAdapter);
+        menuHelper.setMerchantListAdapter(merchantListAdapter);
 
-        /*
-        // listening to search query text change
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
-                merchantListAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
-                merchantListAdapter.getFilter().filter(query);
-                return false;
-            }
-        });
-
-        */
         // refreshing recycler view
         merchantListAdapter.notifyDataSetChanged();
     }
