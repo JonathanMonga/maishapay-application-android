@@ -12,7 +12,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/background"
+        android:background="@drawable/loging_background"
         android:scrollbars="none">
 
         <LinearLayout
@@ -96,7 +96,7 @@
                                 app:ccpDialog_textColor="@color/branco"
                                 app:ccp_areaCodeDetectedCountry="true"
                                 app:ccp_autoDetectLanguage="true"
-                                app:ccp_contentColor="@color/branco"
+                                app:ccp_contentColor="@color/md_orange_A700"
                                 app:ccp_countryAutoDetectionPref="LOCALE_SIM"
                                 app:ccp_defaultNameCode="cd"
                                 app:ccp_rememberLastSelection="true"
@@ -109,8 +109,9 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/telephone"
+                                android:textColorHint="@color/md_orange_A700"
                                 android:inputType="phone"
-                                android:textColor="@color/branco"
+                                android:textColor="@color/md_orange_A700"
                                 android:textSize="16.0sp"
                                 app:met_mask="## #### ###" />
 
@@ -124,6 +125,7 @@
                         android:layout_marginLeft="5.0dip"
                         android:layout_marginRight="5dip"
                         android:layout_marginTop="10.0dip"
+                        android:textColorHint="@color/md_orange_A700"
                         android:focusable="true"
                         android:focusableInTouchMode="true">
 
@@ -132,10 +134,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/code_pin"
+                            android:textColorHint="@color/md_orange_A700"
                             android:imeOptions="actionDone"
                             android:inputType="numberPassword"
                             android:maxLength="5"
-                            android:textColor="@color/branco"
+                            android:textColor="@color/md_orange_A700"
                             android:textSize="16.0sp" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -184,13 +187,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="160dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:src="@drawable/mpay_icon" />
 
             <Button
                 android:id="@+id/btn_nao_criar_conta"

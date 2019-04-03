@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.maishapay.R;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
@@ -93,9 +95,15 @@ public class MaishapayPayPal extends AppCompatActivity implements CalcDialog.Cal
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Transfert")
+                .putContentName("Activité Dépot PayPal"));
     }
 
     @OnClick(R.id.ET_Montant)

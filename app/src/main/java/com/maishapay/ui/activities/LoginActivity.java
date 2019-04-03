@@ -29,6 +29,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+import com.crashlytics.android.answers.PurchaseEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,6 +48,9 @@ import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 import com.maishapay.view.LoginView;
 import com.santalu.widget.MaskEditText;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,9 +106,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
+
+        Answers.getInstance().logLogin(new LoginEvent()
+                .putMethod("Login Maishapay")
+                .putSuccess(true));
     }
 
     @OnClick(R.id.BTN_Login)

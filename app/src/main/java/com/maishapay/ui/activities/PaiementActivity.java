@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.maishapay.R;
 import com.maishapay.model.domain.PaiementModel;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -52,50 +54,68 @@ public class PaiementActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAdapter = new PaiementAdapter(PaiementModel.getData(), new PaiementAdapter.ItemClickedListener() {
-            @Override
-            public void clicked(int position) {
-                switch (position){
-                    case 10: {
-                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Canal +");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivityForResult(intent, REQUEST_ABONNEMENT);
-                        break;
-                    }
+        mAdapter = new PaiementAdapter(PaiementModel.getData(), position -> {
+            switch (position){
+                case 10: {
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName("Activité Transfert Canal +"));
 
-                    case 11: {
-                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Easy Tv");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivityForResult(intent, REQUEST_ABONNEMENT);
-                        break;
-                    }
+                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Canal +");
+                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
+                    break;
+                }
 
-                    case 12: {
-                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Startimes");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivityForResult(intent, REQUEST_ABONNEMENT);
-                        break;
-                    }
+                case 11: {
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName("Activité Transfert Easy Tv"));
 
-                    case 13: {
-                        Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "DStv");
-                        intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                        startActivityForResult(intent, REQUEST_ABONNEMENT);
-                        break;
-                    }
+                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Easy Tv");
+                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
+                    break;
+                }
 
-                    default:{
-                        Intent intent = new Intent(PaiementActivity.this, TransfertCompteActivity.class);
-                        intent.putExtra(Intent.EXTRA_TITLE, PaiementModel.getData().get(position).getName());
-                        startActivityForResult(intent, REQUEST_ABONNEMENT);
-                    }
+                case 12: {
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName("Activité Transfert Startimes"));
+
+                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Startimes");
+                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
+                    break;
+                }
+
+                case 13: {
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName("Activité Transfert DStv"));
+
+                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "DStv");
+                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
+                    break;
+                }
+
+                default:{
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName(String.format("Activité Transfert %s", PaiementModel.getData().get(position).getName())));
+
+                    Intent intent = new Intent(PaiementActivity.this, TransfertCompteActivity.class);
+                    intent.putExtra(Intent.EXTRA_TITLE, PaiementModel.getData().get(position).getName());
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
                 }
             }
         });
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -105,9 +125,11 @@ public class PaiementActivity extends AppCompatActivity{
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
     }
 
     @Override

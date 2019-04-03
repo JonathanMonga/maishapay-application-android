@@ -115,9 +115,11 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
     }
 
     @Override

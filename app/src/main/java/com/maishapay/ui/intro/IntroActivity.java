@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.maishapay.R;
 import com.maishapay.model.prefs.UserPrefencesManager;
@@ -15,6 +16,7 @@ import com.maishapay.ui.fragment.IntroFragmentOne;
 import com.maishapay.ui.fragment.IntroFragmentTree;
 import com.maishapay.ui.fragment.IntroFragmentTwo;
 
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class IntroActivity extends AppIntro {
@@ -22,6 +24,7 @@ public class IntroActivity extends AppIntro {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         if(! UserPrefencesManager.getUserFirtRun()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -30,6 +33,8 @@ public class IntroActivity extends AppIntro {
             startActivity(new Intent(this, DrawerActivity.class));
             finish();
         }
+
+        logUser();
 
         showSeparator(false);
         setNextArrowColor(getResources().getColor(R.color.md_orange_700));
@@ -40,6 +45,16 @@ public class IntroActivity extends AppIntro {
         addSlide(new IntroFragmentOne());
         addSlide(new IntroFragmentTwo());
         addSlide(new IntroFragmentTree());
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
     }
 
     @Override

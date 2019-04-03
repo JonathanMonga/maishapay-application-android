@@ -50,6 +50,8 @@ public class SuccessPaiementActivity extends AppCompatActivity {
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         toolbar.setTitle(String.format("%s éffectué.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
@@ -76,6 +78,16 @@ public class SuccessPaiementActivity extends AppCompatActivity {
                 .putItemType("Transactions")
                 .putItemId("transations-maishapay-2019")
                 .putSuccess(true));
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
     }
 
     @Override

@@ -11,19 +11,19 @@
         android:id="@+id/img"
         android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:src="@drawable/maishapay_intro_2"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/background2"/>
 
     <TextView
-        android:layout_below="@id/img"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
+        fontPath="fonts/Roboto-Light.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="60dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="Déposer, envoyez, récévez et rétirer de l'argent partout où vous êtes, et à moindre frais."
         android:textColor="@color/md_orange_700"
-        fontPath="fonts/Roboto-Light.ttf"
-        android:text="Déposer, envoyez, récévez et rétirer de l'argent partout où vous êtes, et à moindre frais."/>
+        android:textSize="15sp" />
 </RelativeLayout>

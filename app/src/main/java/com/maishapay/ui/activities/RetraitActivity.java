@@ -37,6 +37,8 @@ import android.widget.Toast;
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
@@ -169,9 +171,15 @@ public class RetraitActivity extends BaseActivity<TranfertConfirmationPresenter,
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Transfert")
+                .putContentName("Activité Liste Retrait"));
     }
 
     @Override

@@ -16,6 +16,8 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
@@ -211,11 +213,11 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         return false;
 
                     case 5:
-                         new MaterialDialog.Builder(DrawerActivity.this)
-                                    .title("Remarque")
-                                    .iconRes(R.drawable.ic_informacao_azul)
-                                    .content("Désolé, Le dépot par mobile money n'est pas disponible.\nVeuillez-vous rendre dans un cash-point Maishapay pour déposer ou retirer votre argent.")
-                                    .show();
+                        new MaterialDialog.Builder(DrawerActivity.this)
+                                .title("Remarque")
+                                .iconRes(R.drawable.ic_informacao_azul)
+                                .content("Désolé, Le dépot par mobile money n'est pas disponible.\nVeuillez-vous rendre dans un cash-point Maishapay pour déposer ou retirer votre argent.")
+                                .show();
                         return false;
 
                     case 6:
@@ -256,7 +258,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     public void onStop() {
         super.onStop();
 
-        if(soundManager != null)
+        if (soundManager != null)
             soundManager.stopAll();
     }
 
@@ -336,7 +338,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
         if (result != null && result.isDrawerOpen()) {
             result.closeDrawer();
-        } else if(result != null && ! result.getAdapter().getItem(1).isSelected()){
+        } else if (result != null && !result.getAdapter().getItem(1).isSelected()) {
             result.setSelection(1);
         } else {
             super.onBackPressed();
@@ -360,32 +362,41 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
         new MaterialDialog.Builder(this)
                 .title("Type de transfert.")
                 .items(R.array.option_transfert)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                        switch (position) {
-                            case 0: {
-                                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
-                                startActivityForResult(intent, REQUEST_TRANSFERT);
-                                break;
-                            }
+                .itemsCallback((dialog, itemView, position, text) -> {
+                    switch (position) {
+                        case 0: {
+                            Answers.getInstance().logContentView(new ContentViewEvent()
+                                    .putContentId("Transfert")
+                                    .putContentName("Activité Transfert normal"));
 
-                            case 1: {
-                                Snacky.builder()
-                                        .setView(findViewById(R.id.root))
-                                        .setText("Désolé, cette fonctionnalit n'est pas disponible pour le moment.")
-                                        .setDuration(Snacky.LENGTH_LONG)
-                                        .warning()
-                                        .show();
-                                break;
-                            }
+                            Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransfertCompteActivity.class);
+                            startActivityForResult(intent, REQUEST_TRANSFERT);
+                            break;
+                        }
 
-                            default: {
-                                Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargnePersonnelleActivity.class);
-                                intent.putExtra(EXTRA_EPARGNE_DRAWER, true);
-                                startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
-                                break;
-                            }
+                        case 1: {
+                            Answers.getInstance().logContentView(new ContentViewEvent()
+                                    .putContentId("Transfert")
+                                    .putContentName("Activité Transfert vers cash"));
+
+                            Snacky.builder()
+                                    .setView(findViewById(R.id.root))
+                                    .setText("Désolé, cette fonctionnalit n'est pas disponible pour le moment.")
+                                    .setDuration(Snacky.LENGTH_LONG)
+                                    .warning()
+                                    .show();
+                            break;
+                        }
+
+                        default: {
+                            Answers.getInstance().logContentView(new ContentViewEvent()
+                                    .putContentId("Transfert")
+                                    .putContentName("Activité Transfert vers épargne:"));
+
+                            Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargnePersonnelleActivity.class);
+                            intent.putExtra(EXTRA_EPARGNE_DRAWER, true);
+                            startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
+                            break;
                         }
                     }
                 })
@@ -394,18 +405,30 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
 
     @Override
     public void onTransactiosClicked() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Transactions")
+                .putContentName("Activité liste de transactions"));
+
         Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), TransactionActivity.class);
         startActivityForResult(intent, REQUEST_TRANSACTION);
     }
 
     @Override
     public void onEpargneClicked() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Epargne")
+                .putContentName("Activité épargne"));
+
         Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargneActivity.class);
         startActivityForResult(intent, REQUEST_EPARGNE);
     }
 
     @Override
     public void onPaiementClicked() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Paiement")
+                .putContentName("Activité Paiement"));
+
         Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), PaiementActivity.class);
         startActivityForResult(intent, REQUEST_PAIEMENT);
     }
@@ -420,9 +443,14 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if (UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentId("Tableau de bord"));
     }
 
 }

@@ -31,6 +31,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SignUpEvent;
 import com.hbb20.CountryCodePicker;
 import com.maishapay.R;
 import com.maishapay.model.client.response.UserResponse;
@@ -91,9 +93,15 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
+        if(UserPrefencesManager.getCurrentUser() != null) {
+            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
+        }
+
+        Answers.getInstance().logSignUp(new SignUpEvent()
+                .putMethod("Normal User")
+                .putSuccess(true));
     }
 
     @OnClick(R.id.BTN_CriarConta)
