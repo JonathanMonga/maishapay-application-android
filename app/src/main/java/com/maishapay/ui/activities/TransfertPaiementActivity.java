@@ -497,7 +497,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("%s : %s", data, mBouquetObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
-                    "Canal +",
+                    data,
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
                     mBouquetObject.currency,

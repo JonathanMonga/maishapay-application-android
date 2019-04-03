@@ -158,7 +158,14 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
     }
 
     public void createAbonnementObject(String type, String mobileNumberColumn, String usernameColumn, String nomAbonnementColumn, String cardNumberColumn, String montantColumn, String monnaieColumn) {
-        String nomAbonnement = type.equals("Canal +") ? String.format("Canal + : %s", nomAbonnementColumn) : nomAbonnementColumn;
+        String nomAbonnement;
+
+        if(type.equals("Canal +"))
+             nomAbonnement = String.format("Canal + : %s", nomAbonnementColumn);
+        else if(type.equals("DStv"))
+            nomAbonnement = String.format("DStv : %s", nomAbonnementColumn);
+        else
+            nomAbonnement = nomAbonnementColumn;
 
         Date date = Calendar.getInstance().getTime();
         DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
