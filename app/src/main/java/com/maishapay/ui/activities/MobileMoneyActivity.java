@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.Constants;
 
 import butterknife.BindView;
@@ -86,6 +87,8 @@ public class MobileMoneyActivity extends AppCompatActivity {
         setContentView(R.layout.mobile_money_layout);
         Fabric.with(this, new Crashlytics());
         ButterKnife.bind(this);
+
+        logUser();
 
         toolbar.setTitle("Mobile money");
         setSupportActionBar(toolbar);
@@ -188,6 +191,14 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 description4.setText("Service mobile money pour Orange.");
             }
         }
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

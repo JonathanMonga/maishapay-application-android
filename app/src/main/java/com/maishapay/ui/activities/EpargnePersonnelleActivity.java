@@ -92,6 +92,8 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
         setContentView(R.layout.epargne_personnelle_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Epargne personnelle");
         setSupportActionBar(toolbar);
 
@@ -136,6 +138,14 @@ public class EpargnePersonnelleActivity extends BaseActivity<EpargnePersonellePr
                 .setShowZeroWhenNoValue(true)
                 .setMaxValue(new BigDecimal(1000000))
                 .setMaxDigits(7, 2);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

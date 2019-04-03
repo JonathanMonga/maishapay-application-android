@@ -19,7 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.adapter.MerchantListAdapter;
 import com.maishapay.ui.menu.MenuSearchHelper;
 import com.parse.ParseObject;
@@ -63,6 +65,8 @@ public class MerchantActivity extends AppCompatActivity {
         toolbar.setTitle("Marchants");
         setSupportActionBar(toolbar);
 
+        logUser();
+
         BetterLinkMovementMethod.linkify(Linkify.ALL, this);
 
         ActionBar actionBar = getSupportActionBar();
@@ -83,6 +87,14 @@ public class MerchantActivity extends AppCompatActivity {
 
         // white background notification bar
         whiteNotificationBar(recyclerView);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

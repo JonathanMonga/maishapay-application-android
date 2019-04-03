@@ -123,6 +123,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Abonnemt " + getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT));
         setSupportActionBar(toolbar);
 
@@ -321,6 +323,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 .setShowZeroWhenNoValue(true)
                 .setMaxValue(new BigDecimal(1000000))
                 .setMaxDigits(7, 2);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

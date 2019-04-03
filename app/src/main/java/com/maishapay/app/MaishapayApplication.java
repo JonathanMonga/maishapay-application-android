@@ -23,6 +23,7 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.github.ismaeltoe.osms.library.Osms;
 import com.github.ismaeltoe.osms.library.services.CredentialsService;
 import com.github.ismaeltoe.osms.library.services.MessagingService;
@@ -59,7 +60,7 @@ public class MaishapayApplication extends MultiDexApplication {
         super.onCreate();
 
         final Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics())
+                .kits(new Answers(), new Crashlytics())
                 .debuggable(true)
                 .build();
 

@@ -47,6 +47,8 @@ public class ProfilActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.profil_layout);
 
+        logUser();
+
         ButterKnife.bind(this);
 
         setupWindowAnimations();
@@ -68,6 +70,14 @@ public class ProfilActivity extends AppCompatActivity {
         ET_Email.setText(userResponse.getEmail());
         ET_Adresse.setText(userResponse.getAdresse());
         ET_Ville.setText(userResponse.getVille());
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     private void setupWindowAnimations() {

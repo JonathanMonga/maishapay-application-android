@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.maishapay.R;
 import com.maishapay.model.domain.MaishapayClusterItem;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.util.Constants;
 import com.maishapay.util.LogCat;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
@@ -53,6 +54,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             setupMapFragment();
         }
 
+        logUser();
+
         toolbar.setTitle("Points Maishapay");
         setSupportActionBar(toolbar);
 
@@ -78,6 +81,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         bmb.addBuilder(builder2);
 
         bmb.setOnBoomListener(new OnBoomClickListener());
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

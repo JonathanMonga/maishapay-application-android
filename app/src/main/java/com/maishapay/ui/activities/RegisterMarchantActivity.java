@@ -73,6 +73,8 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
         setContentView(R.layout.register_marchant_account_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Créer un compte marchant");
         setSupportActionBar(toolbar);
 
@@ -84,6 +86,14 @@ public class RegisterMarchantActivity extends TiActivity<RegisterMarchantPresent
         }
 
         initProgressBar();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @OnClick(R.id.BTN_CriarConta)

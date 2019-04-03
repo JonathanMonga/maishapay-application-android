@@ -116,6 +116,8 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         setContentView(R.layout.transfert_compte_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle(getIntent().getStringExtra(Intent.EXTRA_TITLE) == null ? "Transfert d'argent" : getIntent().getStringExtra(Intent.EXTRA_TITLE));
         setSupportActionBar(toolbar);
 
@@ -149,17 +151,12 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
         });
 
         ET_Destinataire.setMaxChips(1);
-        ET_Destinataire.setChipNotCreatedListener(new RecipientEditTextView.ChipNotCreatedListener() {
-            @Override
-            public void chipNotCreated(String chipText) {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Desolé, un seul numéro suffit.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
-            }
-        });
+        ET_Destinataire.setChipNotCreatedListener(chipText -> Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Desolé, un seul numéro suffit.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show());
 
         ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
@@ -183,6 +180,14 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
                 .setShowZeroWhenNoValue(true)
                 .setMaxValue(new BigDecimal(1000000))
                 .setMaxDigits(7, 2);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

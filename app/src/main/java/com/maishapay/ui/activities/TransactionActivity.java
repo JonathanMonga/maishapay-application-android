@@ -67,6 +67,8 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         setContentView(R.layout.transaction_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Transactions");
         setSupportActionBar(toolbar);
         menuHelper = new MenuHelper();
@@ -79,6 +81,14 @@ public class TransactionActivity extends BaseActivity<TransactionPresenter, Tran
         }
 
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @SuppressLint("DefaultLocale")

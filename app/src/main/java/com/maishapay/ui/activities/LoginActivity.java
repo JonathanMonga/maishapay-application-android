@@ -75,6 +75,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
         setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         if(UserPrefencesManager.getCurentUserLoginSuccess()) {
             startActivity(new Intent(this, DrawerActivity.class));
             finish();
@@ -93,6 +95,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> imple
 
         initProgressBar();
         mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @OnClick(R.id.BTN_Login)

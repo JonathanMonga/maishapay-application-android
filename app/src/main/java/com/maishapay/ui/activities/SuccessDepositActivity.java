@@ -41,12 +41,22 @@ public class SuccessDepositActivity extends AppCompatActivity{
         setContentView(R.layout.success_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         soundManager = MaishapayApplication.getMaishapayContext().getmSoundManager();
 
         toolbar.setTitle(String.format("%s éffectué.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
         TV_Msg.setText(String.format("Votre %s s'est éffectué avec succés.", getIntent().getStringExtra(EXTRA_TITLE_ACTIVITY)));
         soundManager.playAsset("sounds/job-done.mp3");
         setSupportActionBar(toolbar);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

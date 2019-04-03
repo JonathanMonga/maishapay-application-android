@@ -86,6 +86,8 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         setContentView(R.layout.epargne_solde_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Solde epargne");
         setSupportActionBar(toolbar);
         menuHelper = new MenuHelper();
@@ -108,6 +110,14 @@ public class EpargneActivity extends BaseActivity<EpargnePresenter, EpargneView>
         dollarsChart.setMaxValue(1000000f);
 
         userDataPreference = UserPrefencesManager.getUserDataPreference();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

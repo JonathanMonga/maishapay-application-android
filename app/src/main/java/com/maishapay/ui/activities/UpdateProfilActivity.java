@@ -75,6 +75,8 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         setContentView(R.layout.update_account_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Modifier votre compte");
         setSupportActionBar(toolbar);
 
@@ -94,6 +96,14 @@ public class UpdateProfilActivity extends TiActivity<UpdateProfilePresenter, Upd
         adresseEditText.setText(userResponse.getAdresse());
 
         initProgressBar();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @OnClick(R.id.BTN_CriarConta)

@@ -9,12 +9,17 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.PurchaseEvent;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.MaishapayNotification;
 import com.maishapay.model.prefs.UserPrefencesManager;
 
 import org.alfonz.media.SoundManager;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +68,14 @@ public class SuccessPaiementActivity extends AppCompatActivity {
                     .withBody(String.format("Vous venez de recevoir %s %s de la part de %s %s", getIntent().getStringExtra(EXTRA_MONTANT), getIntent().getStringExtra(EXTRA_MONNAIE), UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()))
                     .sendTo(getIntent().getStringExtra(EXTRA_DESTINATAIRE));
         }
+
+        Answers.getInstance().logPurchase(new PurchaseEvent()
+                .putItemPrice(BigDecimal.valueOf(Float.valueOf(getIntent().getStringExtra(EXTRA_MONTANT))))
+                .putCurrency(getIntent().getStringExtra(EXTRA_MONNAIE).equalsIgnoreCase("USD") ? Currency.getInstance("USD") : Currency.getInstance("CDF"))
+                .putItemName("Total des transactions dans Maishapay")
+                .putItemType("Transactions")
+                .putItemId("transations-maishapay-2019")
+                .putSuccess(true));
     }
 
     @Override

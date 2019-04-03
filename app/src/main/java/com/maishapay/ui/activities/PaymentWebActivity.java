@@ -71,6 +71,8 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
         setContentView(R.layout.payment_web_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         ticketView.setVisibility(View.GONE);
 
         qrCodeResponse = new Gson().fromJson(getIntent().getStringExtra(EXTRA_DATA), QRCodeResponse.class);
@@ -86,6 +88,14 @@ public class PaymentWebActivity extends BaseActivity<PaymentConfirmationPresente
         }
 
         initProgressBar();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

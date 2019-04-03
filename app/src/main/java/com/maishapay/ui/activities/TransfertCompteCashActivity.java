@@ -100,6 +100,8 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
         setContentView(R.layout.transfert_compte_cash_activity);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Transfert d'argent");
         setSupportActionBar(toolbar);
 
@@ -133,23 +135,26 @@ public class TransfertCompteCashActivity extends BaseActivity<TranfertConfirmati
         });
 
         ET_Destinataire.setMaxChips(1);
-        ET_Destinataire.setChipNotCreatedListener(new RecipientEditTextView.ChipNotCreatedListener() {
-            @Override
-            public void chipNotCreated(String chipText) {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Desolé, un seul numéro suffit.")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
-            }
-        });
+        ET_Destinataire.setChipNotCreatedListener(chipText -> Snacky.builder()
+                .setView(findViewById(R.id.root))
+                .setText("Desolé, un seul numéro suffit.")
+                .setDuration(Snacky.LENGTH_LONG)
+                .error()
+                .show());
 
         ET_Destinataire.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         BaseRecipientAdapter adapter = new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_PHONE, this);
         adapter.setShowMobileOnly(true);
         ET_Destinataire.setAdapter(adapter);
         ET_Destinataire.dismissDropDownOnItemSelected(true);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @Override

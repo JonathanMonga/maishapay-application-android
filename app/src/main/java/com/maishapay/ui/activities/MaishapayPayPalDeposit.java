@@ -60,6 +60,8 @@ public class MaishapayPayPalDeposit extends BaseActivity<PaypalDepositPresenter,
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Dépot avec paypal");
         setSupportActionBar(toolbar);
 
@@ -87,6 +89,14 @@ public class MaishapayPayPalDeposit extends BaseActivity<PaypalDepositPresenter,
                 .setMaxDigits(7, 2);
 
         initProgressBar();
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @OnClick(R.id.ET_Montant)

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.dialog.DialogNumberPickerFragment;
 import com.nmaltais.calcdialog.CalcDialog;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -60,6 +61,8 @@ public class MaishapayPayPal extends AppCompatActivity implements CalcDialog.Cal
         setContentView(R.layout.activity_maishapay_paypal);
         ButterKnife.bind(this);
 
+        logUser();
+
         toolbar.setTitle("Dépot avec paypal");
         setSupportActionBar(toolbar);
 
@@ -85,6 +88,14 @@ public class MaishapayPayPal extends AppCompatActivity implements CalcDialog.Cal
                 .setShowZeroWhenNoValue(true)
                 .setMaxValue(new BigDecimal(1000000))
                 .setMaxDigits(7, 2);
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
+        Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
+        Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() +" "+UserPrefencesManager.getCurrentUser().getNom());
     }
 
     @OnClick(R.id.ET_Montant)
