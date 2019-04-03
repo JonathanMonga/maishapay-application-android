@@ -12,7 +12,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/loging_background"
+        android:background="@drawable/login_background"
         android:scrollbars="none">
 
         <LinearLayout
@@ -109,9 +109,9 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/telephone"
-                                android:textColorHint="@color/md_orange_A700"
+                                android:textColorHint="@color/branco"
                                 android:inputType="phone"
-                                android:textColor="@color/md_orange_A700"
+                                android:textColor="@color/branco"
                                 android:textSize="16.0sp"
                                 app:met_mask="## #### ###" />
 
@@ -134,11 +134,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/code_pin"
-                            android:textColorHint="@color/md_orange_A700"
+                            android:textColorHint="@color/branco"
                             android:imeOptions="actionDone"
                             android:inputType="numberPassword"
                             android:maxLength="5"
-                            android:textColor="@color/md_orange_A700"
+                            android:textColor="@color/branco"
                             android:textSize="16.0sp" />
                     </android.support.design.widget.TextInputLayout>
 

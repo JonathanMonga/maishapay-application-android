@@ -99,10 +99,6 @@ android {
             it.buildConfigField 'String', 'ATTEMPT_PAYMENT_PARAM', ATTEMPT_PAYMENT_PARAM
             it.buildConfigField 'String', 'CONFIRM_PAYMENT_PARAM', CONFIRM_PAYMENT_PARAM
         }
-
-        debug {
-            //signingConfig signingConfigs.config
-        }
     }
 
     lintOptions {
