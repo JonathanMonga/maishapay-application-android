@@ -24,7 +24,7 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode 4
+        versionCode 5
         versionName "1${releaseTime()}"
         archivesBaseName = "${applicationId}-${versionName}"
         multiDexEnabled true
@@ -419,12 +419,6 @@ dependencies {
     }
 
     implementation ('com.github.ivbaranov:materiallettericon:0.2.3') {
-        exclude group: 'com.android.support'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-v4'
-    }
-
-    implementation ('com.miguelcatalan:materialsearchview:1.4.0') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'

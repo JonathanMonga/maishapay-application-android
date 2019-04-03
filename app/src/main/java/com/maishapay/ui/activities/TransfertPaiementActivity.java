@@ -159,6 +159,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                         bouquetPrixCDF.add(object.getString("Prix_CDF"));
                     }
 
+                    ET_Montant.setAmount(Float.valueOf(bouquetPrixCDF.get(0)), userCurrency);
+
                     for (ParseObject object : objects) {
                         bouquetPrixUSD.add(object.getString("Prix_USD"));
                     }
@@ -211,6 +213,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                         bouquetPrixUSD.add(object.getString("Prix_USD"));
                     }
 
+                    userCurrency = "USD";
+                    ET_Montant.setAmount(Float.valueOf(bouquetPrixUSD.get(0)), userCurrency);
+
                     SP_Bouquet.setEnabled(true);
                     SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, bouquetNames));
                     SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -245,7 +250,16 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
                     if (currencies[i].equals(CDF)) {
                         userCurrency = CDF_CURRENCY;
-                        Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
+                        if (!data.equals(EXTRA_DATA_DSTV)) {
+                            if (bouquetPrixCDF.size() != 0) {
+                                ET_Montant.setAmount(bouquetPrixCDF.get(currentPosition) == null || bouquetPrixCDF.get(currentPosition).equals("") ?
+                                                Float.valueOf("0")
+                                                : Float.valueOf(bouquetPrixCDF.get(currentPosition))
+                                        , userCurrency
+                                );
+                            }
+                        } else
+                            Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
                     } else {
                         userCurrency = USD_CURRENCY;
                         if (bouquetPrixUSD.size() != 0) {
@@ -468,7 +482,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         enabledControls(false);
         if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV))) {
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", data, ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "",
@@ -480,7 +494,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
                     ET_CodeCarte.getRawText());
         } else {
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("%s : %s", data, mBouquetObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "Canal +",
