@@ -1,6 +1,7 @@
 package com.maishapay.ui.adapter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -63,7 +64,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         ParseObject parseObject = mValuesFiltered.get(position);
 
         holder.mTextView.setText(parseObject.getString("NomMarchant"));

@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.maishapay.R;
 import com.maishapay.model.client.response.BaseResponse;
 import com.maishapay.model.client.response.TransfertResponse;
@@ -46,8 +47,6 @@ import com.maishapay.ui.dialog.DialogConfirmTransfertFragment;
 import com.maishapay.ui.dialog.PossitiveButtonConfirmListener;
 import com.maishapay.view.TransfertView;
 import com.nmaltais.calcdialog.CalcDialog;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.santalu.widget.MaskEditText;
@@ -64,6 +63,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
 import dmax.dialog.SpotsDialog;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -77,14 +77,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
     private static String userCurrency = CDF_CURRENCY;
-    ;
+
     private static String pin;
     private static String data;
 
     public static final String EXTRA_TYPE_ABONNEMENT = "type_abonnement";
     public static final String EXTRA_NUMERO_SERVICE = "numero_service";
     public static final String EXTRA_DATA_CANAL = "Canal +";
-    public static final String EXTRA_DATA_DSTV = "DSTV";
+    public static final String EXTRA_DATA_DSTV = "DStv";
     public static final String EXTRA_DATA_EASY = "Easy Tv";
     public static final String EXTRA_DATA_STARTIMES = "Startimes";
 
@@ -109,7 +109,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private boolean flagtransfert = false;
     private CalcDialog calcDialog;
-    private BouquetCanalPlusObject mBouquetCanalPlusObject = new BouquetCanalPlusObject("", "0", "");
+    private BouquetObject mBouquetObject = new BouquetObject("", "0", "");
     private List<String> bouquetNames = new ArrayList<>();
     private List<String> bouquetPrixCDF = new ArrayList<>();
     private List<String> bouquetPrixUSD = new ArrayList<>();
@@ -119,6 +119,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.transfert_paiement_activity);
         ButterKnife.bind(this);
 
@@ -173,8 +174,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                                     Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour ce bouquet", Toast.LENGTH_LONG).show();
                                 } else {
                                     currentPosition = i;
-                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixCDF.get(i), "FC");
-                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixCDF.get(i), "FC");
+                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
                                 }
                             } else {
                                 if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
@@ -182,8 +183,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                                     Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
                                 } else {
                                     currentPosition = i;
-                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
-                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
                                 }
                             }
                         }
@@ -194,7 +195,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                         }
                     });
                 });
-            } else {
+            } else if (data.equals(EXTRA_DATA_DSTV)) {
                 SP_TypeEnvoi.setSelection(1);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetDSTV");
                 query.findInBackground((objects, e) -> {
@@ -223,8 +224,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                                     Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
                                 } else {
                                     currentPosition = i;
-                                    mBouquetCanalPlusObject = new BouquetCanalPlusObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
-                                    ET_Montant.setAmount(mBouquetCanalPlusObject.amount, mBouquetCanalPlusObject.currency);
+                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
                                 }
                             }
                         }
@@ -244,13 +245,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
                     if (currencies[i].equals(CDF)) {
                         userCurrency = CDF_CURRENCY;
-                        if (bouquetPrixCDF.size() != 0) {
-                            ET_Montant.setAmount(bouquetPrixCDF.get(currentPosition) == null || bouquetPrixCDF.get(currentPosition).equals("") ?
-                                            Float.valueOf("0")
-                                            : Float.valueOf(bouquetPrixCDF.get(currentPosition))
-                                    , userCurrency
-                            );
-                        }
+                        Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
                     } else {
                         userCurrency = USD_CURRENCY;
                         if (bouquetPrixUSD.size() != 0) {
@@ -290,7 +285,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         }
 
 
-        if (!data.equals(EXTRA_DATA_CANAL))
+        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
             Bouquet.setVisibility(View.GONE);
         else {
             ET_Montant.setEnabled(false);
@@ -326,7 +321,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (!data.equals(EXTRA_DATA_CANAL))
+        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
             if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
                 toastMessage("Montant incorrect.", R.id.ET_Montant);
                 return;
@@ -339,12 +334,16 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         enabledControls(false);
 
-        if (!data.equals(EXTRA_DATA_CANAL))
-            getPresenter().transfert(
-                    UserPrefencesManager.getCurrentUser().getTelephone(),
-                    ET_NumeroService.getText().toString(),
-                    userCurrency,
-                    String.valueOf(ET_Montant.getAmount()));
+        if (data.equals(EXTRA_DATA_DSTV))
+            if (userCurrency.equals(CDF_CURRENCY)) {
+                Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
+                return;
+            } else
+                getPresenter().transfert(
+                        UserPrefencesManager.getCurrentUser().getTelephone(),
+                        ET_NumeroService.getText().toString(),
+                        userCurrency,
+                        String.valueOf(ET_Montant.getAmount()));
         else
             getPresenter().transfert(
                     UserPrefencesManager.getCurrentUser().getTelephone(),
@@ -413,12 +412,12 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         flagtransfert = false;
         dialogForgotFragment.dismiss();
         String title;
-        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES))
+        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES) || data.equals(EXTRA_DATA_DSTV))
             title = "Abonnement";
         else
             title = "Paiement";
 
-        if(isInternalMessage) {
+        if (isInternalMessage) {
             Intent intent = new Intent(this, SuccessPaiementActivity.class);
             intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
             intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
@@ -468,7 +467,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         TransfertPaiementActivity.pin = pin;
 
         enabledControls(false);
-        if (!data.equals(EXTRA_DATA_CANAL)) {
+        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV))) {
             MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
@@ -481,16 +480,16 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
                     ET_CodeCarte.getRawText());
         } else {
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetCanalPlusObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
+            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("Canal + : %s", mBouquetObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
             getPresenter().confirmTransfertAbonnement(
                     pin,
                     "Canal +",
                     UserPrefencesManager.getCurrentUser().getTelephone(),
                     ET_NumeroService.getText().toString(),
-                    mBouquetCanalPlusObject.currency,
-                    String.valueOf(mBouquetCanalPlusObject.amount),
+                    mBouquetObject.currency,
+                    String.valueOf(mBouquetObject.amount),
                     String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
-                    mBouquetCanalPlusObject.name,
+                    mBouquetObject.name,
                     ET_CodeCarte.getRawText());
         }
     }
@@ -567,12 +566,12 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
         finish();
     }
 
-    private class BouquetCanalPlusObject {
+    private class BouquetObject {
         String name;
         float amount;
         String currency;
 
-        public BouquetCanalPlusObject(String name, String amount, String currency) {
+        public BouquetObject(String name, String amount, String currency) {
             this.name = name;
             this.amount = Float.valueOf(amount);
             this.currency = currency;

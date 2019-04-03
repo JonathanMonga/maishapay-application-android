@@ -22,6 +22,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.ismaeltoe.osms.library.Osms;
 import com.github.ismaeltoe.osms.library.services.CredentialsService;
 import com.github.ismaeltoe.osms.library.services.MessagingService;
@@ -32,6 +33,7 @@ import com.pixplicity.easyprefs.library.Prefs;
 
 import org.alfonz.media.SoundManager;
 
+import io.fabric.sdk.android.Fabric;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -55,6 +57,13 @@ public class MaishapayApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        final Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics())
+                .debuggable(true)
+                .build();
+
+        Fabric.with(fabric);
 
         application = this;
 

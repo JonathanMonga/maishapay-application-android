@@ -77,7 +77,7 @@ public class PaiementActivity extends AppCompatActivity{
 
                     case 13: {
                         Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "DSTV");
+                        intent.putExtra(EXTRA_TYPE_ABONNEMENT, "DStv");
                         intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
                         startActivityForResult(intent, REQUEST_ABONNEMENT);
                         break;

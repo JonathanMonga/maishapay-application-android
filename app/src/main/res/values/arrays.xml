@@ -30,12 +30,7 @@
     </array>
 
     <array name="option_bouquet_canal">
-        <item>Bouquet Tout Canal +</item>
-        <item>Bouquet Evasion +</item>
-        <item>Bouquet Access +</item>
-        <item>Bouquet Essentiel +</item>
-        <item>Bouquet Evasion</item>
-        <item>Bouquet Access</item>
+        <item>Nom du bouquet</item>
     </array>
 
     <array name="option_devise_conversion">
