@@ -55,7 +55,19 @@ public class PaiementActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAdapter = new PaiementAdapter(PaiementModel.getData(), position -> {
-            switch (position){
+            switch (position) {
+                case 0: {
+                    Answers.getInstance().logContentView(new ContentViewEvent()
+                            .putContentId("Transfert")
+                            .putContentName("Billets concert ADA +"));
+
+                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Billets");
+                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
+                    startActivityForResult(intent, REQUEST_ABONNEMENT);
+                    break;
+                }
+
                 case 10: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.ui.activities.UpdateProfilActivity;
@@ -57,6 +60,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public boolean onPreferenceClick(Preference preference) {
         if (preference.getKey().equals("profil")) {
             getActivity().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
+        }
+
+        if (preference.getKey().equals("mise_a_jour")) {
+            new AppUpdater(getActivity())
+                    .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+                    .setDisplay(Display.NOTIFICATION)
+                    .showAppUpdated(true)
+                    .start();
         }
 
         return false;

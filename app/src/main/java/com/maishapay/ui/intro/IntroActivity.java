@@ -15,16 +15,23 @@ import com.maishapay.ui.activities.LoginActivity;
 import com.maishapay.ui.fragment.IntroFragmentOne;
 import com.maishapay.ui.fragment.IntroFragmentTree;
 import com.maishapay.ui.fragment.IntroFragmentTwo;
+import com.shashank.sony.fancywalkthroughlib.FancyWalkthroughActivity;
+import com.shashank.sony.fancywalkthroughlib.FancyWalkthroughCard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class IntroActivity extends AppIntro {
+public class IntroActivity extends FancyWalkthroughActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
+
+        logUser();
 
         if(! UserPrefencesManager.getUserFirtRun()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -34,17 +41,47 @@ public class IntroActivity extends AppIntro {
             finish();
         }
 
-        logUser();
+        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.");
+        FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.");
+        FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyer et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.");
+        FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.");
 
-        showSeparator(false);
-        setNextArrowColor(getResources().getColor(R.color.md_orange_700));
-        setColorSkipButton(getResources().getColor(R.color.md_orange_700));
-        setColorDoneText(getResources().getColor(R.color.md_orange_700));
-        setIndicatorColor(getResources().getColor(R.color.md_orange_700), getResources().getColor(R.color.md_black_1000));
+        fancywalkthroughCard1.setBackgroundColor(R.color.white);
+        fancywalkthroughCard1.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard2.setBackgroundColor(R.color.white);
+        fancywalkthroughCard2.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard3.setBackgroundColor(R.color.white);
+        fancywalkthroughCard3.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard4.setBackgroundColor(R.color.white);
+        fancywalkthroughCard4.setIconLayoutParams(300,300,0,0,0,0);
 
-        addSlide(new IntroFragmentOne());
-        addSlide(new IntroFragmentTwo());
-        addSlide(new IntroFragmentTree());
+        List<FancyWalkthroughCard> pages = new ArrayList<>();
+
+        pages.add(fancywalkthroughCard1);
+        pages.add(fancywalkthroughCard2);
+        pages.add(fancywalkthroughCard3);
+        pages.add(fancywalkthroughCard4);
+
+        for (FancyWalkthroughCard page : pages) {
+            page.setTitleColor(R.color.black);
+            page.setDescriptionColor(R.color.black);
+        }
+
+        setFinishButtonTitle("Commencez...");
+        showNavigationControls(true);
+        //setColorBackground(R.color.colorGreen);
+        setImageBackground(R.drawable.background1);
+        setInactiveIndicatorColor(R.color.grey_600);
+        //setActiveIndicatorColor(R.color.colorGreen);
+        setOnboardPages(pages);
+
+    }
+
+    @Override
+    public void onFinishButtonPressed() {
+        UserPrefencesManager.setUserFirtRun(false);
+        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
+        finish();
     }
 
     private void logUser() {
@@ -55,22 +92,6 @@ public class IntroActivity extends AppIntro {
             Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
             Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
         }
-    }
-
-    @Override
-    public void onSkipPressed(Fragment currentFragment) {
-        super.onSkipPressed(currentFragment);
-        UserPrefencesManager.setUserFirtRun(false);
-        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-        finish();
-    }
-
-    @Override
-    public void onDonePressed(Fragment currentFragment) {
-        super.onDonePressed(currentFragment);
-        UserPrefencesManager.setUserFirtRun(false);
-        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-        finish();
     }
 
     @Override

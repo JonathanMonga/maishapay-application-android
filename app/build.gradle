@@ -1,18 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 apply plugin: 'io.fabric'
 
 try {
@@ -106,7 +92,7 @@ android {
     }
 
     dexOptions {
-        incremental true
+        //incremental true
         javaMaxHeapSize "4g"
     }
 
@@ -387,11 +373,13 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
     implementation('com.vipulasri:ticketview:1.0.7') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
+
     implementation('com.squareup.picasso:picasso:2.71828') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
@@ -441,7 +429,32 @@ dependencies {
     }
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
-        transitive = true;
+        transitive = true
+    }
+
+    implementation ('com.github.Shashank02051997:FancyWalkthrough-Android:2.1') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+
+
+    implementation ('com.github.jrvansuita:MaterialAbout:+') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+
+    implementation ('com.github.javiersantos:AppUpdater:2.7') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+    }
+
+    implementation ('com.elconfidencial.bubbleshowcase:bubbleshowcase:+') {
+        exclude group: 'com.android.support'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
     }
 }
 

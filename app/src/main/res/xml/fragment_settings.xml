@@ -18,6 +18,12 @@
         android:title="Mon compte">
         <Preference
             android:key="profil"
-            android:title="Modifier mon profil" />
+            android:title="Mon Profil"
+            android:summary="Mettre à jour votre profil."/>
+
+        <Preference
+            android:key="mise_a_jour"
+            android:title="Mettre à jour"
+            android:summary="Mettre à jour Maishapay."/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -23,6 +23,13 @@ public class PaiementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int totalTypes;
     private ItemClickedListener itemClickedListener;
 
+    public static class AnnonceHolder extends RecyclerView.ViewHolder {
+
+        public AnnonceHolder(View view) {
+            super(view);
+        }
+    }
+
     public static class HeaderHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.nom) TextView nom;
 
@@ -59,7 +66,10 @@ public class PaiementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
 
-        if(viewType == PaiementModel.HEADER_TYPE) {
+        if(viewType == PaiementModel.ANNONCE_TYPE) {
+            itemView = LayoutInflater.from(MaishapayApplication.getMaishapayContext()).inflate(R.layout.paiement_list_item_annonce, parent, false);
+            return new AnnonceHolder(itemView);
+        } else if(viewType == PaiementModel.HEADER_TYPE) {
             itemView = LayoutInflater.from(MaishapayApplication.getMaishapayContext()).inflate(R.layout.paiement_list_item_header, parent, false);
             return new HeaderHolder(itemView);
         } else {
@@ -70,7 +80,9 @@ public class PaiementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if(paiementModels.get(position).getType() == PaiementModel.HEADER_TYPE)
+        if(paiementModels.get(position).getType() == PaiementModel.ANNONCE_TYPE)
+            return PaiementModel.ANNONCE_TYPE;
+        else if(paiementModels.get(position).getType() == PaiementModel.HEADER_TYPE)
             return PaiementModel.HEADER_TYPE;
         else
             return PaiementModel.CONTENT_TYPE;
@@ -82,7 +94,9 @@ public class PaiementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         PaiementModel paiementModel = paiementModels.get(position);
 
-        if(paiementModel.getType() == PaiementModel.HEADER_TYPE){
+        if(paiementModel.getType() == PaiementModel.ANNONCE_TYPE) {
+
+        } else if(paiementModel.getType() == PaiementModel.HEADER_TYPE) {
             ((HeaderHolder)holder).nom.setText(paiementModel.getName());
         } else {
             ((ContentHolder)holder).nom.setText(paiementModel.getName());

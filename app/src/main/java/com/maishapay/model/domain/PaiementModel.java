@@ -6,6 +6,7 @@ import java.util.List;
 public class PaiementModel {
     public static final int HEADER_TYPE = 0;
     public static final int CONTENT_TYPE = 1;
+    public static final int ANNONCE_TYPE = 2;
 
     private int type;
     private String name;
@@ -41,8 +42,9 @@ public class PaiementModel {
         this.description = description;
     }
 
-    public static List<PaiementModel> getData(){
+    public static List<PaiementModel> getData() {
         List<PaiementModel> paiementModels = new ArrayList<>();
+        paiementModels.add(new PaiementModel(ANNONCE_TYPE, "", ""));
         paiementModels.add(new PaiementModel(HEADER_TYPE, "Paiement facture", ""));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Taxi", "Payer votre taxi."));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Restaurant | Fastfood", "Payer votre restaurant."));
