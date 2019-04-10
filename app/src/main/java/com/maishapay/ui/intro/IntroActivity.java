@@ -41,10 +41,12 @@ public class IntroActivity extends FancyWalkthroughActivity {
             finish();
         }
 
-        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.");
-        FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.");
-        FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyer et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.");
-        FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.");
+        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.", R.drawable.mobile_banking);
+        FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.", R.drawable.digital_wallets);
+        FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyez et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.", R.drawable.digital_channels);
+        FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.", R.drawable.mobile_payments);
+        FancyWalkthroughCard fancywalkthroughCard5 = new FancyWalkthroughCard("Epargner votre argent.", "L'épargne est plus facile chez nous.", R.drawable.mobile_banking);
+
 
         fancywalkthroughCard1.setBackgroundColor(R.color.white);
         fancywalkthroughCard1.setIconLayoutParams(300,300,0,0,0,0);
@@ -54,6 +56,8 @@ public class IntroActivity extends FancyWalkthroughActivity {
         fancywalkthroughCard3.setIconLayoutParams(300,300,0,0,0,0);
         fancywalkthroughCard4.setBackgroundColor(R.color.white);
         fancywalkthroughCard4.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard5.setBackgroundColor(R.color.white);
+        fancywalkthroughCard5.setIconLayoutParams(300,300,0,0,0,0);
 
         List<FancyWalkthroughCard> pages = new ArrayList<>();
 
@@ -61,6 +65,7 @@ public class IntroActivity extends FancyWalkthroughActivity {
         pages.add(fancywalkthroughCard2);
         pages.add(fancywalkthroughCard3);
         pages.add(fancywalkthroughCard4);
+        pages.add(fancywalkthroughCard5);
 
         for (FancyWalkthroughCard page : pages) {
             page.setTitleColor(R.color.black);

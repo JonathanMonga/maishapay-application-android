@@ -25,7 +25,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 5
-        versionName "1${releaseTime()}"
+        versionName "1${releaseTime(versionCode)}"
         archivesBaseName = "${applicationId}-${versionName}"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -458,8 +458,8 @@ dependencies {
     }
 }
 
-static def releaseTime() {
-    return new Date().format(".dd.MM.yyyy.HH.mm", TimeZone.getTimeZone("GMT"))
+static def releaseTime(versionCode) {
+    return ".v${versionCode}" + new Date().format(".dd.MM.yyyy.HH.mm", TimeZone.getTimeZone("GMT"))
 }
 
 apply plugin: 'com.google.gms.google-services'
