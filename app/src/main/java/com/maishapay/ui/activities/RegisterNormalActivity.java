@@ -17,6 +17,7 @@
 package com.maishapay.ui.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.mateware.snacky.Snacky;
+import dmax.dialog.SpotsDialog;
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -66,7 +68,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     @BindView(R.id.ET_CodePicker) CountryCodePicker countryCodePicker;
 
 
-    private ProgressDialog progressDialog;
+    private AlertDialog progressDialog;
     private String maskText;
 
     @Override
@@ -227,10 +229,7 @@ public class RegisterNormalActivity extends TiActivity<RegisterNormalPresenter, 
     }
 
     private void initProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Veuillez patienter");
+        progressDialog = new SpotsDialog(this, R.style.Custom);
     }
 
     private void toastMessage(String message, int view){

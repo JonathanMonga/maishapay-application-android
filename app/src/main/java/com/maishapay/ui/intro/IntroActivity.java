@@ -40,19 +40,18 @@ public class IntroActivity extends FancyWalkthroughActivity {
         FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.", R.drawable.digital_wallets);
         FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyez et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.", R.drawable.digital_channels);
         FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.", R.drawable.mobile_payments);
-        FancyWalkthroughCard fancywalkthroughCard5 = new FancyWalkthroughCard("Epargner votre argent.", "L'épargne est plus facile chez nous.", R.drawable.mobile_banking);
-
+        FancyWalkthroughCard fancywalkthroughCard5 = new FancyWalkthroughCard("Epargnez aussi votre argent.", "L'épargne est plus facile chez nous.", R.drawable.mobile_banking);
 
         fancywalkthroughCard1.setBackgroundColor(R.color.white);
-        fancywalkthroughCard1.setIconLayoutParams(80,80,0,0,0,0);
+        fancywalkthroughCard1.setIconLayoutParams(150,150,0,0,0,0);
         fancywalkthroughCard2.setBackgroundColor(R.color.white);
-        fancywalkthroughCard2.setIconLayoutParams(80,80,0,0,0,0);
+        fancywalkthroughCard2.setIconLayoutParams(150,150,0,0,0,0);
         fancywalkthroughCard3.setBackgroundColor(R.color.white);
-        fancywalkthroughCard3.setIconLayoutParams(80,80,0,0,0,0);
+        fancywalkthroughCard3.setIconLayoutParams(150,150,0,0,0,0);
         fancywalkthroughCard4.setBackgroundColor(R.color.white);
-        fancywalkthroughCard4.setIconLayoutParams(80,80,0,0,0,0);
+        fancywalkthroughCard4.setIconLayoutParams(150,150,0,0,0,0);
         fancywalkthroughCard5.setBackgroundColor(R.color.white);
-        fancywalkthroughCard5.setIconLayoutParams(80,80,0,0,0,0);
+        fancywalkthroughCard5.setIconLayoutParams(150,150,0,0,0,0);
 
         List<FancyWalkthroughCard> pages = new ArrayList<>();
 
