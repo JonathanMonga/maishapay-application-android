@@ -62,7 +62,7 @@ public class PaiementActivity extends AppCompatActivity{
                             .putContentName("Billets concert ADA +"));
 
                     Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Billets");
+                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Réservation billets.");
                     intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
                     startActivityForResult(intent, REQUEST_ABONNEMENT);
                     break;

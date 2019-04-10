@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.crashlytics.android.Crashlytics;
-import com.github.paolorotolo.appintro.AppIntro;
 import com.maishapay.R;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.activities.DrawerActivity;
 import com.maishapay.ui.activities.LoginActivity;
-import com.maishapay.ui.fragment.IntroFragmentOne;
-import com.maishapay.ui.fragment.IntroFragmentTree;
-import com.maishapay.ui.fragment.IntroFragmentTwo;
 import com.shashank.sony.fancywalkthroughlib.FancyWalkthroughActivity;
 import com.shashank.sony.fancywalkthroughlib.FancyWalkthroughCard;
 
@@ -41,7 +36,7 @@ public class IntroActivity extends FancyWalkthroughActivity {
             finish();
         }
 
-        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.", R.drawable.mobile_banking);
+        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.", R.drawable.digital_business);
         FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.", R.drawable.digital_wallets);
         FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyez et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.", R.drawable.digital_channels);
         FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.", R.drawable.mobile_payments);
@@ -49,15 +44,15 @@ public class IntroActivity extends FancyWalkthroughActivity {
 
 
         fancywalkthroughCard1.setBackgroundColor(R.color.white);
-        fancywalkthroughCard1.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard1.setIconLayoutParams(80,80,0,0,0,0);
         fancywalkthroughCard2.setBackgroundColor(R.color.white);
-        fancywalkthroughCard2.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard2.setIconLayoutParams(80,80,0,0,0,0);
         fancywalkthroughCard3.setBackgroundColor(R.color.white);
-        fancywalkthroughCard3.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard3.setIconLayoutParams(80,80,0,0,0,0);
         fancywalkthroughCard4.setBackgroundColor(R.color.white);
-        fancywalkthroughCard4.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard4.setIconLayoutParams(80,80,0,0,0,0);
         fancywalkthroughCard5.setBackgroundColor(R.color.white);
-        fancywalkthroughCard5.setIconLayoutParams(300,300,0,0,0,0);
+        fancywalkthroughCard5.setIconLayoutParams(80,80,0,0,0,0);
 
         List<FancyWalkthroughCard> pages = new ArrayList<>();
 
@@ -72,14 +67,11 @@ public class IntroActivity extends FancyWalkthroughActivity {
             page.setDescriptionColor(R.color.black);
         }
 
-        setFinishButtonTitle("Commencez...");
+        setFinishButtonTitle("Connectez-vous.");
         showNavigationControls(true);
-        //setColorBackground(R.color.colorGreen);
-        setImageBackground(R.drawable.background1);
+        setImageBackground(R.drawable.home_background);
         setInactiveIndicatorColor(R.color.grey_600);
-        //setActiveIndicatorColor(R.color.colorGreen);
         setOnboardPages(pages);
-
     }
 
     @Override

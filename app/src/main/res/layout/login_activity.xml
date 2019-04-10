@@ -96,7 +96,7 @@
                                 app:ccpDialog_textColor="@color/branco"
                                 app:ccp_areaCodeDetectedCountry="true"
                                 app:ccp_autoDetectLanguage="true"
-                                app:ccp_contentColor="@color/md_orange_A700"
+                                app:ccp_contentColor="@color/branco"
                                 app:ccp_countryAutoDetectionPref="LOCALE_SIM"
                                 app:ccp_defaultNameCode="cd"
                                 app:ccp_rememberLastSelection="true"
@@ -125,7 +125,7 @@
                         android:layout_marginLeft="5.0dip"
                         android:layout_marginRight="5dip"
                         android:layout_marginTop="10.0dip"
-                        android:textColorHint="@color/md_orange_A700"
+                        android:textColorHint="@color/branco"
                         android:focusable="true"
                         android:focusableInTouchMode="true">
 
@@ -187,6 +187,12 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <ImageView
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_maishapay"/>
 
             <Button
                 android:id="@+id/btn_nao_criar_conta"
