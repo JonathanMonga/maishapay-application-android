@@ -72,46 +72,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         holder.service.setText(parseObject.getString("Service"));
         holder.telephone.setText(parseObject.getString("Telephone") == null || TextUtils.isEmpty(parseObject.getString("Telephone")) ? "Pas disponible." : parseObject.getString("Telephone"));
 
-        BetterLinkMovementMethod
-                .linkify(Linkify.PHONE_NUMBERS, holder.telephone)
-                .setOnLinkClickListener((textView, url) -> {
-                    if (MerchantListAdapter.isPhoneNumber(url)) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details
-                        }
-
-                        mContext.startActivity(intent);
-                        return true;
-                    }
-
-                    return true;
-                })
-                .setOnLinkLongClickListener((textView, url) -> {
-                    if (MerchantListAdapter.isPhoneNumber(url)) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details
-                        }
-
-                        mContext.startActivity(intent);
-                        return true;
-                    }
-                    return true;
-                });
-
         holder.mIcon.setInitials(true);
         holder.mIcon.setInitialsNumber(1);
         holder.mIcon.setLetterSize(18);

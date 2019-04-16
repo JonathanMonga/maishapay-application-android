@@ -3,6 +3,7 @@ package com.maishapay.ui.intro;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
@@ -26,8 +27,6 @@ public class IntroActivity extends FancyWalkthroughActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
 
-        logUser();
-
         if(! UserPrefencesManager.getUserFirtRun()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -36,11 +35,11 @@ public class IntroActivity extends FancyWalkthroughActivity {
             finish();
         }
 
-        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez Maishapay.", "Votre portefeuille électronique.", R.drawable.digital_business);
+        FancyWalkthroughCard fancywalkthroughCard1 = new FancyWalkthroughCard("Bienvenue chez nous.", "Votre portefeuille électronique.", R.drawable.mobile_banking);
         FancyWalkthroughCard fancywalkthroughCard2 = new FancyWalkthroughCard("Facilitez-vous la vie.", "Déposer et rétirer de l'argent partout où vous êtes.", R.drawable.digital_wallets);
-        FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyez et recévez de l'argent.", "Partout en RDC et ailleurs à des frais abordable.", R.drawable.digital_channels);
+        FancyWalkthroughCard fancywalkthroughCard3 = new FancyWalkthroughCard("Envoyez et recévez.", "Partout en RDC et ailleurs à des frais abordable.", R.drawable.digital_channels);
         FancyWalkthroughCard fancywalkthroughCard4 = new FancyWalkthroughCard("Achetez et vendez partout", "Payez vos facture, dans le restaurant et d'autres un sites web.", R.drawable.mobile_payments);
-        FancyWalkthroughCard fancywalkthroughCard5 = new FancyWalkthroughCard("Epargnez aussi votre argent.", "L'épargne est plus facile chez nous.", R.drawable.mobile_banking);
+        FancyWalkthroughCard fancywalkthroughCard5 = new FancyWalkthroughCard("Epargnez votre argent.", "L'épargne est plus facile chez nous.", R.drawable.digital_business);
 
         fancywalkthroughCard1.setBackgroundColor(R.color.white);
         fancywalkthroughCard1.setIconLayoutParams(150,150,0,0,0,0);
@@ -77,17 +76,7 @@ public class IntroActivity extends FancyWalkthroughActivity {
     public void onFinishButtonPressed() {
         UserPrefencesManager.setUserFirtRun(false);
         startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-        finish();
-    }
-
-    private void logUser() {
-        // TODO: Use the current user's information
-        // You can call any combination of these three methods
-        if(UserPrefencesManager.getCurrentUser() != null) {
-            Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
-            Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
-            Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
-        }
+        new Handler().postDelayed(this::finish, 200);
     }
 
     @Override
