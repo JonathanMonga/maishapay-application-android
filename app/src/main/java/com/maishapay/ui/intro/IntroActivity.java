@@ -65,7 +65,7 @@ public class IntroActivity extends FancyWalkthroughActivity {
             page.setDescriptionColor(R.color.black);
         }
 
-        setFinishButtonTitle("Connectez-vous.");
+        setFinishButtonTitle("Lancez-vous.");
         showNavigationControls(true);
         setImageBackground(R.drawable.home_background);
         setInactiveIndicatorColor(R.color.grey_600);
