@@ -34,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -73,6 +74,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
     private static String MESSAGE;
+    private static String[] list_billets = new String[]{"Billet normal", "Billet VIP"};
+    private static String[] prix_billets = new String[]{"10", "30"};
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
@@ -87,6 +90,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     public static final String EXTRA_DATA_DSTV = "DStv";
     public static final String EXTRA_DATA_EASY = "Easy Tv";
     public static final String EXTRA_DATA_STARTIMES = "Startimes";
+    public static final String EXTRA_DATA_ANNONCE = "Réservation billets.";
 
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
@@ -104,6 +108,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     MoneyTextView ET_Montant;
     @BindView(R.id.ET_CodeCarte)
     MaskEditText ET_CodeCarte;
+    @BindView(R.id.title_activty)
+    TextView title_activty;
 
     private SpotsDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
@@ -125,10 +131,14 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         logUser();
 
-        toolbar.setTitle("Abonnemt " + getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT));
-        setSupportActionBar(toolbar);
-
         data = getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT);
+
+        toolbar.setTitle(data.equalsIgnoreCase(EXTRA_DATA_ANNONCE) ? data : String.format("Abonnemt %s", data));
+
+        if (data.equalsIgnoreCase("Réservation billets."))
+            title_activty.setText("Réservez vos billets du concert d'ADA à Lubumbashi dès maintenant.");
+
+        setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -279,6 +289,58 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
                 }
             });
+        } else if (data.equalsIgnoreCase(EXTRA_DATA_ANNONCE)) {
+            List<String> nomBillets = new ArrayList<>();
+
+            nomBillets.add("V.I.P");
+            nomBillets.add("Open");
+
+            List<String> bouquetPrixUSD = new ArrayList<>();
+
+            bouquetPrixUSD.add("30");
+            bouquetPrixUSD.add("10");
+
+            SP_Bouquet.setEnabled(true);
+            SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, bouquetNames));
+            SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (userCurrency.equals(USD_CURRENCY)) {
+                        if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
+                            ET_Montant.setAmount(0, userCurrency);
+                            Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
+                        } else {
+                            currentPosition = i;
+                            mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                            ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
+                        }
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String[] currencies = getResources().getStringArray(R.array.option_devise);
+
+                    if (currencies[i].equals(CDF))
+                        userCurrency = CDF_CURRENCY;
+                    else
+                        userCurrency = USD_CURRENCY;
+
+                    ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         } else {
             SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -303,32 +365,54 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
             Bouquet.setVisibility(View.GONE);
-        else {
+        else
+
+        {
             ET_Montant.setEnabled(false);
         }
 
         ET_NumeroService.setEnabled(false);
-        ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
+        ET_NumeroService.setText(
+
+                getIntent().
+
+                        getStringExtra(EXTRA_NUMERO_SERVICE));
 
         calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
 
         BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
 
         calcDialog.setValue(bigDecimal)
-                .setFormatSymbols(',', '.')
-                .setShowSignButton(true)
-                .setShowAnswerButton(true)
-                .setSignCanBeChanged(true, bigDecimal.signum())
-                .setClearDisplayOnOperation(true)
-                .setShowZeroWhenNoValue(true)
-                .setMaxValue(new BigDecimal(1000000))
-                .setMaxDigits(7, 2);
+                .
+
+                        setFormatSymbols(',', '.')
+                .
+
+                        setShowSignButton(true)
+                .
+
+                        setShowAnswerButton(true)
+                .
+
+                        setSignCanBeChanged(true, bigDecimal.signum())
+                .
+
+                        setClearDisplayOnOperation(true)
+                .
+
+                        setShowZeroWhenNoValue(true)
+                .
+
+                        setMaxValue(new BigDecimal(1000000))
+                .
+
+                        setMaxDigits(7, 2);
     }
 
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        if(UserPrefencesManager.getCurrentUser() != null) {
+        if (UserPrefencesManager.getCurrentUser() != null) {
             Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
             Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
             Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maishapay.R;
@@ -23,10 +24,20 @@ public class PaiementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int totalTypes;
     private ItemClickedListener itemClickedListener;
 
-    public static class AnnonceHolder extends RecyclerView.ViewHolder {
+    public class AnnonceHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        @BindView(R.id.nom)
+        ImageView annonce;
 
         public AnnonceHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
+            annonce.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            itemClickedListener.clicked(getAdapterPosition());
         }
     }
 
