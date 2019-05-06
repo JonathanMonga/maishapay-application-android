@@ -131,6 +131,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/LL_Carte"
                     style="@style/form_linha">
 
                     <ImageView

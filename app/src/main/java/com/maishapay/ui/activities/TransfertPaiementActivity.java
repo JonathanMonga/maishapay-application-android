@@ -104,6 +104,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     LinearLayout Bouquet;
     @BindView(R.id.Monnaie)
     LinearLayout Monnaie;
+    @BindView(R.id.LL_Carte)
+    LinearLayout LL_Carte;
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
     @BindView(R.id.ET_CodeCarte)
@@ -149,12 +151,17 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
         initProgressBar();
 
+        Bouquet.setVisibility(View.GONE);
+
         SP_Bouquet.setEnabled(false);
         if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)) {
             if (!NetworkUtility.isOnline(this)) {
                 Toast.makeText(TransfertPaiementActivity.this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
                 new Handler().postDelayed(() -> finish(), 5000);
             }
+
+            Bouquet.setVisibility(View.VISIBLE);
+            ET_Montant.setEnabled(false);
 
             if (data.equals(EXTRA_DATA_CANAL)) {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetCanal");
@@ -210,6 +217,9 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                     });
                 });
             } else if (data.equals(EXTRA_DATA_DSTV)) {
+                Bouquet.setVisibility(View.VISIBLE);
+                ET_Montant.setEnabled(false);
+
                 SP_TypeEnvoi.setSelection(1);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetDSTV");
                 query.findInBackground((objects, e) -> {
@@ -290,6 +300,10 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 }
             });
         } else if (data.equalsIgnoreCase(EXTRA_DATA_ANNONCE)) {
+            Bouquet.setVisibility(View.VISIBLE);
+            ET_Montant.setEnabled(false);
+            LL_Carte.setVisibility(View.GONE);
+
             List<String> nomBillets = new ArrayList<>();
 
             nomBillets.add("V.I.P");
@@ -360,15 +374,6 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
 
                 }
             });
-        }
-
-
-        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
-            Bouquet.setVisibility(View.GONE);
-        else
-
-        {
-            ET_Montant.setEnabled(false);
         }
 
         ET_NumeroService.setEnabled(false);
