@@ -329,29 +329,10 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                             Toast.makeText(TransfertPaiementActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
                         } else {
                             currentPosition = i;
-                            mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
+                            mBouquetObject = new BouquetObject(nomBillets.get(i), bouquetPrixUSD.get(i), "USD");
                             ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
                         }
                     }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-
-            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String[] currencies = getResources().getStringArray(R.array.option_devise);
-
-                    if (currencies[i].equals(CDF))
-                        userCurrency = CDF_CURRENCY;
-                    else
-                        userCurrency = USD_CURRENCY;
-
-                    ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
                 }
 
                 @Override
