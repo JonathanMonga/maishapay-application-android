@@ -315,7 +315,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             bouquetPrixUSD.add("10");
 
             SP_Bouquet.setEnabled(true);
-            SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, bouquetNames));
+            SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, nomBillets));
             SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
