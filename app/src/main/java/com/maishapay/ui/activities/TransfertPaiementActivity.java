@@ -427,7 +427,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
                 return;
             }
 
-        if (TextUtils.isEmpty(ET_CodeCarte.getRawText())) {
+        if (TextUtils.isEmpty(ET_CodeCarte.getRawText()) && !(data.equals(EXTRA_DATA_ANNONCE))) {
             toastMessage(String.format(getString(R.string.erro_campo), ET_CodeCarte.getHint().toString()), R.id.ET_CodeCarte);
             return;
         }
