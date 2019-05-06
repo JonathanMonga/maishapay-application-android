@@ -303,6 +303,8 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             Bouquet.setVisibility(View.VISIBLE);
             ET_Montant.setEnabled(false);
             LL_Carte.setVisibility(View.GONE);
+            SP_TypeEnvoi.setSelection(1);
+            userCurrency = "USD";
 
             List<String> nomBillets = new ArrayList<>();
 
@@ -314,11 +316,13 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
             bouquetPrixUSD.add("30");
             bouquetPrixUSD.add("10");
 
+            ET_Montant.setAmount(Float.valueOf(bouquetPrixUSD.get(0)), userCurrency);
+
             SP_Bouquet.setEnabled(true);
             SP_Bouquet.setAdapter(new CustomAdapter(TransfertPaiementActivity.this, android.R.id.text1, nomBillets));
             SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
                     if (userCurrency.equals(USD_CURRENCY)) {
                         if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
                             ET_Montant.setAmount(0, userCurrency);
