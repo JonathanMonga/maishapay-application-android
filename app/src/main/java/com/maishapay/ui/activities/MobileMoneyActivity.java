@@ -101,7 +101,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
         }
 
         codePhone = "+242";
-                //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+        //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -196,7 +196,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        if(UserPrefencesManager.getCurrentUser() != null) {
+        if (UserPrefencesManager.getCurrentUser() != null) {
             Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
             Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
             Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
