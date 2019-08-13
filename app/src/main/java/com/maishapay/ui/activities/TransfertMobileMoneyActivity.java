@@ -73,7 +73,6 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     private static final int DIALOG_REQUEST_CODE = 0;
     private static String CDF = "Francs congolais (CDF)";
     private static String USD = "Dollars (USD)";
-    private static String MESSAGE;
 
     private static String CDF_CURRENCY = "FC";
     private static String USD_CURRENCY = "USD";
@@ -96,47 +95,27 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     EditText ET_NumeroService;
     @BindView(R.id.SP_TypeEnvoi)
     Spinner SP_TypeEnvoi;
-    @BindView(R.id.SP_Bouquet)
-    Spinner SP_Bouquet;
-    @BindView(R.id.Bouquet)
-    LinearLayout Bouquet;
-    @BindView(R.id.Monnaie)
-    LinearLayout Monnaie;
-    @BindView(R.id.LL_Carte)
-    LinearLayout LL_Carte;
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
-    @BindView(R.id.ET_CodeCarte)
-    MaskEditText ET_CodeCarte;
-    @BindView(R.id.title_activty)
-    TextView title_activty;
 
     private SpotsDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
     private boolean flagtransfert = false;
     private CalcDialog calcDialog;
-    private BouquetObject mBouquetObject = new BouquetObject("", "0", "");
-    private List<String> bouquetNames = new ArrayList<>();
-    private List<String> bouquetPrixCDF = new ArrayList<>();
-    private List<String> bouquetPrixUSD = new ArrayList<>();
-    private int currentPosition = 0;
     private boolean isInternalMessage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.transfert_paiement_activity);
+        setContentView(R.layout.transfert_mobile_money_activity);
         ButterKnife.bind(this);
 
         logUser();
 
         data = getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT);
 
-        toolbar.setTitle(data.equalsIgnoreCase(EXTRA_DATA_ANNONCE) ? data : String.format("Abonnemt %s", data));
-
-        if (data.equalsIgnoreCase("Réservation billets."))
-            title_activty.setText("Réservez vos billets du concert d'ADA à Lubumbashi dès maintenant.");
+        toolbar.setTitle("Mobile money");
 
         setSupportActionBar(toolbar);
 
@@ -149,252 +128,41 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         initProgressBar();
 
-        Bouquet.setVisibility(View.GONE);
+        SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String[] currencies = getResources().getStringArray(R.array.option_devise);
 
-        SP_Bouquet.setEnabled(false);
-        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)) {
-            if (!NetworkUtility.isOnline(this)) {
-                Toast.makeText(TransfertMobileMoneyActivity.this, "Aucune connexion réseau. Réessayez plus tard.", Toast.LENGTH_LONG).show();
-                new Handler().postDelayed(() -> finish(), 5000);
+                if (currencies[i].equals(CDF))
+                    userCurrency = CDF_CURRENCY;
+                else
+                    userCurrency = USD_CURRENCY;
+
+                ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
             }
 
-            Bouquet.setVisibility(View.VISIBLE);
-            ET_Montant.setEnabled(false);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            if (data.equals(EXTRA_DATA_CANAL)) {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetCanal");
-                query.findInBackground((objects, e) -> {
-                    if (objects == null) {
-                        return;
-                    }
-
-                    for (ParseObject object : objects) {
-                        bouquetNames.add(object.getString("Nom"));
-                    }
-
-                    for (ParseObject object : objects) {
-                        bouquetPrixCDF.add(object.getString("Prix_CDF"));
-                    }
-
-                    ET_Montant.setAmount(Float.valueOf(bouquetPrixCDF.get(0)), userCurrency);
-
-                    for (ParseObject object : objects) {
-                        bouquetPrixUSD.add(object.getString("Prix_USD"));
-                    }
-
-                    SP_Bouquet.setEnabled(true);
-                    SP_Bouquet.setAdapter(new CustomAdapter(TransfertMobileMoneyActivity.this, android.R.id.text1, bouquetNames));
-                    SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            if (userCurrency.equals(CDF_CURRENCY)) {
-                                if (bouquetPrixCDF.get(i) == null || bouquetPrixCDF.get(i).equals("")) {
-                                    ET_Montant.setAmount(0, userCurrency);
-                                    Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en francs pour ce bouquet", Toast.LENGTH_LONG).show();
-                                } else {
-                                    currentPosition = i;
-                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixCDF.get(i), "FC");
-                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
-                                }
-                            } else {
-                                if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
-                                    ET_Montant.setAmount(0, userCurrency);
-                                    Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    currentPosition = i;
-                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
-                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-                });
-            } else if (data.equals(EXTRA_DATA_DSTV)) {
-                Bouquet.setVisibility(View.VISIBLE);
-                ET_Montant.setEnabled(false);
-
-                SP_TypeEnvoi.setSelection(1);
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("PrixBouquetDSTV");
-                query.findInBackground((objects, e) -> {
-                    if (objects == null) {
-                        return;
-                    }
-
-                    for (ParseObject object : objects) {
-                        bouquetNames.add(object.getString("Nom"));
-                    }
-
-                    for (ParseObject object : objects) {
-                        bouquetPrixUSD.add(object.getString("Prix_USD"));
-                    }
-
-                    userCurrency = "USD";
-                    ET_Montant.setAmount(Float.valueOf(bouquetPrixUSD.get(0)), userCurrency);
-
-                    SP_Bouquet.setEnabled(true);
-                    SP_Bouquet.setAdapter(new CustomAdapter(TransfertMobileMoneyActivity.this, android.R.id.text1, bouquetNames));
-                    SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            if (userCurrency.equals(CDF_CURRENCY)) {
-                                Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
-                            } else {
-                                if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
-                                    ET_Montant.setAmount(0, userCurrency);
-                                    Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    currentPosition = i;
-                                    mBouquetObject = new BouquetObject(bouquetNames.get(i), bouquetPrixUSD.get(i), "USD");
-                                    ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-                });
             }
-
-            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String[] currencies = getResources().getStringArray(R.array.option_devise);
-
-                    if (currencies[i].equals(CDF)) {
-                        userCurrency = CDF_CURRENCY;
-                        if (!data.equals(EXTRA_DATA_DSTV)) {
-                            if (bouquetPrixCDF.size() != 0) {
-                                ET_Montant.setAmount(bouquetPrixCDF.get(currentPosition) == null || bouquetPrixCDF.get(currentPosition).equals("") ?
-                                                Float.valueOf("0")
-                                                : Float.valueOf(bouquetPrixCDF.get(currentPosition))
-                                        , userCurrency
-                                );
-                            }
-                        } else
-                            Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
-                    } else {
-                        userCurrency = USD_CURRENCY;
-                        if (bouquetPrixUSD.size() != 0) {
-                            ET_Montant.setAmount(bouquetPrixUSD.get(currentPosition) == null || bouquetPrixUSD.get(currentPosition).equals("") ?
-                                            Float.valueOf("0")
-                                            : Float.valueOf(bouquetPrixUSD.get(currentPosition))
-                                    , userCurrency
-                            );
-                        }
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        } else if (data.equalsIgnoreCase(EXTRA_DATA_ANNONCE)) {
-            Bouquet.setVisibility(View.VISIBLE);
-            ET_Montant.setEnabled(false);
-            LL_Carte.setVisibility(View.GONE);
-            SP_TypeEnvoi.setSelection(1);
-            userCurrency = "USD";
-
-            List<String> nomBillets = new ArrayList<>();
-
-            nomBillets.add("V.I.P");
-            nomBillets.add("Open");
-
-            List<String> bouquetPrixUSD = new ArrayList<>();
-
-            bouquetPrixUSD.add("30");
-            bouquetPrixUSD.add("10");
-
-            ET_Montant.setAmount(Float.valueOf(bouquetPrixUSD.get(0)), userCurrency);
-
-            SP_Bouquet.setEnabled(true);
-            SP_Bouquet.setAdapter(new CustomAdapter(TransfertMobileMoneyActivity.this, android.R.id.text1, nomBillets));
-            SP_Bouquet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
-                    if (userCurrency.equals(USD_CURRENCY)) {
-                        if (bouquetPrixUSD.get(i) == null || bouquetPrixUSD.get(i).equals("")) {
-                            ET_Montant.setAmount(0, userCurrency);
-                            Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en dollars pour ce bouquet.", Toast.LENGTH_LONG).show();
-                        } else {
-                            currentPosition = i;
-                            mBouquetObject = new BouquetObject(nomBillets.get(i), bouquetPrixUSD.get(i), "USD");
-                            ET_Montant.setAmount(mBouquetObject.amount, mBouquetObject.currency);
-                        }
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        } else {
-            SP_TypeEnvoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String[] currencies = getResources().getStringArray(R.array.option_devise);
-
-                    if (currencies[i].equals(CDF))
-                        userCurrency = CDF_CURRENCY;
-                    else
-                        userCurrency = USD_CURRENCY;
-
-                    ET_Montant.setAmount(ET_Montant.getAmount(), userCurrency);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        }
+        });
 
         ET_NumeroService.setEnabled(false);
-        ET_NumeroService.setText(
-
-                getIntent().
-
-                        getStringExtra(EXTRA_NUMERO_SERVICE));
+        ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
 
         calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
 
         BigDecimal bigDecimal = new BigDecimal(ET_Montant.getAmount());
 
         calcDialog.setValue(bigDecimal)
-                .
-
-                        setFormatSymbols(',', '.')
-                .
-
-                        setShowSignButton(true)
-                .
-
-                        setShowAnswerButton(true)
-                .
-
-                        setSignCanBeChanged(true, bigDecimal.signum())
-                .
-
-                        setClearDisplayOnOperation(true)
-                .
-
-                        setShowZeroWhenNoValue(true)
-                .
-
-                        setMaxValue(new BigDecimal(1000000))
-                .
-
-                        setMaxDigits(7, 2);
+                .setFormatSymbols(',', '.')
+                .setShowSignButton(true)
+                .setShowAnswerButton(true)
+                .setSignCanBeChanged(true, bigDecimal.signum())
+                .setClearDisplayOnOperation(true)
+                .setShowZeroWhenNoValue(true)
+                .setMaxValue(new BigDecimal(1000000))
+                .setMaxDigits(7, 2);
     }
 
     private void logUser() {
@@ -425,29 +193,13 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
                 return;
             }
 
-        if (TextUtils.isEmpty(ET_CodeCarte.getRawText()) && !(data.equals(EXTRA_DATA_ANNONCE))) {
-            toastMessage(String.format(getString(R.string.erro_campo), ET_CodeCarte.getHint().toString()), R.id.ET_CodeCarte);
-            return;
-        }
-
         enabledControls(false);
 
-        if (data.equals(EXTRA_DATA_DSTV))
-            if (userCurrency.equals(CDF_CURRENCY)) {
-                Toast.makeText(TransfertMobileMoneyActivity.this, "Pas de prix en francs pour DSTV", Toast.LENGTH_LONG).show();
-                return;
-            } else
-                getPresenter().transfert(
-                        UserPrefencesManager.getCurrentUser().getTelephone(),
-                        ET_NumeroService.getText().toString(),
-                        userCurrency,
-                        String.valueOf(ET_Montant.getAmount()));
-        else
-            getPresenter().transfert(
-                    UserPrefencesManager.getCurrentUser().getTelephone(),
-                    ET_NumeroService.getText().toString(),
-                    userCurrency,
-                    String.valueOf(ET_Montant.getAmount()));
+        getPresenter().transfert(
+                UserPrefencesManager.getCurrentUser().getTelephone(),
+                ET_NumeroService.getText().toString(),
+                userCurrency,
+                String.valueOf(ET_Montant.getAmount()));
     }
 
     private void initProgressBar() {
@@ -515,20 +267,15 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
         else
             title = "Paiement";
 
-        if (isInternalMessage) {
-            Intent intent = new Intent(this, SuccessPaiementActivity.class);
-            intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
-            intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
-            intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
-            intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
-            intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
+        Intent intent = new Intent(this, SuccessPaiementActivity.class);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
+        intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
+        intent.putExtra(SuccessPaiementActivity.EXTRA_DESTINATAIRE, ET_NumeroService.getText().toString());
 
-            startActivity(intent);
-            finish();
-        } else {
-            isInternalMessage = true;
-            getPresenter().internalMessage("243972435000", String.format("*INTERNAL_MESSAGE*%s", MESSAGE));
-        }
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -565,31 +312,12 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
         TransfertMobileMoneyActivity.pin = pin;
 
         enabledControls(false);
-        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV))) {
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", data, ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
-            getPresenter().confirmTransfertAbonnement(
-                    pin,
-                    "",
-                    UserPrefencesManager.getCurrentUser().getTelephone(),
-                    ET_NumeroService.getText().toString(),
-                    userCurrency,
-                    String.valueOf(ET_Montant.getAmount()),
-                    String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
-                    getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT),
-                    ET_CodeCarte.getRawText());
-        } else {
-            MESSAGE = String.format("Demande d'abonnement %s\nNumero de la carte : %s\nde la part de %s\nNumero : %s\nMontant : %s %s", String.format("%s : %s", data, mBouquetObject.name), ET_CodeCarte.getRawText(), String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()), UserPrefencesManager.getCurrentUser().getTelephone(), String.valueOf(ET_Montant.getAmount()), userCurrency);
-            getPresenter().confirmTransfertAbonnement(
-                    pin,
-                    data,
-                    UserPrefencesManager.getCurrentUser().getTelephone(),
-                    ET_NumeroService.getText().toString(),
-                    mBouquetObject.currency,
-                    String.valueOf(mBouquetObject.amount),
-                    String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()),
-                    mBouquetObject.name,
-                    ET_CodeCarte.getRawText());
-        }
+        getPresenter().confirmTransfert(
+                pin,
+                UserPrefencesManager.getCurrentUser().getTelephone(),
+                ET_NumeroService.getText().toString(),
+                userCurrency,
+                String.valueOf(ET_Montant.getAmount()));
     }
 
     @Override
@@ -662,17 +390,5 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         setResult(Activity.RESULT_OK);
         finish();
-    }
-
-    private class BouquetObject {
-        String name;
-        float amount;
-        String currency;
-
-        public BouquetObject(String name, String amount, String currency) {
-            this.name = name;
-            this.amount = Float.valueOf(amount);
-            this.currency = currency;
-        }
     }
 }
