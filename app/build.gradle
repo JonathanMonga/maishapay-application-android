@@ -368,11 +368,6 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
-    implementation('com.github.sharish:CreditCardView:v1.0.4') {
-        exclude group: 'com.android.support'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-v4'
-    }
 
     implementation('com.vipulasri:ticketview:1.0.7') {
         exclude group: 'com.android.support'
@@ -404,25 +399,25 @@ dependencies {
         exclude module: 'support-v4'
     }
 
-    implementation ('com.github.ismaeltoe:osms-android:1.0') {
+    implementation('com.github.ismaeltoe:osms-android:1.0') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
-    implementation ('com.github.aakira:expandable-layout:1.6.0@aar') {
+    implementation('com.github.aakira:expandable-layout:1.6.0@aar') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
-    implementation ('com.github.ivbaranov:materiallettericon:0.2.3') {
+    implementation('com.github.ivbaranov:materiallettericon:0.2.3') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
-    implementation ('me.saket:better-link-movement-method:2.2.0') {
+    implementation('me.saket:better-link-movement-method:2.2.0') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
@@ -432,26 +427,26 @@ dependencies {
         transitive = true
     }
 
-    implementation ('com.github.Shashank02051997:FancyWalkthrough-Android:2.1') {
+    implementation('com.github.Shashank02051997:FancyWalkthrough-Android:2.1') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
 
-    implementation ('com.github.jrvansuita:MaterialAbout:+') {
+    implementation('com.github.jrvansuita:MaterialAbout:+') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
-    implementation ('com.github.javiersantos:AppUpdater:2.7') {
+    implementation('com.github.javiersantos:AppUpdater:2.7') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
 
-    implementation ('com.elconfidencial.bubbleshowcase:bubbleshowcase:+') {
+    implementation('com.elconfidencial.bubbleshowcase:bubbleshowcase:+') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
