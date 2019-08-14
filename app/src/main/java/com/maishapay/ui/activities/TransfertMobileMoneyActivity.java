@@ -67,6 +67,7 @@ import dmax.dialog.SpotsDialog;
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.maishapay.ui.activities.MobileMoneyActivity.EXTRA_NAME_OPERATOR;
 
 public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmationPresenter, TransfertView> implements CalcDialog.CalcDialogCallback, PossitiveButtonConfirmListener, TransfertView {
 
@@ -78,17 +79,6 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     private static String USD_CURRENCY = "USD";
     private static String userCurrency = CDF_CURRENCY;
 
-    private static String pin;
-    private static String data;
-
-    public static final String EXTRA_TYPE_ABONNEMENT = "type_abonnement";
-    public static final String EXTRA_NUMERO_SERVICE = "numero_service";
-    public static final String EXTRA_DATA_CANAL = "Canal +";
-    public static final String EXTRA_DATA_DSTV = "DStv";
-    public static final String EXTRA_DATA_EASY = "Easy Tv";
-    public static final String EXTRA_DATA_STARTIMES = "Startimes";
-    public static final String EXTRA_DATA_ANNONCE = "Réservation billets.";
-
     @BindView(R.id.toolbar_actionbar)
     Toolbar toolbar;
     @BindView(R.id.ET_NumeroService)
@@ -97,6 +87,8 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     Spinner SP_TypeEnvoi;
     @BindView(R.id.ET_Montant)
     MoneyTextView ET_Montant;
+    @BindView(R.id.title_activty)
+    TextView title_activty;
 
     private SpotsDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
@@ -113,7 +105,15 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         logUser();
 
-        data = getIntent().getStringExtra(EXTRA_TYPE_ABONNEMENT);
+        String nameService = "";
+        if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Airtel CD"))
+            nameService = "Airterl Money";
+        else if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Orange"))
+            nameService = "Orange Money";
+        else if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Africell"))
+            nameService = "Africell Money";
+
+        title_activty.setText(String.format("Envoyer de l'argent vers un compte %s", nameService));
 
         toolbar.setTitle("Mobile money");
 
@@ -146,9 +146,6 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
             }
         });
-
-        ET_NumeroService.setEnabled(false);
-        ET_NumeroService.setText(getIntent().getStringExtra(EXTRA_NUMERO_SERVICE));
 
         calcDialog = CalcDialog.newInstance(DIALOG_REQUEST_CODE);
 
@@ -187,8 +184,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
-            if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+       if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
                 toastMessage("Montant incorrect.", R.id.ET_Montant);
                 return;
             }
@@ -261,14 +257,9 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     public void finishToConfirm() {
         flagtransfert = false;
         dialogForgotFragment.dismiss();
-        String title;
-        if (data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_EASY) || data.equals(EXTRA_DATA_STARTIMES) || data.equals(EXTRA_DATA_DSTV))
-            title = "Abonnement";
-        else
-            title = "Paiement";
 
         Intent intent = new Intent(this, SuccessPaiementActivity.class);
-        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, title);
+        intent.putExtra(SuccessPaiementActivity.EXTRA_TITLE_ACTIVITY, "Transfert");
         intent.putExtra(SuccessPaiementActivity.EXTRA_PHONE, UserPrefencesManager.getCurrentUser().getTelephone());
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONNAIE, userCurrency);
         intent.putExtra(SuccessPaiementActivity.EXTRA_MONTANT, String.valueOf(ET_Montant.getAmount()));
@@ -309,15 +300,15 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
     @Override
     public void positiveClicked(String pin) {
-        TransfertMobileMoneyActivity.pin = pin;
 
         enabledControls(false);
-        getPresenter().confirmTransfert(
+        getPresenter().confirmTransfertMobileMoney(
                 pin,
                 UserPrefencesManager.getCurrentUser().getTelephone(),
                 ET_NumeroService.getText().toString(),
+                String.valueOf(ET_Montant.getAmount()),
                 userCurrency,
-                String.valueOf(ET_Montant.getAmount()));
+                getIntent().getStringExtra(EXTRA_NAME_OPERATOR));
     }
 
     @Override
