@@ -158,20 +158,17 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         .negativeText("Annuler")
                         .positiveText("Valider")
                         .positiveColorRes(R.color.md_red_600)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                String numero = UserPrefencesManager.getCurrentUser().getTelephone();
-                                UserPrefencesManager.clearAll();
+                        .onPositive((dialog, which) -> {
+                            String numero = UserPrefencesManager.getCurrentUser().getTelephone();
+                            UserPrefencesManager.clearAll();
 
-                                UserPrefencesManager.setCurrentUserDisconnect(true);
-                                UserPrefencesManager.setUserFirtRun(false);
-                                UserPrefencesManager.setUserPhone(Constants.generatePhoneWithoutCode(false, numero));
-                                UserPrefencesManager.setUserCountryCodePhone(Constants.generateCode(false, numero));
+                            UserPrefencesManager.setCurrentUserDisconnect(true);
+                            UserPrefencesManager.setUserFirtRun(false);
+                            UserPrefencesManager.setUserPhone(Constants.generatePhoneWithoutCode(false, numero));
+                            UserPrefencesManager.setUserCountryCodePhone(Constants.generateCode(false, numero));
 
-                                startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
-                                finish();
-                            }
+                            startActivity(new Intent(DrawerActivity.this, LoginActivity.class));
+                            finish();
                         })
                         .show();
                 return false;
@@ -184,75 +181,53 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
         }
 
-        result.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                Fragment mFragment;
-                FragmentManager mFragmentManager = getSupportFragmentManager();
+        result.setOnDrawerItemClickListener((view, position, drawerItem) -> {
+            Fragment mFragment;
+            FragmentManager mFragmentManager = getSupportFragmentManager();
 
-                switch (position) {
-                    case 1:
-                        setTitle("Maishapay");
-                        mFragment = new AccueilFragment();
-                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
-                        return false;
+            switch (position) {
+                case 1:
+                    setTitle("Maishapay");
+                    mFragment = new AccueilFragment();
+                    mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
+                    return false;
 
-                    case 2:
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(DrawerActivity.this, ProfilActivity.class));
-                            }
-                        }, 400);
-                        return false;
+                case 2:
+                    new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, ProfilActivity.class)), 400);
+                    return false;
 
-                    case 4:
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(DrawerActivity.this, MerchantActivity.class));
-                            }
-                        }, 400);
-                        return false;
+                case 4:
+                    new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MerchantActivity.class)), 400);
+                    return false;
 
-                    case 5:
-                        new MaterialDialog.Builder(DrawerActivity.this)
-                                .title("Remarque")
-                                .iconRes(R.drawable.ic_informacao_azul)
-                                .content("Désolé, Le dépot par mobile money n'est pas disponible.\nVeuillez-vous rendre dans un cash-point Maishapay pour déposer ou retirer votre argent.")
-                                .show();
-                        return false;
+                case 5:
+                    new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MobileMoneyActivity.class)), 400);
+                    return false;
 
-                    case 6:
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(DrawerActivity.this, MaishapayPayPal.class));
-                            }
-                        }, 400);
-                        return false;
+                case 6:
+                    new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MaishapayPayPal.class)), 400);
+                    return false;
 
-                    case 8:
-                        setTitle("Paramètres");
-                        mFragment = new SettingsFragment();
-                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
-                        return false;
+                case 8:
+                    setTitle("Paramètres");
+                    mFragment = new SettingsFragment();
+                    mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
+                    return false;
 
-                    case 9:
-                        setTitle("Nous contacter");
-                        mFragment = new ContactFragment();
-                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
-                        return false;
+                case 9:
+                    setTitle("Nous contacter");
+                    mFragment = new ContactFragment();
+                    mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
+                    return false;
 
-                    case 10:
-                        setTitle("A propros");
-                        mFragment = new AboutFragment();
-                        mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
-                        return false;
+                case 10:
+                    setTitle("A propros");
+                    mFragment = new AboutFragment();
+                    mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
+                    return false;
 
-                    default:
-                        return false;
-                }
+                default:
+                    return false;
             }
         });
     }

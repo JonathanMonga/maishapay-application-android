@@ -38,13 +38,8 @@ public class PaiementModel {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public static List<PaiementModel> getData() {
         List<PaiementModel> paiementModels = new ArrayList<>();
-        paiementModels.add(new PaiementModel(ANNONCE_TYPE, "", ""));
         paiementModels.add(new PaiementModel(HEADER_TYPE, "Paiement facture", ""));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Taxi", "Payer votre taxi."));
         paiementModels.add(new PaiementModel(CONTENT_TYPE, "Restaurant | Fastfood", "Payer votre restaurant."));

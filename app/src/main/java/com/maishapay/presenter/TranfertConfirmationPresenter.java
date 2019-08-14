@@ -183,13 +183,10 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
-        abonnementObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (isViewAttached()) {
-                    getView().enabledControls(true);
-                    getView().finishToConfirm();
-                }
+        abonnementObject.saveInBackground(e -> {
+            if (isViewAttached()) {
+                getView().enabledControls(true);
+                getView().finishToConfirm();
             }
         });
     }
@@ -236,6 +233,63 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                         if (isViewAttached()) {
                             getView().enabledControls(true);
                             getView().finishToConfirm();
+                        }
+                    }
+                }));
+    }
+
+    public void createMobileMoneyObject(String fromColumn, String sendToColumn, String operateurColumn, String montantColumn, String monnaieColumn) {
+
+        Date date = Calendar.getInstance().getTime();
+        DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
+        String today = formatter.format(date);
+
+        ParseObject abonnementObject = new ParseObject("MobileMoney");
+        abonnementObject.put("Date", today);
+        abonnementObject.put("from", fromColumn);
+        abonnementObject.put("sendTo", sendToColumn);
+        abonnementObject.put("operateur", operateurColumn);
+        abonnementObject.put("Montant", montantColumn);
+        abonnementObject.put("Monnaie", monnaieColumn);
+        abonnementObject.put("Confirmer", "NON");
+
+        // Saves the new object.
+        // Notice that the SaveCallback is totally optional!
+        abonnementObject.saveInBackground(e -> {
+            if (isViewAttached()) {
+                getView().enabledControls(true);
+                getView().finishToConfirm();
+            }
+        });
+    }
+
+    public void confirmTransfertMobileMoney(String pin, final String telephone, String destinataire, final String montant, final String userCurrency, final String operator) {
+        disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, telephone, destinataire, userCurrency, montant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CallbackWrapper<TransactionConfirmationResponse>(getView()) {
+                    @Override
+                    protected void onSuccess(TransactionConfirmationResponse response) {
+                        switch (response.getResultat()) {
+                            case 0: {
+                                if (isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showConfimationError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            case 2: {
+                                if (isViewAttached()) {
+                                    getView().enabledControls(true);
+                                    getView().showConfimationError(response.getResultat());
+                                    break;
+                                }
+                            }
+
+                            default: {
+                                createMobileMoneyObject(telephone, destinataire, operator, montant, userCurrency);
+                            }
                         }
                     }
                 }));

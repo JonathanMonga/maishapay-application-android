@@ -34,13 +34,14 @@ import static com.maishapay.util.Constants.ussdToCallableUri;
  * A simple {@link Fragment} subclass.
  */
 public class MobileMoneyActivity extends AppCompatActivity {
-    private static final String AIRTEL_OPERATOR = "Airtel CD";
-    private static final String VODACOM_OPERATOR = "VODACOM CD";
-    private static final String ORANGE_OPERATOR = "Orange";
-    private static final String TIGO_OPERATOR = "Tigo";
-    private static final String EXPRESSO_OPERATOR = "Expresso";
-    private static final String AFRICELL_OPERATOR = "Africell";
-    private static final String MTN_OPERATOR = "mtn";
+    public static final String AIRTEL_OPERATOR = "Airtel CD";
+    public static final String VODACOM_OPERATOR = "VODACOM CD";
+    public static final String ORANGE_OPERATOR = "Orange";
+    public static final String TIGO_OPERATOR = "Tigo";
+    public static final String EXPRESSO_OPERATOR = "Expresso";
+    public static final String AFRICELL_OPERATOR = "Africell";
+    public static final String MTN_OPERATOR = "mtn";
+    public static final String EXTRA_NAME_OPERATOR = "name";
 
     private String country;
 
@@ -101,7 +102,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
         }
 
         codePhone = "+242";
-                //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
+        //UserPrefencesManager.getCurrentUser().getTelephone().substring(0, 4);
 
         switch (codePhone) {
             case "+211": {
@@ -196,7 +197,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
-        if(UserPrefencesManager.getCurrentUser() != null) {
+        if (UserPrefencesManager.getCurrentUser() != null) {
             Crashlytics.setUserIdentifier(UserPrefencesManager.getCurrentUser().getTelephone());
             Crashlytics.setUserEmail(UserPrefencesManager.getCurrentUser().getEmail());
             Crashlytics.setUserName(UserPrefencesManager.getCurrentUser().getPrenom() + " " + UserPrefencesManager.getCurrentUser().getNom());
@@ -281,27 +282,12 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().equals(VODACOM_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*1222#"));
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-
-                    startActivity(callIntent);
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                Snacky.builder()
+                        .setView(findViewById(R.id.root))
+                        .setText("Cet operateur n'est pas pris en charge")
+                        .setDuration(Snacky.LENGTH_LONG)
+                        .error()
+                        .show();
             }
         }
     }
@@ -356,18 +342,9 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
             default: {
                 if (Constants.getOperatorName().equals(AFRICELL_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*111#"));
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    startActivity(callIntent);
+                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                    intent.putExtra(AFRICELL_OPERATOR, AFRICELL_OPERATOR);
+                    startActivity(intent);
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
@@ -429,18 +406,9 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
             default: {
                 if (Constants.getOperatorName().equals(AIRTEL_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*501#"));
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    startActivity(callIntent);
+                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                    intent.putExtra(AIRTEL_OPERATOR, AIRTEL_OPERATOR);
+                    startActivity(intent);
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
@@ -502,18 +470,9 @@ public class MobileMoneyActivity extends AppCompatActivity {
 
             default: {
                 if (Constants.getOperatorName().equals(ORANGE_OPERATOR)) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, ussdToCallableUri("*144#"));
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    startActivity(callIntent);
+                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                    intent.putExtra(EXTRA_NAME_OPERATOR, ORANGE_OPERATOR);
+                    startActivity(intent);
                 } else
                     Snacky.builder()
                             .setView(findViewById(R.id.root))
