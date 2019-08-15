@@ -434,7 +434,7 @@ dependencies {
     }
 
 
-    implementation('com.github.jrvansuita:MaterialAbout:+') {
+    implementation('com.github.jrvansuita:MaterialAbout:0.2.3') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
@@ -446,7 +446,7 @@ dependencies {
         exclude module: 'support-v4'
     }
 
-    implementation('com.elconfidencial.bubbleshowcase:bubbleshowcase:+') {
+    implementation('com.elconfidencial.bubbleshowcase:bubbleshowcase:1.3.1') {
         exclude group: 'com.android.support'
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'

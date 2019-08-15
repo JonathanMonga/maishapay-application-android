@@ -57,6 +57,7 @@ import org.fabiomsr.moneytextview.MoneyTextView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -97,6 +98,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     private boolean flagtransfert = false;
     private CalcDialog calcDialog;
     private boolean isInternalMessage = false;
+    private List<String> startNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,15 +109,29 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         logUser();
 
-        String nameService = "";
-        if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Airtel CD"))
+        String nameService;
+
+        if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Airtel CD")) {
             nameService = "Airterl Money";
-        else if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Orange"))
+            startNumber = new ArrayList<>();
+            startNumber.add("24397");
+            startNumber.add("24399");
+        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Orange")) {
             nameService = "Orange Money";
-        else if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Africell"))
+            startNumber = new ArrayList<>();
+            startNumber.add("24384");
+            startNumber.add("24385");
+            startNumber.add("24389");
+        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Africell")) {
             nameService = "Africell Money";
-        else
+            startNumber = new ArrayList<>();
+            startNumber.add("24390");
+        } else {
             nameService = "M-Pesa";
+            startNumber = new ArrayList<>();
+            startNumber.add("24381");
+            startNumber.add("24382");
+        }
 
         title_activty.setText(String.format("Envoyer de l'argent vers un compte %s", nameService));
 
@@ -147,7 +163,6 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -188,10 +203,15 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-       if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
-                toastMessage("Montant incorrect.", R.id.ET_Montant);
-                return;
-            }
+        if (ET_NumeroService.getText().toString().isEmpty() || !(startWith(ET_NumeroService.getText().toString().substring(0, 4)))) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
+            return;
+        }
+
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+            toastMessage("Montant incorrect.", R.id.ET_Montant);
+            return;
+        }
 
         enabledControls(false);
 
@@ -385,5 +405,15 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    private boolean startWith(String in){
+
+        for(String str : startNumber){
+            if(str.equalsIgnoreCase(in))
+                return true;
+        }
+
+        return false;
     }
 }
