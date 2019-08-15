@@ -282,17 +282,10 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().toLowerCase().startsWith(VODACOM_OPERATOR.toLowerCase())) {
-                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(EXTRA_NAME_OPERATOR, VODACOM_OPERATOR);
-                    startActivity(intent);
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                intent.putExtra(EXTRA_NAME_OPERATOR, VODACOM_OPERATOR.toLowerCase());
+                startActivity(intent);
+
             }
         }
     }
@@ -346,17 +339,10 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().toLowerCase().startsWith(AFRICELL_OPERATOR.toLowerCase())) {
-                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(EXTRA_NAME_OPERATOR, AFRICELL_OPERATOR);
-                    startActivity(intent);
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                intent.putExtra(EXTRA_NAME_OPERATOR, AFRICELL_OPERATOR.toLowerCase());
+                startActivity(intent);
+
             }
         }
     }
@@ -410,17 +396,9 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().toLowerCase().startsWith(AIRTEL_OPERATOR.toLowerCase())) {
-                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(EXTRA_NAME_OPERATOR, AIRTEL_OPERATOR);
-                    startActivity(intent);
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                intent.putExtra(EXTRA_NAME_OPERATOR, AIRTEL_OPERATOR.toLowerCase());
+                startActivity(intent);
             }
         }
     }
@@ -474,17 +452,9 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().toLowerCase().startsWith(ORANGE_OPERATOR.toLowerCase())) {
-                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(EXTRA_NAME_OPERATOR, ORANGE_OPERATOR);
-                    startActivity(intent);
-                } else
-                    Snacky.builder()
-                            .setView(findViewById(R.id.root))
-                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
-                            .setDuration(Snacky.LENGTH_LONG)
-                            .error()
-                            .show();
+                Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                intent.putExtra(EXTRA_NAME_OPERATOR, ORANGE_OPERATOR.toLowerCase());
+                startActivity(intent);
             }
         }
     }
