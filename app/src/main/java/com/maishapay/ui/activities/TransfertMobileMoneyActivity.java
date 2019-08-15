@@ -89,6 +89,8 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     MoneyTextView ET_Montant;
     @BindView(R.id.title_activty)
     TextView title_activty;
+    @BindView(R.id.ET_Mensagem)
+    TextView ET_Mensagem;
 
     private SpotsDialog progressDialog;
     private DialogConfirmTransfertFragment dialogForgotFragment;
@@ -112,6 +114,8 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
             nameService = "Orange Money";
         else if(getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Africell"))
             nameService = "Africell Money";
+        else
+            nameService = "M-Pesa";
 
         title_activty.setText(String.format("Envoyer de l'argent vers un compte %s", nameService));
 

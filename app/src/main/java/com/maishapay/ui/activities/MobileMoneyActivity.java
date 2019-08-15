@@ -282,12 +282,17 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                Snacky.builder()
-                        .setView(findViewById(R.id.root))
-                        .setText("Cet operateur n'est pas pris en charge")
-                        .setDuration(Snacky.LENGTH_LONG)
-                        .error()
-                        .show();
+                if (Constants.getOperatorName().equals(VODACOM_OPERATOR)) {
+                    Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
+                    intent.putExtra(EXTRA_NAME_OPERATOR, VODACOM_OPERATOR);
+                    startActivity(intent);
+                } else
+                    Snacky.builder()
+                            .setView(findViewById(R.id.root))
+                            .setText(String.format("Vous utilisez %s comme operateur.", Constants.getOperatorName()))
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .error()
+                            .show();
             }
         }
     }
@@ -343,7 +348,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             default: {
                 if (Constants.getOperatorName().equals(AFRICELL_OPERATOR)) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(AFRICELL_OPERATOR, AFRICELL_OPERATOR);
+                    intent.putExtra(EXTRA_NAME_OPERATOR, AFRICELL_OPERATOR);
                     startActivity(intent);
                 } else
                     Snacky.builder()
@@ -407,7 +412,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             default: {
                 if (Constants.getOperatorName().equals(AIRTEL_OPERATOR)) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
-                    intent.putExtra(AIRTEL_OPERATOR, AIRTEL_OPERATOR);
+                    intent.putExtra(EXTRA_NAME_OPERATOR, AIRTEL_OPERATOR);
                     startActivity(intent);
                 } else
                     Snacky.builder()
