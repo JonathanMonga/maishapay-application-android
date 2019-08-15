@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -111,18 +112,18 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         String nameService;
 
-        if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Airtel CD")) {
-            nameService = "Airterl Money";
+        if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Air")) {
+            nameService = "Airtel Money";
             startNumber = new ArrayList<>();
             startNumber.add("24397");
             startNumber.add("24399");
-        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Orange")) {
+        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Ora")) {
             nameService = "Orange Money";
             startNumber = new ArrayList<>();
             startNumber.add("24384");
             startNumber.add("24385");
             startNumber.add("24389");
-        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Africell")) {
+        } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Afr")) {
             nameService = "Africell Money";
             startNumber = new ArrayList<>();
             startNumber.add("24390");
@@ -203,8 +204,8 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
-        if (ET_NumeroService.getText().toString().isEmpty() || !(startWith(ET_NumeroService.getText().toString().substring(0, 4)))) {
-            toastMessage("Montant incorrect.", R.id.ET_Montant);
+        if (ET_NumeroService.getText().toString().isEmpty() || (ET_NumeroService.getText().toString().length() < 5) || ! contains(ET_NumeroService.getText().toString().substring(0, 5))) {
+            toastMessage("Numero incorrect.", R.id.ET_NumeroService);
             return;
         }
 
@@ -407,13 +408,9 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
         finish();
     }
 
-    private boolean startWith(String in){
-
-        for(String str : startNumber){
-            if(str.equalsIgnoreCase(in))
-                return true;
-        }
-
+    private boolean contains(String other) {
+        for(String str : startNumber)
+            if (str.equalsIgnoreCase(other)) return true;
         return false;
     }
 }
