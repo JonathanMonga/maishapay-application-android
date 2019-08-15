@@ -1,17 +1,11 @@
 package com.maishapay.ui.adapter;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.util.Linkify;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -30,11 +24,11 @@ import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 
 public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> implements Filterable {
     private static final Random RANDOM = new Random();
@@ -56,6 +50,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         mValuesFiltered = items;
     }
 
+    @NonNull
     @Override
     public MerchantListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_list_row, parent, false);
@@ -118,7 +113,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getString("NomMarchant").toLowerCase().contains(charString.toLowerCase()) || row.getString("Adresse").contains(charSequence)) {
+                        if (Objects.requireNonNull(row.getString("NomMarchant")).toLowerCase().contains(charString.toLowerCase()) || row.getString("Adresse").contains(charSequence)) {
                             filteredList.add(row);
                         }
                     }

@@ -34,12 +34,12 @@ import static com.maishapay.util.Constants.ussdToCallableUri;
  * A simple {@link Fragment} subclass.
  */
 public class MobileMoneyActivity extends AppCompatActivity {
-    public static final String AIRTEL_OPERATOR = "Airtel CD";
-    public static final String VODACOM_OPERATOR = "VODACOM CD";
-    public static final String ORANGE_OPERATOR = "Orange";
+    public static final String AIRTEL_OPERATOR = "Air";
+    public static final String VODACOM_OPERATOR = "Vod";
+    public static final String ORANGE_OPERATOR = "Ora";
     public static final String TIGO_OPERATOR = "Tigo";
     public static final String EXPRESSO_OPERATOR = "Expresso";
-    public static final String AFRICELL_OPERATOR = "Africell";
+    public static final String AFRICELL_OPERATOR = "Afr";
     public static final String MTN_OPERATOR = "mtn";
     public static final String EXTRA_NAME_OPERATOR = "name";
 
@@ -282,7 +282,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().equals(VODACOM_OPERATOR)) {
+                if (Constants.getOperatorName().toLowerCase().startsWith(VODACOM_OPERATOR.toLowerCase())) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
                     intent.putExtra(EXTRA_NAME_OPERATOR, VODACOM_OPERATOR);
                     startActivity(intent);
@@ -346,7 +346,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().equals(AFRICELL_OPERATOR)) {
+                if (Constants.getOperatorName().toLowerCase().startsWith(AFRICELL_OPERATOR.toLowerCase())) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
                     intent.putExtra(EXTRA_NAME_OPERATOR, AFRICELL_OPERATOR);
                     startActivity(intent);
@@ -410,7 +410,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().equals(AIRTEL_OPERATOR)) {
+                if (Constants.getOperatorName().toLowerCase().startsWith(AIRTEL_OPERATOR.toLowerCase())) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
                     intent.putExtra(EXTRA_NAME_OPERATOR, AIRTEL_OPERATOR);
                     startActivity(intent);
@@ -474,7 +474,7 @@ public class MobileMoneyActivity extends AppCompatActivity {
             }
 
             default: {
-                if (Constants.getOperatorName().equals(ORANGE_OPERATOR)) {
+                if (Constants.getOperatorName().toLowerCase().startsWith(ORANGE_OPERATOR.toLowerCase())) {
                     Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
                     intent.putExtra(EXTRA_NAME_OPERATOR, ORANGE_OPERATOR);
                     startActivity(intent);
