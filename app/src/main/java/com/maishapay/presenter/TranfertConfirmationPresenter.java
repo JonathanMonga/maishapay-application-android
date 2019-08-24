@@ -15,6 +15,8 @@
 
 package com.maishapay.presenter;
 
+import android.text.Editable;
+
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.MaishapayClient;
 import com.maishapay.model.client.api.CallbackWrapper;
@@ -238,7 +240,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                 }));
     }
 
-    public void createMobileMoneyObject(String fromColumn, String sendToColumn, String operateurColumn, String montantColumn, String monnaieColumn) {
+    public void createMobileMoneyObject(String fromColumn, String operateurColumn, String montantColumn, String monnaieColumn, String destinataireMobileMoney, String motif) {
 
         Date date = Calendar.getInstance().getTime();
         DateFormat formatter = new SimpleDateFormat("EEEE, dd/MMMM/yyyy, HH:mm", Locale.FRENCH);
@@ -247,10 +249,12 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         ParseObject abonnementObject = new ParseObject("MobileMoney");
         abonnementObject.put("Date", today);
         abonnementObject.put("from", fromColumn);
-        abonnementObject.put("sendTo", sendToColumn);
+        abonnementObject.put("sendTo", destinataireMobileMoney);
         abonnementObject.put("operateur", operateurColumn);
         abonnementObject.put("Montant", montantColumn);
         abonnementObject.put("Monnaie", monnaieColumn);
+        abonnementObject.put("Monnaie", monnaieColumn);
+        abonnementObject.put("Motif", motif);
         abonnementObject.put("Confirmer", "NON");
 
         // Saves the new object.
@@ -263,7 +267,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
         });
     }
 
-    public void confirmTransfertMobileMoney(String pin, final String telephone, String destinataire, final String montant, final String userCurrency, final String operator) {
+    public void confirmTransfertMobileMoney(String pin, final String telephone, String destinataire, final String montant, final String userCurrency, String destinataireMobileMoney, String motif, final String operator) {
         disposableHandler.manageDisposable(maishapayClient.transfert_compte_confirmation(pin, telephone, destinataire, userCurrency, montant)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -288,7 +292,7 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
                             }
 
                             default: {
-                                createMobileMoneyObject(telephone, destinataire, operator, montant, userCurrency);
+                                createMobileMoneyObject(telephone, operator, montant, userCurrency, destinataireMobileMoney, motif);
                             }
                         }
                     }

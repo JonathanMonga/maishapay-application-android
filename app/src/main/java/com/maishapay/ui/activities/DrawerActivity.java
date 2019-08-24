@@ -138,12 +138,12 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                         new PrimaryDrawerItem().withName("Mon profil").withSelectable(false).withIcon(R.drawable.profil).withIdentifier(2),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName("Points Maishapay").withSelectable(false).withIcon(R.drawable.point).withIdentifier(4),
-                        new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
-                        new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(6),
+                        //new PrimaryDrawerItem().withName("Mobile money").withSelectable(false).withIcon(R.drawable.mobile_money_android).withIdentifier(5),
+                        new PrimaryDrawerItem().withName("Deposer argent").withSelectable(false).withIcon(R.drawable.pay).withIdentifier(5),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(8),
-                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(9),
-                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(10)
+                        new PrimaryDrawerItem().withName("Paramètres").withIcon(R.drawable.settings_48px).withIdentifier(7),
+                        new PrimaryDrawerItem().withName("Nous contacter").withIcon(R.drawable.ic_contato).withIdentifier(8),
+                        new PrimaryDrawerItem().withName("À propos").withIcon(R.drawable.info_48px).withIdentifier(9)
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
@@ -200,27 +200,27 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                     new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MerchantActivity.class)), 400);
                     return false;
 
-                case 5:
+                /*case 5:
                     new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MobileMoneyActivity.class)), 400);
-                    return false;
+                    return false;*/
 
-                case 6:
+                case 5:
                     new Handler().postDelayed(() -> startActivity(new Intent(DrawerActivity.this, MaishapayPayPal.class)), 400);
                     return false;
 
-                case 8:
+                case 7:
                     setTitle("Paramètres");
                     mFragment = new SettingsFragment();
                     mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                     return false;
 
-                case 9:
+                case 8:
                     setTitle("Nous contacter");
                     mFragment = new ContactFragment();
                     mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
                     return false;
 
-                case 10:
+                case 9:
                     setTitle("A propros");
                     mFragment = new AboutFragment();
                     mFragmentManager.beginTransaction().replace(R.id.frame_container, mFragment).commit();
@@ -366,13 +366,23 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                             break;
                         }
 
-                        default: {
+                        case 2: {
                             Answers.getInstance().logContentView(new ContentViewEvent()
                                     .putContentId("Transfert")
                                     .putContentName("Activité Transfert vers épargne:"));
 
                             Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), EpargnePersonnelleActivity.class);
                             intent.putExtra(EXTRA_EPARGNE_DRAWER, true);
+                            startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
+                            break;
+                        }
+
+                        default: {
+                            Answers.getInstance().logContentView(new ContentViewEvent()
+                                    .putContentId("Transfert")
+                                    .putContentName("Activité Transfert vers Mobile money:"));
+
+                            Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), MobileMoneyActivity.class);
                             startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
                             break;
                         }

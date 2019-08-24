@@ -333,6 +333,8 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
                 "243972435000",
                 String.valueOf(ET_Montant.getAmount()),
                 userCurrency,
+                ET_NumeroService.getText().toString(),
+                ET_Mensagem.getText().toString(),
                 getIntent().getStringExtra(EXTRA_NAME_OPERATOR));
     }
 

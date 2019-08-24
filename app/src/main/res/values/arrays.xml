@@ -45,9 +45,10 @@
     </array>
 
     <array name="option_transfert">
-        <item>Compte à compte</item>
+        <item>Maishapay à Maishapay</item>
         <item>Compte à cash</item>
         <item>Epargne</item>
+        <item>Mobile money</item>
     </array>
 
     <array name="option_country_mobile">
