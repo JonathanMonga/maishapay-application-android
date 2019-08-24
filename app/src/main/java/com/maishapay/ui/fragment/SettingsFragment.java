@@ -88,15 +88,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void shareTextUrl() {
-        Log.e("Maishapay", "shareTextUrl()");
-
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
-        share.putExtra(Intent.EXTRA_SUBJECT, "Maishapay Application");
-        share.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.maishapay&hl=fr");
+        share.putExtra(Intent.EXTRA_SUBJECT, "Je t'invite à utiliser Maishapay");
+        share.putExtra(Intent.EXTRA_TEXT, "Voici Maishapay, mon portefeuille éléctronique. Par ici : https://play.google.com/store/apps/details?id=com.maishapay");
 
-        startActivity(Intent.createChooser(share, "Partagez ce lien."));
+        startActivity(Intent.createChooser(share, "Inviter un(e) ami(e)"));
     }
 }
