@@ -67,9 +67,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
                     .setDisplay(Display.NOTIFICATION)
                     .showAppUpdated(true)
+                    .init()
                     .start();
         }
 
+        if (preference.getKey().equals("share")) {
+            shareTextUrl();
+        }
+
         return false;
+    }
+
+    private void shareTextUrl() {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        // Add data to the intent, the receiving app will decide
+        // what to do with it.
+        share.putExtra(Intent.EXTRA_SUBJECT, "Maishapay Application");
+        share.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.maishapay&hl=fr");
+
+        startActivity(Intent.createChooser(share, "Partagez ce lien."));
     }
 }

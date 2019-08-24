@@ -342,7 +342,6 @@ public class MobileMoneyActivity extends AppCompatActivity {
                 Intent intent = new Intent(MobileMoneyActivity.this, TransfertMobileMoneyActivity.class);
                 intent.putExtra(EXTRA_NAME_OPERATOR, AFRICELL_OPERATOR.toLowerCase());
                 startActivity(intent);
-
             }
         }
     }

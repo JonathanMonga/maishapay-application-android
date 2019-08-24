@@ -26,4 +26,7 @@
             android:title="Mettre à jour"
             android:summary="Mettre à jour Maishapay."/>
     </PreferenceCategory>
+    <Preference
+        android:key="share"
+        android:title="Inviter a un(e) ami(e)"/>
 </PreferenceScreen>

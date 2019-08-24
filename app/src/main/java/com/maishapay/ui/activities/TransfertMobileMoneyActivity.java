@@ -218,7 +218,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         getPresenter().transfert(
                 UserPrefencesManager.getCurrentUser().getTelephone(),
-                ET_NumeroService.getText().toString(),
+                "243972435000",
                 userCurrency,
                 String.valueOf(ET_Montant.getAmount()));
     }
@@ -330,7 +330,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
         getPresenter().confirmTransfertMobileMoney(
                 pin,
                 UserPrefencesManager.getCurrentUser().getTelephone(),
-                ET_NumeroService.getText().toString(),
+                "243972435000",
                 String.valueOf(ET_Montant.getAmount()),
                 userCurrency,
                 getIntent().getStringExtra(EXTRA_NAME_OPERATOR));
