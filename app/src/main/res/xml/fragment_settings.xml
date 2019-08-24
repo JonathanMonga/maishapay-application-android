@@ -28,5 +28,5 @@
     </PreferenceCategory>
     <Preference
         android:key="share"
-        android:title="Inviter a un(e) ami(e)"/>
+        android:title="Inviter un(e) ami(e)"/>
 </PreferenceScreen>

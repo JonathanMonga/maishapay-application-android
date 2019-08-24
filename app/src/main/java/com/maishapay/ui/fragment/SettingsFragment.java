@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.Display;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.maishapay.BuildConfig;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
+import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.activities.UpdateProfilActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -26,6 +29,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         addPreferencesFromResource(R.xml.fragment_settings);
         Preference profil = findPreference("profil");
         profil.setOnPreferenceClickListener(this);
+        profil.setSummary(String.format("%s %s", UserPrefencesManager.getCurrentUser().getPrenom(), UserPrefencesManager.getCurrentUser().getNom()));
+        Preference mettreAJour = findPreference("mise_a_jour");
+        mettreAJour.setSummary(BuildConfig.VERSION_NAME);
+        mettreAJour.setOnPreferenceClickListener(this);
+        Preference share = findPreference("share");
+        share.setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -58,33 +67,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference.getKey().equals("profil")) {
-            getActivity().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
-        }
-
-        if (preference.getKey().equals("mise_a_jour")) {
-            new AppUpdater(getActivity())
-                    .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
-                    .setDisplay(Display.NOTIFICATION)
-                    .showAppUpdated(true)
-                    .init()
-                    .start();
-        }
-
-        if (preference.getKey().equals("share")) {
-            shareTextUrl();
+        switch (preference.getKey()) {
+            case "profil":
+                getActivity().startActivity(new Intent(getActivity(), UpdateProfilActivity.class));
+                break;
+            case "mise_a_jour":
+                new AppUpdater(getActivity())
+                        .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+                        .setDisplay(Display.NOTIFICATION)
+                        .showAppUpdated(true)
+                        .init()
+                        .start();
+                break;
+            case "share":
+                shareTextUrl();
+                break;
         }
 
         return false;
     }
 
     private void shareTextUrl() {
+        Log.e("Maishapay", "shareTextUrl()");
+
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
-        // Add data to the intent, the receiving app will decide
-        // what to do with it.
         share.putExtra(Intent.EXTRA_SUBJECT, "Maishapay Application");
         share.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.maishapay&hl=fr");
 
