@@ -27,6 +27,7 @@ import com.crashlytics.android.answers.Answers;
 import com.github.ismaeltoe.osms.library.Osms;
 import com.github.ismaeltoe.osms.library.services.CredentialsService;
 import com.github.ismaeltoe.osms.library.services.MessagingService;
+import com.maishapay.BuildConfig;
 import com.maishapay.R;
 import com.maishapay.model.client.MaishapayClient;
 import com.parse.Parse;
