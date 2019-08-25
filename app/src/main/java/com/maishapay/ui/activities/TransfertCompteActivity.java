@@ -275,7 +275,7 @@ public class TransfertCompteActivity extends BaseActivity<TranfertConfirmationPr
             return;
         }
 
-        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F) ) {
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 500F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F) ) {
             toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }

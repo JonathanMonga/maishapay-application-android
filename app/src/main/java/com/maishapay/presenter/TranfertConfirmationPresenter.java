@@ -248,11 +248,10 @@ public class TranfertConfirmationPresenter extends TiPresenter<TransfertView> {
 
         ParseObject abonnementObject = new ParseObject("MobileMoney");
         abonnementObject.put("Date", today);
-        abonnementObject.put("from", fromColumn);
-        abonnementObject.put("sendTo", destinataireMobileMoney);
-        abonnementObject.put("operateur", operateurColumn);
+        abonnementObject.put("From", fromColumn);
+        abonnementObject.put("SendTo", destinataireMobileMoney);
+        abonnementObject.put("Operateur", operateurColumn);
         abonnementObject.put("Montant", montantColumn);
-        abonnementObject.put("Monnaie", monnaieColumn);
         abonnementObject.put("Monnaie", monnaieColumn);
         abonnementObject.put("Motif", motif);
         abonnementObject.put("Confirmer", "NON");

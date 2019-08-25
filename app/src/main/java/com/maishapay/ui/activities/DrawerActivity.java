@@ -352,20 +352,6 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                             break;
                         }
 
-                        case 1: {
-                            Answers.getInstance().logContentView(new ContentViewEvent()
-                                    .putContentId("Transfert")
-                                    .putContentName("Activité Transfert vers cash"));
-
-                            Snacky.builder()
-                                    .setView(findViewById(R.id.root))
-                                    .setText("Désolé, cette fonctionnalit n'est pas disponible pour le moment.")
-                                    .setDuration(Snacky.LENGTH_LONG)
-                                    .warning()
-                                    .show();
-                            break;
-                        }
-
                         case 2: {
                             Answers.getInstance().logContentView(new ContentViewEvent()
                                     .putContentId("Transfert")
@@ -377,13 +363,27 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                             break;
                         }
 
-                        default: {
+                        case 3: {
                             Answers.getInstance().logContentView(new ContentViewEvent()
                                     .putContentId("Transfert")
                                     .putContentName("Activité Transfert vers Mobile money:"));
 
                             Intent intent = new Intent(MaishapayApplication.getMaishapayContext(), MobileMoneyActivity.class);
                             startActivityForResult(intent, REQUEST_TRANSFERT_EPARGNE);
+                            break;
+                        }
+
+                        default: {
+                            Answers.getInstance().logContentView(new ContentViewEvent()
+                                    .putContentId("Transfert")
+                                    .putContentName("Activité Transfert vers cash"));
+
+                            Snacky.builder()
+                                    .setView(findViewById(R.id.root))
+                                    .setText("Désolé, cette fonctionnalit n'est pas disponible pour le moment.")
+                                    .setDuration(Snacky.LENGTH_LONG)
+                                    .warning()
+                                    .show();
                             break;
                         }
                     }

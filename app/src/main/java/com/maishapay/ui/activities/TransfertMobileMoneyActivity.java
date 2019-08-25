@@ -100,6 +100,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
     private CalcDialog calcDialog;
     private boolean isInternalMessage = false;
     private List<String> startNumber;
+    private String operator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,21 +115,25 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
 
         if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Air")) {
             nameService = "Airtel Money";
+            operator = "Airtel";
             startNumber = new ArrayList<>();
             startNumber.add("24397");
             startNumber.add("24399");
         } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Ora")) {
             nameService = "Orange Money";
+            operator = "Orange";
             startNumber = new ArrayList<>();
             startNumber.add("24384");
             startNumber.add("24385");
             startNumber.add("24389");
         } else if (getIntent().getStringExtra(EXTRA_NAME_OPERATOR).equalsIgnoreCase("Afr")) {
             nameService = "Africell Money";
+            operator = "Africell";
             startNumber = new ArrayList<>();
             startNumber.add("24390");
         } else {
             nameService = "M-Pesa";
+            operator = "Vodacom";
             startNumber = new ArrayList<>();
             startNumber.add("24381");
             startNumber.add("24382");
@@ -209,7 +214,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
             return;
         }
 
-        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+        if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 500F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
             toastMessage("Montant incorrect.", R.id.ET_Montant);
             return;
         }
@@ -335,7 +340,7 @@ public class TransfertMobileMoneyActivity extends BaseActivity<TranfertConfirmat
                 userCurrency,
                 ET_NumeroService.getText().toString(),
                 ET_Mensagem.getText().toString(),
-                getIntent().getStringExtra(EXTRA_NAME_OPERATOR));
+                operator);
     }
 
     @Override

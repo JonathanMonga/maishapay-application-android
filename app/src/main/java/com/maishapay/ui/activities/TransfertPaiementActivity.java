@@ -422,7 +422,7 @@ public class TransfertPaiementActivity extends BaseActivity<TranfertConfirmation
     @OnClick(R.id.BTN_Tranfert)
     public void transfertClicked() {
         if (!(data.equals(EXTRA_DATA_CANAL) || data.equals(EXTRA_DATA_DSTV)))
-            if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 1000F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
+            if ((userCurrency.equals(CDF_CURRENCY) && ET_Montant.getAmount() < 500F) || (userCurrency.equals(USD_CURRENCY) && ET_Montant.getAmount() < 1F)) {
                 toastMessage("Montant incorrect.", R.id.ET_Montant);
                 return;
             }
