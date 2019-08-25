@@ -1,10 +1,29 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'org.moallemi.advanced-build-version'
 
 try {
     apply from: '../../../signing.gradle'
 } catch (ignored) {
 
+}
+
+advancedVersioning {
+    nameOptions {
+        versionMajor 1
+        versionMinor 10
+        versionPatch 2
+    }
+
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_ONE_STEP
+        dependsOnTasks 'release' // defaultValue
+    }
+
+    outputOptions {
+        renameOutput true
+        nameFormat '${appName}-${versionName}'
+    }
 }
 
 android {
@@ -24,8 +43,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode project.ext.evalVersionCode
-        versionName project.ext.evalVersionName
+        versionName advancedVersioning.versionName
+        versionCode advancedVersioning.versionCode
         archivesBaseName = "${applicationId}-${versionName}"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -451,73 +470,6 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
     }
-}
-
-project.ext.evalVersionName = {
-    def ideBuild = project.properties['android.injected.invoked.from.ide']
-    if (ideBuild) {
-        logger.info("IDE build");
-        return "dev"
-    } else  if (project.VERSION.toUpperCase().contains("SNAPSHOT")) {
-        logger.info("SNAPSHOT build");
-        if (checkUncommitedChanges()) {
-            logger.warn("You have uncommited changes!")
-        }
-        return project.VERSION.toUpperCase().replace("SNAPSHOT", getGitHash())
-    }
-
-    if (checkUncommitedChanges()) {
-        logger.error("You have uncommited changes!")
-    }
-    return project.VERSION;
-}
-
-/**
- * Creates versionCode from number of commits in GIT
- */
-project.ext.evalVersionCode = {
-    // number of commits from HEAD to oldest one, useful for releasing from one branch only
-    // def p = Runtime.getRuntime().exec("git rev-list HEAD --count")
-    // number of commit in all branches together (also dead one)
-    def p = Runtime.getRuntime().exec("git rev-list --all --count")
-
-    def result = p.waitFor()
-    if (result != 0) {
-        return 0 // no git revisions
-    }
-    return p.getInputStream().readLines().get(0).toInteger()
-}
-
-/**
- * Renames APK name to contain version, build number and commit hash.
- */
-project.ext.renameApk = { variant ->
-    def file = variant.outputFile
-    def gitHash = getGitHash()
-    def name = project.parent.name + "-" + project.name + "-" +
-            variant.mergedFlavor.versionName + "-" +
-            variant.mergedFlavor.versionCode + "-" +
-            gitHash + "-" + variant.mergedFlavor.name + "," + variant.buildType.name
-
-    variant.outputFile = new File(file.parent, name + ".apk")
-}
-
-/**
- * Return last commit git hash string.
- */
-project.ext.getGitHash = {
-    // git hash
-    def command = Runtime.getRuntime().exec("git rev-parse --short HEAD")
-    def result = command.waitFor()
-    return (result == 0) ? command.inputStream.text.trim() : "nogit"
-}
-
-/**
- * Check if project has uncommited changes
- */
-project.ext.checkUncommitedChanges = {
-    def command = Runtime.getRuntime().exec("git diff-index --quiet HEAD")
-    return command.waitFor() == 1
 }
 
 apply plugin: 'com.google.gms.google-services'
