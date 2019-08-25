@@ -24,8 +24,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 27
-        versionCode 7
-        versionName "1${releaseTime(versionCode)}"
+        versionCode computeVersionCode()
+        versionName computeVersionName()
         archivesBaseName = "${applicationId}-${versionName}"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -453,8 +453,24 @@ dependencies {
     }
 }
 
-static def releaseTime(versionCode) {
-    return ".v${versionCode}" + new Date().format(".dd.MM.yyyy.HH.mm", TimeZone.getTimeZone("GMT"))
+def static computeVersionCode(){
+    try {
+        def p = Runtime.getRuntime().exec('git rev-list --all --count')
+        def result = p.waitFor()
+
+        if(result != 0)
+            return 0
+
+        return p.getInputStream().read()
+    } catch(error){
+        return 0
+    }
+}
+
+def static computeVersionName(){
+    def command = Runtime.getRuntime().exec('git rev-parse --short HEAD')
+    def result = command.waitFor()
+    return (result == 0) ? computeVersionCode() + '-' +command.inputStream.toString().trim() : 'nogit'
 }
 
 apply plugin: 'com.google.gms.google-services'
