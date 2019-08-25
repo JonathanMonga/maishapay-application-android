@@ -60,8 +60,6 @@ public class MaishapayApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        BuildConfig.VERSION_NAME;
-
         final Fabric fabric = new Fabric.Builder(this)
                 .kits(new Answers(), new Crashlytics())
                 .debuggable(true)
