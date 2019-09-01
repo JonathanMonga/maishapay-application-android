@@ -37,35 +37,26 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BalanceFrancsFragment extends Fragment implements OnChartValueSelectedListener {
-    private static final String EXTRA_SOLDE_FRANCS = "solde";
-    private static final String EXTRA_SOLDE_ENVOI = "envoi";
-    private static final String EXTRA_SOLDE_RECU = "recu";
+public class PointFragment extends Fragment implements OnChartValueSelectedListener {
+    private static final String EXTRA_POINT= "point";
 
     @BindView(R.id.chart1) PieChart mChart;
     private Typeface mTfLight;
     private ArrayList<PieEntry> entries;
-    private float mSolde;
-    private float mRecu;
-    private float mEnvoi;
+    private float mPoint;
 
+    public static PointFragment newInstance(float point) {
+        PointFragment fragment = new PointFragment();
 
-
-    public static BalanceFrancsFragment newInstance(String solde, float envoi, float recu) {
-        BalanceFrancsFragment fragment = new BalanceFrancsFragment();
         Bundle bundle = new Bundle();
+        bundle.putFloat(EXTRA_POINT, point);
 
-        bundle.putFloat(EXTRA_SOLDE_ENVOI, envoi);
-        bundle.putFloat(EXTRA_SOLDE_RECU, recu);
-        bundle.putString(EXTRA_SOLDE_FRANCS, solde);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public void setChartData(String solde, float envoi, float recu) {
-        mSolde = Float.valueOf(solde);
-        mRecu = recu;
-        mEnvoi = envoi;
+    public void setChartData(float point){
+        mPoint = point;
 
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
@@ -75,9 +66,14 @@ public class BalanceFrancsFragment extends Fragment implements OnChartValueSelec
 
         mChart.setCenterTextTypeface(mTfLight);
 
-        SpannableString spannableString = new SpannableString(String.format("%s Fc", Constants.truncFloat(Float.valueOf(solde))));
+        SpannableString spannableString = new SpannableString(
+                point > 1 ? String.format("%s Points", Constants.truncFloat(point))
+                        : String.format("%s Point", Constants.truncFloat(point)));
+
         spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
         mChart.setCenterText(spannableString);
+
+        mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);
@@ -125,22 +121,22 @@ public class BalanceFrancsFragment extends Fragment implements OnChartValueSelec
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setChartData(getArguments().getFloat(EXTRA_POINT));
+    }
 
-        setChartData(getArguments().getString(EXTRA_SOLDE_FRANCS), getArguments().getFloat(EXTRA_SOLDE_ENVOI), getArguments().getFloat(EXTRA_SOLDE_RECU));
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getArguments().clear();
     }
 
     private void setData() {
         entries = new ArrayList<>();
 
-        if(mSolde >= 0f) {
-            if(mRecu <= 0f && mEnvoi <= 0f) {
-                entries.add(new PieEntry(100f, "Pas de transactions."));
-            } else {
-                entries.add(new PieEntry(mRecu < 0f ? 0f : mRecu, "Reçu"));
-                entries.add(new PieEntry(mEnvoi < 0f ? 0f : mEnvoi, "Envoyé"));
-            }
+        if(mPoint >= 0f) {
+            entries.add(new PieEntry(mPoint, "Points"));
         } else {
-            SpannableString spannableString = new SpannableString("Vous avez une dette.");
+            SpannableString spannableString = new SpannableString("Vous n'avez pas des points.");
             spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
             mChart.setCenterText(spannableString);
         }
@@ -166,7 +162,6 @@ public class BalanceFrancsFragment extends Fragment implements OnChartValueSelec
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(mTfLight);
-
         mChart.setData(data);
 
         mChart.invalidate();
@@ -174,27 +169,11 @@ public class BalanceFrancsFragment extends Fragment implements OnChartValueSelec
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        if(((PieEntry)e).getLabel().equalsIgnoreCase("Pas de transactions.")) {
-            SpannableString spannableString = new SpannableString(String.format("%s FC", Constants.truncFloat(0f)));
-            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
-            mChart.setCenterText(spannableString);
-        } else if(((PieEntry)e).getLabel().equalsIgnoreCase("Reçu")) {
-            SpannableString spannableString = new SpannableString(String.format("%s FC", Constants.truncFloat(((PieEntry)e).getValue())));
-            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
-            mChart.setCenterText(spannableString);
-        } if(((PieEntry)e).getLabel().equalsIgnoreCase("Envoyé")) {
-            SpannableString spannableString = new SpannableString(String.format("%s FC", Constants.truncFloat(((PieEntry)e).getValue())));
-            spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
-            mChart.setCenterText(spannableString);
-        }
+
     }
 
     @Override
     public void onNothingSelected() {
-        SpannableString spannableString = new SpannableString(String.format("%s FC", Constants.truncFloat(mSolde)));
-        spannableString.setSpan(new RelativeSizeSpan(1.7f), 0, spannableString.length(), 0);
-        mChart.setCenterText(spannableString);
-
         setData();
     }
 }

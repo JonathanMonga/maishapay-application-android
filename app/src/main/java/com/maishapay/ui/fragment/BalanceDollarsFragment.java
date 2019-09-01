@@ -115,7 +115,7 @@ public class BalanceDollarsFragment extends Fragment implements OnChartValueSele
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.balance_francs_fragment, container, false);
+        View view = inflater.inflate(R.layout.balance_fragment, container, false);
 
         ButterKnife.bind(this, view);
 
