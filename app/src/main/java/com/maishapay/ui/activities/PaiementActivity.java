@@ -68,7 +68,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 11: {
+                case 12: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Canal +"));
@@ -80,7 +80,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 12: {
+                case 13: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Easy Tv"));
@@ -92,7 +92,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 13: {
+                case 14: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Startimes"));
@@ -104,7 +104,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 14: {
+                case 15: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert DStv"));
