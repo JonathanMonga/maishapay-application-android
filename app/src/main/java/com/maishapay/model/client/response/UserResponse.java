@@ -35,6 +35,8 @@ public class UserResponse extends BaseResponse{
     private String adresse;
     @SerializedName("ville")
     private String ville;
+    @SerializedName("points")
+    private String points;
 
     public String getNom() {
         return nom;
@@ -87,5 +89,13 @@ public class UserResponse extends BaseResponse{
     @Override
     public boolean equals(Object o) {
         return this.getTelephone() == ((UserResponse) o).getTelephone();
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
 }

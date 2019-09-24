@@ -27,7 +27,6 @@ import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class ContactPresenter extends TiPresenter<ContactView> {
 
     private RxTiPresenterDisposableHandler disposableHandler = new RxTiPresenterDisposableHandler(this);

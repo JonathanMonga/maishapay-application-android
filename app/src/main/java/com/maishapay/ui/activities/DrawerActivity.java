@@ -1,9 +1,11 @@
 package com.maishapay.ui.activities;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -25,6 +28,7 @@ import com.google.gson.Gson;
 import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.client.response.UserResponse;
+import com.maishapay.model.domain.UserDataPreference;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.fragment.AboutFragment;
 import com.maishapay.ui.fragment.AccueilFragment;
@@ -32,6 +36,7 @@ import com.maishapay.ui.fragment.ContactFragment;
 import com.maishapay.ui.fragment.DashboardClickListener;
 import com.maishapay.ui.fragment.SettingsFragment;
 import com.maishapay.ui.qrcode.DecoderActivity;
+import com.maishapay.ui.receiver.ApplicationSelectorReceiver;
 import com.maishapay.util.Constants;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -56,7 +61,7 @@ import static com.maishapay.ui.activities.EpargnePersonnelleActivity.RESULT_TRAN
 import static com.maishapay.ui.activities.PaymentWebActivity.RESULT_TRANSFERT_ERROR;
 import static com.maishapay.ui.activities.TransfertCompteActivity.RESULT_TRANSFERT_OK;
 
-public class DrawerActivity extends AppCompatActivity implements DashboardClickListener {
+public class DrawerActivity extends AppCompatActivity implements DashboardClickListener, SettingsFragment.IGetResult {
     public static final String EXTRA_EPARGNE_DRAWER = "epargne";
 
     private static final int REQUEST_QRCODE = 1;
@@ -69,6 +74,7 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
     private static final int REQUEST_TRANSFERT_EPARGNE = 8;
 
     public static final String EXTRA_QR_CODE_FRAGMENT = "scan_from_fragment";
+    private static final int PICK_SHARE_REQUEST = 1000;
 
     private Drawer result = null;
 
@@ -307,6 +313,10 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                 Fragment f = new AccueilFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commit();
             }
+        } else if (requestCode == PICK_SHARE_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                UserPrefencesManager.incrementPoints();
+            }
         }
     }
 
@@ -441,4 +451,15 @@ public class DrawerActivity extends AppCompatActivity implements DashboardClickL
                 .putContentId("Tableau de bord"));
     }
 
+    @Override
+    public void getResult() {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        share.putExtra(Intent.EXTRA_SUBJECT, "Je t'invite à utiliser Maishapay");
+        share.putExtra(Intent.EXTRA_TEXT, "Voici Maishapay, mon portefeuille éléctronique. Par ici : https://play.google.com/store/apps/details?id=com.maishapay");
+
+        startActivityForResult(Intent.createChooser(share, "Inviter un(e) ami(e)"), PICK_SHARE_REQUEST);
+    }
 }

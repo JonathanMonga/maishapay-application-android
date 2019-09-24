@@ -158,6 +158,8 @@
         </service>
         <service android:name=".service.MaishapayService" />
 
+        <receiver android:name=".ui.receiver.ApplicationSelectorReceiver"/>
+
         <!--<service android:name=".model.contact.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

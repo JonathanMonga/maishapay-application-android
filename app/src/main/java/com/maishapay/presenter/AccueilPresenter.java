@@ -29,9 +29,9 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
-
 
 public class AccueilPresenter extends TiPresenter<AccueilView> {
 

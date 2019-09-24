@@ -56,19 +56,8 @@ public class PaiementActivity extends AppCompatActivity{
 
         mAdapter = new PaiementAdapter(PaiementModel.getData(), position -> {
             switch (position) {
-                case 0: {
-                    Answers.getInstance().logContentView(new ContentViewEvent()
-                            .putContentId("Transfert")
-                            .putContentName("Billets concert ADA"));
 
-                    Intent intent = new Intent(PaiementActivity.this, TransfertPaiementActivity.class);
-                    intent.putExtra(EXTRA_TYPE_ABONNEMENT, "Réservation billets.");
-                    intent.putExtra(EXTRA_NUMERO_SERVICE, "243972435000");
-                    startActivityForResult(intent, REQUEST_ABONNEMENT);
-                    break;
-                }
-
-                case 12: {
+                case 10: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Canal +"));
@@ -80,7 +69,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 13: {
+                case 11: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Easy Tv"));
@@ -92,7 +81,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 14: {
+                case 12: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert Startimes"));
@@ -104,7 +93,7 @@ public class PaiementActivity extends AppCompatActivity{
                     break;
                 }
 
-                case 15: {
+                case 13: {
                     Answers.getInstance().logContentView(new ContentViewEvent()
                             .putContentId("Transfert")
                             .putContentName("Activité Transfert DStv"));

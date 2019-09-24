@@ -165,7 +165,7 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
                 BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
                 BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
-                PointFragment pointFragment = PointFragment.newInstance(0f);
+                PointFragment pointFragment = PointFragment.newInstance(UserPrefencesManager.getPoints());
 
                 HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
 
@@ -215,12 +215,14 @@ public class AccueilFragment extends BaseFragment<AccueilPresenter, AccueilView>
 
         BalanceFrancsFragment balanceFrancsFragment = BalanceFrancsFragment.newInstance(userDataPreference.getSoldeFrancs(), userDataPreference.getEnvoiFrancs(), userDataPreference.getRecuFrancs());
         BalanceDollarsFragment balanceDollarsFragment = BalanceDollarsFragment.newInstance(userDataPreference.getSoldeDollars(), userDataPreference.getEnvoiDollars(), userDataPreference.getRecuDollars());
+        PointFragment pointFragment = PointFragment.newInstance(UserPrefencesManager.getPoints());
 
         HeaderPagerAdapter adapter = new HeaderPagerAdapter(getChildFragmentManager());
 
         List<Fragment> pageList = new ArrayList<>();
         pageList.add(balanceFrancsFragment);
         pageList.add(balanceDollarsFragment);
+        pageList.add(pointFragment);
 
         adapter.setData(pageList);
 

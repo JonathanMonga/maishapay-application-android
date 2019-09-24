@@ -1,7 +1,10 @@
 package com.maishapay.ui.fragment;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -15,9 +18,23 @@ import com.maishapay.R;
 import com.maishapay.app.MaishapayApplication;
 import com.maishapay.model.prefs.UserPrefencesManager;
 import com.maishapay.ui.activities.UpdateProfilActivity;
+import com.maishapay.ui.receiver.ApplicationSelectorReceiver;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
+    public interface IGetResult{
+        void getResult();
+    }
+
+    private IGetResult iGetResult;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof IGetResult)
+            iGetResult = (IGetResult) context;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,13 +105,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void shareTextUrl() {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
-        share.putExtra(Intent.EXTRA_SUBJECT, "Je t'invite à utiliser Maishapay");
-        share.putExtra(Intent.EXTRA_TEXT, "Voici Maishapay, mon portefeuille éléctronique. Par ici : https://play.google.com/store/apps/details?id=com.maishapay");
-
-        startActivity(Intent.createChooser(share, "Inviter un(e) ami(e)"));
+        iGetResult.getResult();
     }
 }

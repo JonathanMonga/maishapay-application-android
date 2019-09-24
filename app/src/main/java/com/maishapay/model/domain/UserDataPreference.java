@@ -29,6 +29,16 @@ public class UserDataPreference {
     private String epargneDollars;
     @SerializedName("rapport")
     private List<TransactionItemResponse> transactionItemRespons;
+    @SerializedName("points")
+    private float points;
+
+    public float getPoints() {
+        return points;
+    }
+
+    public void setPoints(float points) {
+        this.points = points;
+    }
 
     public String getSoldeFrancs() {
         return soldeFrancs;

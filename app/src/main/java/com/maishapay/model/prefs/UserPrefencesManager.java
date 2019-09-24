@@ -40,6 +40,7 @@ import static com.maishapay.BuildConfig.USER_SESSION;
 public class UserPrefencesManager {
 
     private static final String USER_SESSION_EXPIRE = "session_expire";
+    private static final String USER_POINTS = "points";
 
     public static void setCurentUser(UserResponse userResponse){
         String userResponseString;
@@ -159,4 +160,13 @@ public class UserPrefencesManager {
     public static boolean getSessionExpire(){
         return Prefs.getBoolean(USER_SESSION_EXPIRE, false);
     }
+
+    public static void incrementPoints(){
+        Prefs.putFloat(USER_POINTS, Prefs.getFloat(USER_POINTS, 0f) + 1);
+    }
+
+    public static float getPoints(){
+        return Prefs.getFloat(USER_POINTS, 0);
+    }
+
 }
